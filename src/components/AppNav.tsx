@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
+import { useAiEnabled } from '../lib/useAiEnabled'
 import { supabase } from '../lib/supabase'
 
 export function AppNav() {
   const { user } = useAuth()
+  const aiEnabled = useAiEnabled()
   const location = useLocation()
 
   const linkClass = (path: string) =>
@@ -17,6 +19,19 @@ export function AppNav() {
           <Link to="/" className={linkClass('/')}>
             Items
           </Link>
+          {aiEnabled ? (
+            <Link to="/assistant" className={linkClass('/assistant')}>
+              Asistente
+            </Link>
+          ) : (
+            <Link
+              to="/settings"
+              title="Activá la IA en Settings para usar el asistente"
+              className="text-slate-300 hover:text-slate-500"
+            >
+              Asistente
+            </Link>
+          )}
           <Link to="/settings" className={linkClass('/settings')}>
             Settings
           </Link>

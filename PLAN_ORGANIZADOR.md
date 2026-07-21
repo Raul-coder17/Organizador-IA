@@ -223,7 +223,96 @@ y el function-calling contra items vienen en el próximo ítem.
   con ninguna cuenta, solo leyendo la tabla vía SQL admin.
 - `npm run build` sin errores (`tsc -b && vite build`).
 
+## Asistente de IA con function-calling (solo texto)
+
+Conecta la key cifrada de cada usuario a un asistente que puede ver, crear,
+editar y borrar items — siempre con **preview y confirmación explícita**
+antes de aplicar cualquier cambio. No incluye captura por foto ni
+recordatorios/notificaciones todavía.
+
+### Edge Function `ai-assistant`
+
+[`supabase/functions/ai-assistant/index.ts`](supabase/functions/ai-assistant/index.ts) (Deno):
+
+- **Guards:** verifica el JWT (igual que `manage-ai-key`); lee
+  `user_ai_settings` con el JWT del usuario (respeta RLS) y si
+  `ai_enabled = false` o no hay key guardada devuelve
+  `400 "Activá la IA en Settings primero."`.
+- **Descifrado:** descifra la key con AES-256-GCM usando
+  `AI_KEY_ENCRYPTION_SECRET` (el mismo secret que usó `manage-ai-key`
+  para cifrar). La key descifrada vive solo en memoria durante el request
+  — nunca se persiste ni se devuelve al cliente.
+- **Function-calling contra Gemini** (`gemini-2.0-flash`, configurable en
+  la constante `GEMINI_MODEL`): declara 4 tools:
+  - `listItems(tema?, tipo?, prioridad?)` — **solo lectura, se ejecuta
+    server-side** con el cliente Supabase del usuario (RLS aplica). Le da
+    a Gemini datos reales antes de responder o proponer. Devuelve los
+    items en forma compacta (con el nombre del tema resuelto).
+  - `proposeCreateItem`, `proposeUpdateItem`, `proposeDeleteItem` — **NO
+    se ejecutan acá**. Cuando Gemini llama a una de estas, la función la
+    mapea a un objeto `accion_propuesta` (JSON) y lo devuelve al frontend
+    para preview/confirmación.
+- **Loop acotado** (`MAX_TURNS = 5`): mientras Gemini pida `listItems`, se
+  ejecuta, se le devuelve el resultado como `functionResponse` y se vuelve
+  a llamar; corta al primer `propose*` (devuelve la acción) o al primer
+  texto sin function-call.
+- **Respuesta:** `{ respuesta_texto, accion_propuesta? }`. La API de
+  Gemini nunca ve el `service_role`; todo va con el JWT del usuario, así
+  que RLS es la última línea de defensa incluso desde el server.
+
+### Frontend — `/assistant`
+
+- `src/pages/AssistantPage.tsx` — chat con historial en estado local (no
+  persistido en DB todavía). Cada mensaje se manda con todo el historial a
+  la Edge Function vía `supabase.functions.invoke('ai-assistant')`.
+- Cuando la respuesta trae `accion_propuesta`, se renderiza una tarjeta
+  ámbar clara ("Vas a crear/editar/borrar esto: …") con botones
+  **Confirmar / Cancelar**. Para editar/borrar, la tarjeta muestra el
+  contenido *actual* del item afectado (se cargan items+temas al montar).
+- **Al confirmar**, el frontend ejecuta el cambio real reusando las mismas
+  funciones del CRUD manual (`createItem`/`updateItem`/`deleteItem` de
+  `src/lib/items.ts`), resolviendo el nombre de tema a `tema_id` (creándolo
+  si no existe, igual que el form manual). Los items creados por IA llevan
+  `origen = 'texto'`. **Nada se ejecuta hasta el click en Confirmar.**
+- **Al cancelar**, se descarta la acción y se deja una nota en el chat; no
+  se toca la DB.
+- `src/lib/useAiEnabled.ts` — hook que lee `ai_enabled`. `AppNav` muestra
+  el link "Asistente" habilitado solo si la IA está activa; si no, lo
+  muestra atenuado y lleva a `/settings`. La propia `/assistant` también
+  guarda: si `ai_enabled = false`, muestra un mensaje invitando a activarla
+  (defensa en profundidad con el guard del server).
+
+### Verificación
+
+- **Guards, probados en vivo sin login:** POST sin `Authorization` → `401`;
+  POST con la anon key como bearer (sin usuario real) → `401 "Sesión
+  inválida o expirada."`. Función `ACTIVE` en el proyecto real.
+- **Separación lectura vs. escritura (por diseño, verificable en código):**
+  `listItems` es la única tool que se ejecuta dentro de la Edge Function
+  (`execListItems`); las tres `propose*` solo se mapean a JSON y se
+  devuelven — no hay ninguna llamada a `insert/update/delete` en el server.
+  El único punto donde se escribe en la DB es el handler `handleConfirm`
+  del frontend, detrás del botón Confirmar.
+- **Pendiente de tu lado — la prueba end-to-end real:** no puedo mandar un
+  mensaje al asistente sin loguearme con tu cuenta (necesita tu sesión + tu
+  key), algo que tengo prohibido hacer. Con tu cuenta, probá: (a) "¿qué
+  items tengo?" → debe responder consultando, **sin** tarjeta de
+  confirmación; (b) "agregá una nota que diga X" → debe aparecer la tarjeta
+  de preview y **no** crear nada hasta que toques Confirmar. Avisame y, si
+  querés, verifico por SQL que el item recién creado tenga `origen='texto'`
+  y aparezca solo tras tu confirmación.
+- `npm run build` sin errores.
+
 ## Changelog
+
+- 2026-07-21 — Asistente de IA con function-calling (solo texto): Edge
+  Function `ai-assistant` (guard de `ai_enabled`, descifra la key, Gemini
+  con tools; `listItems` server-side, `propose*` devueltas para
+  confirmar), pantalla `/assistant` con chat y tarjeta de preview
+  Confirmar/Cancelar que ejecuta el cambio reusando el CRUD manual, y
+  gating del link en `AppNav` según `ai_enabled`. Desplegada al proyecto
+  real. Prueba end-to-end conversacional: pendiente de que el usuario la
+  corra con su cuenta.
 
 - 2026-07-21 — Verificado en vivo: la key real de Gemini que Raúl guardó
   desde `/settings` quedó cifrada en `user_ai_settings`

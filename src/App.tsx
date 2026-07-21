@@ -3,6 +3,7 @@ import { AuthProvider } from './lib/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { ItemsPage } from './pages/ItemsPage'
 import { SettingsPage } from './pages/SettingsPage'
+import { AssistantPage } from './pages/AssistantPage'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ItemsPage />} />
+            <Route path="/assistant" element={<AssistantPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </BrowserRouter>
