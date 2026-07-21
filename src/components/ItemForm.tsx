@@ -1,7 +1,11 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import type { Item, ItemInsert, Prioridad, Tema, TipoItem } from '../types/database'
+import type { Item, ItemInsert, LineaLista, Prioridad, Tema, TipoItem } from '../types/database'
 import { createItem, updateItem } from '../lib/items'
 import { createTema } from '../lib/temas'
+
+function nuevaLinea(): LineaLista {
+  return { id: crypto.randomUUID(), texto: '', hecho: false }
+}
 
 interface ItemFormProps {
   userId: string
@@ -21,6 +25,7 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
   const [nuevoTemaNombre, setNuevoTemaNombre] = useState('')
   const [prioridad, setPrioridad] = useState<Prioridad | ''>('')
   const [contenidoTexto, setContenidoTexto] = useState('')
+  const [lineas, setLineas] = useState<LineaLista[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -31,23 +36,62 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
       setPrioridad(editingItem.prioridad ?? '')
       const texto = editingItem.contenido.texto
       setContenidoTexto(typeof texto === 'string' ? texto : JSON.stringify(editingItem.contenido))
+      // Al editar una lista con la forma nueva, preservamos hecho de cada línea.
+      const itemsGuardados = editingItem.contenido.items
+      setLineas(
+        Array.isArray(itemsGuardados)
+          ? (itemsGuardados as LineaLista[]).map((l) => ({
+              id: typeof l.id === 'string' ? l.id : crypto.randomUUID(),
+              texto: String(l.texto ?? ''),
+              hecho: Boolean(l.hecho),
+            }))
+          : [],
+      )
     } else {
       setTipo('nota')
       setTemaId('')
       setPrioridad('')
       setContenidoTexto('')
+      setLineas([])
     }
     setNuevoTemaNombre('')
     setError(null)
   }, [editingItem])
 
+  // Aseguramos al menos una línea en blanco cuando el tipo es "lista".
+  useEffect(() => {
+    if (tipo === 'lista' && lineas.length === 0) {
+      setLineas([nuevaLinea()])
+    }
+  }, [tipo, lineas.length])
+
+  const updateLinea = (id: string, texto: string) =>
+    setLineas((prev) => prev.map((l) => (l.id === id ? { ...l, texto } : l)))
+  const removeLinea = (id: string) => setLineas((prev) => prev.filter((l) => l.id !== id))
+  const addLinea = () => setLineas((prev) => [...prev, nuevaLinea()])
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    if (!contenidoTexto.trim()) {
-      setError('El contenido no puede estar vacío.')
-      return
+    // Para "lista" el contenido son las líneas; para el resto, el textarea.
+    let contenido: Record<string, unknown>
+    if (tipo === 'lista') {
+      const items = lineas
+        .map((l) => ({ ...l, texto: l.texto.trim() }))
+        .filter((l) => l.texto.length > 0)
+      if (items.length === 0) {
+        setError('Agregá al menos una línea a la lista.')
+        return
+      }
+      contenido = { items }
+    } else {
+      if (!contenidoTexto.trim()) {
+        setError('El contenido no puede estar vacío.')
+        return
+      }
+      contenido = { texto: contenidoTexto.trim() }
     }
+
     if (temaId === 'new' && !nuevoTemaNombre.trim()) {
       setError('Escribí un nombre para el tema nuevo.')
       return
@@ -70,7 +114,7 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
         tema_id: temaIdFinal,
         tipo,
         prioridad: prioridad === '' ? null : prioridad,
-        contenido: { texto: contenidoTexto.trim() },
+        contenido,
         origen: 'manual',
       }
 
@@ -161,20 +205,47 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
 
       <div>
         <label className="label" htmlFor="contenido">
-          Contenido
+          {tipo === 'lista' ? 'Líneas de la lista' : 'Contenido'}
         </label>
-        <textarea
-          id="contenido"
-          value={contenidoTexto}
-          onChange={(e) => setContenidoTexto(e.target.value)}
-          rows={4}
-          placeholder={
-            tipo === 'tabla'
-              ? 'Columna1 | Columna2\nDato1 | Dato2\nDato3 | Dato4'
-              : undefined
-          }
-          className="ctl w-full"
-        />
+
+        {tipo === 'lista' ? (
+          <div className="space-y-2">
+            {lineas.map((l, idx) => (
+              <div key={l.id} className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={l.texto}
+                  onChange={(e) => updateLinea(l.id, e.target.value)}
+                  placeholder={`Línea ${idx + 1}`}
+                  className="ctl flex-1"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeLinea(l.id)}
+                  aria-label="Quitar línea"
+                  className="btn-linea"
+                  disabled={lineas.length === 1}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={addLinea} className="btn-ghost">
+              + Agregar línea
+            </button>
+          </div>
+        ) : (
+          <textarea
+            id="contenido"
+            value={contenidoTexto}
+            onChange={(e) => setContenidoTexto(e.target.value)}
+            rows={4}
+            placeholder={
+              tipo === 'tabla' ? 'Columna1 | Columna2\nDato1 | Dato2\nDato3 | Dato4' : undefined
+            }
+            className="ctl w-full"
+          />
+        )}
       </div>
 
       {error && <p className="text-sm text-rust">{error}</p>}

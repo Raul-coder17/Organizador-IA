@@ -462,8 +462,49 @@ editorial/de catálogo en **toda** la app, a partir del mockup aprobado
     columnas) — el wrapper `overflow-x:auto` queda listo para tablas con
     muchas columnas o tokens largos.
 
+## Tipos de contenido con estructura propia (tabla, lista)
+
+Los tipos de item dejan de ser todos `{ texto }` y ganan estructura donde
+tiene sentido.
+
+- **Tabla:** `ItemList` interpreta el jsonb (`parseTabla` para
+  `{columnas|headers, filas|rows}`, o `parseTextTable` para texto con pipes/
+  markdown, que es como se crean hoy) y renderiza un `<table>` real. Si no
+  es tabular, cae a texto. Placeholder de ejemplo en el form.
+- **Lista con checkboxes reales:**
+  - Forma nueva: `contenido = { items: [{ id, texto, hecho }] }` (`id` con
+    `crypto.randomUUID()`). Tipo `LineaLista` en `src/types/database.ts`.
+  - `ItemForm`: cuando `tipo === 'lista'` reemplaza el textarea por un
+    **editor de líneas** (un input por línea, "+ Agregar línea", botón `×`
+    para quitar; no deja borrar la última). Al guardar arma `{ items }` con
+    `hecho: false` para líneas nuevas y **preserva `hecho`** de las líneas
+    existentes al editar. Los otros tipos siguen igual.
+  - `ItemList`: para `tipo === 'lista'` con la forma nueva renderiza cada
+    línea con un **checkbox real** (estilado con el sistema: relleno moss +
+    check, línea tachada en `slate` cuando está hecha). Al marcar/desmarcar,
+    `ItemsPage.handleToggleLinea` hace **UI optimista** (actualiza el estado
+    al instante), persiste con `updateItem(id, { contenido })`, y si el
+    guardado falla **revierte** el estado y muestra el error.
+  - **Compat hacia atrás:** un item `lista` viejo con `{ texto }` (o
+    cualquier contenido sin `items`) se muestra como texto plano, sin
+    romper y sin migración automática.
+- **Fuera de alcance (por ahora):** el asistente de IA sigue usando
+  `{ texto }` genérico para todo; que sepa crear/editar listas con esta
+  estructura queda para un ítem aparte.
+- **Verificado:** `npm run build` sin errores; el parseo de tabla-texto se
+  probó con el dato real del usuario (unit test); el render de checkboxes y
+  el editor de líneas se verificaron en el harness con el CSS compilado, en
+  desktop y ~375px (lista apilada, checks moss, tachado, editor usable).
+  **Falta tu prueba en vivo** (ver reporte): crear una lista, marcar/
+  desmarcar, recargar y confirmar que el estado persiste.
+
 ## Changelog
 
+- 2026-07-21 — Listas con checkboxes reales: nuevo contenido
+  `{ items: [{id,texto,hecho}] }`, editor de líneas en el form, checkboxes
+  persistidos con UI optimista + revert on error, y compat con listas viejas
+  `{ texto }`. Antes: render de `<table>` real para items tipo tabla,
+  incluyendo texto con pipes/markdown.
 - 2026-07-21 — Rediseño visual completo (sistema de fichas de catálogo) en
   toda la app: tokens de color + Fraunces/IBM Plex (Tailwind v4 `@theme`),
   nav y labels en mono, ítems con borde de prioridad, encabezados de tema con

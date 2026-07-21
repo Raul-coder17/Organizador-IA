@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
-import { listItems, deleteItem } from '../lib/items'
+import { listItems, deleteItem, updateItem } from '../lib/items'
 import { listTemas } from '../lib/temas'
-import type { Item, Tema } from '../types/database'
+import type { Item, LineaLista, Tema } from '../types/database'
 import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
 import { AppNav } from '../components/AppNav'
@@ -59,6 +59,25 @@ export function ItemsPage() {
 
   function handleTemaCreated(tema: Tema) {
     setTemas((prev) => [...prev, tema].sort((a, b) => a.nombre.localeCompare(b.nombre)))
+  }
+
+  // Marca/desmarca una línea de una lista: UI optimista + persistencia; si el
+  // guardado falla, revierte al estado previo y muestra el error.
+  async function handleToggleLinea(item: Item, lineaId: string) {
+    const lineas = Array.isArray(item.contenido.items) ? (item.contenido.items as LineaLista[]) : []
+    const nuevasLineas = lineas.map((l) => (l.id === lineaId ? { ...l, hecho: !l.hecho } : l))
+    const nuevoContenido = { ...item.contenido, items: nuevasLineas }
+
+    const snapshot = items
+    setItems((cur) => cur.map((it) => (it.id === item.id ? { ...it, contenido: nuevoContenido } : it)))
+    setError(null)
+
+    try {
+      await updateItem(item.id, { contenido: nuevoContenido })
+    } catch (err) {
+      setItems(snapshot) // revertir el checkbox
+      setError(err instanceof Error ? err.message : 'No se pudo guardar el cambio.')
+    }
   }
 
   if (!user) return null
@@ -126,7 +145,13 @@ export function ItemsPage() {
               : 'No hay items para este filtro.'}
           </p>
         ) : (
-          <ItemList items={filteredItems} temas={temas} onEdit={handleEdit} onDelete={handleDelete} />
+          <ItemList
+            items={filteredItems}
+            temas={temas}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onToggleLinea={handleToggleLinea}
+          />
         )}
       </main>
     </div>

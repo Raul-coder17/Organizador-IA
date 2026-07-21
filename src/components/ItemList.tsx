@@ -1,4 +1,4 @@
-import type { Item, Tema } from '../types/database'
+import type { Item, LineaLista, Tema } from '../types/database'
 
 const TIPO_LABEL: Record<string, string> = {
   nota: 'Nota',
@@ -18,6 +18,22 @@ interface ItemListProps {
   temas: Tema[]
   onEdit: (item: Item) => void
   onDelete: (id: string) => void
+  onToggleLinea: (item: Item, lineaId: string) => void
+}
+
+// Devuelve las líneas de un item "lista" con la forma nueva, o null si es la
+// forma vieja ({ texto }) u otra cosa (compat hacia atrás).
+function parseLista(contenido: Record<string, unknown>): LineaLista[] | null {
+  const raw = contenido.items
+  if (!Array.isArray(raw)) return null
+  return raw.map((l) => {
+    const o = l as Record<string, unknown>
+    return {
+      id: typeof o.id === 'string' ? o.id : '',
+      texto: String(o.texto ?? ''),
+      hecho: Boolean(o.hecho),
+    }
+  })
 }
 
 function cell(v: unknown): string {
@@ -83,7 +99,36 @@ function parseTextTable(texto: string): { headers: string[] | null; rows: string
   return { headers: pad(headers), rows: rows.map(pad) }
 }
 
-function ItemContent({ item }: { item: Item }) {
+function ItemContent({
+  item,
+  onToggleLinea,
+}: {
+  item: Item
+  onToggleLinea: (item: Item, lineaId: string) => void
+}) {
+  if (item.tipo === 'lista') {
+    const lineas = parseLista(item.contenido)
+    if (lineas) {
+      return (
+        <ul className="item-lista">
+          {lineas.map((l) => (
+            <li key={l.id} className="item-lista__linea">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={l.hecho}
+                  onChange={() => onToggleLinea(item, l.id)}
+                />
+                <span className={l.hecho ? 'done' : undefined}>{l.texto}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    // Compat: lista vieja con { texto } cae al render de texto de abajo.
+  }
+
   if (item.tipo === 'tabla') {
     const tabla =
       parseTabla(item.contenido) ??
@@ -121,7 +166,7 @@ function ItemContent({ item }: { item: Item }) {
   return <div className="item-content">{texto}</div>
 }
 
-export function ItemList({ items, temas, onEdit, onDelete }: ItemListProps) {
+export function ItemList({ items, temas, onEdit, onDelete, onToggleLinea }: ItemListProps) {
   const temaNombre = (id: string | null) =>
     id ? (temas.find((t) => t.id === id)?.nombre ?? 'Tema eliminado') : 'Sin tema'
 
@@ -156,7 +201,7 @@ export function ItemList({ items, temas, onEdit, onDelete }: ItemListProps) {
                     </span>
                   )}
                 </div>
-                <ItemContent item={item} />
+                <ItemContent item={item} onToggleLinea={onToggleLinea} />
               </div>
               <div className="item-actions">
                 <button onClick={() => onEdit(item)}>Editar</button>

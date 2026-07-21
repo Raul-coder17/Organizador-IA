@@ -13,6 +13,13 @@ export interface Tema {
 export type TemaInsert = Omit<Tema, 'id' | 'created_at'> &
   Partial<Pick<Tema, 'id' | 'created_at'>>
 
+// Una línea de un item tipo "lista" (contenido = { items: LineaLista[] }).
+export interface LineaLista {
+  id: string
+  texto: string
+  hecho: boolean
+}
+
 export interface Item {
   id: string
   user_id: string
