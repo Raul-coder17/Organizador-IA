@@ -6,7 +6,7 @@ import { supabase } from '../lib/supabase'
 import { listItems, createItem, updateItem, deleteItem } from '../lib/items'
 import { listTemas, createTema } from '../lib/temas'
 import type { Item, ItemInsert, Tema } from '../types/database'
-import type { AccionPropuesta, AssistantResponse, ChatMessage } from '../types/assistant'
+import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
 import { AppNav } from '../components/AppNav'
 
 function contenidoTexto(item: Item): string {
@@ -25,8 +25,17 @@ export function AssistantPage() {
   const [executing, setExecuting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState<AccionPropuesta | null>(null)
+  const [usage, setUsage] = useState<AssistantUsage | null>(null)
+  const [cooldown, setCooldown] = useState(0) // segundos restantes de rate limit corto
 
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Cuenta regresiva del rate limit por minuto: deshabilita el input hasta 0.
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const id = setInterval(() => setCooldown((s) => Math.max(0, s - 1)), 1000)
+    return () => clearInterval(id)
+  }, [cooldown])
 
   async function loadData() {
     if (!user) return
@@ -108,6 +117,12 @@ export function AssistantPage() {
     }
     setMessages((prev) => [...prev, assistantMsg])
     if (data.accion_propuesta) setPending(data.accion_propuesta)
+    if (data.usage) setUsage(data.usage)
+
+    // Rate limit por minuto: arrancamos la cuenta regresiva que bloquea el input.
+    if (data.rate_limit?.kind === 'short' && data.rate_limit.retry_after_seconds) {
+      setCooldown(data.rate_limit.retry_after_seconds)
+    }
   }
 
   async function resolveTemaId(nombre: string | null | undefined): Promise<string | null> {
@@ -207,23 +222,35 @@ export function AssistantPage() {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
 
+        {cooldown > 0 && (
+          <p className="text-sm text-amber-600">
+            Esperá {cooldown} segundo{cooldown === 1 ? '' : 's'} antes de enviar otro mensaje.
+          </p>
+        )}
+
         <form onSubmit={handleSend} className="flex items-center gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Escribí un mensaje…"
-            disabled={sending}
-            className="flex-1 rounded border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+            placeholder={cooldown > 0 ? `Esperá ${cooldown}s…` : 'Escribí un mensaje…'}
+            disabled={sending || cooldown > 0}
+            className="flex-1 rounded border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:bg-slate-100"
           />
           <button
             type="submit"
-            disabled={sending || !input.trim()}
+            disabled={sending || cooldown > 0 || !input.trim()}
             className="rounded bg-slate-800 text-white px-4 py-2 text-sm font-medium hover:bg-slate-700 disabled:opacity-50"
           >
             Enviar
           </button>
         </form>
+
+        {usage?.daily_quota != null && (
+          <p className="text-xs text-slate-400 text-right">
+            {usage.used_today ?? 0} de {usage.daily_quota} mensajes de IA usados hoy
+          </p>
+        )}
       </main>
     </div>
   )

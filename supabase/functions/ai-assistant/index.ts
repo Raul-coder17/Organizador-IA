@@ -132,12 +132,79 @@ interface GeminiCandidate {
   finishReason?: string
 }
 
+// Info de rate limit aprendida de un 429 (nada hardcodeado): el propio body
+// de Gemini trae el quotaId, el quotaValue real y el retryDelay.
+interface RateLimitInfo {
+  kind: 'day' | 'short'
+  quotaValue?: number
+  retryDelaySeconds?: number
+  quotaId?: string
+}
+
 // Error con mensaje ya traducido al español, apto para mostrar al usuario.
+// Si viene de un 429, adjunta la info de rate limit para que el handler
+// decida (aprender la cuota diaria / devolver cuenta regresiva).
 class GeminiError extends Error {
-  constructor(public userMessage: string) {
+  constructor(
+    public userMessage: string,
+    public rateLimit?: RateLimitInfo,
+  ) {
     super(userMessage)
     this.name = 'GeminiError'
   }
+}
+
+// Extrae del body de un 429 el tipo de límite (día vs corto), el quotaValue
+// real y el retryDelay. No asume ningún número: todo sale del body.
+function parseRateLimit(rawBody: string): RateLimitInfo {
+  try {
+    const parsed = JSON.parse(rawBody)
+    const details = Array.isArray(parsed?.error?.details) ? parsed.error.details : []
+    const quotaFailure = details.find((d: Record<string, unknown>) =>
+      String(d['@type'] ?? '').includes('QuotaFailure'),
+    )
+    const retryInfo = details.find((d: Record<string, unknown>) =>
+      String(d['@type'] ?? '').includes('RetryInfo'),
+    )
+    const violation = quotaFailure?.violations?.[0] ?? {}
+    const quotaId: string = violation.quotaId ?? ''
+    const quotaValue = violation.quotaValue != null ? Number(violation.quotaValue) : undefined
+
+    let retryDelaySeconds: number | undefined
+    const rawDelay = retryInfo?.retryDelay
+    if (typeof rawDelay === 'string') {
+      const m = rawDelay.match(/([\d.]+)s/)
+      if (m) retryDelaySeconds = Math.ceil(Number(m[1]))
+    }
+
+    const isDay = /perday|daily/i.test(quotaId)
+    const isShort = /perminute|persecond/i.test(quotaId)
+    const kind: 'day' | 'short' = isDay
+      ? 'day'
+      : isShort
+        ? 'short'
+        : // sin quotaId claro: si el retryDelay es corto lo tratamos como corto,
+          // si no, como diario (conservador: evita reintentos que gastan cuota).
+          retryDelaySeconds != null && retryDelaySeconds <= 120
+          ? 'short'
+          : 'day'
+
+    return { kind, quotaValue: Number.isFinite(quotaValue) ? quotaValue : undefined, retryDelaySeconds, quotaId }
+  } catch {
+    return { kind: 'day' }
+  }
+}
+
+function mensajeCuotaDiaria(n?: number): string {
+  const cuota = n != null ? `tus ${n} mensajes` : 'tus mensajes'
+  return `Ya usaste ${cuota} de IA de hoy. Volvé mañana (la cuota se reinicia a medianoche, hora del Pacífico de EE.UU.).`
+}
+
+function mensajeCuotaCorta(segundos?: number): string {
+  if (segundos != null) {
+    return `Alcanzaste el límite de mensajes por minuto. Esperá ${segundos} segundos y volvé a intentar.`
+  }
+  return 'Alcanzaste el límite de mensajes por minuto. Esperá un momento y volvé a intentar.'
 }
 
 // Clasifica un no-2xx de Gemini a un mensaje claro en español. El body crudo
@@ -194,6 +261,11 @@ async function callGemini(apiKey: string, contents: GeminiContent[]): Promise<Ge
   if (!res.ok) {
     const rawBody = await res.text().catch(() => '<sin body>')
     console.error(`[ai-assistant] Gemini no-ok: status=${res.status} body=${rawBody}`)
+    if (res.status === 429) {
+      const rl = parseRateLimit(rawBody)
+      const msg = rl.kind === 'day' ? mensajeCuotaDiaria(rl.quotaValue) : mensajeCuotaCorta(rl.retryDelaySeconds)
+      throw new GeminiError(msg, rl)
+    }
     throw new GeminiError(translateGeminiError(res.status, rawBody))
   }
 
@@ -340,15 +412,30 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'Sesión inválida o expirada.' }, 401)
   }
 
-  // Estado de IA + key cifrada del usuario (respeta RLS con su JWT).
+  // Estado de IA + key cifrada + cuota diaria aprendida (respeta RLS con su JWT).
   const { data: settings } = await supabase
     .from('user_ai_settings')
-    .select('ai_enabled, gemini_api_key_encrypted')
+    .select('ai_enabled, gemini_api_key_encrypted, daily_quota_learned')
     .eq('user_id', user.id)
     .maybeSingle()
 
   if (!settings?.ai_enabled || !settings.gemini_api_key_encrypted) {
     return jsonResponse({ error: 'Activá la IA en Settings primero.' }, 400)
+  }
+
+  const learned: number | null = settings.daily_quota_learned ?? null
+
+  // Pre-flight: si ya aprendimos la cuota diaria y hoy la alcanzamos,
+  // respondemos al instante sin gastar una llamada a Gemini que igual daría 429.
+  if (learned != null) {
+    const { data: usedToday } = await supabase.rpc('ai_usage_today')
+    if (typeof usedToday === 'number' && usedToday >= learned) {
+      return jsonResponse({
+        respuesta_texto: mensajeCuotaDiaria(learned),
+        rate_limit: { kind: 'day', quota_value: learned },
+        usage: { used_today: usedToday, daily_quota: learned },
+      })
+    }
   }
 
   let apiKey: string
@@ -377,9 +464,19 @@ Deno.serve(async (req) => {
       parts: [{ text: m.text as string }],
     }))
 
+  // Cada llamada exitosa a Gemini cuenta contra la cuota; llevamos el total
+  // de hoy para el pre-flight de próximas y para mostrarlo en el frontend.
+  let usedToday: number | null = null
+  const usageField = () => ({ usage: { used_today: usedToday ?? undefined, daily_quota: learned ?? undefined } })
+
   try {
     for (let turn = 0; turn < MAX_TURNS; turn++) {
       const candidate = await callGemini(apiKey, contents)
+
+      // Llamada exitosa: incrementamos el contador diario (atómico, respeta RLS).
+      const { data: nuevo } = await supabase.rpc('increment_ai_usage')
+      if (typeof nuevo === 'number') usedToday = nuevo
+
       const parts = candidate.content?.parts
 
       // Fix defensivo: un candidate puede venir sin parts (MAX_TOKENS, SAFETY,
@@ -389,13 +486,13 @@ Deno.serve(async (req) => {
         console.error(
           `[ai-assistant] candidate sin parts (finishReason=${candidate.finishReason ?? 'null'}): ${JSON.stringify(candidate)}`,
         )
-        return jsonResponse({ respuesta_texto: messageForFinishReason(candidate.finishReason) })
+        return jsonResponse({ respuesta_texto: messageForFinishReason(candidate.finishReason), ...usageField() })
       }
 
       const call = firstFunctionCall(parts)
 
       if (!call) {
-        return jsonResponse({ respuesta_texto: textFromParts(parts) || 'Listo.' })
+        return jsonResponse({ respuesta_texto: textFromParts(parts) || 'Listo.', ...usageField() })
       }
 
       if (call.name === 'listItems') {
@@ -411,16 +508,38 @@ Deno.serve(async (req) => {
       const accion = mapProposedAction(call.name, call.args)
       if (accion) {
         const texto = textFromParts(parts) || fallbackText(accion)
-        return jsonResponse({ respuesta_texto: texto, accion_propuesta: accion })
+        return jsonResponse({ respuesta_texto: texto, accion_propuesta: accion, ...usageField() })
       }
 
       // Función desconocida: cortamos para no colgar el loop.
-      return jsonResponse({ respuesta_texto: textFromParts(parts) || 'No pude completar eso.' })
+      return jsonResponse({ respuesta_texto: textFromParts(parts) || 'No pude completar eso.', ...usageField() })
     }
 
-    return jsonResponse({ respuesta_texto: 'No pude terminar de procesar el pedido. Probá reformularlo.' })
+    return jsonResponse({ respuesta_texto: 'No pude terminar de procesar el pedido. Probá reformularlo.', ...usageField() })
   } catch (err) {
     console.error('[ai-assistant] fallo en el loop:', err instanceof Error ? err.stack ?? err.message : err)
+
+    // 429: manejo adaptativo según la info aprendida del propio body de Gemini.
+    if (err instanceof GeminiError && err.rateLimit) {
+      const rl = err.rateLimit
+      if (rl.kind === 'day') {
+        // Aprendemos la cuota diaria real para bloquear en el pre-flight futuro.
+        if (rl.quotaValue != null) {
+          await supabase.from('user_ai_settings').update({ daily_quota_learned: rl.quotaValue }).eq('user_id', user.id)
+        }
+        return jsonResponse({
+          respuesta_texto: err.userMessage,
+          rate_limit: { kind: 'day', quota_value: rl.quotaValue ?? learned ?? undefined },
+          ...usageField(),
+        })
+      }
+      return jsonResponse({
+        respuesta_texto: err.userMessage,
+        rate_limit: { kind: 'short', retry_after_seconds: rl.retryDelaySeconds },
+        ...usageField(),
+      })
+    }
+
     const mensaje =
       err instanceof GeminiError
         ? err.userMessage

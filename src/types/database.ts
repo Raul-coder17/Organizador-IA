@@ -43,5 +43,12 @@ export interface UserAiSettings {
   user_id: string
   gemini_api_key_encrypted: string | null
   ai_enabled: boolean
+  daily_quota_learned: number | null
   updated_at: string
+}
+
+export interface AiUsage {
+  user_id: string
+  fecha: string
+  requests: number
 }

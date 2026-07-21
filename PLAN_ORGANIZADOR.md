@@ -363,7 +363,67 @@ recordatorios/notificaciones todavía.
   no-JSON) — todos mapean al mensaje esperado. No se pudo forzar un 429 real
   (la cuota se reinició), pero el mapeo quedó verificado por código.
 
+### Rate limits adaptativos (sin hardcodear el número)
+
+- **Por qué adaptativo:** el límite diario real de Gemini free-tier para
+  este proyecto/modelo resultó ser **20/día** (no 250 ni 1500, cifras que
+  circulan pero no aplican acá), y ya varió una vez. Hardcodear un número
+  quedaría desactualizado apenas Google lo cambie. En vez de eso, el límite
+  se **aprende del propio body del 429** (`quotaValue`) y se guarda por
+  usuario.
+- **Datos** (migración
+  [`20260721163051_ai_usage.sql`](supabase/migrations/20260721163051_ai_usage.sql)):
+  - `user_ai_settings.daily_quota_learned` (int, nullable) — la cuota diaria
+    aprendida del último 429 de tipo día.
+  - Tabla `ai_usage (user_id, fecha, requests)` con RLS (3 policies:
+    select/insert/update own; no hace falta delete) — contador de llamadas a
+    Gemini por día. El **día se calcula en `America/Los_Angeles`**, para que
+    el corte coincida con el reset de cuota de Gemini (medianoche del
+    Pacífico).
+  - RPCs `increment_ai_usage()` (upsert atómico +1, devuelve el total) y
+    `ai_usage_today()` (lectura), ambas `security invoker` → respetan RLS.
+- **Flujo en `ai-assistant`:**
+  1. **Pre-flight:** si `daily_quota_learned` ya se conoce y
+     `ai_usage_today() >= daily_quota_learned`, responde al instante
+     ("Ya usaste tus N mensajes de IA de hoy. Volvé mañana…") **sin llamar
+     a Gemini** — no gasta una request que igual daría 429.
+  2. Cada llamada **exitosa** a Gemini incrementa `ai_usage` (contamos
+     llamadas reales a la API, que es la unidad de la cuota; un mensaje con
+     round-trip de `listItems` puede contar 2).
+  3. **429 real:** se parsea el body (`parseRateLimit`) — extrae `quotaId`,
+     `quotaValue` y `retryDelay`, todo del body, nada asumido:
+     - `quotaId` con `PerDay`/`daily` → guarda `quotaValue` en
+       `daily_quota_learned` y responde con el mensaje diario.
+     - `quotaId` con `PerMinute`/`PerSecond` (o retryDelay corto) → responde
+       con el `retryDelay` real y el frontend deshabilita el input con una
+       cuenta regresiva.
+     - Sin `quotaId` claro → conservador: se trata como diario si el
+       retryDelay es largo, como corto si es ≤120s.
+- **Frontend:** el input se bloquea con cuenta regresiva (`cooldown`) ante
+  un rate limit corto; se muestra "N de M mensajes de IA usados hoy" cuando
+  ya se conoce la cuota (`usage` en la respuesta).
+- **Probado:** migración aplicada (tabla+RLS+columna+2 RPCs verificados en
+  vivo por SQL); función `ACTIVE` v6; build sin errores. `parseRateLimit`
+  verificado con test unitario sobre 4 bodies con la forma real de Gemini
+  (PerDay quotaValue 20 + retry 38s; PerMinute quotaValue 15 + retry 11.5s→12;
+  sin quotaId con retry corto; 429 pelado → día conservador) — todos OK.
+- **Falta confirmar en vivo (requiere tu cuenta + agotar la cuota real):**
+  el ciclo completo end-to-end — que al 429 diario se guarde
+  `daily_quota_learned = 20`, que el pre-flight bloquee sin llamar a Gemini a
+  partir de ahí, que el contador `ai_usage` suba por request, y que un 429 de
+  minuto dispare la cuenta regresiva en el input. La lógica quedó verificada
+  por unidad y por esquema, pero disparar un 429 real necesita mandar ~20+
+  mensajes logueado con tu key.
+
 ## Changelog
+
+- 2026-07-21 — Rate limits adaptativos de Gemini: se aprende la cuota diaria
+  real del body del 429 (`quotaValue`) en `user_ai_settings.daily_quota_learned`,
+  contador `ai_usage` por usuario/día (día en hora del Pacífico) con RPCs
+  atómicas, pre-flight que evita llamar a Gemini si ya se agotó la cuota, y
+  cuenta regresiva en el frontend para rate limits por minuto (usa el
+  `retryDelay` real). `parseRateLimit` verificado con test unitario (4 casos
+  con la forma real del 429). Función `ACTIVE` v6.
 
 - 2026-07-21 — Errores de Gemini traducidos al español en `ai-assistant`
   (`translateGeminiError` + `GeminiError`): 429/cuota, 400/key inválida,

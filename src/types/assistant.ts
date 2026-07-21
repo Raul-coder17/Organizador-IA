@@ -38,7 +38,20 @@ export interface ChatMessage {
   accion?: AccionPropuesta
 }
 
+export interface RateLimit {
+  kind: 'day' | 'short'
+  retry_after_seconds?: number
+  quota_value?: number
+}
+
+export interface AssistantUsage {
+  used_today?: number
+  daily_quota?: number
+}
+
 export interface AssistantResponse {
   respuesta_texto: string
   accion_propuesta?: AccionPropuesta
+  rate_limit?: RateLimit
+  usage?: AssistantUsage
 }
