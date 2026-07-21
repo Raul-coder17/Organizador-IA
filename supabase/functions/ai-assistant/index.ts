@@ -125,10 +125,14 @@ interface GeminiPart {
 }
 interface GeminiContent {
   role: string
-  parts: GeminiPart[]
+  parts?: GeminiPart[]
+}
+interface GeminiCandidate {
+  content?: GeminiContent
+  finishReason?: string
 }
 
-async function callGemini(apiKey: string, contents: GeminiContent[]): Promise<GeminiContent> {
+async function callGemini(apiKey: string, contents: GeminiContent[]): Promise<GeminiCandidate> {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
     {
@@ -138,18 +142,44 @@ async function callGemini(apiKey: string, contents: GeminiContent[]): Promise<Ge
         systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
         contents,
         tools: [{ functionDeclarations: FUNCTION_DECLARATIONS }],
+        // gemini-2.5-flash es un modelo "thinking": por defecto gasta parte del
+        // budget de salida razonando, y con function-calling puede consumirlo
+        // entero antes de emitir parts -> candidate sin parts + MAX_TOKENS.
+        // Desactivamos el thinking (budget 0) y dejamos margen de salida.
+        generationConfig: {
+          maxOutputTokens: 2048,
+          thinkingConfig: { thinkingBudget: 0 },
+        },
       }),
     },
   )
 
   if (!res.ok) {
-    throw new Error(`Gemini respondió ${res.status}`)
+    const rawBody = await res.text().catch(() => '<sin body>')
+    console.error(`[ai-assistant] Gemini no-ok: status=${res.status} body=${rawBody}`)
+    throw new Error(`Gemini respondió ${res.status}: ${rawBody}`)
   }
 
   const data = await res.json()
-  const content = data?.candidates?.[0]?.content
-  if (!content) throw new Error('Respuesta de Gemini sin contenido.')
-  return content as GeminiContent
+  const candidate = data?.candidates?.[0]
+  if (!candidate) {
+    console.error(`[ai-assistant] Gemini 200 sin candidates: ${JSON.stringify(data)}`)
+    throw new Error(`Respuesta de Gemini sin candidates: ${JSON.stringify(data)}`)
+  }
+  return candidate as GeminiCandidate
+}
+
+function messageForFinishReason(reason?: string): string {
+  switch (reason) {
+    case 'MAX_TOKENS':
+      return 'La respuesta se cortó por límite de tokens. Probá un mensaje más corto o reformulá.'
+    case 'SAFETY':
+      return 'Gemini bloqueó la respuesta por contenido. Reformulá el pedido.'
+    case 'RECITATION':
+      return 'Gemini bloqueó la respuesta por recitación de contenido protegido. Reformulá el pedido.'
+    default:
+      return `No pude generar una respuesta (motivo: ${reason ?? 'desconocido'}). Probá reformular el pedido.`
+  }
 }
 
 function textFromParts(parts: GeminiPart[]): string {
@@ -312,16 +342,28 @@ Deno.serve(async (req) => {
 
   try {
     for (let turn = 0; turn < MAX_TURNS; turn++) {
-      const content = await callGemini(apiKey, contents)
-      const call = firstFunctionCall(content.parts)
+      const candidate = await callGemini(apiKey, contents)
+      const parts = candidate.content?.parts
+
+      // Fix defensivo: un candidate puede venir sin parts (MAX_TOKENS, SAFETY,
+      // etc.). No explotamos: logueamos el candidate completo con su
+      // finishReason y devolvemos 200 con un mensaje claro para el usuario.
+      if (!parts || parts.length === 0) {
+        console.error(
+          `[ai-assistant] candidate sin parts (finishReason=${candidate.finishReason ?? 'null'}): ${JSON.stringify(candidate)}`,
+        )
+        return jsonResponse({ respuesta_texto: messageForFinishReason(candidate.finishReason) })
+      }
+
+      const call = firstFunctionCall(parts)
 
       if (!call) {
-        return jsonResponse({ respuesta_texto: textFromParts(content.parts) || 'Listo.' })
+        return jsonResponse({ respuesta_texto: textFromParts(parts) || 'Listo.' })
       }
 
       if (call.name === 'listItems') {
         const result = await execListItems(supabase, user.id, call.args)
-        contents.push(content)
+        contents.push(candidate.content!)
         contents.push({
           role: 'user',
           parts: [{ functionResponse: { name: 'listItems', response: result as Record<string, unknown> } }],
@@ -331,16 +373,17 @@ Deno.serve(async (req) => {
 
       const accion = mapProposedAction(call.name, call.args)
       if (accion) {
-        const texto = textFromParts(content.parts) || fallbackText(accion)
+        const texto = textFromParts(parts) || fallbackText(accion)
         return jsonResponse({ respuesta_texto: texto, accion_propuesta: accion })
       }
 
       // Función desconocida: cortamos para no colgar el loop.
-      return jsonResponse({ respuesta_texto: textFromParts(content.parts) || 'No pude completar eso.' })
+      return jsonResponse({ respuesta_texto: textFromParts(parts) || 'No pude completar eso.' })
     }
 
     return jsonResponse({ respuesta_texto: 'No pude terminar de procesar el pedido. Probá reformularlo.' })
   } catch (err) {
+    console.error('[ai-assistant] fallo en el loop:', err instanceof Error ? err.stack ?? err.message : err)
     return jsonResponse({ error: err instanceof Error ? err.message : 'Error del asistente.' }, 502)
   }
 })

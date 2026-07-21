@@ -303,8 +303,46 @@ recordatorios/notificaciones todavía.
   y aparezca solo tras tu confirmación.
 - `npm run build` sin errores.
 
+### Bug: candidate de Gemini sin `parts` (causa raíz confirmada)
+
+- **Síntoma:** al mandar un mensaje en `/assistant`, la función devolvía
+  `502` y el frontend mostraba `Cannot read properties of undefined
+  (reading 'find')`.
+- **Causa raíz:** `firstFunctionCall(content.parts)` asumía que un candidate
+  de Gemini siempre trae `parts`. Con `gemini-2.5-flash` (modelo "thinking")
+  y function-calling, el modelo gastaba el budget de salida razonando y
+  devolvía un candidate **sin `parts`** y `finishReason = MAX_TOKENS`;
+  `parts.find(...)` sobre `undefined` lanzaba `TypeError`, que el catch
+  del handler convertía en `502`. (Se confirmó exponiendo el error real en
+  el frontend en el paso previo de instrumentación.)
+- **Fix aplicado:**
+  1. `callGemini` ahora devuelve el candidate completo (`content` +
+     `finishReason`), y el loop **guarda el caso sin `parts`**: loguea el
+     candidate entero con su `finishReason` (`console.error`) y responde
+     **200** con un mensaje claro (`messageForFinishReason`): MAX_TOKENS →
+     "la respuesta se cortó por límite de tokens…", SAFETY → "Gemini
+     bloqueó la respuesta por contenido…", otro → mensaje genérico con el
+     `finishReason`. Ya no explota ni devuelve 502 por esto.
+  2. Se agregó `generationConfig` al request: `maxOutputTokens: 2048` y
+     `thinkingConfig: { thinkingBudget: 0 }` para **desactivar el thinking**
+     de 2.5-flash — así el budget de salida queda para la respuesta real,
+     que es la causa de fondo del MAX_TOKENS. (Un asistente de
+     function-calling con respuestas cortas no necesita razonamiento
+     interno extendido.)
+- Redeploy `--use-api` (versión 4, `ACTIVE`); build sin errores.
+
 ## Changelog
 
+- 2026-07-21 — Fix: candidate de Gemini sin `parts` (root cause del 502 en
+  `/assistant`). Guarda defensiva en el loop de `ai-assistant` (responde
+  200 con mensaje según `finishReason` en vez de romper con `TypeError`) +
+  `generationConfig` con `thinkingBudget: 0` y `maxOutputTokens: 2048` para
+  que el thinking de 2.5-flash no consuma todo el budget (MAX_TOKENS).
+  Se dejó `console.error` del candidate completo para diagnóstico futuro.
+- 2026-07-21 — Instrumentación temporal para ver el error real de Gemini:
+  el frontend lee `error.context` (body del 502) en vez del mensaje
+  genérico de `supabase-js`, y `ai-assistant` loguea status + body crudo de
+  Gemini. Permitió confirmar el `TypeError` de `parts`.
 - 2026-07-21 — Fix: modelo de Gemini actualizado de `gemini-2.0-flash` a
   `gemini-2.5-flash` en la Edge Function `ai-assistant`, porque
   `gemini-2.0-flash` se retiró el 1 de junio de 2026. Redeploy `--use-api`

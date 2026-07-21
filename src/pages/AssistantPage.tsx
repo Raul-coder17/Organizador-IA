@@ -82,7 +82,26 @@ export function AssistantPage() {
     setSending(false)
 
     if (error || !data) {
-      setError(error?.message ?? 'No se pudo contactar al asistente.')
+      // Instrumentación: supabase-js descarta el body en error.message y solo
+      // deja "non-2xx status code". Leemos error.context (la Response cruda)
+      // para exponer el { error } real que devolvió la función.
+      let real = error?.message ?? 'No se pudo contactar al asistente.'
+      const ctx = (error as { context?: Response } | undefined)?.context
+      if (ctx && typeof ctx.clone === 'function') {
+        try {
+          const body = await ctx.clone().json()
+          if (body?.error) real = body.error
+        } catch {
+          try {
+            const t = await ctx.clone().text()
+            if (t) real = t
+          } catch {
+            /* sin body legible */
+          }
+        }
+      }
+      console.error('[ai-assistant] error real:', real, error)
+      setError(real)
       return
     }
 
