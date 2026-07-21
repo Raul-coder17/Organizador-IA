@@ -242,7 +242,7 @@ recordatorios/notificaciones todavía.
   `AI_KEY_ENCRYPTION_SECRET` (el mismo secret que usó `manage-ai-key`
   para cifrar). La key descifrada vive solo en memoria durante el request
   — nunca se persiste ni se devuelve al cliente.
-- **Function-calling contra Gemini** (`gemini-2.0-flash`, configurable en
+- **Function-calling contra Gemini** (`gemini-2.5-flash`, configurable en
   la constante `GEMINI_MODEL`): declara 4 tools:
   - `listItems(tema?, tipo?, prioridad?)` — **solo lectura, se ejecuta
     server-side** con el cliente Supabase del usuario (RLS aplica). Le da
@@ -305,6 +305,10 @@ recordatorios/notificaciones todavía.
 
 ## Changelog
 
+- 2026-07-21 — Fix: modelo de Gemini actualizado de `gemini-2.0-flash` a
+  `gemini-2.5-flash` en la Edge Function `ai-assistant`, porque
+  `gemini-2.0-flash` se retiró el 1 de junio de 2026. Redeploy `--use-api`
+  (versión 2, `ACTIVE`); sin cambios de build.
 - 2026-07-21 — Asistente de IA con function-calling (solo texto): Edge
   Function `ai-assistant` (guard de `ai_enabled`, descifra la key, Gemini
   con tools; `listItems` server-side, `propose*` devueltas para
