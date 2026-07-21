@@ -132,6 +132,43 @@ interface GeminiCandidate {
   finishReason?: string
 }
 
+// Error con mensaje ya traducido al español, apto para mostrar al usuario.
+class GeminiError extends Error {
+  constructor(public userMessage: string) {
+    super(userMessage)
+    this.name = 'GeminiError'
+  }
+}
+
+// Clasifica un no-2xx de Gemini a un mensaje claro en español. El body crudo
+// se loguea aparte (console.error) para diagnóstico; nunca se muestra al user.
+function translateGeminiError(status: number, rawBody: string): string {
+  let apiStatus = ''
+  let reason = ''
+  try {
+    const parsed = JSON.parse(rawBody)
+    apiStatus = parsed?.error?.status ?? ''
+    const details = Array.isArray(parsed?.error?.details) ? parsed.error.details : []
+    reason = details.find((d: { reason?: string }) => d?.reason)?.reason ?? ''
+  } catch {
+    // body no-JSON: seguimos solo con el status HTTP.
+  }
+
+  if (status === 429 || apiStatus === 'RESOURCE_EXHAUSTED') {
+    return 'Se alcanzó el límite de uso de la IA por ahora. Intentá de nuevo en unos minutos, o revisá tu plan de Gemini si esto se repite seguido.'
+  }
+  if (status === 400 && reason === 'API_KEY_INVALID') {
+    return 'Tu API key de Gemini no es válida. Revisá la key en Configuración.'
+  }
+  if (status === 403 || apiStatus === 'PERMISSION_DENIED') {
+    return 'Tu cuenta de Gemini no tiene acceso a este modelo. Revisá tu plan en Google AI Studio.'
+  }
+  if (status === 500 || status === 503) {
+    return 'El servicio de IA está teniendo problemas ahora mismo. Intentá de nuevo en un momento.'
+  }
+  return `Hubo un problema con la IA (código ${status}). Intentá de nuevo; si se repite, avisá.`
+}
+
 async function callGemini(apiKey: string, contents: GeminiContent[]): Promise<GeminiCandidate> {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
@@ -157,7 +194,7 @@ async function callGemini(apiKey: string, contents: GeminiContent[]): Promise<Ge
   if (!res.ok) {
     const rawBody = await res.text().catch(() => '<sin body>')
     console.error(`[ai-assistant] Gemini no-ok: status=${res.status} body=${rawBody}`)
-    throw new Error(`Gemini respondió ${res.status}: ${rawBody}`)
+    throw new GeminiError(translateGeminiError(res.status, rawBody))
   }
 
   const data = await res.json()
@@ -384,6 +421,10 @@ Deno.serve(async (req) => {
     return jsonResponse({ respuesta_texto: 'No pude terminar de procesar el pedido. Probá reformularlo.' })
   } catch (err) {
     console.error('[ai-assistant] fallo en el loop:', err instanceof Error ? err.stack ?? err.message : err)
-    return jsonResponse({ error: err instanceof Error ? err.message : 'Error del asistente.' }, 502)
+    const mensaje =
+      err instanceof GeminiError
+        ? err.userMessage
+        : 'Ocurrió un error inesperado con el asistente. Intentá de nuevo en un momento.'
+    return jsonResponse({ error: mensaje }, 502)
   }
 })

@@ -331,8 +331,46 @@ recordatorios/notificaciones todavía.
      interno extendido.)
 - Redeploy `--use-api` (versión 4, `ACTIVE`); build sin errores.
 
+### Errores de Gemini traducidos al español
+
+- **Problema:** ante un no-2xx de Gemini (ej. 429 de cuota), el frontend
+  mostraba el JSON crudo de la API de Google, en inglés e ilegible para el
+  usuario.
+- **Fix:** en `ai-assistant`, `callGemini` ya no propaga el body crudo. Una
+  función `translateGeminiError(status, body)` clasifica el error y lanza un
+  `GeminiError` con mensaje en español; el catch del handler devuelve ese
+  mensaje (y para errores inesperados no-Gemini, un genérico en español —
+  nunca JSON crudo). El body real se sigue logueando con `console.error`
+  para diagnóstico. Mapeo:
+  - `429` / `RESOURCE_EXHAUSTED` → "Se alcanzó el límite de uso de la IA por
+    ahora. Intentá de nuevo en unos minutos, o revisá tu plan de Gemini…".
+  - `400` con `reason = API_KEY_INVALID` → "Tu API key de Gemini no es
+    válida. Revisá la key en Configuración." (un `400` genérico que **no**
+    sea de key cae al mensaje genérico, no culpa a la key).
+  - `403` / `PERMISSION_DENIED` → "Tu cuenta de Gemini no tiene acceso a
+    este modelo. Revisá tu plan en Google AI Studio."
+  - `500`/`503` → "El servicio de IA está teniendo problemas ahora mismo.
+    Intentá de nuevo en un momento."
+  - Otro no-2xx → "Hubo un problema con la IA (código N). Intentá de
+    nuevo…" (con el status, sin JSON).
+- El frontend toma directo el `{ error }` ya traducido de la función (vía
+  `error.context`, porque `supabase-js` esconde el body en `error.message`);
+  no vuelve a parsear JSON de Gemini.
+- **Probado en vivo:** función `ACTIVE` (versión 5), guard de auth intacto
+  (401 sin sesión) → el flujo exitoso no se rompió. La lógica de
+  `translateGeminiError` se verificó con un test unitario sobre 8 bodies de
+  error reales (429, 400 key, 400 genérico, 403, 500, 503, 404, body
+  no-JSON) — todos mapean al mensaje esperado. No se pudo forzar un 429 real
+  (la cuota se reinició), pero el mapeo quedó verificado por código.
+
 ## Changelog
 
+- 2026-07-21 — Errores de Gemini traducidos al español en `ai-assistant`
+  (`translateGeminiError` + `GeminiError`): 429/cuota, 400/key inválida,
+  403/sin acceso, 500-503/servicio caído, y genérico con status para el
+  resto; nunca se muestra el JSON crudo al usuario, que sí se sigue
+  logueando. Frontend muestra el mensaje ya traducido. Verificado con test
+  unitario del clasificador (8 casos) + función `ACTIVE` v5.
 - 2026-07-21 — Fix: candidate de Gemini sin `parts` (root cause del 502 en
   `/assistant`). Guarda defensiva en el loop de `ai-assistant` (responde
   200 con mensaje según `finishReason` en vez de romper con `TypeError`) +
