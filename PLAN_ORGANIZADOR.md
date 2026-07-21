@@ -211,20 +211,24 @@ y el function-calling contra items vienen en el próximo ítem.
   `getUser()`. Confirma las dos capas (gateway + código) sin tocar
   contraseñas ni crear usuarios.
 - **Tabla real:** `user_ai_settings` existe en `public`, `rowsecurity =
-  true`, 4 policies. Actualmente **0 filas** — nadie guardó una key
-  todavía, así que no hay nada que inspeccionar aún.
-- **Pendiente de tu lado — la prueba que realmente importa:** no puedo
-  confirmar que una key real termina cifrada en la tabla sin que alguien
-  la guarde primero desde la UI, y no puedo hacerlo yo mismo (implicaría
-  loguearme con una cuenta, algo que tengo prohibido). Cuando pegues tu
-  key de Gemini real en `/settings` y la guardes, decime y corro
-  `select gemini_api_key_encrypted from user_ai_settings` por SQL para
-  mostrarte que lo guardado es `base64.base64` ilegible (no tu key en
-  texto plano) — sin necesidad de tocar tu contraseña en ningún momento.
+  true`, 4 policies.
+- **Cifrado validado en vivo con key real ✅ (2026-07-21):** Raúl guardó
+  su key de Gemini real desde `/settings`. `select user_id,
+  gemini_api_key_encrypted, ai_enabled, updated_at from user_ai_settings;`
+  devuelve una sola fila: `ai_enabled = true` y
+  `gemini_api_key_encrypted` = un blob `base64(iv).base64(ciphertext)`
+  (16 caracteres de IV + separador `.` + ciphertext con padding `==`),
+  formato exactamente igual al que arma la función — ningún fragmento
+  legible de la key original en ningún campo. Verificado sin loguearme
+  con ninguna cuenta, solo leyendo la tabla vía SQL admin.
 - `npm run build` sin errores (`tsc -b && vite build`).
 
 ## Changelog
 
+- 2026-07-21 — Verificado en vivo: la key real de Gemini que Raúl guardó
+  desde `/settings` quedó cifrada en `user_ai_settings`
+  (`gemini_api_key_encrypted` es un blob `base64(iv).base64(ciphertext)`
+  ilegible, no texto plano) y `ai_enabled = true`.
 - 2026-07-21 — Settings de IA: tabla `user_ai_settings` con RLS, Edge
   Function `manage-ai-key` (valida contra Gemini, cifra con AES-256-GCM,
   nunca devuelve la key), pantalla `/settings` con `react-router-dom`.
