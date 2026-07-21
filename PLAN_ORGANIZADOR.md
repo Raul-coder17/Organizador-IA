@@ -415,7 +415,61 @@ recordatorios/notificaciones todavía.
   por unidad y por esquema, pero disparar un 429 real necesita mandar ~20+
   mensajes logueado con tu key.
 
+## Rediseño visual — sistema de fichas de catálogo
+
+Reemplaza el look genérico (tarjetas blancas + pastillas) por un sistema
+editorial/de catálogo en **toda** la app, a partir del mockup aprobado
+([`diseño/mockup-organizador.html`](diseño/mockup-organizador.html)).
+
+- **Tokens (Tailwind v4 `@theme` en `src/index.css`):** paper/card/ink/
+  ink-soft/line/moss/moss-ink/rust/gold/slate como `--color-*` → generan
+  utilidades (`bg-paper`, `text-ink`, `border-line`, `bg-moss`…). En v4 no
+  hay `tailwind.config.js`; la personalización va en CSS. Fuentes por
+  `<link>` de Google Fonts en `index.html`: **Fraunces** (títulos/brand),
+  **IBM Plex Sans** (cuerpo), **IBM Plex Mono** (labels/nav/botones), como
+  `--font-fraunces/-sans/-mono`.
+- **Componentes** (clases en `index.css` + utilidades): nav con brand
+  Fraunces y links mono uppercase tracked (activo con `border-bottom` moss);
+  ítems con **borde izquierdo 4px por prioridad** (rust/gold/slate/line),
+  tipo como label mono y prioridad como texto mono de color (sin pastillas);
+  encabezado de tema en Fraunces + contador mono + hairline que ocupa el
+  resto del ancho (`::after flex:1`); botón "Nuevo item" sólido moss,
+  radius 2px.
+- **Items tipo "tabla":** `ItemList` interpreta el jsonb (`parseTabla`:
+  soporta `{columnas|headers, filas|rows}` con filas de arrays u objetos) y
+  renderiza un `<table>` real — `thead` fondo paper mono uppercase, zebra
+  striping sutil, dentro de un wrapper `overflow-x:auto`. Si el jsonb no es
+  tabular (ej. `{texto}`), cae al render de texto.
+- **Responsivo (toda la app):** nav y toolbar con `flex-wrap`; ítems pasan
+  de fila a columna en móvil (`@media max-width:480px`, acciones al final);
+  tablas con scroll horizontal propio.
+- **Verificado en el navegador, dos tamaños:**
+  - *Desktop:* `AuthPage` en la app real (fuentes cargadas, moss, controles
+    `.ctl`/`.btn-moss`); e Items/nav/tabla vía un harness servido con el CSS
+    **compilado** del build — nav mono con subrayado activo, hairlines de
+    tema, bordes de prioridad gold/rust, y la tabla real con header paper y
+    zebra.
+  - *~375px:* `AuthPage` sin desborde; en el harness el nav envuelve
+    (brand → links → email/logout), los ítems se apilan en columna con las
+    acciones al final, la tabla queda contenida y `scrollWidth == clientWidth`
+    (sin scroll horizontal de página).
+  - *Nota de método:* no puedo autenticarme (login prohibido para mí), así
+    que las pantallas logueadas (Items/Asistente/Settings) se verificaron con
+    el harness sobre el CSS real compilado, no con datos en vivo. Falta la
+    confirmación visual con datos reales de tu sesión.
+  - *No se adaptó mal nada* en las pruebas; único matiz: en la tabla a 375px
+    las celdas envuelven texto (no llega a hacer scroll horizontal con pocas
+    columnas) — el wrapper `overflow-x:auto` queda listo para tablas con
+    muchas columnas o tokens largos.
+
 ## Changelog
+
+- 2026-07-21 — Rediseño visual completo (sistema de fichas de catálogo) en
+  toda la app: tokens de color + Fraunces/IBM Plex (Tailwind v4 `@theme`),
+  nav y labels en mono, ítems con borde de prioridad, encabezados de tema con
+  hairline, botones moss, y render de `<table>` real para items tipo tabla
+  (con `overflow-x`). Responsivo verificado en desktop y ~375px (AuthPage en
+  la app real + harness con el CSS compilado para las pantallas logueadas).
 
 - 2026-07-21 — Rate limits adaptativos de Gemini: se aprende la cuota diaria
   real del body del 429 (`quotaValue`) en `user_ai_settings.daily_quota_learned`,

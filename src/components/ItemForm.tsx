@@ -89,17 +89,17 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-slate-200 p-4 space-y-4">
+    <form onSubmit={handleSubmit} className="bg-card border border-line rounded-[2px] p-5 space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="tipo">
+          <label className="label" htmlFor="tipo">
             Tipo
           </label>
           <select
             id="tipo"
             value={tipo}
             onChange={(e) => setTipo(e.target.value as TipoItem)}
-            className="w-full rounded border border-slate-300 px-3 py-2 text-sm"
+            className="ctl ctl--mono w-full"
           >
             {TIPOS.map((t) => (
               <option key={t} value={t}>
@@ -110,14 +110,14 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="prioridad">
+          <label className="label" htmlFor="prioridad">
             Prioridad
           </label>
           <select
             id="prioridad"
             value={prioridad}
             onChange={(e) => setPrioridad(e.target.value as Prioridad | '')}
-            className="w-full rounded border border-slate-300 px-3 py-2 text-sm"
+            className="ctl ctl--mono w-full"
           >
             <option value="">Sin prioridad</option>
             {PRIORIDADES.map((p) => (
@@ -130,14 +130,14 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="tema">
+        <label className="label" htmlFor="tema">
           Tema
         </label>
         <select
           id="tema"
           value={temaId}
           onChange={(e) => setTemaId(e.target.value)}
-          className="w-full rounded border border-slate-300 px-3 py-2 text-sm"
+          className="ctl ctl--mono w-full"
         >
           <option value="">Sin tema</option>
           {temas.map((tema) => (
@@ -154,13 +154,13 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
             value={nuevoTemaNombre}
             onChange={(e) => setNuevoTemaNombre(e.target.value)}
             placeholder="Nombre del tema nuevo"
-            className="mt-2 w-full rounded border border-slate-300 px-3 py-2 text-sm"
+            className="ctl w-full mt-2"
           />
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="contenido">
+        <label className="label" htmlFor="contenido">
           Contenido
         </label>
         <textarea
@@ -168,21 +168,17 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
           value={contenidoTexto}
           onChange={(e) => setContenidoTexto(e.target.value)}
           rows={4}
-          className="w-full rounded border border-slate-300 px-3 py-2 text-sm"
+          className="ctl w-full"
         />
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-rust">{error}</p>}
 
-      <div className="flex items-center gap-3">
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded bg-slate-800 text-white px-4 py-2 text-sm font-medium hover:bg-slate-700 disabled:opacity-50"
-        >
+      <div className="flex items-center gap-4">
+        <button type="submit" disabled={loading} className="btn-moss">
           {loading ? 'Guardando…' : editingItem ? 'Guardar cambios' : 'Crear item'}
         </button>
-        <button type="button" onClick={onCancel} className="text-sm text-slate-500 hover:text-slate-700">
+        <button type="button" onClick={onCancel} className="btn-ghost">
           Cancelar
         </button>
       </div>

@@ -71,15 +71,15 @@ export function ItemsPage() {
         : items.filter((item) => item.tema_id === filterTemaId)
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-paper">
       <AppNav />
 
-      <main className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-[840px] mx-auto px-6 py-8 space-y-6">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <select
             value={filterTemaId}
             onChange={(e) => setFilterTemaId(e.target.value)}
-            className="rounded border border-slate-300 px-3 py-2 text-sm"
+            className="ctl ctl--mono"
           >
             <option value="todos">Todos los temas</option>
             <option value="sin-tema">Sin tema</option>
@@ -95,7 +95,7 @@ export function ItemsPage() {
               setEditingItem(null)
               setShowForm((v) => !v)
             }}
-            className="rounded bg-slate-800 text-white px-4 py-2 text-sm font-medium hover:bg-slate-700"
+            className="btn-moss"
           >
             {showForm ? 'Cancelar' : '+ Nuevo item'}
           </button>
@@ -115,12 +115,12 @@ export function ItemsPage() {
           />
         )}
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-rust">{error}</p>}
 
         {loading ? (
-          <p className="text-sm text-slate-500">Cargando…</p>
+          <p className="text-sm text-ink-soft">Cargando…</p>
         ) : filteredItems.length === 0 ? (
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-ink-soft">
             {items.length === 0
               ? 'Todavía no tenés items. Creá el primero con el botón de arriba.'
               : 'No hay items para este filtro.'}

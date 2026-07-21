@@ -57,12 +57,12 @@ export function AssistantPage() {
 
   if (aiEnabled === false) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-paper">
         <AppNav />
-        <main className="max-w-2xl mx-auto px-4 py-6">
-          <div className="bg-white rounded-lg border border-slate-200 p-6 text-center">
-            <p className="text-sm text-slate-600 mb-3">La IA no está activada.</p>
-            <Link to="/settings" className="text-sm text-slate-800 underline">
+        <main className="max-w-2xl mx-auto px-6 py-8">
+          <div className="bg-card border border-line rounded-[2px] p-6 text-center">
+            <p className="text-sm text-ink-soft mb-3">La IA no está activada.</p>
+            <Link to="/settings" className="link-underline text-sm">
               Activá la IA en Settings para usar el asistente
             </Link>
           </div>
@@ -183,13 +183,13 @@ export function AssistantPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-paper flex flex-col">
       <AppNav />
 
-      <main className="flex-1 w-full max-w-2xl mx-auto px-4 py-6 flex flex-col gap-4">
+      <main className="flex-1 w-full max-w-2xl mx-auto px-6 py-8 flex flex-col gap-4">
         <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 min-h-[300px]">
           {messages.length === 0 && (
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-ink-soft">
               Preguntale al asistente por tus items, o pedile que cree/edite/borre uno. Cualquier cambio
               te lo va a mostrar para confirmar antes de aplicarlo.
             </p>
@@ -198,8 +198,10 @@ export function AssistantPage() {
           {messages.map((m, i) => (
             <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
               <span
-                className={`inline-block rounded-lg px-3 py-2 text-sm whitespace-pre-wrap ${
-                  m.role === 'user' ? 'bg-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-700'
+                className={`inline-block rounded-[2px] px-3 py-2 text-sm whitespace-pre-wrap ${
+                  m.role === 'user'
+                    ? 'bg-moss text-moss-ink'
+                    : 'bg-card border border-line text-ink'
                 }`}
               >
                 {m.text}
@@ -207,7 +209,7 @@ export function AssistantPage() {
             </div>
           ))}
 
-          {sending && <p className="text-sm text-slate-400">Pensando…</p>}
+          {sending && <p className="text-sm text-ink-soft">Pensando…</p>}
 
           {pending && (
             <ProposedActionCard
@@ -220,10 +222,10 @@ export function AssistantPage() {
           )}
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-rust">{error}</p>}
 
         {cooldown > 0 && (
-          <p className="text-sm text-amber-600">
+          <p className="text-sm text-gold">
             Esperá {cooldown} segundo{cooldown === 1 ? '' : 's'} antes de enviar otro mensaje.
           </p>
         )}
@@ -235,19 +237,15 @@ export function AssistantPage() {
             onChange={(e) => setInput(e.target.value)}
             placeholder={cooldown > 0 ? `Esperá ${cooldown}s…` : 'Escribí un mensaje…'}
             disabled={sending || cooldown > 0}
-            className="flex-1 rounded border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:bg-slate-100"
+            className="ctl flex-1 disabled:opacity-60"
           />
-          <button
-            type="submit"
-            disabled={sending || cooldown > 0 || !input.trim()}
-            className="rounded bg-slate-800 text-white px-4 py-2 text-sm font-medium hover:bg-slate-700 disabled:opacity-50"
-          >
+          <button type="submit" disabled={sending || cooldown > 0 || !input.trim()} className="btn-moss">
             Enviar
           </button>
         </form>
 
         {usage?.daily_quota != null && (
-          <p className="text-xs text-slate-400 text-right">
+          <p className="text-xs text-slate text-right font-mono">
             {usage.used_today ?? 0} de {usage.daily_quota} mensajes de IA usados hoy
           </p>
         )}
@@ -272,22 +270,22 @@ function ProposedActionCard({
   const target = 'item_id' in accion ? items.find((it) => it.id === accion.item_id) : undefined
 
   return (
-    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-left">
+    <div className="bg-card border border-line border-l-4 border-l-moss rounded-[2px] p-4 text-left">
       {accion.tipo_accion === 'create' && (
         <>
-          <p className="text-sm font-medium text-slate-800 mb-2">Vas a crear este item:</p>
-          <ul className="text-sm text-slate-700 space-y-0.5">
+          <p className="text-sm font-medium text-ink mb-2">Vas a crear este item:</p>
+          <ul className="text-sm text-ink space-y-0.5">
             <li>
-              <span className="text-slate-500">Tipo:</span> {accion.tipo}
+              <span className="text-ink-soft">Tipo:</span> {accion.tipo}
             </li>
             <li>
-              <span className="text-slate-500">Tema:</span> {accion.tema ?? 'sin tema'}
+              <span className="text-ink-soft">Tema:</span> {accion.tema ?? 'sin tema'}
             </li>
             <li>
-              <span className="text-slate-500">Prioridad:</span> {accion.prioridad ?? 'sin prioridad'}
+              <span className="text-ink-soft">Prioridad:</span> {accion.prioridad ?? 'sin prioridad'}
             </li>
             <li className="whitespace-pre-wrap">
-              <span className="text-slate-500">Contenido:</span> {accion.contenido}
+              <span className="text-ink-soft">Contenido:</span> {accion.contenido}
             </li>
           </ul>
         </>
@@ -295,29 +293,29 @@ function ProposedActionCard({
 
       {accion.tipo_accion === 'update' && (
         <>
-          <p className="text-sm font-medium text-slate-800 mb-2">Vas a editar este item:</p>
+          <p className="text-sm font-medium text-ink mb-2">Vas a editar este item:</p>
           {target && (
-            <p className="text-sm text-slate-500 mb-2 whitespace-pre-wrap">Actual: {contenidoTexto(target)}</p>
+            <p className="text-sm text-ink-soft mb-2 whitespace-pre-wrap">Actual: {contenidoTexto(target)}</p>
           )}
-          <ul className="text-sm text-slate-700 space-y-0.5">
+          <ul className="text-sm text-ink space-y-0.5">
             {accion.cambios.tipo && (
               <li>
-                <span className="text-slate-500">Nuevo tipo:</span> {accion.cambios.tipo}
+                <span className="text-ink-soft">Nuevo tipo:</span> {accion.cambios.tipo}
               </li>
             )}
             {'tema' in accion.cambios && (
               <li>
-                <span className="text-slate-500">Nuevo tema:</span> {accion.cambios.tema ?? 'sin tema'}
+                <span className="text-ink-soft">Nuevo tema:</span> {accion.cambios.tema ?? 'sin tema'}
               </li>
             )}
             {accion.cambios.prioridad && (
               <li>
-                <span className="text-slate-500">Nueva prioridad:</span> {accion.cambios.prioridad}
+                <span className="text-ink-soft">Nueva prioridad:</span> {accion.cambios.prioridad}
               </li>
             )}
             {accion.cambios.contenido && (
               <li className="whitespace-pre-wrap">
-                <span className="text-slate-500">Nuevo contenido:</span> {accion.cambios.contenido}
+                <span className="text-ink-soft">Nuevo contenido:</span> {accion.cambios.contenido}
               </li>
             )}
           </ul>
@@ -326,26 +324,18 @@ function ProposedActionCard({
 
       {accion.tipo_accion === 'delete' && (
         <>
-          <p className="text-sm font-medium text-slate-800 mb-2">Vas a borrar este item:</p>
-          <p className="text-sm text-slate-700 whitespace-pre-wrap">
+          <p className="text-sm font-medium text-ink mb-2">Vas a borrar este item:</p>
+          <p className="text-sm text-ink whitespace-pre-wrap">
             {target ? contenidoTexto(target) : `Item ${accion.item_id}`}
           </p>
         </>
       )}
 
-      <div className="flex items-center gap-3 mt-4">
-        <button
-          onClick={onConfirm}
-          disabled={executing}
-          className="rounded bg-slate-800 text-white px-4 py-2 text-sm font-medium hover:bg-slate-700 disabled:opacity-50"
-        >
+      <div className="flex items-center gap-4 mt-4">
+        <button onClick={onConfirm} disabled={executing} className="btn-moss">
           {executing ? 'Aplicando…' : 'Confirmar'}
         </button>
-        <button
-          onClick={onCancel}
-          disabled={executing}
-          className="text-sm text-slate-500 hover:text-slate-700"
-        >
+        <button onClick={onCancel} disabled={executing} className="btn-ghost">
           Cancelar
         </button>
       </div>

@@ -33,16 +33,16 @@ export function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-sm bg-white rounded-lg shadow p-6">
-        <h1 className="text-xl font-semibold text-slate-800 mb-1">Organizador Personal IA</h1>
-        <p className="text-sm text-slate-500 mb-6">
+    <div className="min-h-screen bg-paper flex items-center justify-center px-4">
+      <div className="w-full max-w-sm bg-card border border-line rounded-[2px] p-6">
+        <h1 className="app-brand mb-1">Organizador Personal IA</h1>
+        <p className="text-sm text-ink-soft mb-6">
           {mode === 'login' ? 'Iniciá sesión para continuar.' : 'Creá una cuenta para empezar.'}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="email">
+            <label className="label" htmlFor="email">
               Email
             </label>
             <input
@@ -52,12 +52,12 @@ export function AuthPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              className="ctl w-full"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="password">
+            <label className="label" htmlFor="password">
               Contraseña
             </label>
             <input
@@ -68,18 +68,14 @@ export function AuthPage() {
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              className="ctl w-full"
             />
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          {info && <p className="text-sm text-green-600">{info}</p>}
+          {error && <p className="text-sm text-rust">{error}</p>}
+          {info && <p className="text-sm text-moss">{info}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded bg-slate-800 text-white py-2 text-sm font-medium hover:bg-slate-700 disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading} className="btn-moss w-full">
             {loading ? 'Procesando…' : mode === 'login' ? 'Iniciar sesión' : 'Crear cuenta'}
           </button>
         </form>
@@ -91,7 +87,7 @@ export function AuthPage() {
             setError(null)
             setInfo(null)
           }}
-          className="mt-4 text-sm text-slate-500 hover:text-slate-700 underline"
+          className="link-underline mt-4 text-sm"
         >
           {mode === 'login' ? '¿No tenés cuenta? Creá una' : '¿Ya tenés cuenta? Iniciá sesión'}
         </button>

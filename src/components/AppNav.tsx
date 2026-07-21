@@ -9,13 +9,13 @@ export function AppNav() {
   const location = useLocation()
 
   const linkClass = (path: string) =>
-    location.pathname === path ? 'font-medium text-slate-800' : 'text-slate-500 hover:text-slate-800'
+    `nav-link${location.pathname === path ? ' nav-link--active' : ''}`
 
   return (
-    <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-      <div className="flex items-center gap-6">
-        <h1 className="text-lg font-semibold text-slate-800">Organizador Personal IA</h1>
-        <nav className="flex items-center gap-4 text-sm">
+    <header className="app-nav">
+      <div className="app-nav__left">
+        <span className="app-brand">Organizador Personal IA</span>
+        <nav className="nav-links">
           <Link to="/" className={linkClass('/')}>
             Items
           </Link>
@@ -27,7 +27,7 @@ export function AppNav() {
             <Link
               to="/settings"
               title="Activá la IA en Settings para usar el asistente"
-              className="text-slate-300 hover:text-slate-500"
+              className="nav-link nav-link--disabled"
             >
               Asistente
             </Link>
@@ -37,12 +37,9 @@ export function AppNav() {
           </Link>
         </nav>
       </div>
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-slate-500">{user?.email}</span>
-        <button
-          onClick={() => supabase.auth.signOut()}
-          className="text-sm text-slate-500 hover:text-slate-700 underline"
-        >
+      <div className="app-nav__right">
+        <span className="app-nav__email">{user?.email}</span>
+        <button onClick={() => supabase.auth.signOut()} className="link-underline">
           Cerrar sesión
         </button>
       </div>

@@ -82,29 +82,29 @@ export function SettingsPage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-paper">
       <AppNav />
 
-      <main className="max-w-lg mx-auto px-4 py-6 space-y-6">
-        <h2 className="text-lg font-semibold text-slate-800">Configuración de IA</h2>
+      <main className="max-w-lg mx-auto px-6 py-8 space-y-6">
+        <h2 className="font-fraunces text-[19px] font-medium text-ink">Configuración de IA</h2>
 
         {loading ? (
-          <p className="text-sm text-slate-500">Cargando…</p>
+          <p className="text-sm text-ink-soft">Cargando…</p>
         ) : (
-          <div className="bg-white rounded-lg border border-slate-200 p-4 space-y-4">
-            <p className="text-sm text-slate-600">
+          <div className="bg-card border border-line rounded-[2px] p-5 space-y-4">
+            <p className="text-sm text-ink-soft">
               Estado:{' '}
               {aiEnabled ? (
-                <span className="font-medium text-green-700">Activa</span>
+                <span className="font-mono uppercase tracking-wide text-moss">Activa</span>
               ) : (
-                <span className="font-medium text-slate-500">Inactiva</span>
+                <span className="font-mono uppercase tracking-wide text-slate">Inactiva</span>
               )}
             </p>
 
             {!aiEnabled ? (
               <form onSubmit={handleSave} className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="apiKey">
+                  <label className="label" htmlFor="apiKey">
                     API key de Gemini
                   </label>
                   <input
@@ -113,33 +113,25 @@ export function SettingsPage() {
                     autoComplete="off"
                     value={apiKey}
                     onChange={(e) => setApiKey(e.target.value)}
-                    className="w-full rounded border border-slate-300 px-3 py-2 text-sm"
+                    className="ctl w-full"
                   />
                 </div>
-                <button
-                  type="submit"
-                  disabled={saving || !apiKey.trim()}
-                  className="rounded bg-slate-800 text-white px-4 py-2 text-sm font-medium hover:bg-slate-700 disabled:opacity-50"
-                >
+                <button type="submit" disabled={saving || !apiKey.trim()} className="btn-moss">
                   {saving ? 'Validando…' : 'Guardar y activar'}
                 </button>
               </form>
             ) : (
-              <button
-                onClick={handleRemove}
-                disabled={saving}
-                className="rounded border border-red-300 text-red-600 px-4 py-2 text-sm font-medium hover:bg-red-50 disabled:opacity-50"
-              >
+              <button onClick={handleRemove} disabled={saving} className="btn-outline">
                 {saving ? 'Procesando…' : 'Desactivar / quitar key'}
               </button>
             )}
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            {info && <p className="text-sm text-green-600">{info}</p>}
+            {error && <p className="text-sm text-rust">{error}</p>}
+            {info && <p className="text-sm text-moss">{info}</p>}
           </div>
         )}
 
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-slate">
           Tu API key se valida contra Gemini y se guarda cifrada en el servidor. Nunca se guarda en el
           navegador ni se vuelve a mostrar en pantalla.
         </p>
