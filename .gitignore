@@ -28,3 +28,7 @@ Thumbs.db
 
 # vite pwa
 dev-dist
+
+# supabase cli local cache
+supabase/.temp
+supabase/.branches
