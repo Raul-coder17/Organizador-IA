@@ -168,6 +168,11 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
           value={contenidoTexto}
           onChange={(e) => setContenidoTexto(e.target.value)}
           rows={4}
+          placeholder={
+            tipo === 'tabla'
+              ? 'Columna1 | Columna2\nDato1 | Dato2\nDato3 | Dato4'
+              : undefined
+          }
           className="ctl w-full"
         />
       </div>

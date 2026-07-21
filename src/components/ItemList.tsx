@@ -52,9 +52,42 @@ function parseTabla(contenido: Record<string, unknown>): { headers: string[] | n
   return null
 }
 
+// Parseo de una tabla escrita como texto con pipes (o markdown), que es como
+// se crean los items "tabla" desde el textarea o el asistente. Ej:
+//   Columna1 | Columna2
+//   Dato1    | Dato2
+// La primera fila con datos son los encabezados; se ignoran filas separadoras
+// de markdown (---|---).
+function parseTextTable(texto: string): { headers: string[] | null; rows: string[][] } | null {
+  const lines = texto
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0 && l.includes('|'))
+  if (lines.length < 2) return null
+
+  const isSeparator = (l: string) => /-/.test(l) && /^[\s|:-]+$/.test(l)
+  const split = (l: string) =>
+    l
+      .replace(/^\|/, '')
+      .replace(/\|$/, '')
+      .split('|')
+      .map((c) => c.trim())
+
+  const dataLines = lines.filter((l) => !isSeparator(l))
+  if (dataLines.length < 2) return null
+
+  const headers = split(dataLines[0])
+  const rows = dataLines.slice(1).map(split)
+  const cols = Math.max(headers.length, ...rows.map((r) => r.length))
+  const pad = (r: string[]) => Array.from({ length: cols }, (_, i) => r[i] ?? '')
+  return { headers: pad(headers), rows: rows.map(pad) }
+}
+
 function ItemContent({ item }: { item: Item }) {
   if (item.tipo === 'tabla') {
-    const tabla = parseTabla(item.contenido)
+    const tabla =
+      parseTabla(item.contenido) ??
+      (typeof item.contenido?.texto === 'string' ? parseTextTable(item.contenido.texto) : null)
     if (tabla) {
       return (
         <div className="item-table-wrap">
