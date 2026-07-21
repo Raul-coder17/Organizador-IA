@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
-import { supabase } from '../lib/supabase'
 import { listItems, deleteItem } from '../lib/items'
 import { listTemas } from '../lib/temas'
 import type { Item, Tema } from '../types/database'
 import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
+import { AppNav } from '../components/AppNav'
 
 export function ItemsPage() {
   const { user } = useAuth()
@@ -72,18 +72,7 @@ export function ItemsPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-slate-800">Organizador Personal IA</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-slate-500">{user.email}</span>
-          <button
-            onClick={() => supabase.auth.signOut()}
-            className="text-sm text-slate-500 hover:text-slate-700 underline"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-      </header>
+      <AppNav />
 
       <main className="max-w-3xl mx-auto px-4 py-6 space-y-6">
         <div className="flex items-center justify-between gap-4 flex-wrap">

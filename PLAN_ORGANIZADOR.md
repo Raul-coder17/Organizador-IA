@@ -130,8 +130,107 @@ todavía.
   el toggle a "Crear cuenta" cambia el formulario correctamente; sin
   errores de consola.
 
+## Settings de IA — API key de Gemini cifrada
+
+La IA es opcional: cada usuario carga su propia API key de Gemini en
+`/settings`. Este ítem es solo la configuración — el asistente/chat en sí
+y el function-calling contra items vienen en el próximo ítem.
+
+### Diseño de cifrado
+
+- La key **nunca** viaja ni se guarda en texto plano fuera del momento en
+  que el usuario la pega en el input y se envía por HTTPS a la Edge
+  Function. El navegador no la persiste (no `localStorage`, no estado
+  global fuera del form).
+- Migración: [`supabase/migrations/20260721052248_user_ai_settings.sql`](supabase/migrations/20260721052248_user_ai_settings.sql) —
+  tabla `user_ai_settings` (`user_id` pk/fk `auth.users`,
+  `gemini_api_key_encrypted` text nullable, `ai_enabled` boolean default
+  `false`, `updated_at` con el mismo trigger `set_updated_at()` del
+  schema inicial). RLS: 4 policies `user_id = auth.uid()` (select/insert/
+  update/delete), igual que `temas`/`items`.
+- Edge Function [`supabase/functions/manage-ai-key/index.ts`](supabase/functions/manage-ai-key/index.ts)
+  (Deno, desplegada en el proyecto real):
+  - Verifica el JWT: crea un cliente `supabase-js` con la anon key y el
+    header `Authorization` del request, y llama a `supabase.auth.getUser()`.
+    Si no hay usuario válido, `401`. El proyecto además tiene
+    `verify_jwt: true` a nivel de plataforma (capa extra antes de que el
+    request llegue al código).
+  - **Acción `save`**: valida la key pegándole a
+    `GET https://generativelanguage.googleapis.com/v1beta/models?key=...`
+    (si Gemini no responde `ok`, `422` sin guardar nada). Si es válida,
+    cifra con **AES-256-GCM** (Web Crypto API nativa de Deno): secret de
+    32 bytes random (`AI_KEY_ENCRYPTION_SECRET`, definido como secret de
+    la función — nunca en el repo ni en `.env`) importado directo como
+    `CryptoKey`, IV random de 12 bytes por operación, y guarda
+    `base64(iv).base64(ciphertext)` en `gemini_api_key_encrypted`. Hace
+    `upsert` con `ai_enabled = true`.
+  - **Acción `remove`**: `upsert` con `gemini_api_key_encrypted = null`,
+    `ai_enabled = false`.
+  - Ninguna respuesta de la función devuelve la key, ni en texto plano ni
+    cifrada — solo `{ ok, ai_enabled }` o `{ error }`.
+- La Edge Function usa el JWT del usuario (no service role) para escribir
+  en `user_ai_settings`, así que RLS aplica también ahí como capa extra:
+  aunque hubiera un bug en el código, la DB igual exige
+  `user_id = auth.uid()`.
+
+### Pantalla `/settings`
+
+- Ruta nueva con `react-router-dom` (agregado como dependencia; antes la
+  app no tenía router porque solo existía una pantalla protegida).
+  `App.tsx`: `AuthProvider` → `ProtectedRoute` → `BrowserRouter` con
+  `/` (`ItemsPage`) y `/settings` (`SettingsPage`).
+  `src/components/AppNav.tsx` — nav compartida (Items / Settings, email,
+  cerrar sesión) usada por ambas páginas.
+- `src/pages/SettingsPage.tsx` — lee `ai_enabled` directo de
+  `user_ai_settings` (select simple, respetando RLS). Si está inactiva:
+  input `type="password"` + botón "Guardar y activar" que llama
+  `supabase.functions.invoke('manage-ai-key', { body: { action: 'save', apiKey } })`.
+  Si está activa: botón "Desactivar / quitar key" (`action: 'remove'`).
+  Maneja loading (carga inicial y submit) y error (mensaje de Gemini si
+  la key es inválida, o error genérico de red/servidor).
+
+### Cómo lo desplegué (ya aplicado al proyecto real)
+
+1. `supabase db push` — aplicó la migración de `user_ai_settings`.
+2. Generé un secret random de 32 bytes (`openssl`/`crypto.randomBytes`
+   equivalente en Node) y lo seteé con
+   `supabase secrets set --env-file <temp>` (nunca por línea de comando,
+   para que no quede en el historial de shell) — el archivo temporal se
+   borró inmediatamente después. `supabase secrets list` solo expone un
+   hash SHA-256 de verificación, nunca el valor real.
+3. `supabase functions deploy manage-ai-key --use-api` — desplegué sin
+   Docker (no estaba corriendo el daemon local) usando el bundler
+   server-side de la API de Supabase. Confirmado `status: ACTIVE`.
+
+### Verificación
+
+- **Guard de auth, probado en vivo sin crear ninguna cuenta:** un POST
+  sin `Authorization` → `401`. Un POST con la **anon key** como bearer
+  (JWT válido para la plataforma pero sin usuario real) → `401
+  "Sesión inválida o expirada."` desde mi propio chequeo de
+  `getUser()`. Confirma las dos capas (gateway + código) sin tocar
+  contraseñas ni crear usuarios.
+- **Tabla real:** `user_ai_settings` existe en `public`, `rowsecurity =
+  true`, 4 policies. Actualmente **0 filas** — nadie guardó una key
+  todavía, así que no hay nada que inspeccionar aún.
+- **Pendiente de tu lado — la prueba que realmente importa:** no puedo
+  confirmar que una key real termina cifrada en la tabla sin que alguien
+  la guarde primero desde la UI, y no puedo hacerlo yo mismo (implicaría
+  loguearme con una cuenta, algo que tengo prohibido). Cuando pegues tu
+  key de Gemini real en `/settings` y la guardes, decime y corro
+  `select gemini_api_key_encrypted from user_ai_settings` por SQL para
+  mostrarte que lo guardado es `base64.base64` ilegible (no tu key en
+  texto plano) — sin necesidad de tocar tu contraseña en ningún momento.
+- `npm run build` sin errores (`tsc -b && vite build`).
+
 ## Changelog
 
+- 2026-07-21 — Settings de IA: tabla `user_ai_settings` con RLS, Edge
+  Function `manage-ai-key` (valida contra Gemini, cifra con AES-256-GCM,
+  nunca devuelve la key), pantalla `/settings` con `react-router-dom`.
+  Migración aplicada y función desplegada al proyecto real; secret
+  `AI_KEY_ENCRYPTION_SECRET` generado y seteado. Cifrado en vivo con una
+  key real: pendiente de que el usuario la cargue una vez.
 - 2026-07-21 — Auth (email/password) + CRUD manual de items y temas.
   Componentes: `AuthContext`, `AuthPage`, `ProtectedRoute`, `ItemForm`,
   `ItemList`, `ItemsPage`. RLS verificado estructuralmente en vivo;

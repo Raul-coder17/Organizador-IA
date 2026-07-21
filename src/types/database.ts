@@ -38,3 +38,10 @@ export interface Recordatorio {
 
 export type RecordatorioInsert = Omit<Recordatorio, 'id' | 'created_at' | 'estado'> &
   Partial<Pick<Recordatorio, 'id' | 'created_at' | 'estado'>>
+
+export interface UserAiSettings {
+  user_id: string
+  gemini_api_key_encrypted: string | null
+  ai_enabled: boolean
+  updated_at: string
+}
