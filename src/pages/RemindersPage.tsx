@@ -110,6 +110,11 @@ export function RemindersPage() {
                         {ESTADO_LABEL[estado]}
                       </span>
                       <span className="rem__when">{formatFechaHora(rec.fecha_hora)}</span>
+                      {rec.estado === 'enviado' && (
+                        <span className="rem__notificado" title="Ya te enviamos la notificación">
+                          ● Notificado
+                        </span>
+                      )}
                       {rec.item && (
                         <span className="rem__tipo">
                           {TIPO_LABEL[rec.item.tipo] ?? rec.item.tipo}

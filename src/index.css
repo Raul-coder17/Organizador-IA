@@ -565,6 +565,13 @@ body {
   text-transform: uppercase;
   color: var(--color-slate);
 }
+.rem__notificado {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-moss);
+}
 .rem__contenido {
   margin: 0;
   font-size: 14.5px;

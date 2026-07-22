@@ -52,6 +52,16 @@ export interface RecordatorioConItem extends Recordatorio {
   item: Pick<Item, 'id' | 'tipo' | 'contenido' | 'tema_id' | 'prioridad'> | null
 }
 
+// Fila de push_subscriptions (una por navegador/dispositivo suscripto).
+export interface PushSubscriptionRow {
+  id: string
+  user_id: string
+  endpoint: string
+  p256dh: string
+  auth: string
+  created_at: string
+}
+
 export interface UserAiSettings {
   user_id: string
   gemini_api_key_encrypted: string | null

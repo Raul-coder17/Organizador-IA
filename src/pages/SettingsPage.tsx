@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { supabase } from '../lib/supabase'
 import { AppNav } from '../components/AppNav'
+import { PushSettings } from '../components/PushSettings'
 
 export function SettingsPage() {
   const { user } = useAuth()
@@ -135,6 +136,10 @@ export function SettingsPage() {
           Tu API key se valida contra Gemini y se guarda cifrada en el servidor. Nunca se guarda en el
           navegador ni se vuelve a mostrar en pantalla.
         </p>
+
+        <hr className="border-line" />
+
+        <PushSettings />
       </main>
     </div>
   )

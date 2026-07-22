@@ -9,9 +9,17 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
+      // injectManifest: usamos un service worker propio (src/sw.ts) para poder
+      // manejar los eventos 'push' y 'notificationclick', además del precache.
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       registerType: 'autoUpdate',
       manifest: false,
       includeAssets: ['icon.svg'],
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,svg}'],
+      },
     }),
   ],
 })

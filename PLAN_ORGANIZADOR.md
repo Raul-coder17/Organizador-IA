@@ -583,8 +583,134 @@ el cron de Supabase quedan para el próximo ítem** — esto es solo UI + datos.
   y ver que pasa a `hecho` (tachado) y baja el badge; editar un item para
   cambiar/quitar su fecha y confirmar que el recordatorio se actualiza/elimina.
 
+## Notificaciones push reales para recordatorios
+
+Conecta el ciclo completo: suscripción del navegador → guardar en Supabase →
+un cron (cada 5 min) que revisa recordatorios vencidos y dispara la
+notificación Web Push real. El estado `'enviado'` de `recordatorios` (que ya
+existía en el schema) por fin se usa.
+
+### Claves VAPID
+
+- Par generado localmente con `web-push generate-vapid-keys` (no son
+  credenciales de ninguna cuenta; se generan solas). **Pública** →
+  `VITE_VAPID_PUBLIC_KEY` en `.env` (no es secreta; también en `.env.example`
+  como placeholder). **Privada** → secret de Supabase `VAPID_PRIVATE_KEY`
+  (nunca en el repo). Además se setearon `VAPID_PUBLIC_KEY` y
+  `VAPID_SUBJECT` (`mailto:`) como secrets para que la función arme el
+  `setVapidDetails`, y `CRON_SECRET` para autenticar el trigger del cron.
+
+### Migración — `push_subscriptions`
+
+[`20260721181500_push_subscriptions.sql`](supabase/migrations/20260721181500_push_subscriptions.sql):
+tabla `push_subscriptions` (`id`, `user_id` fk `auth.users` on delete cascade,
+`endpoint` text **unique**, `p256dh`, `auth`, `created_at`), índice por
+`user_id`, RLS con 4 policies `user_id = auth.uid()`. El `endpoint` unique
+permite el upsert por endpoint desde el frontend. El service_role de la Edge
+Function bypassa RLS para leer/borrar suscripciones de cualquier usuario.
+
+### Service worker propio (injectManifest)
+
+- `vite-plugin-pwa` pasó de `generateSW` a **`injectManifest`**
+  (`strategies: 'injectManifest'`, `srcDir: 'src'`, `filename: 'sw.ts'`) para
+  poder inyectar handlers propios además del precache de Workbox.
+- [`src/sw.ts`](src/sw.ts): `precacheAndRoute(self.__WB_MANIFEST)` +
+  `activate` (clients.claim) + **`push`** (parsea `{title, body, url}` y hace
+  `showNotification`) + **`notificationclick`** (enfoca una pestaña abierta
+  navegándola a `/reminders`, o abre una nueva). El registro del SW lo sigue
+  auto-inyectando el plugin (`registerSW.js`).
+- Tipado: `src/sw.ts` se excluye de `tsconfig.app.json` (lib DOM) y se compila
+  con `tsconfig.worker.json` (lib WebWorker), referenciado desde
+  `tsconfig.json`, así `tsc -b` valida el worker sin chocar con el DOM.
+
+### Frontend — Settings › Notificaciones
+
+- [`src/lib/push.ts`](src/lib/push.ts): `isPushSupported`, `getPushStatus`
+  (combina `Notification.permission` con si hay suscripción viva),
+  `subscribeToPush` (pide permiso, `pushManager.subscribe` con la VAPID public
+  key, upsert en `push_subscriptions` por endpoint), `unsubscribeFromPush`, y
+  helpers de conversión base64url ↔ Uint8Array para la key y las claves de la
+  suscripción.
+- [`src/components/PushSettings.tsx`](src/components/PushSettings.tsx): sección
+  en `/settings` con botón "Activar notificaciones push" y estados
+  **activadas / inactivas / rechazadas / no soportado** (mensajes acordes),
+  botón "Desactivar en este dispositivo". Estilada con el sistema (cards,
+  botones moss/outline, labels mono).
+
+### Edge Function `send-reminder-notifications` (cron, no la invoca el usuario)
+
+[`supabase/functions/send-reminder-notifications/index.ts`](supabase/functions/send-reminder-notifications/index.ts):
+
+- **Auth del trigger:** header `x-cron-secret` que debe igualar el secret
+  `CRON_SECRET`; sin él → `401`. Se desplegó con **`--no-verify-jwt`** (no hay
+  usuario detrás; el guard es el secret).
+- **Lógica:** con `service_role` (bypassa RLS) busca recordatorios
+  `estado='pendiente'` y `fecha_hora <= now()`, con el item embebido
+  (`user_id`, `tipo`, `contenido`). Por cada uno junta las
+  `push_subscriptions` del dueño (cacheadas por usuario), manda la notificación
+  con **`npm:web-push`** (payload `{title, body, url}`, body = resumen del
+  contenido). Si **algún** envío tuvo éxito → `estado='enviado'`. Si una
+  suscripción devuelve **410/404** (expiró) → la borra. Si el usuario no tiene
+  suscripciones, deja el recordatorio en `'pendiente'` (se notificará cuando se
+  suscriba). Devuelve un resumen `{procesados, enviados, sin_suscripcion,
+  suscripciones_expiradas_borradas}`.
+
+### Cron con pg_cron + pg_net
+
+- Extensiones `pg_cron` (schema `pg_catalog`) y `pg_net` (schema `public`)
+  habilitadas en el proyecto real.
+- El `CRON_SECRET` se guardó en **Supabase Vault**
+  (`vault.create_secret(..., 'cron_secret_reminders')`) para que el comando del
+  cron **no** contenga el literal.
+- `cron.schedule('send-reminder-notifications-5min', '*/5 * * * *', …)` corre
+  `net.http_post` hacia `…/functions/v1/send-reminder-notifications` con el
+  header `x-cron-secret` leído de Vault. Job **activo**, jobid 1.
+
+### Verificación
+
+- **`npm run build` sin errores** (`tsc -b` app + worker + `vite build`; el SW
+  compila en modo injectManifest, `dist/sw.js` incluye los handlers `push` y
+  `notificationclick`).
+- **Backend, en vivo (sin crear cuentas ni loguearme):**
+  - Guard del cron: POST sin `x-cron-secret` → **401**; con el secret correcto
+    → **200** `{"ok":true,"procesados":0,…}` (VAPID + query service_role OK).
+  - **Camino DB→función completo:** un `net.http_post` manual (leyendo el
+    secret de Vault, idéntico a lo que corre el cron) devolvió
+    `net._http_response` con `status_code 200` y el mismo JSON → pg_net, Vault
+    y el guard funcionan de punta a punta. El cron usa exactamente ese comando.
+  - Migración aplicada; extensiones y job verificados por SQL.
+- **UI, con el harness de CSS compilado (no puedo autenticarme):** desktop y
+  ~375px — sección "Notificaciones" (inactiva/activada) con botones moss/
+  outline, e indicador **"● Notificado"** (moss) en la ficha de un recordatorio
+  `enviado`, distinguible de un vencido sin notificar; sin scroll horizontal a
+  375px.
+
+### Lo que tenés que hacer vos (no lo puedo hacer yo)
+
+1. **Dar permiso de notificaciones del navegador:** entrá a `/settings`, sección
+   Notificaciones, tocá **"Activar notificaciones push"** y aceptá el prompt del
+   navegador. Eso crea la fila en `push_subscriptions` (yo no puedo aceptar ese
+   permiso ni loguearme). Requiere que la app corra sobre **HTTPS o localhost**
+   (Web Push no anda sobre `http://` remoto).
+2. **Probar el ciclo end-to-end:** creá un recordatorio con **fecha pasada**
+   (o de acá a 1–2 min), esperá a que el cron corra (≤5 min) y deberías recibir
+   la notificación; al tocarla, abre/enfoca `/reminders`. En la lista, ese
+   recordatorio pasa a mostrar **"● Notificado"** (estado `enviado`) y sigue con
+   "Marcar hecho". Para no esperar, avisame y disparo la función manualmente.
+
 ## Changelog
 
+- 2026-07-21 — Notificaciones push reales para recordatorios: claves VAPID
+  (pública en `.env`, privada como secret), migración `push_subscriptions` con
+  RLS, service worker propio (`injectManifest`, handlers `push`/
+  `notificationclick`), sección "Notificaciones" en Settings (`push.ts` +
+  `PushSettings`), Edge Function `send-reminder-notifications` (service_role,
+  `npm:web-push`, marca `enviado`, borra suscripciones 410/404, guard por
+  `x-cron-secret`, `--no-verify-jwt`), y cron pg_cron cada 5 min vía
+  `net.http_post` con el secret en Vault. Indicador "● Notificado" en
+  `RemindersPage`. Backend validado en vivo (guard 401/200 + camino DB→función
+  200 vía pg_net/Vault); UI verificada en harness (desktop y ~375px). Falta que
+  el usuario dé el permiso del navegador y pruebe el ciclo end-to-end.
 - 2026-07-21 — Recordatorios (UI + datos, sin push todavía): capa
   `src/lib/recordatorios.ts` (list con join a items, upsert/delete por item,
   marcar hecho, conteo para badge, helpers de fecha), toggle "Agregar
