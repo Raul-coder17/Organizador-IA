@@ -24,7 +24,7 @@ export function isPushSupported(): boolean {
 // Si vence el timeout, resolvemos a null y el llamador decide qué hacer.
 const SW_READY_TIMEOUT_MS = 6000
 
-async function swReadyOrNull(): Promise<ServiceWorkerRegistration | null> {
+export async function swReadyOrNull(): Promise<ServiceWorkerRegistration | null> {
   if (!('serviceWorker' in navigator)) return null
   return Promise.race([
     navigator.serviceWorker.ready,

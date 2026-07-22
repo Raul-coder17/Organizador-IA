@@ -732,6 +732,89 @@ Function bypassa RLS para leer/borrar suscripciones de cualquier usuario.
     resuelve → registerSW + injectManifest intactos.
   - `npm run build` sin errores.
 
+## Notificaciones de dos vías (local instantáneo + cron cada 1 min)
+
+Sube la precisión de los avisos de recordatorios sin depender solo del cron.
+Ahora hay **dos caminos complementarios** que nunca compiten entre sí:
+
+### Vía A — aviso LOCAL instantáneo (app abierta)
+
+- [`src/lib/useLocalReminderWatcher.ts`](src/lib/useLocalReminderWatcher.ts):
+  hook montado **una sola vez** cerca de la raíz vía
+  [`src/components/LocalReminderWatcher.tsx`](src/components/LocalReminderWatcher.tsx)
+  (dentro de `ProtectedRoute`, así corre solo con sesión y en cualquier
+  pantalla — ver [`App.tsx`](src/App.tsx)).
+- **Sondeo** cada ~25s (`POLL_MS`): `listRecordatoriosParaDisparo()`
+  (en [`recordatorios.ts`](src/lib/recordatorios.ts)) trae los recordatorios
+  propios `estado='pendiente'` con `fecha_hora` dentro de los próximos ~2 min
+  o ya vencidos, con el item embebido para el cuerpo. La ventana (~2 min) es
+  más ancha que el intervalo de sondeo, así ninguno cae entre dos sondeos.
+- **Timer por recordatorio:** para cada pendiente sin timer se arma un
+  `setTimeout` que dispara **exactamente en su `fecha_hora`** (o de inmediato,
+  `delay=0`, si ya venció). Al disparar: muestra la notificación **local** con
+  `registration.showNotification` — **mismo formato que el push del servidor**
+  (título "Recordatorio", cuerpo = `resumenContenido(item)`, `url:/reminders`,
+  `icon/badge`) — y marca el recordatorio `estado='enviado'` **directo contra
+  Supabase** con el cliente autenticado (`marcarEnviado`, respeta RLS; el
+  `.eq('estado','pendiente')` extra evita pisar un `hecho`). No pasa por la
+  Edge Function.
+- **Reconciliación de timers** (lógica pura testeable en
+  [`reminderScheduling.ts`](src/lib/reminderScheduling.ts)): en cada sondeo,
+  `reconcileTimers` compara los pendientes contra los timers armados y decide
+  qué **armar** (nuevos, o con la fecha cambiada) y qué **cancelar** (ya no
+  están pendientes — lo marcaron hecho / se envió / cambió de estado — o
+  cambiaron de fecha y se rearman). Los timers también se limpian al
+  desmontar el componente.
+- **Anti-duplicado en la MISMA pestaña:** un `Set` `fired` (`suppressIds`)
+  marca los ids ya disparados **antes** de esperar la red, así un sondeo que
+  todavía los vea pendientes (porque la DB no reflejó `enviado` aún) no los
+  rearma. Entre **varias pestañas/dispositivos** está bien que ambos disparen
+  el aviso local — no se considera bug.
+- **Gate de permiso:** el watcher solo arma/dispara si
+  `Notification.permission === 'granted'` (sin permiso no hay nada que
+  mostrar). Reusa `swReadyOrNull()` (timeout de 6s) de
+  [`push.ts`](src/lib/push.ts) para no colgarse esperando el SW.
+
+### Vía B — cron del servidor cada 1 min (app cerrada)
+
+- El cron de `pg_cron` bajó de `*/5 * * * *` a **`* * * * *`** (cada 1 min)
+  como **piso de precisión cuando la app está cerrada**. Se reprogramó con
+  `cron.alter_job(job_id := 1, schedule := '* * * * *')` — solo el schedule;
+  el `command` (con el `x-cron-secret` leído de Vault) quedó **intacto**.
+  El jobname sigue siendo `send-reminder-notifications-5min` (histórico:
+  `alter_job` no renombra; es cosmético).
+- **Ya no compiten:** como la vía A marca `enviado` apenas dispara, cuando el
+  cron corre encuentra ese recordatorio **ya no-pendiente** y no reenvía nada.
+  Si la app estaba cerrada, la vía A no corrió y el cron es el que notifica
+  (vía push real) — con ≤1 min de atraso en el peor caso.
+
+### RemindersPage / AppNav — sin cambios
+
+El estado `'enviado'` que pone la vía A es idéntico al que ponía el push del
+servidor, así que la UI ya lo refleja bien: `RemindersPage` muestra el
+indicador **"● Notificado"** ante `estado='enviado'`, y el badge de `AppNav`
+(`countRecordatoriosPendientesHoy`, que cuenta solo `pendiente`) baja al
+próximo cambio de ruta. Confirmado por lectura de código; no hizo falta tocar
+nada.
+
+### Verificación
+
+- **Cron reprogramado, verificado en vivo por SQL:** `cron.job` jobid 1 quedó
+  `schedule = '* * * * *'`, `active = true`, con el `command` original
+  (net.http_post + `x-cron-secret` de Vault) sin cambios.
+- **Lógica de timers:** test unitario `deno test` de `reminderScheduling.ts`
+  ([`reminderScheduling.test.ts`](src/lib/reminderScheduling.test.ts)) — **7/7
+  pasan**: delay futuro vs. vencido (0), armar nuevo, rearmar al cambiar la
+  fecha, cancelar el que ya no está pendiente, no rearmar un id suprimido.
+- **`npm run build` sin errores** (`tsc -b` app + worker + `vite build`; el SW
+  sigue compilando con sus handlers `push`/`notificationclick`).
+- **Pendiente de tu prueba en vivo** (requiere tu sesión + permiso de
+  notificaciones ya concedido): con la app **abierta**, creá un recordatorio
+  para "en ~30 segundos" y confirmá que la notificación aparece casi al
+  instante (sin esperar al cron), que el recordatorio pasa a **"● Notificado"**
+  y que el badge de la nav baja. Con la app **cerrada**, un recordatorio
+  debería llegar por el cron en ≤1 min.
+
 ## Asistente: tools ampliadas (recordatorios, listas, multiacciones)
 
 El asistente pasa de conocer solo `content={texto}` a manejar la estructura
@@ -856,6 +939,16 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-22 — Notificaciones de dos vías: aviso **local instantáneo** cuando la
+  app está abierta (`useLocalReminderWatcher` montado en la raíz vía
+  `LocalReminderWatcher`, sondeo cada ~25s + `setTimeout` por recordatorio que
+  dispara `registration.showNotification` en la `fecha_hora` exacta y marca
+  `enviado` directo contra Supabase), con la reconciliación de timers extraída a
+  `reminderScheduling.ts` (test `deno`, 7/7). El cron de `pg_cron` bajó de cada
+  5 min a **cada 1 min** (`cron.alter_job`, solo el schedule; command/Vault
+  intactos) como piso cuando la app está cerrada. Como el aviso local marca
+  `enviado` al disparar, el cron ya no reenvía. RemindersPage/AppNav sin cambios
+  (ya reflejan `enviado`). Cron verificado por SQL; build OK.
 - 2026-07-21 — Deploy: repo subido a GitHub
   (`Raul-coder17/Organizador-IA`, rama `master`) y `render.yaml` para Static
   Site (build `npm run build`, publish `dist`, rewrite SPA `/*→/index.html`,

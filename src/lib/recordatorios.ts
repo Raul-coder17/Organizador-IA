@@ -18,6 +18,41 @@ export async function listRecordatorios(): Promise<RecordatorioConItem[]> {
   return (data ?? []) as unknown as RecordatorioConItem[]
 }
 
+// Ventana (ms) hacia adelante que mira el watcher local: recordatorios que
+// vencen dentro de los próximos ~2 min (o ya vencidos) son candidatos a armar
+// un timer local. Igualarla al intervalo de sondeo + margen alcanza para no
+// perder ninguno entre dos sondeos.
+const VENTANA_DISPARO_MS = 2 * 60 * 1000
+
+// Recordatorios propios en estado 'pendiente' que vencen pronto (dentro de la
+// ventana) o ya vencieron, con el item embebido para armar el cuerpo de la
+// notificación local. Lo usa useLocalReminderWatcher. La RLS ya restringe a los
+// del usuario (igual que listRecordatorios).
+export async function listRecordatoriosParaDisparo(): Promise<RecordatorioConItem[]> {
+  const limite = new Date(Date.now() + VENTANA_DISPARO_MS).toISOString()
+  const { data, error } = await supabase
+    .from('recordatorios')
+    .select(`*, item:items(${ITEM_COLS})`)
+    .eq('estado', 'pendiente')
+    .lte('fecha_hora', limite)
+    .order('fecha_hora', { ascending: true })
+
+  if (error) throw error
+  return (data ?? []) as unknown as RecordatorioConItem[]
+}
+
+// Marca un recordatorio como 'enviado' desde el aviso local (mismo estado que
+// pone el cron del servidor). El filtro extra por estado='pendiente' evita
+// pisar un 'hecho' si el usuario lo marcó entre que se armó el timer y disparó.
+export async function marcarEnviado(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('recordatorios')
+    .update({ estado: 'enviado' })
+    .eq('id', id)
+    .eq('estado', 'pendiente')
+  if (error) throw error
+}
+
 // El recordatorio (si existe) asociado a un item, para prellenar el form.
 export async function getRecordatorioForItem(itemId: string): Promise<Recordatorio | null> {
   const { data, error } = await supabase
