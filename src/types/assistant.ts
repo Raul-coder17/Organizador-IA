@@ -9,7 +9,12 @@ export interface AccionCrear {
   tipo: TipoItem
   tema: string | null
   prioridad: Prioridad | null
-  contenido: string
+  contenido?: string
+  // Para tipo 'lista': cada string es una línea marcable.
+  lineas?: string[]
+  // Fecha/hora local ingenua ("YYYY-MM-DDTHH:mm"); se convierte a ISO/UTC con la
+  // zona del navegador al confirmar (igual que el form manual).
+  recordatorio_fecha_hora?: string
 }
 
 export interface AccionEditar {
@@ -20,6 +25,12 @@ export interface AccionEditar {
     tema?: string | null
     prioridad?: Prioridad | null
     contenido?: string
+    lineas_agregar?: string[]
+    lineas_quitar?: string[]
+    lineas_marcar_hechas?: string[]
+    lineas_desmarcar?: string[]
+    recordatorio_fecha_hora?: string
+    quitar_recordatorio?: boolean
   }
   resumen?: string
 }
@@ -35,7 +46,8 @@ export type AccionPropuesta = AccionCrear | AccionEditar | AccionBorrar
 export interface ChatMessage {
   role: 'user' | 'assistant'
   text: string
-  accion?: AccionPropuesta
+  // Acciones propuestas asociadas a este mensaje del asistente (0, 1 o varias).
+  acciones?: AccionPropuesta[]
 }
 
 export interface RateLimit {
@@ -51,7 +63,8 @@ export interface AssistantUsage {
 
 export interface AssistantResponse {
   respuesta_texto: string
-  accion_propuesta?: AccionPropuesta
+  // El asistente puede proponer varias acciones en un mismo turno.
+  acciones_propuestas?: AccionPropuesta[]
   rate_limit?: RateLimit
   usage?: AssistantUsage
 }

@@ -14,6 +14,12 @@
 // - La key descifrada nunca se persiste ni se devuelve al cliente.
 
 import { createClient, type SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import {
+  allFunctionCalls,
+  collectProposedActions,
+  fallbackTextForActions,
+  partitionCalls,
+} from './actions.ts'
 
 const GEMINI_MODEL = 'gemini-2.5-flash'
 const MAX_TURNS = 5
@@ -64,24 +70,54 @@ const FUNCTION_DECLARATIONS = [
     },
   },
   {
+    name: 'listRecordatorios',
+    description:
+      'Consulta los recordatorios del usuario (fecha/hora, estado y el item asociado). Solo lectura. Úsalo para tener contexto antes de crear, mover o quitar un recordatorio.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        estado: {
+          type: 'STRING',
+          enum: ['pendiente', 'enviado', 'hecho'],
+          description: 'Filtra por estado (opcional).',
+        },
+      },
+    },
+  },
+  {
     name: 'proposeCreateItem',
     description:
-      'Propone crear un item nuevo. NO lo crea: el usuario verá un preview y deberá confirmar. Usa esto cuando el usuario pida agregar/guardar algo.',
+      'Propone crear un item nuevo. NO lo crea: el usuario verá un preview y deberá confirmar. Usa esto cuando el usuario pida agregar/guardar algo. Podés crear el item CON un recordatorio en la misma acción.',
     parameters: {
       type: 'OBJECT',
       properties: {
         tipo: { type: 'STRING', enum: TIPO_ENUM, description: 'Tipo del item.' },
         tema: { type: 'STRING', description: 'Nombre del tema (existente o nuevo). Opcional.' },
         prioridad: { type: 'STRING', enum: PRIORIDAD_ENUM, description: 'Prioridad. Opcional.' },
-        contenido: { type: 'STRING', description: 'Contenido en texto del item.' },
+        contenido: {
+          type: 'STRING',
+          description:
+            'Contenido en texto (para nota, recordatorio o tabla). Para tipo "lista" NO uses esto: usá "lineas".',
+        },
+        lineas: {
+          type: 'ARRAY',
+          items: { type: 'STRING' },
+          description:
+            'Solo para tipo "lista": cada string es una línea marcable de la lista (ej. ["leche","pan"]).',
+        },
+        recordatorio_fecha_hora: {
+          type: 'STRING',
+          description:
+            'Opcional: crea el item CON un recordatorio a esta fecha/hora LOCAL del usuario, en formato "YYYY-MM-DDTHH:mm" (ej. "2026-07-23T09:00"). Sirve para CUALQUIER tipo de item, no solo "recordatorio".',
+        },
       },
-      required: ['tipo', 'contenido'],
+      required: ['tipo'],
     },
   },
   {
     name: 'proposeUpdateItem',
     description:
-      'Propone editar un item existente (identificado por item_id, que obtenés de listItems). NO lo edita: el usuario confirma primero. Incluí solo los campos a cambiar.',
+      'Propone editar un item existente (identificado por item_id, que obtenés de listItems). NO lo edita: el usuario confirma primero. Incluí solo los campos a cambiar. Podés editar líneas de una lista y/o su recordatorio.',
     parameters: {
       type: 'OBJECT',
       properties: {
@@ -89,7 +125,39 @@ const FUNCTION_DECLARATIONS = [
         tipo: { type: 'STRING', enum: TIPO_ENUM },
         tema: { type: 'STRING', description: 'Nuevo nombre de tema.' },
         prioridad: { type: 'STRING', enum: PRIORIDAD_ENUM },
-        contenido: { type: 'STRING', description: 'Nuevo contenido en texto.' },
+        contenido: {
+          type: 'STRING',
+          description: 'Nuevo contenido en texto (para nota/recordatorio/tabla).',
+        },
+        lineas_agregar: {
+          type: 'ARRAY',
+          items: { type: 'STRING' },
+          description: 'Para tipo "lista": líneas nuevas a agregar (ej. ["leche","pan"]).',
+        },
+        lineas_quitar: {
+          type: 'ARRAY',
+          items: { type: 'STRING' },
+          description: 'Para tipo "lista": textos EXACTOS de líneas existentes a quitar.',
+        },
+        lineas_marcar_hechas: {
+          type: 'ARRAY',
+          items: { type: 'STRING' },
+          description: 'Para tipo "lista": textos de líneas a marcar como hechas.',
+        },
+        lineas_desmarcar: {
+          type: 'ARRAY',
+          items: { type: 'STRING' },
+          description: 'Para tipo "lista": textos de líneas a desmarcar (volver a pendiente).',
+        },
+        recordatorio_fecha_hora: {
+          type: 'STRING',
+          description:
+            'Agrega o mueve el recordatorio del item a esta fecha/hora LOCAL "YYYY-MM-DDTHH:mm".',
+        },
+        quitar_recordatorio: {
+          type: 'BOOLEAN',
+          description: 'true para quitar el recordatorio existente del item.',
+        },
       },
       required: ['item_id'],
     },
@@ -108,13 +176,21 @@ const FUNCTION_DECLARATIONS = [
   },
 ]
 
-const SYSTEM_INSTRUCTION = `Sos el asistente del "Organizador Personal IA". Ayudás al usuario a consultar y organizar sus items (notas, recordatorios, listas, tablas) por tema y prioridad. Respondé siempre en español, breve y claro.
+function buildSystemInstruction(clientNow?: string): string {
+  const ahora = clientNow
+    ? `\n- La fecha y hora LOCAL del usuario ahora es: ${clientNow} (formato "YYYY-MM-DDTHH:mm"). Usala para calcular fechas relativas como "mañana a las 9" o "en 2 horas".`
+    : ''
+  return `Sos el asistente del "Organizador Personal IA". Ayudás al usuario a consultar y organizar sus items (notas, recordatorios, listas, tablas) por tema y prioridad. Respondé siempre en español, breve y claro.
 
 Reglas:
-- Antes de responder sobre qué tiene guardado, o antes de proponer cambios sobre un item existente, usá listItems para ver datos reales. No inventes items ni ids.
+- Antes de responder sobre qué tiene guardado, o antes de proponer cambios sobre un item existente, usá listItems (y listRecordatorios si el pedido involucra recordatorios) para ver datos reales. No inventes items ni ids.
 - Tipos válidos: nota, recordatorio, lista, tabla. Prioridades válidas: alta, media, baja (o sin prioridad).
+- El tipo "lista" tiene líneas marcables (checkboxes), NO texto libre. Para crear una lista usá el campo "lineas" (un array de strings), no "contenido". Para editar sus líneas usá lineas_agregar / lineas_quitar / lineas_marcar_hechas / lineas_desmarcar.
+- Podés agregar un recordatorio a CUALQUIER item (no solo a los de tipo "recordatorio"): al crear, con "recordatorio_fecha_hora"; al editar, con "recordatorio_fecha_hora" (agregar/mover) o "quitar_recordatorio". La fecha/hora va en hora LOCAL del usuario, formato "YYYY-MM-DDTHH:mm".
+- Podés proponer VARIAS acciones en un mismo turno cuando el pedido lo implique. Ejemplos: "agregá una nota y ponele recordatorio para mañana 9" = UNA sola acción create con contenido + recordatorio_fecha_hora; "agregá leche y pan a mi lista del súper" (lista existente) = UN update con lineas_agregar=["leche","pan"]; "borrá la nota X y creá una tarea Y" = dos acciones (un delete + un create) en el mismo turno.
 - Cuando el usuario quiera crear, editar o borrar algo, llamá a la función propose correspondiente. Esas acciones NO se ejecutan al instante: el usuario ve un preview y confirma. Después de proponer, decile en una frase qué va a pasar cuando confirme.
-- Para editar o borrar necesitás el item_id real (obtenido de listItems). Si no lo tenés, consultá primero.`
+- Para editar o borrar necesitás el item_id real (obtenido de listItems). Si no lo tenés, consultá primero.${ahora}`
+}
 
 // ---------------------------------------------------------------------------
 
@@ -236,14 +312,18 @@ function translateGeminiError(status: number, rawBody: string): string {
   return `Hubo un problema con la IA (código ${status}). Intentá de nuevo; si se repite, avisá.`
 }
 
-async function callGemini(apiKey: string, contents: GeminiContent[]): Promise<GeminiCandidate> {
+async function callGemini(
+  apiKey: string,
+  contents: GeminiContent[],
+  systemInstruction: string,
+): Promise<GeminiCandidate> {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+        systemInstruction: { parts: [{ text: systemInstruction }] },
         contents,
         tools: [{ functionDeclarations: FUNCTION_DECLARATIONS }],
         // gemini-2.5-flash es un modelo "thinking": por defecto gasta parte del
@@ -299,11 +379,6 @@ function textFromParts(parts: GeminiPart[]): string {
     .trim()
 }
 
-function firstFunctionCall(parts: GeminiPart[]): { name: string; args: Record<string, unknown> } | null {
-  const part = parts.find((p) => p.functionCall)
-  return part?.functionCall ? { name: part.functionCall.name, args: part.functionCall.args ?? {} } : null
-}
-
 async function execListItems(
   supabase: SupabaseClient,
   userId: string,
@@ -338,46 +413,36 @@ async function execListItems(
   return { items: compact }
 }
 
-function mapProposedAction(name: string, args: Record<string, unknown>): Record<string, unknown> | null {
-  const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : undefined)
+// Lectura server-side de recordatorios (respeta RLS con el JWT del usuario: la
+// policy de `recordatorios` ya restringe a los que cuelgan de items del user).
+async function execListRecordatorios(
+  supabase: SupabaseClient,
+  args: Record<string, unknown>,
+): Promise<unknown> {
+  let query = supabase
+    .from('recordatorios')
+    .select('id, fecha_hora, estado, item:items(id, tipo, contenido)')
+    .order('fecha_hora', { ascending: true })
 
-  if (name === 'proposeCreateItem') {
+  if (typeof args.estado === 'string') query = query.eq('estado', args.estado)
+
+  const { data, error } = await query
+  if (error) return { error: 'No se pudieron leer los recordatorios.' }
+
+  const compact = (data ?? []).map((r) => {
+    const item = (r as { item?: { id?: string; tipo?: string; contenido?: { texto?: unknown } } }).item
     return {
-      tipo_accion: 'create',
-      tipo: str(args.tipo) ?? 'nota',
-      tema: str(args.tema) ?? null,
-      prioridad: str(args.prioridad) ?? null,
-      contenido: str(args.contenido) ?? '',
+      id: r.id,
+      item_id: item?.id ?? null,
+      item_tipo: item?.tipo ?? null,
+      item_contenido:
+        item && typeof item.contenido?.texto === 'string' ? item.contenido.texto : (item?.contenido ?? null),
+      fecha_hora: r.fecha_hora,
+      estado: r.estado,
     }
-  }
+  })
 
-  if (name === 'proposeUpdateItem') {
-    const cambios: Record<string, unknown> = {}
-    if (str(args.tipo)) cambios.tipo = str(args.tipo)
-    if ('tema' in args) cambios.tema = str(args.tema) ?? null
-    if (str(args.prioridad)) cambios.prioridad = str(args.prioridad)
-    if (str(args.contenido)) cambios.contenido = str(args.contenido)
-    return { tipo_accion: 'update', item_id: str(args.item_id) ?? '', cambios }
-  }
-
-  if (name === 'proposeDeleteItem') {
-    return { tipo_accion: 'delete', item_id: str(args.item_id) ?? '' }
-  }
-
-  return null
-}
-
-function fallbackText(accion: Record<string, unknown>): string {
-  switch (accion.tipo_accion) {
-    case 'create':
-      return 'Preparé la creación de un item para que la confirmes.'
-    case 'update':
-      return 'Preparé una edición para que la confirmes.'
-    case 'delete':
-      return 'Preparé el borrado de un item para que lo confirmes.'
-    default:
-      return 'Preparé una acción para que la confirmes.'
-  }
+  return { recordatorios: compact }
 }
 
 Deno.serve(async (req) => {
@@ -445,7 +510,7 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'No se pudo descifrar la key. Volvé a guardarla en Settings.' }, 500)
   }
 
-  let body: { messages?: { role?: string; text?: string }[] }
+  let body: { messages?: { role?: string; text?: string }[]; client_now?: string }
   try {
     body = await req.json()
   } catch {
@@ -456,6 +521,11 @@ Deno.serve(async (req) => {
   if (messages.length === 0) {
     return jsonResponse({ error: 'Faltan mensajes.' }, 400)
   }
+
+  // Hora local del cliente (formato "YYYY-MM-DDTHH:mm") para resolver fechas
+  // relativas ("mañana a las 9"). El server solo conoce UTC.
+  const clientNow = typeof body.client_now === 'string' ? body.client_now : undefined
+  const systemInstruction = buildSystemInstruction(clientNow)
 
   const contents: GeminiContent[] = messages
     .filter((m) => typeof m.text === 'string' && m.text.trim())
@@ -471,7 +541,7 @@ Deno.serve(async (req) => {
 
   try {
     for (let turn = 0; turn < MAX_TURNS; turn++) {
-      const candidate = await callGemini(apiKey, contents)
+      const candidate = await callGemini(apiKey, contents, systemInstruction)
 
       // Llamada exitosa: incrementamos el contador diario (atómico, respeta RLS).
       const { data: nuevo } = await supabase.rpc('increment_ai_usage')
@@ -489,29 +559,41 @@ Deno.serve(async (req) => {
         return jsonResponse({ respuesta_texto: messageForFinishReason(candidate.finishReason), ...usageField() })
       }
 
-      const call = firstFunctionCall(parts)
+      // Gemini puede devolver VARIAS function calls en un mismo turno (parallel
+      // function calling). Las separamos en lecturas vs. acciones proponibles.
+      const calls = allFunctionCalls(parts)
 
-      if (!call) {
+      if (calls.length === 0) {
         return jsonResponse({ respuesta_texto: textFromParts(parts) || 'Listo.', ...usageField() })
       }
 
-      if (call.name === 'listItems') {
-        const result = await execListItems(supabase, user.id, call.args)
+      const { reads, proposes } = partitionCalls(calls)
+
+      // Prioridad: si hay acciones propuestas, las devolvemos TODAS juntas (no
+      // seguimos el loop). Así evitamos además responder function-calls a medias.
+      if (proposes.length > 0) {
+        const acciones = collectProposedActions(proposes)
+        const texto = textFromParts(parts) || fallbackTextForActions(acciones)
+        return jsonResponse({ respuesta_texto: texto, acciones_propuestas: acciones, ...usageField() })
+      }
+
+      // Solo lecturas: ejecutamos TODAS server-side y devolvemos sus resultados
+      // como functionResponse (uno por cada call) para el próximo turno.
+      if (reads.length > 0) {
         contents.push(candidate.content!)
-        contents.push({
-          role: 'user',
-          parts: [{ functionResponse: { name: 'listItems', response: result as Record<string, unknown> } }],
-        })
+        const responseParts: GeminiPart[] = []
+        for (const r of reads) {
+          const result =
+            r.name === 'listRecordatorios'
+              ? await execListRecordatorios(supabase, r.args)
+              : await execListItems(supabase, user.id, r.args)
+          responseParts.push({ functionResponse: { name: r.name, response: result as Record<string, unknown> } })
+        }
+        contents.push({ role: 'user', parts: responseParts })
         continue
       }
 
-      const accion = mapProposedAction(call.name, call.args)
-      if (accion) {
-        const texto = textFromParts(parts) || fallbackText(accion)
-        return jsonResponse({ respuesta_texto: texto, accion_propuesta: accion, ...usageField() })
-      }
-
-      // Función desconocida: cortamos para no colgar el loop.
+      // Solo function-calls desconocidas: cortamos para no colgar el loop.
       return jsonResponse({ respuesta_texto: textFromParts(parts) || 'No pude completar eso.', ...usageField() })
     }
 

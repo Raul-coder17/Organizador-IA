@@ -732,8 +732,85 @@ Function bypassa RLS para leer/borrar suscripciones de cualquier usuario.
     resuelve → registerSW + injectManifest intactos.
   - `npm run build` sin errores.
 
+## Asistente: tools ampliadas (recordatorios, listas, multiacciones)
+
+El asistente pasa de conocer solo `content={texto}` a manejar la estructura
+real de **listas** (líneas con checkboxes) y **recordatorios** (tabla aparte),
+y a proponer **varias acciones en un mismo turno**. (La memoria de conversación
+persistente queda para el próximo ítem.)
+
+### Lógica pura testeable — `actions.ts`
+
+- Se extrajo el parseo/mapeo de function-calls a
+  [`supabase/functions/ai-assistant/actions.ts`](supabase/functions/ai-assistant/actions.ts)
+  (sin `Deno.serve` ni red), para poder testearlo con `deno test`:
+  `allFunctionCalls` (extrae TODAS las calls de un turno, no solo la primera),
+  `partitionCalls` (lecturas vs. `propose*`), `mapProposedAction` (con soporte
+  de líneas de lista y recordatorio), `collectProposedActions` (arma el array),
+  `fallbackTextForActions`.
+- Test: [`actions.test.ts`](supabase/functions/ai-assistant/actions.test.ts) —
+  **8 casos, todos pasan**: parseo de múltiples function calls en un turno,
+  separación lectura/propose, armado del array multiacción, create de lista con
+  líneas + recordatorio, create nota + recordatorio, update con marcar/agregar/
+  quitar líneas + quitar recordatorio, que las lecturas no producen acciones, y
+  la pluralización del texto de fallback.
+
+### Edge Function `ai-assistant`
+
+- **Tools nuevas/ampliadas:**
+  - `listRecordatorios(estado?)` — NUEVA, lectura server-side (join a items,
+    respeta RLS con el JWT del usuario), para dar contexto de recordatorios.
+  - `proposeCreateItem` — ahora acepta `lineas` (array) para tipo `lista` y
+    `recordatorio_fecha_hora` (hora local "YYYY-MM-DDTHH:mm") para crear el item
+    CON recordatorio en la misma acción. `contenido` ya no es required.
+  - `proposeUpdateItem` — ahora acepta `lineas_agregar` / `lineas_quitar` /
+    `lineas_marcar_hechas` / `lineas_desmarcar`, y `recordatorio_fecha_hora` /
+    `quitar_recordatorio`.
+  - `proposeDeleteItem` — sin cambios.
+- **Multiacción (parallel function calling):** el loop ahora extrae **todas**
+  las function calls del turno. Si hay `propose*`, devuelve **todas** juntas en
+  `acciones_propuestas: [...]` (array). Si solo hay lecturas, ejecuta **todas**
+  server-side y devuelve un `functionResponse` por cada una para el próximo
+  turno. (Prioriza devolver las acciones para no dejar function-calls a medias.)
+- **System prompt** dinámico (`buildSystemInstruction`): explica que "lista"
+  tiene líneas marcables (no texto), que se puede agregar recordatorio a
+  cualquier tipo de item, y que puede proponer varias acciones juntas (con
+  ejemplos). Recibe `client_now` (hora local del navegador, que el frontend
+  manda en el body) para resolver fechas relativas ("mañana a las 9") — el
+  server solo conoce UTC.
+
+### Frontend — `AssistantPage`
+
+- Maneja un **array** de acciones propuestas: una **tarjeta de preview por
+  acción**, cada una con **Confirmar/Cancelar individual**, más un botón
+  **"Confirmar todas (N)"** que las aplica en secuencia. Cada tarjeta muestra su
+  estado final (✓ Aplicado / Cancelado / error) sin bloquear a las demás.
+- `applyAction` reusa el CRUD manual (`createItem`/`updateItem`/`deleteItem`,
+  RLS) y además: crea listas como `{ items: [{id,texto,hecho}] }`; aplica
+  ediciones de líneas partiendo del contenido actual del item (quitar/marcar/
+  desmarcar por texto, agregar nuevas); y crea/mueve/quita el recordatorio con
+  `upsertRecordatorio`/`deleteRecordatoriosForItem`. La `recordatorio_fecha_hora`
+  (local ingenua) se convierte con `datetimeLocalToIso` **al confirmar**, misma
+  ruta correcta que el form manual (evita el problema de zona ya diagnosticado).
+- Manda `client_now = isoToDatetimeLocal(new Date().toISOString())` en el body.
+
+### Verificación
+
+- **8/8 tests unitarios** (`npx deno test`) — parseo multi-call y armado del
+  array de acciones. `npx deno check` de la función: sin errores de tipos.
+- `npm run build` sin errores. Función redeployada (incluye `actions.ts`);
+  guard de auth intacto (401 sin sesión).
+- **Pendiente de tu prueba en vivo** (requiere tu cuenta + tu key): ver abajo.
+
 ## Changelog
 
+- 2026-07-21 — Asistente con tools ampliadas: `listRecordatorios` (lectura),
+  `proposeCreateItem`/`proposeUpdateItem` con soporte de listas (líneas) y
+  recordatorios, y **multiacción** (Gemini devuelve varias function calls →
+  `acciones_propuestas: []`). Lógica de parseo extraída a `actions.ts` con test
+  unitario (8 casos). Frontend: una tarjeta de preview por acción con confirmar/
+  cancelar individual + "Confirmar todas". `client_now` para fechas relativas.
+  Función redeployada; build y tests OK.
 - 2026-07-21 — Fix "Cargando…" pegado en Notificaciones: `navigator.service
   Worker.ready` cuelga (no rechaza) sin SW activo y no había timeout. Se agregó
   `devOptions.enabled` (SW en dev), un `swReadyOrNull()` con timeout de 6s para

@@ -5,12 +5,27 @@ import { useAiEnabled } from '../lib/useAiEnabled'
 import { supabase } from '../lib/supabase'
 import { listItems, createItem, updateItem, deleteItem } from '../lib/items'
 import { listTemas, createTema } from '../lib/temas'
-import type { Item, ItemInsert, Tema } from '../types/database'
+import {
+  datetimeLocalToIso,
+  deleteRecordatoriosForItem,
+  formatFechaHora,
+  isoToDatetimeLocal,
+  upsertRecordatorio,
+} from '../lib/recordatorios'
+import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
 import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
 import { AppNav } from '../components/AppNav'
 
 function contenidoTexto(item: Item): string {
   return typeof item.contenido?.texto === 'string' ? item.contenido.texto : JSON.stringify(item.contenido)
+}
+
+// Estado de cada acción propuesta en el preview (una tarjeta por acción).
+type EstadoAccion = 'idle' | 'applying' | 'done' | 'cancelled' | 'error'
+interface PendingAction {
+  accion: AccionPropuesta
+  estado: EstadoAccion
+  error?: string
 }
 
 export function AssistantPage() {
@@ -22,9 +37,8 @@ export function AssistantPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
-  const [executing, setExecuting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [pending, setPending] = useState<AccionPropuesta | null>(null)
+  const [pending, setPending] = useState<PendingAction[]>([])
   const [usage, setUsage] = useState<AssistantUsage | null>(null)
   const [cooldown, setCooldown] = useState(0) // segundos restantes de rate limit corto
 
@@ -82,10 +96,14 @@ export function AssistantPage() {
     setInput('')
     setSending(true)
     setError(null)
-    setPending(null)
+    setPending([])
 
     const { data, error } = await supabase.functions.invoke<AssistantResponse>('ai-assistant', {
-      body: { messages: history.map((m) => ({ role: m.role, text: m.text })) },
+      body: {
+        messages: history.map((m) => ({ role: m.role, text: m.text })),
+        // Hora local del usuario para que Gemini resuelva "mañana a las 9", etc.
+        client_now: isoToDatetimeLocal(new Date().toISOString()),
+      },
     })
 
     setSending(false)
@@ -110,13 +128,14 @@ export function AssistantPage() {
       return
     }
 
+    const acciones = data.acciones_propuestas ?? []
     const assistantMsg: ChatMessage = {
       role: 'assistant',
       text: data.respuesta_texto,
-      accion: data.accion_propuesta,
+      acciones: acciones.length ? acciones : undefined,
     }
     setMessages((prev) => [...prev, assistantMsg])
-    if (data.accion_propuesta) setPending(data.accion_propuesta)
+    setPending(acciones.map((accion) => ({ accion, estado: 'idle' as EstadoAccion })))
     if (data.usage) setUsage(data.usage)
 
     // Rate limit por minuto: arrancamos la cuenta regresiva que bloquea el input.
@@ -134,53 +153,139 @@ export function AssistantPage() {
     return tema.id
   }
 
-  async function handleConfirm() {
-    if (!pending) return
-    setExecuting(true)
-    setError(null)
-
-    try {
-      let nota = ''
-
-      if (pending.tipo_accion === 'create') {
-        const tema_id = await resolveTemaId(pending.tema)
-        const payload: ItemInsert = {
-          user_id: user!.id,
-          tema_id,
-          tipo: pending.tipo,
-          prioridad: pending.prioridad,
-          contenido: { texto: pending.contenido },
-          origen: 'texto',
+  // Aplica una acción propuesta contra Supabase (reusa el mismo CRUD manual, así
+  // que respeta RLS). Soporta listas (líneas) y recordatorios.
+  async function applyAction(accion: AccionPropuesta): Promise<void> {
+    if (accion.tipo_accion === 'create') {
+      const tema_id = await resolveTemaId(accion.tema)
+      let contenido: Record<string, unknown>
+      if (accion.tipo === 'lista' && accion.lineas && accion.lineas.length > 0) {
+        contenido = {
+          items: accion.lineas.map((t) => ({ id: crypto.randomUUID(), texto: t, hecho: false })),
         }
-        await createItem(payload)
-        nota = 'Listo, creé el item.'
-      } else if (pending.tipo_accion === 'update') {
-        const patch: Partial<ItemInsert> = {}
-        if (pending.cambios.tipo) patch.tipo = pending.cambios.tipo
-        if (pending.cambios.prioridad !== undefined) patch.prioridad = pending.cambios.prioridad
-        if ('tema' in pending.cambios) patch.tema_id = await resolveTemaId(pending.cambios.tema)
-        if (pending.cambios.contenido) patch.contenido = { texto: pending.cambios.contenido }
-        await updateItem(pending.item_id, patch)
-        nota = 'Listo, actualicé el item.'
       } else {
-        await deleteItem(pending.item_id)
-        nota = 'Listo, borré el item.'
+        contenido = { texto: accion.contenido ?? '' }
+      }
+      const payload: ItemInsert = {
+        user_id: user!.id,
+        tema_id,
+        tipo: accion.tipo,
+        prioridad: accion.prioridad,
+        contenido,
+        origen: 'texto',
+      }
+      const created = await createItem(payload)
+      if (accion.recordatorio_fecha_hora) {
+        await upsertRecordatorio(created.id, datetimeLocalToIso(accion.recordatorio_fecha_hora))
+      }
+      return
+    }
+
+    if (accion.tipo_accion === 'update') {
+      const c = accion.cambios
+      const current = items.find((it) => it.id === accion.item_id)
+      const patch: Partial<ItemInsert> = {}
+      if (c.tipo) patch.tipo = c.tipo
+      if (c.prioridad !== undefined) patch.prioridad = c.prioridad
+      if ('tema' in c) patch.tema_id = await resolveTemaId(c.tema)
+      if (c.contenido) patch.contenido = { texto: c.contenido }
+
+      // Edición de líneas de lista: partimos del contenido actual del item.
+      const editaLineas =
+        c.lineas_agregar || c.lineas_quitar || c.lineas_marcar_hechas || c.lineas_desmarcar
+      if (editaLineas) {
+        const norm = (s: string) => s.trim().toLowerCase()
+        let lineas: LineaLista[] = Array.isArray(current?.contenido.items)
+          ? (current!.contenido.items as LineaLista[]).map((l) => ({
+              id: typeof l.id === 'string' ? l.id : crypto.randomUUID(),
+              texto: String(l.texto ?? ''),
+              hecho: Boolean(l.hecho),
+            }))
+          : []
+        if (c.lineas_quitar) {
+          const rm = new Set(c.lineas_quitar.map(norm))
+          lineas = lineas.filter((l) => !rm.has(norm(l.texto)))
+        }
+        if (c.lineas_marcar_hechas) {
+          const mk = new Set(c.lineas_marcar_hechas.map(norm))
+          lineas = lineas.map((l) => (mk.has(norm(l.texto)) ? { ...l, hecho: true } : l))
+        }
+        if (c.lineas_desmarcar) {
+          const dm = new Set(c.lineas_desmarcar.map(norm))
+          lineas = lineas.map((l) => (dm.has(norm(l.texto)) ? { ...l, hecho: false } : l))
+        }
+        if (c.lineas_agregar) {
+          lineas = [
+            ...lineas,
+            ...c.lineas_agregar.map((t) => ({ id: crypto.randomUUID(), texto: t, hecho: false })),
+          ]
+        }
+        patch.contenido = { items: lineas }
       }
 
-      setPending(null)
-      setMessages((prev) => [...prev, { role: 'assistant', text: nota }])
-      await loadData()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudo aplicar el cambio.')
-    } finally {
-      setExecuting(false)
+      if (Object.keys(patch).length > 0) {
+        await updateItem(accion.item_id, patch)
+      }
+
+      if (c.quitar_recordatorio) {
+        await deleteRecordatoriosForItem(accion.item_id)
+      } else if (c.recordatorio_fecha_hora) {
+        await upsertRecordatorio(accion.item_id, datetimeLocalToIso(c.recordatorio_fecha_hora))
+      }
+      return
+    }
+
+    // delete
+    await deleteItem(accion.item_id)
+  }
+
+  function notaOk(accion: AccionPropuesta): string {
+    switch (accion.tipo_accion) {
+      case 'create':
+        return 'Listo, creé el item.'
+      case 'update':
+        return 'Listo, actualicé el item.'
+      case 'delete':
+        return 'Listo, borré el item.'
     }
   }
 
-  function handleCancel() {
-    setPending(null)
-    setMessages((prev) => [...prev, { role: 'assistant', text: 'Cancelado, no hice ningún cambio.' }])
+  // Aplica UNA acción (por índice) y actualiza su estado en la tarjeta.
+  async function confirmOne(index: number): Promise<boolean> {
+    const target = pending[index]
+    if (!target || target.estado !== 'idle') return false
+
+    setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'applying' } : p)))
+    setError(null)
+    try {
+      await applyAction(target.accion)
+      setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'done' } : p)))
+      setMessages((prev) => [...prev, { role: 'assistant', text: notaOk(target.accion) }])
+      await loadData()
+      return true
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'No se pudo aplicar el cambio.'
+      setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'error', error: msg } : p)))
+      return false
+    }
   }
+
+  function cancelOne(index: number) {
+    setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'cancelled' } : p)))
+  }
+
+  async function confirmAll() {
+    // Aplica secuencialmente todas las que sigan pendientes (idle).
+    for (let i = 0; i < pending.length; i++) {
+      if (pending[i]?.estado === 'idle') {
+        // eslint-disable-next-line no-await-in-loop
+        await confirmOne(i)
+      }
+    }
+  }
+
+  const anyApplying = pending.some((p) => p.estado === 'applying')
+  const idleCount = pending.filter((p) => p.estado === 'idle').length
 
   return (
     <div className="min-h-screen bg-paper flex flex-col">
@@ -211,14 +316,31 @@ export function AssistantPage() {
 
           {sending && <p className="text-sm text-ink-soft">Pensando…</p>}
 
-          {pending && (
-            <ProposedActionCard
-              accion={pending}
-              items={items}
-              executing={executing}
-              onConfirm={handleConfirm}
-              onCancel={handleCancel}
-            />
+          {pending.length > 0 && (
+            <div className="space-y-2">
+              {pending.length > 1 && idleCount > 0 && (
+                <div className="flex items-center gap-3">
+                  <button onClick={confirmAll} disabled={anyApplying} className="btn-moss">
+                    {anyApplying ? 'Aplicando…' : `Confirmar todas (${idleCount})`}
+                  </button>
+                  <span className="text-xs text-slate font-mono">
+                    o confirmá/cancelá una por una abajo
+                  </span>
+                </div>
+              )}
+
+              {pending.map((p, i) => (
+                <ProposedActionCard
+                  key={i}
+                  accion={p.accion}
+                  estado={p.estado}
+                  errorMsg={p.error}
+                  items={items}
+                  onConfirm={() => confirmOne(i)}
+                  onCancel={() => cancelOne(i)}
+                />
+              ))}
+            </div>
           )}
         </div>
 
@@ -254,20 +376,31 @@ export function AssistantPage() {
   )
 }
 
+function EstadoBadge({ estado, errorMsg }: { estado: EstadoAccion; errorMsg?: string }) {
+  if (estado === 'done') return <p className="text-sm text-moss mt-3 font-mono">✓ Aplicado</p>
+  if (estado === 'cancelled') return <p className="text-sm text-slate mt-3 font-mono">Cancelado</p>
+  if (estado === 'error')
+    return <p className="text-sm text-rust mt-3">{errorMsg ?? 'No se pudo aplicar.'}</p>
+  return null
+}
+
 function ProposedActionCard({
   accion,
+  estado,
+  errorMsg,
   items,
-  executing,
   onConfirm,
   onCancel,
 }: {
   accion: AccionPropuesta
+  estado: EstadoAccion
+  errorMsg?: string
   items: Item[]
-  executing: boolean
   onConfirm: () => void
   onCancel: () => void
 }) {
   const target = 'item_id' in accion ? items.find((it) => it.id === accion.item_id) : undefined
+  const resuelto = estado === 'done' || estado === 'cancelled'
 
   return (
     <div className="bg-card border border-line border-l-4 border-l-moss rounded-[2px] p-4 text-left">
@@ -284,9 +417,26 @@ function ProposedActionCard({
             <li>
               <span className="text-ink-soft">Prioridad:</span> {accion.prioridad ?? 'sin prioridad'}
             </li>
-            <li className="whitespace-pre-wrap">
-              <span className="text-ink-soft">Contenido:</span> {accion.contenido}
-            </li>
+            {accion.tipo === 'lista' && accion.lineas ? (
+              <li>
+                <span className="text-ink-soft">Líneas:</span>
+                <ul className="list-disc ml-5 mt-1">
+                  {accion.lineas.map((l, i) => (
+                    <li key={i}>{l}</li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li className="whitespace-pre-wrap">
+                <span className="text-ink-soft">Contenido:</span> {accion.contenido}
+              </li>
+            )}
+            {accion.recordatorio_fecha_hora && (
+              <li>
+                <span className="text-ink-soft">Recordatorio:</span>{' '}
+                {formatFechaHora(accion.recordatorio_fecha_hora)}
+              </li>
+            )}
           </ul>
         </>
       )}
@@ -318,6 +468,41 @@ function ProposedActionCard({
                 <span className="text-ink-soft">Nuevo contenido:</span> {accion.cambios.contenido}
               </li>
             )}
+            {accion.cambios.lineas_agregar && (
+              <li>
+                <span className="text-ink-soft">Agregar líneas:</span>{' '}
+                {accion.cambios.lineas_agregar.join(', ')}
+              </li>
+            )}
+            {accion.cambios.lineas_quitar && (
+              <li>
+                <span className="text-ink-soft">Quitar líneas:</span>{' '}
+                {accion.cambios.lineas_quitar.join(', ')}
+              </li>
+            )}
+            {accion.cambios.lineas_marcar_hechas && (
+              <li>
+                <span className="text-ink-soft">Marcar hechas:</span>{' '}
+                {accion.cambios.lineas_marcar_hechas.join(', ')}
+              </li>
+            )}
+            {accion.cambios.lineas_desmarcar && (
+              <li>
+                <span className="text-ink-soft">Desmarcar:</span>{' '}
+                {accion.cambios.lineas_desmarcar.join(', ')}
+              </li>
+            )}
+            {accion.cambios.recordatorio_fecha_hora && (
+              <li>
+                <span className="text-ink-soft">Recordatorio:</span>{' '}
+                {formatFechaHora(accion.cambios.recordatorio_fecha_hora)}
+              </li>
+            )}
+            {accion.cambios.quitar_recordatorio && (
+              <li>
+                <span className="text-ink-soft">Recordatorio:</span> quitar
+              </li>
+            )}
           </ul>
         </>
       )}
@@ -331,14 +516,18 @@ function ProposedActionCard({
         </>
       )}
 
-      <div className="flex items-center gap-4 mt-4">
-        <button onClick={onConfirm} disabled={executing} className="btn-moss">
-          {executing ? 'Aplicando…' : 'Confirmar'}
-        </button>
-        <button onClick={onCancel} disabled={executing} className="btn-ghost">
-          Cancelar
-        </button>
-      </div>
+      {resuelto || estado === 'error' ? (
+        <EstadoBadge estado={estado} errorMsg={errorMsg} />
+      ) : (
+        <div className="flex items-center gap-4 mt-4">
+          <button onClick={onConfirm} disabled={estado === 'applying'} className="btn-moss">
+            {estado === 'applying' ? 'Aplicando…' : 'Confirmar'}
+          </button>
+          <button onClick={onCancel} disabled={estado === 'applying'} className="btn-ghost">
+            Cancelar
+          </button>
+        </div>
+      )}
     </div>
   )
 }
