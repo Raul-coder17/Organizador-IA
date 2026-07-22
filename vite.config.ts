@@ -20,6 +20,13 @@ export default defineConfig({
       injectManifest: {
         globPatterns: ['**/*.{js,css,html,svg}'],
       },
+      // Registrar el SW también en `npm run dev`: sin esto, en dev no hay SW
+      // activo y `navigator.serviceWorker.ready` cuelga para siempre (dejaba
+      // Settings › Notificaciones pegado en "Cargando…").
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
     }),
   ],
 })

@@ -19,6 +19,19 @@ export function isPushSupported(): boolean {
   )
 }
 
+// `navigator.serviceWorker.ready` NO rechaza si no hay un SW activo: cuelga
+// para siempre. Lo carreamos contra un timeout para no bloquear nunca la UI.
+// Si vence el timeout, resolvemos a null y el llamador decide qué hacer.
+const SW_READY_TIMEOUT_MS = 6000
+
+async function swReadyOrNull(): Promise<ServiceWorkerRegistration | null> {
+  if (!('serviceWorker' in navigator)) return null
+  return Promise.race([
+    navigator.serviceWorker.ready,
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), SW_READY_TIMEOUT_MS)),
+  ])
+}
+
 // Estado actual: combina el permiso de Notification con si ya hay una
 // suscripción activa en el service worker.
 export async function getPushStatus(): Promise<PushStatus> {
@@ -26,9 +39,12 @@ export async function getPushStatus(): Promise<PushStatus> {
   if (Notification.permission === 'denied') return 'denied'
   if (Notification.permission === 'default') return 'default'
 
-  // granted: chequeamos si además hay una suscripción viva.
+  // granted: chequeamos si además hay una suscripción viva. Si el SW no está
+  // listo (timeout), no colgamos: reportamos 'granted' (permiso ok, sin
+  // suscripción confirmada) para que la UI muestre el botón de activar.
   try {
-    const reg = await navigator.serviceWorker.ready
+    const reg = await swReadyOrNull()
+    if (!reg) return 'granted'
     const sub = await reg.pushManager.getSubscription()
     return sub ? 'subscribed' : 'granted'
   } catch {
@@ -70,7 +86,12 @@ export async function subscribeToPush(userId: string): Promise<PushStatus> {
     return permission === 'denied' ? 'denied' : 'default'
   }
 
-  const reg = await navigator.serviceWorker.ready
+  const reg = await swReadyOrNull()
+  if (!reg) {
+    throw new Error(
+      'El service worker no está listo. Recargá la página e intentá de nuevo.',
+    )
+  }
 
   // Reusa la suscripción existente o crea una nueva.
   let sub = await reg.pushManager.getSubscription()
@@ -99,7 +120,8 @@ export async function subscribeToPush(userId: string): Promise<PushStatus> {
 // de push_subscriptions.
 export async function unsubscribeFromPush(): Promise<PushStatus> {
   if (!isPushSupported()) return 'unsupported'
-  const reg = await navigator.serviceWorker.ready
+  const reg = await swReadyOrNull()
+  if (!reg) return getPushStatus()
   const sub = await reg.pushManager.getSubscription()
   if (sub) {
     await supabase.from('push_subscriptions').delete().eq('endpoint', sub.endpoint)

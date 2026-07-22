@@ -698,8 +698,48 @@ Function bypassa RLS para leer/borrar suscripciones de cualquier usuario.
    recordatorio pasa a mostrar **"● Notificado"** (estado `enviado`) y sigue con
    "Marcar hecho". Para no esperar, avisame y disparo la función manualmente.
 
+## Fix: "Cargando…" pegado en Notificaciones (SW en dev + timeout)
+
+- **Causa raíz:** `navigator.serviceWorker.ready` **no rechaza cuando no hay un
+  SW activo — cuelga para siempre**. `getPushStatus()` lo `await`-eaba sin
+  timeout en el camino de permiso concedido, así que `status` quedaba en `null`
+  → la sección mostraba "Cargando…" indefinidamente. Se disparaba porque en
+  `npm run dev` el SW **no se registraba** (faltaba `devOptions.enabled` en la
+  config de `vite-plugin-pwa`), y también quedaba frágil en cualquier caso donde
+  el SW no llegue a activar. El `try/catch` daba falsa protección: un cuelgue no
+  es una excepción. Confirmado con un probe (`serviceWorker.ready` no resolvía
+  en 3s en dev; sí en el build de producción).
+- **Fix:**
+  1. `vite.config.ts`: `devOptions: { enabled: true, type: 'module' }` en
+     `VitePWA(...)` → el SW se registra también en dev.
+  2. `src/lib/push.ts`: helper `swReadyOrNull()` que carrea
+     `navigator.serviceWorker.ready` contra un timeout de 6s
+     (`Promise.race`) y devuelve `null` si vence. Los tres usos
+     (`getPushStatus`, `subscribeToPush`, `unsubscribeFromPush`) pasan por él:
+     `getPushStatus` cae a `'granted'` (nunca queda colgado), `subscribeToPush`
+     tira un error claro ("recargá e intentá de nuevo"), `unsubscribeFromPush`
+     reconsulta el estado.
+  3. `src/components/PushSettings.tsx`: `.catch` en el efecto de montaje → ante
+     cualquier rechazo sale de "Cargando…" (a `'default'` + mensaje de error),
+     nunca se queda en `null`.
+- **Verificado:**
+  - **Dev (`npm run dev`):** el probe ahora da `registrationsCount: 1`,
+    `active: true`, controller presente y `serviceWorker.ready` → **RESUELVE**
+    (`scope http://localhost:5173/`). Módulo carga sin errores de consola.
+  - **Timeout probado:** réplica de `swReadyOrNull` contra un `.ready` que nunca
+    resuelve → devuelve `null` a ~6.3s en vez de colgar.
+  - **Producción (`npm run preview`):** SW `active`, controller, `.ready`
+    resuelve → registerSW + injectManifest intactos.
+  - `npm run build` sin errores.
+
 ## Changelog
 
+- 2026-07-21 — Fix "Cargando…" pegado en Notificaciones: `navigator.service
+  Worker.ready` cuelga (no rechaza) sin SW activo y no había timeout. Se agregó
+  `devOptions.enabled` (SW en dev), un `swReadyOrNull()` con timeout de 6s para
+  los tres usos de `.ready` en `push.ts`, y un `.catch` en el efecto de montaje
+  de `PushSettings`. Verificado con probe: en dev el SW ahora registra y
+  `.ready` resuelve; producción intacta.
 - 2026-07-21 — Notificaciones push reales para recordatorios: claves VAPID
   (pública en `.env`, privada como secret), migración `push_subscriptions` con
   RLS, service worker propio (`injectManifest`, handlers `push`/

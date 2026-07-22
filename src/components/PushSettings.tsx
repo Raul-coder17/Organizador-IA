@@ -16,9 +16,17 @@ export function PushSettings() {
 
   useEffect(() => {
     let cancelled = false
-    getPushStatus().then((s) => {
-      if (!cancelled) setStatus(s)
-    })
+    getPushStatus()
+      .then((s) => {
+        if (!cancelled) setStatus(s)
+      })
+      .catch(() => {
+        // Ante cualquier rechazo inesperado, salimos de "Cargando…" igual:
+        // asumimos 'default' (soportado, sin decidir) y mostramos el error.
+        if (cancelled) return
+        setStatus('default')
+        setError('No se pudo leer el estado de las notificaciones.')
+      })
     return () => {
       cancelled = true
     }
