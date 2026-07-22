@@ -14,6 +14,9 @@ texto o foto.
 - **vite-plugin-pwa** — instalable, offline-first.
 - **Gemini API** — captura asistida por IA (texto/foto → estructura).
 
+> **Plan de soporte offline completo** (propuesta, aún sin implementar):
+> [`PLAN_OFFLINE.md`](PLAN_OFFLINE.md).
+
 ## Schema de base de datos
 
 Migración: [`supabase/migrations/20260720120000_schema_inicial.sql`](supabase/migrations/20260720120000_schema_inicial.sql).

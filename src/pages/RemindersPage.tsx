@@ -3,10 +3,17 @@ import { useAuth } from '../lib/AuthContext'
 import { AppNav } from '../components/AppNav'
 import {
   formatFechaHora,
+  joinRecordatoriosConItems,
   listRecordatorios,
   marcarHecho,
   resumenContenido,
+  toPlainRecordatorio,
 } from '../lib/recordatorios'
+import {
+  loadItemsFromCache,
+  loadRecordatoriosFromCache,
+  saveRecordatoriosToCache,
+} from '../lib/db'
 import type { RecordatorioConItem } from '../types/database'
 
 type Estado = 'vencido' | 'proximo' | 'hecho'
@@ -41,12 +48,33 @@ export function RemindersPage() {
 
   const load = useCallback(async () => {
     if (!user) return
-    setLoading(true)
     setError(null)
+
+    // 1) Hidratar desde la caché local: recordatorios planos + items cacheados
+    // (los cachea la pantalla de items) unidos en la forma que usa la vista.
+    let hydrated = false
     try {
-      setRecordatorios(await listRecordatorios())
+      const [recs, items] = await Promise.all([
+        loadRecordatoriosFromCache(),
+        loadItemsFromCache(),
+      ])
+      if (recs.length) {
+        setRecordatorios(joinRecordatoriosConItems(recs, items))
+        setLoading(false)
+        hydrated = true
+      }
+    } catch {
+      /* caché best-effort */
+    }
+
+    // 2) Refrescar desde la red y actualizar la caché (guardamos los
+    // recordatorios planos, sin el item embebido).
+    try {
+      const data = await listRecordatorios()
+      setRecordatorios(data)
+      saveRecordatoriosToCache(data.map(toPlainRecordatorio)).catch(() => {})
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error cargando recordatorios')
+      if (!hydrated) setError(err instanceof Error ? err.message : 'Error cargando recordatorios')
     } finally {
       setLoading(false)
     }

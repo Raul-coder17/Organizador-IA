@@ -41,10 +41,11 @@ export interface Recordatorio {
   fecha_hora: string
   estado: EstadoRecordatorio
   created_at: string
+  updated_at: string
 }
 
-export type RecordatorioInsert = Omit<Recordatorio, 'id' | 'created_at' | 'estado'> &
-  Partial<Pick<Recordatorio, 'id' | 'created_at' | 'estado'>>
+export type RecordatorioInsert = Omit<Recordatorio, 'id' | 'created_at' | 'updated_at' | 'estado'> &
+  Partial<Pick<Recordatorio, 'id' | 'created_at' | 'updated_at' | 'estado'>>
 
 // Un recordatorio con el item asociado embebido (join), como lo devuelve
 // listRecordatorios para la pantalla de recordatorios.

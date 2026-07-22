@@ -1,6 +1,47 @@
 import { supabase } from './supabase'
 import type { Item, Recordatorio, RecordatorioConItem } from '../types/database'
 
+// Rearma la forma RecordatorioConItem (recordatorio + item embebido) que usa la
+// pantalla de recordatorios, uniendo recordatorios planos con los items
+// cacheados. Se usa para hidratar /reminders desde IndexedDB sin red: online el
+// item embebido lo trae el join del server; offline lo reconstruimos de la
+// caché de items. Si el item no está cacheado, item queda null (resumenContenido
+// lo maneja).
+// Descarta el item embebido para guardar solo la fila plana en la caché local
+// (el store `recordatorios` guarda Recordatorio, no RecordatorioConItem).
+export function toPlainRecordatorio(r: RecordatorioConItem): Recordatorio {
+  return {
+    id: r.id,
+    item_id: r.item_id,
+    fecha_hora: r.fecha_hora,
+    estado: r.estado,
+    created_at: r.created_at,
+    updated_at: r.updated_at,
+  }
+}
+
+export function joinRecordatoriosConItems(
+  recordatorios: Recordatorio[],
+  items: Item[],
+): RecordatorioConItem[] {
+  const byId = new Map(items.map((i) => [i.id, i]))
+  return recordatorios.map((r) => {
+    const it = byId.get(r.item_id)
+    return {
+      ...r,
+      item: it
+        ? {
+            id: it.id,
+            tipo: it.tipo,
+            contenido: it.contenido,
+            tema_id: it.tema_id,
+            prioridad: it.prioridad,
+          }
+        : null,
+    }
+  })
+}
+
 // Columnas del item que necesitamos para mostrar el recordatorio en la lista.
 const ITEM_COLS = 'id, tipo, contenido, tema_id, prioridad'
 
@@ -86,7 +127,9 @@ export async function upsertRecordatorio(itemId: string, fechaHora: string): Pro
 
   const { data, error } = await supabase
     .from('recordatorios')
-    .insert({ item_id: itemId, fecha_hora: fechaHora, estado: 'pendiente' })
+    // UUID generado en el cliente (ver nota en items.ts): id estable
+    // local↔servidor desde el insert. Default gen_random_uuid() como fallback.
+    .insert({ id: crypto.randomUUID(), item_id: itemId, fecha_hora: fechaHora, estado: 'pendiente' })
     .select('*')
     .single()
   if (error) throw error

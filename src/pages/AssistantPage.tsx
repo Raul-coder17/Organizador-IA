@@ -6,6 +6,12 @@ import { supabase } from '../lib/supabase'
 import { listItems, createItem, updateItem, deleteItem } from '../lib/items'
 import { listTemas, createTema } from '../lib/temas'
 import {
+  loadItemsFromCache,
+  loadTemasFromCache,
+  saveItemsToCache,
+  saveTemasToCache,
+} from '../lib/db'
+import {
   datetimeLocalToIso,
   deleteRecordatoriosForItem,
   formatFechaHora,
@@ -53,9 +59,24 @@ export function AssistantPage() {
 
   async function loadData() {
     if (!user) return
-    const [itemsData, temasData] = await Promise.all([listItems(user.id), listTemas(user.id)])
-    setItems(itemsData)
-    setTemas(temasData)
+    // Hidratar desde la caché local primero (instantáneo, sirve sin red).
+    try {
+      const [ci, ct] = await Promise.all([loadItemsFromCache(), loadTemasFromCache()])
+      if (ci.length) setItems(ci)
+      if (ct.length) setTemas(ct)
+    } catch {
+      /* caché best-effort */
+    }
+    // Refrescar de la red y actualizar la caché. Sin red, mantenemos lo cacheado.
+    try {
+      const [itemsData, temasData] = await Promise.all([listItems(user.id), listTemas(user.id)])
+      setItems(itemsData)
+      setTemas(temasData)
+      saveItemsToCache(itemsData).catch(() => {})
+      saveTemasToCache(temasData).catch(() => {})
+    } catch {
+      /* offline: el asistente igual necesita red para responder (ítem 9) */
+    }
   }
 
   useEffect(() => {
