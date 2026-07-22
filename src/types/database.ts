@@ -46,6 +46,12 @@ export interface Recordatorio {
 export type RecordatorioInsert = Omit<Recordatorio, 'id' | 'created_at' | 'estado'> &
   Partial<Pick<Recordatorio, 'id' | 'created_at' | 'estado'>>
 
+// Un recordatorio con el item asociado embebido (join), como lo devuelve
+// listRecordatorios para la pantalla de recordatorios.
+export interface RecordatorioConItem extends Recordatorio {
+  item: Pick<Item, 'id' | 'tipo' | 'contenido' | 'tema_id' | 'prioridad'> | null
+}
+
 export interface UserAiSettings {
   user_id: string
   gemini_api_key_encrypted: string | null

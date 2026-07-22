@@ -498,8 +498,101 @@ tiene sentido.
   **Falta tu prueba en vivo** (ver reporte): crear una lista, marcar/
   desmarcar, recargar y confirmar que el estado persiste.
 
+## Recordatorios — UI y datos (sin notificaciones todavía)
+
+Conecta la tabla `recordatorios` (que existía con RLS desde el schema inicial
+pero nunca se había usado) a la UI: poder ponerle fecha/hora a cualquier item y
+verlos listados. **Las notificaciones push, el service worker, las VAPID keys y
+el cron de Supabase quedan para el próximo ítem** — esto es solo UI + datos.
+
+### Capa de datos — [`src/lib/recordatorios.ts`](src/lib/recordatorios.ts)
+
+- `listRecordatorios()` — trae los recordatorios del usuario ordenados por
+  `fecha_hora` ascendente, con el item asociado embebido
+  (`select('*, item:items(id, tipo, contenido, tema_id, prioridad)')`). **No
+  filtra por `user_id`**: la RLS de `recordatorios` ya restringe a los que
+  cuelgan de un item del usuario (y el join a `items` está igualmente
+  protegido). Aprovecha el índice `recordatorios(fecha_hora)`.
+- `getRecordatorioForItem(itemId)` — el recordatorio (si hay) de un item, para
+  prellenar el form al editar.
+- `upsertRecordatorio(itemId, fechaHora)` — busca el existente y hace update, o
+  insert si no hay (no se usa `upsert` por `item_id` porque no hay unique
+  constraint ahí; en esta UI un item tiene a lo sumo un recordatorio).
+- `deleteRecordatoriosForItem(itemId)` — borra el recordatorio al desmarcar el
+  toggle.
+- `marcarHecho(id)` — `estado = 'hecho'`.
+- `countRecordatoriosPendientesHoy()` — cuenta pendientes vencidos o que vencen
+  hoy (corte = fin del día local), para el badge de la nav.
+- Helpers: `isoToDatetimeLocal` / `datetimeLocalToIso` (conversión entre el ISO
+  UTC de Postgres y el valor de un `<input type="datetime-local">` en hora
+  local), `formatFechaHora` (display legible en español) y `resumenContenido`
+  (resumen textual del item para la lista, con caso especial para listas).
+- Tipo nuevo `RecordatorioConItem` en `src/types/database.ts` (extiende
+  `Recordatorio` con `item` embebido).
+
+### ItemForm — toggle de recordatorio
+
+- Checkbox opcional **"Agregar recordatorio"**, disponible para **cualquier
+  tipo** de item (no solo `tipo='recordatorio'`). Al marcarlo aparece un
+  `<input type="datetime-local">`.
+- Al editar, se carga el recordatorio existente (`getRecordatorioForItem`) y se
+  prellenan el toggle y la fecha; se recuerda si el item **ya tenía** uno.
+- Al guardar (usando el item recién creado/actualizado, así vale para create y
+  edit): marcado con fecha → `upsertRecordatorio` (estado `'pendiente'`);
+  desmarcado pero antes existía → `deleteRecordatoriosForItem`; fecha editada →
+  el upsert la actualiza. Validación: toggle marcado sin fecha → error inline.
+
+### Pantalla `/reminders` — [`src/pages/RemindersPage.tsx`](src/pages/RemindersPage.tsx)
+
+- Lista los recordatorios ordenados por `fecha_hora` ascendente, mostrando el
+  resumen del contenido del item asociado (join) y su tipo.
+- **Clasificación visual** con los colores del sistema: `vencido`
+  (`fecha_hora < ahora` y estado pendiente) → borde/label **rust**; `proximo` →
+  **moss**; `hecho` (estado `'hecho'`) → **slate**, atenuado y tachado. (El
+  estado `'enviado'`, que hoy no se produce sin push, se trata como próximo.)
+- Botón **"Marcar hecho"** por recordatorio (oculto en los ya hechos) →
+  `marcarHecho`, con update optimista del estado local.
+- Estados loading / vacío / error acordes al resto de la app.
+
+### AppNav — link + badge
+
+- Link **"Recordatorios"** a `/reminders` (ruta agregada en `App.tsx`).
+- Badge rust con el conteo de pendientes vencidos/de hoy
+  (`useRecordatoriosBadge`, que recalcula al cambiar de ruta, así vuelve
+  actualizado tras marcar alguno como hecho). Se oculta si el conteo es 0.
+
+### Diseño
+
+- Clases nuevas en `index.css`: `.nav-badge`, `.rec-toggle` (con checkbox
+  estilado moss igual que las listas), y la familia `.rem*` para la lista
+  (bordes izquierdos de 4px por estado, mismo lenguaje que los items). Fuentes,
+  colores y look de fichas consistentes con el resto.
+
+### Verificación
+
+- **`npm run build` sin errores** (`tsc -b && vite build`).
+- **Visual, con el harness de CSS compilado (no puedo autenticarme):** desktop
+  y ~375px. Verificado: nav con badge rust; ficha `vencido` con borde/label
+  rust, `proximo` moss, `hecho` slate atenuada+tachada; botón "Marcar hecho";
+  toggle del form con checkbox moss + datetime-local estilado. A 375px el nav
+  envuelve, las fichas apilan la acción al final y `scrollWidth == clientWidth`
+  (sin scroll horizontal de página).
+- **Falta tu prueba en vivo** (requiere tu sesión): crear un item marcando
+  "Agregar recordatorio" con una **fecha pasada** y confirmar que aparece como
+  **vencido** (borde rust) en `/reminders` y en el badge; tocar "Marcar hecho"
+  y ver que pasa a `hecho` (tachado) y baja el badge; editar un item para
+  cambiar/quitar su fecha y confirmar que el recordatorio se actualiza/elimina.
+
 ## Changelog
 
+- 2026-07-21 — Recordatorios (UI + datos, sin push todavía): capa
+  `src/lib/recordatorios.ts` (list con join a items, upsert/delete por item,
+  marcar hecho, conteo para badge, helpers de fecha), toggle "Agregar
+  recordatorio" en `ItemForm` para cualquier tipo de item, pantalla
+  `/reminders` con clasificación visual vencido/próximo/hecho (rust/moss/slate)
+  y "Marcar hecho", y link + badge rust en `AppNav`. Build sin errores; visual
+  verificado en desktop y ~375px con el harness de CSS compilado. Prueba en
+  vivo (crear con fecha pasada, marcar hecho) pendiente del lado del usuario.
 - 2026-07-21 — Listas con checkboxes reales: nuevo contenido
   `{ items: [{id,texto,hecho}] }`, editor de líneas en el form, checkboxes
   persistidos con UI optimista + revert on error, y compat con listas viejas

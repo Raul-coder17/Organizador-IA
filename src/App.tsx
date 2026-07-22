@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { ItemsPage } from './pages/ItemsPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { AssistantPage } from './pages/AssistantPage'
+import { RemindersPage } from './pages/RemindersPage'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ItemsPage />} />
+            <Route path="/reminders" element={<RemindersPage />} />
             <Route path="/assistant" element={<AssistantPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>

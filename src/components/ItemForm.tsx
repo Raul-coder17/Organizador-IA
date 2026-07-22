@@ -2,6 +2,13 @@ import { useEffect, useState, type FormEvent } from 'react'
 import type { Item, ItemInsert, LineaLista, Prioridad, Tema, TipoItem } from '../types/database'
 import { createItem, updateItem } from '../lib/items'
 import { createTema } from '../lib/temas'
+import {
+  datetimeLocalToIso,
+  deleteRecordatoriosForItem,
+  getRecordatorioForItem,
+  isoToDatetimeLocal,
+  upsertRecordatorio,
+} from '../lib/recordatorios'
 
 function nuevaLinea(): LineaLista {
   return { id: crypto.randomUUID(), texto: '', hecho: false }
@@ -26,6 +33,11 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
   const [prioridad, setPrioridad] = useState<Prioridad | ''>('')
   const [contenidoTexto, setContenidoTexto] = useState('')
   const [lineas, setLineas] = useState<LineaLista[]>([])
+  const [conRecordatorio, setConRecordatorio] = useState(false)
+  const [recordatorioFecha, setRecordatorioFecha] = useState('')
+  // Marca si el item que estamos editando ya tenía un recordatorio, para saber
+  // si al desmarcar el toggle hay que eliminarlo.
+  const [teniaRecordatorio, setTeniaRecordatorio] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -56,6 +68,29 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
     }
     setNuevoTemaNombre('')
     setError(null)
+
+    // Recordatorio: reseteamos primero y, si estamos editando, cargamos el que
+    // exista para prellenar el toggle y la fecha.
+    setConRecordatorio(false)
+    setRecordatorioFecha('')
+    setTeniaRecordatorio(false)
+
+    if (editingItem) {
+      let cancelled = false
+      getRecordatorioForItem(editingItem.id)
+        .then((rec) => {
+          if (cancelled || !rec) return
+          setConRecordatorio(true)
+          setTeniaRecordatorio(true)
+          setRecordatorioFecha(isoToDatetimeLocal(rec.fecha_hora))
+        })
+        .catch(() => {
+          /* si falla la carga del recordatorio, el form igual funciona sin él */
+        })
+      return () => {
+        cancelled = true
+      }
+    }
   }, [editingItem])
 
   // Aseguramos al menos una línea en blanco cuando el tipo es "lista".
@@ -97,6 +132,11 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
       return
     }
 
+    if (conRecordatorio && !recordatorioFecha) {
+      setError('Elegí una fecha y hora para el recordatorio.')
+      return
+    }
+
     setLoading(true)
     setError(null)
 
@@ -118,10 +158,17 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
         origen: 'manual',
       }
 
-      if (editingItem) {
-        await updateItem(editingItem.id, payload)
-      } else {
-        await createItem(payload)
+      const saved = editingItem
+        ? await updateItem(editingItem.id, payload)
+        : await createItem(payload)
+
+      // Sincronizamos el recordatorio según el toggle:
+      //  - marcado con fecha → upsert (crea o actualiza, estado 'pendiente')
+      //  - desmarcado pero antes existía → eliminarlo
+      if (conRecordatorio && recordatorioFecha) {
+        await upsertRecordatorio(saved.id, datetimeLocalToIso(recordatorioFecha))
+      } else if (!conRecordatorio && teniaRecordatorio) {
+        await deleteRecordatoriosForItem(saved.id)
       }
 
       onSaved()
@@ -244,6 +291,27 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
               tipo === 'tabla' ? 'Columna1 | Columna2\nDato1 | Dato2\nDato3 | Dato4' : undefined
             }
             className="ctl w-full"
+          />
+        )}
+      </div>
+
+      <div className="rec-toggle">
+        <label className="rec-toggle__check">
+          <input
+            type="checkbox"
+            checked={conRecordatorio}
+            onChange={(e) => setConRecordatorio(e.target.checked)}
+          />
+          <span>Agregar recordatorio</span>
+        </label>
+
+        {conRecordatorio && (
+          <input
+            type="datetime-local"
+            value={recordatorioFecha}
+            onChange={(e) => setRecordatorioFecha(e.target.value)}
+            className="ctl ctl--mono mt-2"
+            aria-label="Fecha y hora del recordatorio"
           />
         )}
       </div>

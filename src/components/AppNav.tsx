@@ -1,11 +1,13 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { useAiEnabled } from '../lib/useAiEnabled'
+import { useRecordatoriosBadge } from '../lib/useRecordatoriosBadge'
 import { supabase } from '../lib/supabase'
 
 export function AppNav() {
   const { user } = useAuth()
   const aiEnabled = useAiEnabled()
+  const recordatoriosPendientes = useRecordatoriosBadge()
   const location = useLocation()
 
   const linkClass = (path: string) =>
@@ -18,6 +20,12 @@ export function AppNav() {
         <nav className="nav-links">
           <Link to="/" className={linkClass('/')}>
             Items
+          </Link>
+          <Link to="/reminders" className={linkClass('/reminders')}>
+            Recordatorios
+            {recordatoriosPendientes > 0 && (
+              <span className="nav-badge">{recordatoriosPendientes}</span>
+            )}
           </Link>
           {aiEnabled ? (
             <Link to="/assistant" className={linkClass('/assistant')}>

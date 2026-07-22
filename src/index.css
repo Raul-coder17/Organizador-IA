@@ -79,6 +79,21 @@ body {
 .nav-link--disabled {
   color: var(--color-line);
 }
+/* Badge de conteo (recordatorios vencidos/de hoy) en la nav */
+.nav-badge {
+  display: inline-block;
+  margin-left: 6px;
+  min-width: 16px;
+  padding: 0 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  color: var(--color-moss-ink);
+  background: var(--color-rust);
+  border-radius: 9px;
+  vertical-align: 1px;
+}
 .app-nav__right {
   display: flex;
   align-items: center;
@@ -433,4 +448,145 @@ body {
 }
 .item-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Toggle de recordatorio en el ItemForm                                */
+/* ------------------------------------------------------------------ */
+.rec-toggle {
+  border-top: 1px solid var(--color-line);
+  padding-top: 16px;
+}
+.rec-toggle__check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+.rec-toggle__check input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--color-line);
+  border-radius: 2px;
+  background: var(--color-paper);
+  cursor: pointer;
+  position: relative;
+}
+.rec-toggle__check input[type="checkbox"]:checked {
+  background: var(--color-moss);
+  border-color: var(--color-moss);
+}
+.rec-toggle__check input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 4.5px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--color-moss-ink);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Lista de recordatorios (/reminders)                                  */
+/* ------------------------------------------------------------------ */
+.rem-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-left-width: 4px;
+  margin-bottom: 10px;
+  padding: 14px 18px;
+}
+.rem--vencido {
+  border-left-color: var(--color-rust);
+}
+.rem--proximo {
+  border-left-color: var(--color-moss);
+}
+.rem--hecho {
+  border-left-color: var(--color-slate);
+  opacity: 0.7;
+}
+.rem__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+.rem__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rem__estado {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.rem__estado--vencido {
+  color: var(--color-rust);
+}
+.rem__estado--proximo {
+  color: var(--color-moss);
+}
+.rem__estado--hecho {
+  color: var(--color-slate);
+}
+.rem__when {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-ink-soft);
+}
+.rem__tipo {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-slate);
+}
+.rem__contenido {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+.rem--hecho .rem__contenido {
+  text-decoration: line-through;
+  color: var(--color-slate);
+}
+.rem__actions {
+  padding-top: 2px;
+  white-space: nowrap;
+}
+
+/* Recordatorios en móvil: fila -> columna, acción al final */
+@media (max-width: 480px) {
+  .rem {
+    flex-direction: column;
+  }
+  .rem__actions {
+    align-self: flex-end;
+  }
 }
