@@ -802,8 +802,66 @@ persistente queda para el próximo ítem.)
   guard de auth intacto (401 sin sesión).
 - **Pendiente de tu prueba en vivo** (requiere tu cuenta + tu key): ver abajo.
 
+## Deploy
+
+### GitHub
+
+- Repo: <https://github.com/Raul-coder17/Organizador-IA> (remote `origin`,
+  rama `master`). El push incluye todo el código, `PLAN_ORGANIZADOR.md`, el
+  mockup de referencia y `render.yaml`. **No** se versionan `.env`,
+  `node_modules`, `dist`, ni `supabase/.temp` (gitignored, verificado).
+- No hay secretos en el repo: la clave privada VAPID, `AI_KEY_ENCRYPTION_SECRET`
+  y `CRON_SECRET` viven solo como secrets de Supabase; `.env` (con la anon key
+  y la VAPID pública) está ignorado y `.env.example` solo tiene placeholders.
+
+### Render — sitio estático (config en `render.yaml`)
+
+[`render.yaml`](render.yaml) define un Static Site: `buildCommand: npm run build`,
+`staticPublishPath: ./dist`, rewrite SPA (`/* → /index.html`) y `Cache-Control:
+no-cache` para `sw.js`, `registerSW.js` y `manifest.json` (así el navegador
+toma siempre el último service worker tras cada deploy).
+
+**Pasos que tenés que hacer vos en render.com (yo no puedo, requiere tu cuenta):**
+
+1. Entrá a <https://dashboard.render.com> → **New +** → **Static Site** (o
+   **Blueprint** si querés que lea `render.yaml` directo).
+2. **Conectá el repo de GitHub** `Raul-coder17/Organizador-IA` (autorizá a
+   Render a acceder a tu GitHub si te lo pide). Elegí la rama `master`.
+3. Si NO usaste Blueprint, completá a mano: **Build Command** = `npm run build`,
+   **Publish Directory** = `dist`. (Con Blueprint, Render los toma del
+   `render.yaml`.)
+4. **Environment Variables** — agregá estas tres (son **públicas**, no secretas,
+   pero Vite las necesita en el build; tomá los valores de tu `.env` local):
+   - `VITE_SUPABASE_URL` = `https://uesnorbrpeosynabobha.supabase.co`
+   - `VITE_SUPABASE_ANON_KEY` = (tu anon key `sb_publishable_...`)
+   - `VITE_VAPID_PUBLIC_KEY` = `BGyx8cAZkUcXUH6Ok07mAfUtmNwtLBTN-Yh5kk3y8HF0xKADfLl31yp14XSPFzWlHBaeUSa1SgT0ZcWqRwgGXiw`
+5. **Create Static Site** y esperá el primer deploy. Te queda una URL tipo
+   `https://organizador-ia.onrender.com`.
+
+**No hace falta tocar Supabase para CORS:** las Edge Functions que llama el
+navegador (`manage-ai-key`, `ai-assistant`) ya responden con
+`Access-Control-Allow-Origin: *` y manejan el preflight `OPTIONS`, así que
+andan desde cualquier dominio (incluido el de Render).
+`send-reminder-notifications` no tiene CORS a propósito: solo la dispara el cron
+(server-to-server), nunca el navegador.
+
+**⚠️ Notificaciones push y el dominio:** las suscripciones Web Push están
+**atadas al origen (dominio)**. La suscripción que activaste en `localhost` **no
+sirve** en `https://…onrender.com` — es otro origen. Una vez desplegado, entrá a
+**Settings → Notificaciones → Activar notificaciones push** en el dominio de
+Render y aceptá el permiso de nuevo, para crear la suscripción de ese origen.
+(La `push_subscriptions` de localhost queda huérfana; podés ignorarla o
+desactivarla desde ahí.) El resto —recordatorios, cron, envío— ya está del lado
+del servidor y no depende del dominio del frontend.
+
 ## Changelog
 
+- 2026-07-21 — Deploy: repo subido a GitHub
+  (`Raul-coder17/Organizador-IA`, rama `master`) y `render.yaml` para Static
+  Site (build `npm run build`, publish `dist`, rewrite SPA `/*→/index.html`,
+  no-cache para `sw.js`/`registerSW.js`/`manifest.json`). CORS de las funciones
+  browser-facing ya era `*` (sin cambios). Documentados los pasos de Render y la
+  nota de que las push se reactivan en el nuevo dominio.
 - 2026-07-21 — Asistente con tools ampliadas: `listRecordatorios` (lectura),
   `proposeCreateItem`/`proposeUpdateItem` con soporte de listas (líneas) y
   recordatorios, y **multiacción** (Gemini devuelve varias function calls →

@@ -1,0 +1,44 @@
+# Render Blueprint — sitio estático (Vite SPA + PWA).
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Al conectar el repo en render.com, Render detecta este archivo y precarga la
+# configuración. Las env vars (VITE_*) son públicas pero se cargan en el
+# dashboard porque son variables del BUILD (Vite las inlinea en el bundle).
+services:
+  - type: web
+    name: organizador-ia
+    runtime: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+
+    # SPA: cualquier ruta sin archivo estático real (ej. /reminders, /settings)
+    # se sirve con index.html para que React Router resuelva del lado del cliente.
+    # Render sirve primero los archivos que existen (assets, sw.js, manifest.json),
+    # así que este rewrite no los pisa.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+    # El service worker y el manifest no deben cachearse: así el navegador toma
+    # siempre la última versión del SW (que maneja el push) tras cada deploy.
+    headers:
+      - path: /sw.js
+        name: Cache-Control
+        value: no-cache
+      - path: /registerSW.js
+        name: Cache-Control
+        value: no-cache
+      - path: /manifest.json
+        name: Cache-Control
+        value: no-cache
+
+    # Se completan en el dashboard de Render (sync: false => no se versionan).
+    # Son públicas (no secretas), pero Vite las necesita en tiempo de build.
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_VAPID_PUBLIC_KEY
+        sync: false
