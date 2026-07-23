@@ -1,21 +1,69 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { deleteItem, updateItem } from '../lib/repo'
-import { loadItemsFromCache, loadTemasFromCache } from '../lib/db'
+import { loadItemsFromCache, loadRecordatoriosFromCache, loadTemasFromCache } from '../lib/db'
 import { hasSyncSettled, subscribeSyncSettled } from '../lib/sync'
-import type { Item, LineaLista, Tema } from '../types/database'
+import type { Item, LineaLista, Recordatorio, Tema, TipoItem } from '../types/database'
 import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
 import { AppNav } from '../components/AppNav'
+
+// Filtro por tipo. 'todos' es el estado neutro; el resto son los cuatro tipos
+// reales de item — incluido 'recordatorio', que existe en el modelo y hasta
+// ahora no tenía forma de filtrarse.
+type FiltroTipo = 'todos' | TipoItem
+
+const FILTROS_TIPO: { value: FiltroTipo; label: string }[] = [
+  { value: 'todos', label: 'Todos' },
+  { value: 'nota', label: 'Notas' },
+  { value: 'lista', label: 'Listas' },
+  { value: 'tabla', label: 'Tablas' },
+  { value: 'recordatorio', label: 'Recordatorios' },
+]
+
+// Filtro por tema: 'todos', 'sin-tema' (los que tienen `tema_id` null) o el id
+// de un tema.
+const FILTRO_SIN_TEMA = 'sin-tema'
+
+// Un item puede tener más de un recordatorio; la ficha muestra uno solo. Se
+// elige el más urgente: el pendiente más próximo y, si están todos hechos, el
+// más reciente en el tiempo.
+function indexarRecordatorios(recordatorios: Recordatorio[]): Map<string, Recordatorio> {
+  const porItem = new Map<string, Recordatorio>()
+
+  for (const rec of recordatorios) {
+    const actual = porItem.get(rec.item_id)
+    if (!actual) {
+      porItem.set(rec.item_id, rec)
+      continue
+    }
+
+    const recPendiente = rec.estado !== 'hecho'
+    const actualPendiente = actual.estado !== 'hecho'
+    if (recPendiente !== actualPendiente) {
+      if (recPendiente) porItem.set(rec.item_id, rec)
+      continue
+    }
+
+    const gana = recPendiente
+      ? rec.fecha_hora < actual.fecha_hora // pendientes: el que vence antes
+      : rec.fecha_hora > actual.fecha_hora // hechos: el más reciente
+    if (gana) porItem.set(rec.item_id, rec)
+  }
+
+  return porItem
+}
 
 export function ItemsPage() {
   const { user } = useAuth()
   const [items, setItems] = useState<Item[]>([])
   const [temas, setTemas] = useState<Tema[]>([])
+  const [recordatorios, setRecordatorios] = useState<Map<string, Recordatorio>>(new Map())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [editingItem, setEditingItem] = useState<Item | null>(null)
   const [filterTemaId, setFilterTemaId] = useState('todos')
+  const [filterTipo, setFilterTipo] = useState<FiltroTipo>('todos')
   const [showForm, setShowForm] = useState(false)
 
   // La pantalla lee SIEMPRE del espejo local (instantáneo, igual con o sin
@@ -25,9 +73,14 @@ export function ItemsPage() {
     if (!user) return
     setError(null)
     try {
-      const [ci, ct] = await Promise.all([loadItemsFromCache(), loadTemasFromCache()])
+      const [ci, ct, cr] = await Promise.all([
+        loadItemsFromCache(),
+        loadTemasFromCache(),
+        loadRecordatoriosFromCache(),
+      ])
       setItems(ci)
       setTemas(ct)
+      setRecordatorios(indexarRecordatorios(cr))
       // Espejo vacío y todavía sin ningún ciclo de sync (primer arranque con
       // red): seguimos en "Cargando…" hasta que baje algo, para no mostrar un
       // "no tenés items" que es mentira.
@@ -90,12 +143,13 @@ export function ItemsPage() {
 
   if (!user) return null
 
-  const filteredItems =
-    filterTemaId === 'todos'
-      ? items
-      : filterTemaId === 'sin-tema'
-        ? items.filter((item) => item.tema_id === null)
-        : items.filter((item) => item.tema_id === filterTemaId)
+  const coincideTema = (item: Item) =>
+    filterTemaId === 'todos' ||
+    (filterTemaId === FILTRO_SIN_TEMA ? item.tema_id === null : item.tema_id === filterTemaId)
+  const coincideTipo = (item: Item) => filterTipo === 'todos' || item.tipo === filterTipo
+
+  const filteredItems = items.filter((item) => coincideTema(item) && coincideTipo(item))
+  const hayFiltroActivo = filterTemaId !== 'todos' || filterTipo !== 'todos'
 
   return (
     <div className="min-h-screen bg-paper">
@@ -103,19 +157,13 @@ export function ItemsPage() {
 
       <main className="max-w-[840px] mx-auto px-6 py-8 space-y-6">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <select
-            value={filterTemaId}
-            onChange={(e) => setFilterTemaId(e.target.value)}
-            className="ctl ctl--mono"
-          >
-            <option value="todos">Todos los temas</option>
-            <option value="sin-tema">Sin tema</option>
-            {temas.map((tema) => (
-              <option key={tema.id} value={tema.id}>
-                {tema.nombre}
-              </option>
-            ))}
-          </select>
+          <div className="tema-head grow">
+            <h2>Biblioteca</h2>
+            <span className="count">
+              {items.length} item{items.length === 1 ? '' : 's'} · {temas.length} tema
+              {temas.length === 1 ? '' : 's'}
+            </span>
+          </div>
 
           <button
             onClick={() => {
@@ -126,6 +174,54 @@ export function ItemsPage() {
           >
             {showForm ? 'Cancelar' : '+ Nuevo item'}
           </button>
+        </div>
+
+        {/* Dos niveles de filtro: el tipo acota qué clase de ficha se ve, el
+            tema acota de qué va. Se combinan. */}
+        <div className="space-y-3">
+          <div className="segmented hscroll" role="group" aria-label="Filtrar por tipo">
+            {FILTROS_TIPO.map(({ value, label }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setFilterTipo(value)}
+                aria-pressed={filterTipo === value}
+                className={`segmented__btn${filterTipo === value ? ' segmented__btn--active' : ''}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div className="chips hscroll" role="group" aria-label="Filtrar por tema">
+            <button
+              type="button"
+              onClick={() => setFilterTemaId('todos')}
+              aria-pressed={filterTemaId === 'todos'}
+              className={`chip${filterTemaId === 'todos' ? ' chip--active' : ''}`}
+            >
+              Todos los temas
+            </button>
+            {temas.map((tema) => (
+              <button
+                key={tema.id}
+                type="button"
+                onClick={() => setFilterTemaId(tema.id)}
+                aria-pressed={filterTemaId === tema.id}
+                className={`chip${filterTemaId === tema.id ? ' chip--active' : ''}`}
+              >
+                {tema.nombre}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setFilterTemaId(FILTRO_SIN_TEMA)}
+              aria-pressed={filterTemaId === FILTRO_SIN_TEMA}
+              className={`chip${filterTemaId === FILTRO_SIN_TEMA ? ' chip--active' : ''}`}
+            >
+              Sin tema
+            </button>
+          </div>
         </div>
 
         {showForm && (
@@ -150,12 +246,15 @@ export function ItemsPage() {
           <p className="text-sm text-ink-soft">
             {items.length === 0
               ? 'Todavía no tenés items. Creá el primero con el botón de arriba.'
-              : 'No hay items para este filtro.'}
+              : hayFiltroActivo
+                ? 'No hay items con este filtro.'
+                : 'No hay items para mostrar.'}
           </p>
         ) : (
           <ItemList
             items={filteredItems}
             temas={temas}
+            recordatorios={recordatorios}
             onEdit={handleEdit}
             onDelete={handleDelete}
             onToggleLinea={handleToggleLinea}

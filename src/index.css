@@ -4,28 +4,82 @@
 /* Sistema de diseño — colores y tipografía (Tailwind v4 @theme).       */
 /* Genera utilidades: bg-paper, text-ink, border-line, bg-moss,        */
 /* font-fraunces, font-mono, etc. y expone var(--color-*) para el CSS. */
+/*                                                                     */
+/* REGLA DE SISTEMA — dos dimensiones de color que no se mezclan:      */
+/*   · PRIORIDAD = cálido (rust/gold/slate) y va SIEMPRE en el lomo    */
+/*     izquierdo de 4px de la ficha.                                   */
+/*   · TEMA = frío (tonos oklch, Fase 2) y va SIEMPRE en el punto o    */
+/*     el chip.                                                        */
+/*   Nunca usar el color de tema en el lomo, ni el de prioridad en el  */
+/*   punto: si las dos dimensiones comparten superficie, ninguna se    */
+/*   lee. Ver PLAN_REDISEÑO.md §3.                                     */
 /* ------------------------------------------------------------------ */
 @theme {
   --color-paper: #eef0ec;
   --color-card: #f7f8f5;
+  --color-card-2: #e9ece5;
   --color-ink: #1e2a22;
   --color-ink-soft: #4b5750;
+  --color-ink-mute: #8a938a;
   --color-line: #d7dad2;
+  --color-line-soft: #e4e7e0;
   --color-moss: #3d5c41;
   --color-moss-ink: #eaf0ea;
+  --color-moss-tint: #e3eae1;
   --color-rust: #9c3b22;
   --color-gold: #b98530;
   --color-slate: #7c8577;
+
+  /* Elevación. Por decisión de diseño (D2) sólo la usa lo que flota de
+     verdad: chip activo del segmented y, en la Fase 3, drawer/sheet/FAB.
+     Las fichas de ítem quedan planas, con su borde de 1px, como hasta hoy. */
+  --shadow-float:
+    0 1px 2px rgba(30, 42, 34, 0.04), 0 8px 24px -16px rgba(30, 42, 34, 0.18);
 
   --font-fraunces: "Fraunces", serif;
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
+/* ------------------------------------------------------------------ */
+/* Modo oscuro                                                          */
+/* Redefine los mismos tokens bajo el atributo que pone theme.ts en     */
+/* <html>. Como las utilidades de Tailwind resuelven var(--color-*) en  */
+/* tiempo de render, con esto cambia toda la app sin variantes `dark:`  */
+/* ni clases duplicadas. `:root[data-theme]` gana especificidad sobre   */
+/* el `:root` que emite @theme.                                         */
+/* ------------------------------------------------------------------ */
+:root[data-theme="dark"] {
+  --color-paper: #12160f;
+  --color-card: #1a1f17;
+  --color-card-2: #232a20;
+  --color-ink: #e8ece3;
+  --color-ink-soft: #a9b2a5;
+  --color-ink-mute: #71796f;
+  --color-line: #2b322a;
+  --color-line-soft: #222820;
+  --color-moss: #6f9873;
+  --color-moss-ink: #0e120c;
+  --color-moss-tint: #20291d;
+  --color-rust: #cc7458;
+  --color-gold: #d3ab63;
+  --color-slate: #939c90;
+
+  --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -18px rgba(0, 0, 0, 0.6);
+}
+
 body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -188,8 +242,10 @@ body {
   border-radius: 2px;
   cursor: pointer;
 }
+/* El hover se deriva del token, no de un hex fijo: en claro oscurece el moss
+   y en oscuro lo aclara, sin necesidad de una regla aparte por tema. */
 .btn-moss:hover {
-  background: #345035;
+  background: color-mix(in srgb, var(--color-moss) 88%, var(--color-ink));
 }
 .btn-moss:disabled {
   opacity: 0.5;
@@ -222,7 +278,7 @@ body {
   cursor: pointer;
 }
 .btn-outline:hover {
-  background: rgba(156, 59, 34, 0.06);
+  background: color-mix(in srgb, var(--color-rust) 8%, transparent);
 }
 .btn-outline:disabled {
   opacity: 0.5;
@@ -256,6 +312,87 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
+/* Filtros — segmented (por tipo/estado) y chips (por tema)             */
+/* ------------------------------------------------------------------ */
+
+/* Scroll horizontal sin barra visible: para filas de filtros que no entran
+   en pantallas angostas. El contenedor se lleva su propio scroll en vez de
+   ensanchar la página. */
+.hscroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.hscroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Segmented: un solo control con las opciones adentro. La píldora activa es
+   lo único de esta fase que lleva sombra — "flota" sobre el riel (D2). */
+.segmented {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  background: var(--color-card-2);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+}
+.segmented__btn {
+  flex: 1 0 auto;
+  padding: 7px 13px;
+  background: none;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  white-space: nowrap;
+}
+.segmented__btn:hover {
+  color: var(--color-ink);
+}
+.segmented__btn--active,
+.segmented__btn--active:hover {
+  background: var(--color-card);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-float);
+}
+
+/* Chips de tema: la única forma redondeada del sistema (D2). Son controles
+   de filtro, no metadatos — los metadatos siguen siendo texto mono pelado. */
+.chips {
+  display: flex;
+  gap: 7px;
+  padding-bottom: 2px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--color-ink-soft);
+  white-space: nowrap;
+}
+.chip:hover {
+  color: var(--color-ink);
+}
+.chip--active,
+.chip--active:hover {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* ------------------------------------------------------------------ */
 /* Encabezado de tema + items                                           */
 /* ------------------------------------------------------------------ */
 .tema-head {
@@ -284,18 +421,68 @@ body {
   transform: translateY(-4px);
   min-width: 24px;
 }
+/* Variante para el grupo "Vencidos" de recordatorios. */
+.tema-head--rust h2 {
+  color: var(--color-rust);
+}
+
+/* Encabezado de grupo colapsable (Biblioteca). Es un <button>, así que la
+   hairline va como border-bottom del propio control en vez del ::after de
+   .tema-head — con un ::after el chevron quedaría antes de la línea. */
+.grupo-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 0 0 10px;
+  margin-bottom: 14px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--color-ink);
+}
+.grupo-head h2 {
+  font-family: var(--font-fraunces);
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0;
+  color: var(--color-ink);
+}
+.grupo-head__count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-slate);
+  white-space: nowrap;
+}
+.grupo-head__spacer {
+  flex: 1;
+  min-width: 24px;
+}
+.grupo-head__chevron {
+  flex: none;
+  align-self: center;
+  color: var(--color-ink-soft);
+  transition: transform 0.2s ease;
+}
+.grupo-head[aria-expanded="false"] .grupo-head__chevron {
+  transform: rotate(-90deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .grupo-head__chevron {
+    transition: none;
+  }
+}
 
 .item {
-  display: flex;
   background: var(--color-card);
   border: 1px solid var(--color-line);
   border-left-width: 4px;
-  border-radius: 0;
+  border-radius: 4px;
   margin-bottom: 10px;
   padding: 14px 18px;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
 }
 .item--alta {
   border-left-color: var(--color-rust);
@@ -351,14 +538,36 @@ body {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+/* Recordatorio asociado, dentro de la fila de metadatos. Es dato de la ficha
+   (como el tipo y la prioridad), por eso va arriba y en mono, no como acción. */
+.item-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--color-slate);
+}
+.item-rec--vencido {
+  color: var(--color-rust);
+}
+.item-rec svg {
+  flex: none;
+}
+
+/* Las acciones pasan a ser un pie alineado a la derecha, en vez de una
+   columna al costado: la ficha gana ancho para el contenido y se comporta
+   igual en desktop y en móvil (antes hacía falta un media query). */
 .item-actions {
   display: flex;
-  gap: 14px;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 11px;
   font-family: var(--font-mono);
   font-size: 11.5px;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  padding-top: 2px;
 }
 .item-actions button {
   background: none;
@@ -380,15 +589,6 @@ body {
   border-bottom-color: var(--color-rust);
 }
 
-/* Items en móvil: fila -> columna, acciones al final */
-@media (max-width: 480px) {
-  .item {
-    flex-direction: column;
-  }
-  .item-actions {
-    align-self: flex-end;
-  }
-}
 
 /* ------------------------------------------------------------------ */
 /* Listas con checkboxes (items tipo "lista")                           */
@@ -479,7 +679,7 @@ body {
   font-size: 13px;
 }
 .item-table thead th {
-  background: var(--color-paper);
+  background: var(--color-card-2);
   font-family: var(--font-mono);
   font-size: 10.5px;
   letter-spacing: 0.06em;
@@ -492,12 +692,12 @@ body {
 }
 .item-table tbody td {
   padding: 7px 10px;
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line-soft);
   color: var(--color-ink);
   vertical-align: top;
 }
 .item-table tbody tr:nth-child(even) {
-  background: rgba(215, 218, 210, 0.28);
+  background: var(--color-card-2);
 }
 .item-table tbody tr:last-child td {
   border-bottom: none;
@@ -565,14 +765,19 @@ body {
   background: var(--color-card);
   border: 1px solid var(--color-line);
   border-left-width: 4px;
+  border-radius: 4px;
   margin-bottom: 10px;
   padding: 14px 18px;
 }
+/* Lomo por estado. Igual que en los ítems, el lomo codifica urgencia y por eso
+   usa la escala cálida: rust vencido, gold lo que ya toca o está por tocar,
+   slate lo resuelto. */
 .rem--vencido {
   border-left-color: var(--color-rust);
 }
+.rem--hoy,
 .rem--proximo {
-  border-left-color: var(--color-moss);
+  border-left-color: var(--color-gold);
 }
 .rem--hecho {
   border-left-color: var(--color-slate);
@@ -600,8 +805,9 @@ body {
 .rem__estado--vencido {
   color: var(--color-rust);
 }
+.rem__estado--hoy,
 .rem__estado--proximo {
-  color: var(--color-moss);
+  color: var(--color-gold);
 }
 .rem__estado--hecho {
   color: var(--color-slate);

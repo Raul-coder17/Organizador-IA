@@ -13,6 +13,25 @@
       rel="stylesheet"
     />
     <title>Organizador Personal IA</title>
+    <!-- Tema antes del primer pintado: sin esto, abrir la app en modo oscuro
+         muestra un fogonazo claro hasta que monta React. Mantener en sincronía
+         con src/lib/theme.ts (misma clave y mismo orden de precedencia). -->
+    <script>
+      ;(function () {
+        try {
+          var t = localStorage.getItem('organizador:theme')
+          if (t !== 'light' && t !== 'dark') {
+            t =
+              window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+          }
+          document.documentElement.setAttribute('data-theme', t)
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light')
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

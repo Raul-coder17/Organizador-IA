@@ -4,6 +4,46 @@ import { supabase } from '../lib/supabase'
 import { AppNav } from '../components/AppNav'
 import { PushSettings } from '../components/PushSettings'
 import { SyncSettings } from '../components/SyncSettings'
+import { setTheme, useTheme, type Theme } from '../lib/theme'
+
+const TEMAS_UI: { value: Theme; label: string }[] = [
+  { value: 'light', label: 'Claro' },
+  { value: 'dark', label: 'Oscuro' },
+]
+
+function Apariencia() {
+  const theme = useTheme()
+
+  return (
+    <div className="bg-card border border-line rounded-[4px] p-5">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <p className="text-sm text-ink">Tema</p>
+          <p className="text-xs text-ink-soft mt-1">Claro u oscuro para toda la app.</p>
+        </div>
+
+        <div className="segmented" role="group" aria-label="Tema de la interfaz">
+          {TEMAS_UI.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setTheme(value)}
+              aria-pressed={theme === value}
+              className={`segmented__btn${theme === value ? ' segmented__btn--active' : ''}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <p className="text-xs text-slate mt-4">
+        La primera vez seguimos la preferencia de tu sistema. Cuando elegís acá, mandás vos y
+        queda recordado en este navegador.
+      </p>
+    </div>
+  )
+}
 
 export function SettingsPage() {
   const { user } = useAuth()
@@ -88,6 +128,12 @@ export function SettingsPage() {
       <AppNav />
 
       <main className="max-w-lg mx-auto px-6 py-8 space-y-6">
+        <h2 className="font-fraunces text-[19px] font-medium text-ink">Apariencia</h2>
+
+        <Apariencia />
+
+        <hr className="border-line" />
+
         <h2 className="font-fraunces text-[19px] font-medium text-ink">Configuración de IA</h2>
 
         {loading ? (

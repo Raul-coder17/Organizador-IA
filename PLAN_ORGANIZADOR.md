@@ -1041,6 +1041,128 @@ corte entre proponer y confirmar no pierde el cambio.
   offline → crear/editar/borrar → online → ver que el contador baja a 0 y que
   los cambios están arriba.
 
+## Rediseño de arquitectura de información — Fases 0 y 1
+
+Primera tanda del rediseño propuesto por Claude Design
+([`design_handoff_organizador_ia/`](design_handoff_organizador_ia/)), analizado y
+planificado en [`PLAN_REDISEÑO.md`](PLAN_REDISEÑO.md). Son los ítems 1-5 del
+plan: **no tocan rutas, ni `AppNav`, ni el asistente** — eso es la Fase 3, que
+además está bloqueada por una decisión abierta (¿se conserva `react-router`?).
+
+El sistema "fichas de catálogo" **no se reemplaza, se extiende**: los 10 tokens
+de color originales quedan intactos (mismos hex), las 3 fuentes conservan su
+reparto de roles y el lomo de 4px por prioridad sigue siendo el elemento central.
+
+### Tokens nuevos y regla de las dos dimensiones (ítem 1)
+
+- Cinco tokens nuevos en el `@theme` de [`src/index.css`](src/index.css):
+  `--color-card-2` (segmenteds, header de tabla, zebra), `--color-ink-mute`
+  (cuarto nivel de texto), `--color-line-soft` (separadores internos),
+  `--color-moss-tint` (superficie activa) y `--shadow-float`.
+- **`--shadow-float`, no `--shadow`:** en Tailwind v4 el namespace de utilidades
+  de sombra es `--shadow-*`, así que con ese nombre queda además disponible la
+  utilidad `shadow-float` para el drawer/sheet/FAB de la Fase 3.
+- Por decisión de diseño, la sombra la usa **sólo lo que flota**: en esta fase,
+  únicamente la píldora activa del segmented. Las fichas de ítem quedan planas
+  con su borde de 1px, como hasta ahora.
+- La regla del sistema quedó documentada como comentario de cabecera del
+  `@theme`: **prioridad = cálido y va en el lomo; tema = frío y va en el punto;
+  nunca mezclar.** Si las dos dimensiones comparten superficie, ninguna se lee.
+
+### Modo oscuro (ítem 2)
+
+- 14 tokens redefinidos bajo `:root[data-theme="dark"]`. Como las utilidades de
+  Tailwind resuelven `var(--color-*)` en tiempo de render, **cambia toda la app
+  sin variantes `dark:` ni clases duplicadas** — ningún componente sabe qué tema
+  está activo.
+- [`src/lib/theme.ts`](src/lib/theme.ts): la fuente de verdad es el atributo
+  `data-theme` de `<html>`. Persistencia en `localStorage`
+  (`organizador:theme`, con `try/catch` por si el storage está bloqueado) y
+  suscripción vía `useSyncExternalStore`.
+- **Precedencia:** preferencia guardada > `prefers-color-scheme` > claro. Una vez
+  que el usuario toca el toggle, su elección manda y no se vuelve a mirar el
+  sistema.
+- Script inline en [`index.html`](index.html) que corre **antes del primer
+  pintado**: sin él, abrir la app en modo oscuro muestra un fogonazo claro hasta
+  que monta React.
+- Bloque "Apariencia" al tope de [`SettingsPage`](src/pages/SettingsPage.tsx),
+  con el segmented Claro/Oscuro.
+- Se sacaron los tres colores hardcodeados que quedaban en `index.css` y que
+  habrían roto en oscuro: el hover de `.btn-moss` (era `#345035`) y el de
+  `.btn-outline` ahora se derivan del token con `color-mix`, y el zebra de
+  `.item-table` pasó a `--color-card-2`.
+- **Auditoría de contraste WCAG:** la paleta oscura resultó **mejor que la
+  clara** — 2 fallos AA contra 6. Los de la clara (`gold`, `slate`) son previos a
+  este trabajo y no se tocaron. Detalle y valores propuestos en
+  `PLAN_REDISEÑO.md` §8 (decisión D6, abierta).
+
+### Ficha de ítem (ítem 3)
+
+- [`ItemList`](src/components/ItemList.tsx): radius 4px, sin sombra, y la fila de
+  metadatos ahora puede mostrar el **recordatorio asociado** (campana + fecha),
+  en rust si está vencido. El dato sale de un `Map<item_id, Recordatorio>` que
+  arma `ItemsPage` desde la caché local — sin red y sin consulta nueva.
+- Un ítem puede tener más de un recordatorio y la ficha muestra uno: se elige el
+  más urgente (el pendiente más próximo; si están todos hechos, el más reciente).
+- Las acciones Editar/Eliminar pasaron de columna lateral a **pie alineado a la
+  derecha**. Eso dejó la ficha igual en desktop y en móvil, así que se pudo
+  **eliminar el media query de 480px** de `.item`.
+
+### Recordatorios agrupados (ítem 4)
+
+- [`RemindersPage`](src/pages/RemindersPage.tsx) deja de ser una lista plana:
+  segmented **Todos · Vencidos · Próximos · Hechos** y agrupación con hairline en
+  **Vencidos · Hoy · Próximos · Hechos**, en ese orden (lo que ya pasó primero).
+- `clasificar()` ganó el estado **`hoy`**: pendiente, todavía no vencido y del día
+  en curso.
+- El filtro "Próximos" incluye `hoy`: separarlos pediría un quinto botón para una
+  distinción que ya hacen los grupos.
+- Lomo por estado alineado con la escala cálida: **rust** vencido, **gold** hoy y
+  próximo (antes próximo era moss), **slate** hecho.
+
+### Biblioteca — filtros y secciones colapsables (ítem 5)
+
+Es el ítem que resuelve el problema que originó el rediseño: la vista de entrada
+mostraba toda la lista mezclada, sin separación por tipo ni por tema.
+
+- [`ItemsPage`](src/pages/ItemsPage.tsx): **dos niveles de filtro que se
+  combinan** — segmented por tipo (Todos · Notas · Listas · Tablas ·
+  **Recordatorios**) y chips por tema, que reemplazan al `<select>`.
+- El tipo `recordatorio` existe en el modelo desde el schema inicial y hasta
+  ahora no había forma de filtrarlo; la propuesta original lo omitía.
+- **Grupo "Sin tema".** `tema_id` es nullable, así que agrupar sólo por los temas
+  existentes haría **desaparecer ítems de la vista**. `armarGrupos()` es explícito
+  y ordenado: temas primero, después "Sin tema", después "Tema eliminado" para los
+  huérfanos (ítems cuyo tema se borró). Ningún ítem puede quedar fuera.
+- Secciones **colapsables** con chevron. El estado de plegado vive en `ItemList`
+  porque es estado de vista, no del dominio, y no se persiste. La rotación del
+  chevron sale de `aria-expanded` vía CSS, así que el estado accesible y el visual
+  no pueden desincronizarse.
+
+### Verificación
+
+- `npm run build` sin errores. `npx eslint src` con **0 errores**; los 3 warnings
+  que quedan son previos y en archivos que esta fase no tocó (`PushSettings`,
+  `AuthContext`, `AssistantPage`).
+- **Visual, con el harness de CSS compilado** (no puedo autenticarme): las tres
+  pantallas en **desktop 1280px y ~375px, en claro y en oscuro**. Verificado:
+  segmented con la píldora activa elevada, chips redondeados con el activo en
+  `ink`, encabezados colapsables con chevron (desplegado y plegado), grupo "Sin
+  tema", lomos rust/gold/slate, campana + fecha en la ficha, tabla con header
+  `card-2` y zebra, y los cuatro grupos de recordatorios con "Vencidos" en rust.
+- A 375px: **sin scroll horizontal de página** (`scrollWidth == clientWidth`); el
+  segmented de tipos y la fila de chips se llevan su propio scroll (412px de
+  contenido en 325px de riel), y las fichas de recordatorio se apilan con la
+  acción al final.
+- **En la app real** (preview de producción, `AuthPage`): sin nada en
+  `localStorage` el script inline resolvió `data-theme="dark"` desde
+  `prefers-color-scheme`, y los cinco tokens nuevos resolvieron a sus valores
+  oscuros. Sin errores de consola. `AuthPage` heredó el modo oscuro sin tocarla,
+  que era una de las dudas abiertas del plan (§3.3-A).
+- **Pendiente de tu prueba en vivo** (requiere tu sesión): el toggle de tema con
+  recarga, el filtro por tipo incluyendo "Recordatorios", que el grupo "Sin tema"
+  aparezca con datos reales, y los recordatorios agrupados con fechas reales.
+
 ## Deploy
 
 ### GitHub
@@ -1095,6 +1217,26 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-23 — Rediseño, Fases 0 y 1 (ítems 1-5 de `PLAN_REDISEÑO.md`): cinco
+  tokens nuevos (`card-2`, `ink-mute`, `line-soft`, `moss-tint`, `shadow-float`)
+  y **modo oscuro** completo — 14 tokens bajo `:root[data-theme="dark"]`,
+  `src/lib/theme.ts` con persistencia en localStorage, script inline en
+  `index.html` para evitar el fogonazo claro, y bloque "Apariencia" en Settings.
+  Como las utilidades de Tailwind resuelven `var(--color-*)` en render, cambia
+  toda la app sin variantes `dark:`. Se eliminaron los tres colores hardcodeados
+  que quedaban en `index.css`. **Biblioteca** (`/`, sin cambio de ruta) ganó
+  segmented por tipo — incluido `recordatorio`, que existía en el modelo y no se
+  podía filtrar —, chips por tema en vez del `<select>`, secciones colapsables y
+  el **grupo "Sin tema"**, que la propuesta original omitía y habría hecho
+  desaparecer ítems con `tema_id` null. **Recordatorios** pasó de lista plana a
+  cuatro grupos (Vencidos · Hoy · Próximos · Hechos) con segmented de filtro y
+  lomo por estado; `clasificar()` ganó el estado `hoy`. La **ficha de ítem**
+  muestra ahora su recordatorio (campana + fecha, rust si venció) y movió las
+  acciones a un pie a la derecha, lo que permitió borrar el media query de 480px.
+  Auditoría de contraste: la paleta oscura salió mejor que la clara (2 fallos AA
+  contra 6); los de la clara (`gold`, `slate`) son previos y quedaron sin tocar
+  como decisión abierta. No se tocaron rutas, `AppNav` ni el asistente: eso es la
+  Fase 3, bloqueada por la decisión de si se conserva `react-router`.
 - 2026-07-22 — Offline, recordatorios sin conexión (ítem 8 de
   `PLAN_OFFLINE.md`, último del plan): `useLocalReminderWatcher` sondea el
   espejo local (`repo.listRecordatoriosParaDisparo`, que filtra los pendientes
