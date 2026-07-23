@@ -1,3 +1,7 @@
+// La paleta vive en lib/temaColores.ts, que es donde está la lógica de
+// asignación; acá solo se referencia el tipo para tipar la columna.
+import type { TemaColor } from '../lib/temaColores'
+
 export type TipoItem = 'nota' | 'recordatorio' | 'lista' | 'tabla'
 export type Prioridad = 'alta' | 'media' | 'baja'
 export type OrigenItem = 'texto' | 'foto' | 'manual'
@@ -7,11 +11,15 @@ export interface Tema {
   id: string
   user_id: string
   nombre: string
+  // Slug de la paleta fría (no un color literal): lo resuelve a color el token
+  // --color-tema-*, que cambia con el modo claro/oscuro.
+  color: TemaColor
   created_at: string
+  updated_at: string
 }
 
-export type TemaInsert = Omit<Tema, 'id' | 'created_at'> &
-  Partial<Pick<Tema, 'id' | 'created_at'>>
+export type TemaInsert = Omit<Tema, 'id' | 'color' | 'created_at' | 'updated_at'> &
+  Partial<Pick<Tema, 'id' | 'color' | 'created_at' | 'updated_at'>>
 
 // Una línea de un item tipo "lista" (contenido = { items: LineaLista[] }).
 export interface LineaLista {

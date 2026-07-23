@@ -7,6 +7,7 @@ import type { Item, LineaLista, Recordatorio, Tema, TipoItem } from '../types/da
 import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
 import { AppNav } from '../components/AppNav'
+import { colorDeTema, temaColorVar } from '../lib/temaColores'
 
 // Filtro por tipo. 'todos' es el estado neutro; el resto son los cuatro tipos
 // reales de item — incluido 'recordatorio', que existe en el modelo y hasta
@@ -122,6 +123,13 @@ export function ItemsPage() {
     setTemas((prev) => [...prev, tema].sort((a, b) => a.nombre.localeCompare(b.nombre)))
   }
 
+  // El color de un tema ya se guardó cuando llega acá (repo.updateTemaColor);
+  // esto es solo para que el punto cambie en los chips y en los encabezados sin
+  // esperar al próximo ciclo de sync.
+  function handleTemaUpdated(tema: Tema) {
+    setTemas((prev) => prev.map((t) => (t.id === tema.id ? tema : t)))
+  }
+
   // Marca/desmarca una línea de una lista: UI optimista + persistencia; si el
   // guardado falla, revierte al estado previo y muestra el error.
   async function handleToggleLinea(item: Item, lineaId: string) {
@@ -210,6 +218,11 @@ export function ItemsPage() {
                 aria-pressed={filterTemaId === tema.id}
                 className={`chip${filterTemaId === tema.id ? ' chip--active' : ''}`}
               >
+                <span
+                  className="tema-dot"
+                  style={{ background: temaColorVar(colorDeTema(tema)) }}
+                  aria-hidden="true"
+                />
                 {tema.nombre}
               </button>
             ))}
@@ -235,6 +248,7 @@ export function ItemsPage() {
               setEditingItem(null)
             }}
             onTemaCreated={handleTemaCreated}
+            onTemaUpdated={handleTemaUpdated}
           />
         )}
 

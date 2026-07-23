@@ -8,8 +8,8 @@
 /* REGLA DE SISTEMA — dos dimensiones de color que no se mezclan:      */
 /*   · PRIORIDAD = cálido (rust/gold/slate) y va SIEMPRE en el lomo    */
 /*     izquierdo de 4px de la ficha.                                   */
-/*   · TEMA = frío (tonos oklch, Fase 2) y va SIEMPRE en el punto o    */
-/*     el chip.                                                        */
+/*   · TEMA = frío (los siete --color-tema-*, Fase 2) y va SIEMPRE en  */
+/*     el punto o el chip.                                             */
 /*   Nunca usar el color de tema en el lomo, ni el de prioridad en el  */
 /*   punto: si las dos dimensiones comparten superficie, ninguna se    */
 /*   lee. Ver PLAN_REDISEÑO.md §3.                                     */
@@ -29,6 +29,20 @@
   --color-rust: #9c3b22;
   --color-gold: #b98530;
   --color-slate: #7c8577;
+
+  /* Paleta de tema (Fase 2). Siete matices fríos en oklch, repartidos cada
+     ~26° entre el verde-agua (168°) y el ciruela (325°) — el arco que queda
+     LEJOS del rust (~40°) y el gold (~75°) de prioridad, y arrancando después
+     del moss de la marca (~150°) para que un punto no se lea como marca.
+     Misma L y C en todos: ningún tema pesa más que otro en la página.
+     El dato guardado es el slug; el color sale de acá. */
+  --color-tema-verde-agua: oklch(0.56 0.09 168);
+  --color-tema-turquesa: oklch(0.56 0.1 196);
+  --color-tema-celeste: oklch(0.56 0.1 222);
+  --color-tema-azul: oklch(0.55 0.11 250);
+  --color-tema-indigo: oklch(0.54 0.11 275);
+  --color-tema-violeta: oklch(0.55 0.11 300);
+  --color-tema-ciruela: oklch(0.55 0.1 325);
 
   /* Elevación. Por decisión de diseño (D2) sólo la usa lo que flota de
      verdad: chip activo del segmented y, en la Fase 3, drawer/sheet/FAB.
@@ -64,6 +78,17 @@
   --color-rust: #cc7458;
   --color-gold: #d3ab63;
   --color-slate: #939c90;
+
+  /* La paleta de tema sube de luminosidad (0.55 → 0.72) y baja un punto de
+     croma: sobre el papel oscuro, los mismos tonos se apagaban. Los matices
+     son idénticos, así que un tema no "cambia de color" al cambiar de modo. */
+  --color-tema-verde-agua: oklch(0.72 0.08 168);
+  --color-tema-turquesa: oklch(0.72 0.09 196);
+  --color-tema-celeste: oklch(0.72 0.09 222);
+  --color-tema-azul: oklch(0.72 0.1 250);
+  --color-tema-indigo: oklch(0.72 0.1 275);
+  --color-tema-violeta: oklch(0.72 0.1 300);
+  --color-tema-ciruela: oklch(0.72 0.09 325);
 
   --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -18px rgba(0, 0, 0, 0.6);
 }
@@ -393,6 +418,34 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
+/* Punto de tema                                                        */
+/* La segunda dimensión de color del sistema. Es un punto y nunca un    */
+/* relleno ni un lomo: el lomo ya es de la prioridad y compartirlo      */
+/* arruinaría las dos lecturas (ver la regla del encabezado).           */
+/* El color entra por `style` como var(--color-tema-*), así el mismo    */
+/* punto se aclara solo en modo oscuro.                                 */
+/* ------------------------------------------------------------------ */
+.tema-dot {
+  flex: none;
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+/* Sobre el chip activo (fondo `ink` sólido) el punto queda contra un valor
+   muy contrastado; el aro del color del fondo lo despega del borde. */
+.chip--active .tema-dot {
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+/* En el encabezado de grupo el punto acompaña a un Fraunces de 19px: un
+   punto de 9px al lado se ve chico, y la línea base es la del texto. */
+.grupo-head .tema-dot {
+  width: 10px;
+  height: 10px;
+  align-self: center;
+}
+
+/* ------------------------------------------------------------------ */
 /* Encabezado de tema + items                                           */
 /* ------------------------------------------------------------------ */
 .tema-head {
@@ -701,6 +754,43 @@ body {
 }
 .item-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Selector de color de tema (ItemForm)                                 */
+/* Siete muestras de la paleta fría. El activo se marca con un aro (no  */
+/* con un tilde adentro): a 22px, un check tapa el color que se está    */
+/* eligiendo.                                                           */
+/* ------------------------------------------------------------------ */
+.tema-colores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 9px;
+}
+.swatch {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.swatch--activa {
+  box-shadow:
+    0 0 0 2px var(--color-card),
+    0 0 0 3.5px var(--color-ink);
+}
+.swatch:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+}
+.tema-colores__nota {
+  margin-top: 7px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+  color: var(--color-ink-soft);
 }
 
 /* ------------------------------------------------------------------ */

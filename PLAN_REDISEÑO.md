@@ -1,9 +1,9 @@
 # Plan de rediseño — análisis de la propuesta de Claude Design
 
-> **Estado: Fases 0 y 1 implementadas** (ítems 1-5), 2026-07-23. Decisiones
+> **Estado: Fases 0, 1 y 2 implementadas** (ítems 1-6), 2026-07-23. Decisiones
 > tomadas: **D2** radius 2→3-4px y chips en píldora aceptados, sombra sólo en lo
 > que flota; **D3** "recordatorio" se agrega al segmented de tipo; **D4** color de
-> tema automático al crear con opción de cambiarlo (Fase 2, todavía sin hacer).
+> tema automático al crear con opción de cambiarlo, ya implementado.
 > **D1** (router) sigue abierta y bloquea la Fase 3.
 > Detalle de lo implementado en [PLAN_ORGANIZADOR.md](PLAN_ORGANIZADOR.md).
 
@@ -223,7 +223,7 @@ Todo esto usa datos y lógica que ya están en la app:
 
 | Lo que la propuesta asume | Realidad | Trabajo que implica |
 |---|---|---|
-| Cada tema tiene un color propio | `Tema` es `{id, user_id, nombre, created_at}` — **no hay campo color** (`src/types/database.ts:6-11`) | Migración Supabase, tipo, cache IndexedDB, asignación (¿automática por hash del nombre, o el usuario elige?), UI de selección. El prototipo hardcodea 5 colores y **no ofrece UI para asignarlos** |
+| ~~Cada tema tiene un color propio~~ ✅ **hecho (Fase 2)** | `Tema` era `{id, user_id, nombre, created_at}` — no había campo color | Resuelto: migración `temas.color` (+ `updated_at`), paleta de 7 slugs fríos, asignación automática en `repo.createTema()` y selector en el `ItemForm`. Ver ítem 6 |
 | Existe modo oscuro | No existe | Los tokens viven en `@theme` de Tailwind v4, que genera utilidades estáticas. Hay que decidir cómo hacerlos conmutables (redefinir las CSS vars bajo `[data-theme="dark"]`) + persistencia + auditar contraste de los ~13 tokens dark |
 | Existe editor de tabla | El form guarda tablas como `{texto}` con pipes (`ItemForm.tsx:294`) mientras `ItemList` **ya sabe leer** `{columnas, filas}` (`ItemList.tsx:46-60`) | El editor debe escribir la forma estructurada; hay que decidir compatibilidad con los ítems tabla ya guardados como texto |
 | Existe captura por foto | No existe nada | Gemini Vision (Edge Function nueva o extensión de `ai-assistant`), upload/manejo de imagen, cuota, comportamiento offline |
@@ -343,13 +343,36 @@ Es el ítem que resuelve el problema central reportado — y se puede tener ante
 > **ningún ítem puede quedar fuera de la vista**, que era la regresión de §5.3-3.
 > El estado de plegado vive en `ItemList`: es estado de vista, no del dominio.
 
-### Fase 2 — Modelo de datos
+### Fase 2 — Modelo de datos — ✅ HECHA
 
-**6. Color por tema.** `[D]` · riesgo medio
+**6. Color por tema.** `[D]` · riesgo medio — ✅ **implementado**
 Migración `temas.color`, tipo `Tema`, cache IndexedDB, ruta de escritura por `repo.ts` + outbox,
 asignación (default automático + selector), y aplicación: punto en chips, headers de sección,
 tarjetas de tema. Va después de la Fase 1 porque los lugares donde se muestra el punto ya
 existirían.
+
+> Paleta de **siete** matices fríos en oklch, cada ~26° entre verde-agua (168°) y
+> ciruela (325°): el arco que queda lejos del rust/gold de prioridad y arranca
+> después del moss de la marca. Lo que se guarda en la columna es el **slug**, no
+> el color — el valor sale de los tokens `--color-tema-*`, que se redefinen en
+> oscuro, así que la paleta se retoca en CSS sin migrar filas.
+> La migración le agregó además **`updated_at` a `temas`**: al volverse
+> editables desde la UI, sin columna de tiempo el motor de sync no podía
+> resolver conflictos por LWW.
+> Asignación automática en [`temaColores.ts`](src/lib/temaColores.ts) (módulo
+> puro, 11 tests): menos usado → descarta el del último tema creado → desempata
+> por hash del nombre. **El default vive en `repo.createTema()`, no en el form**,
+> que es lo que garantiza que ni el asistente de IA cree temas sin color.
+> El cambio de color pasa por `repo.updateTemaColor()` (espejo local + outbox):
+> **anda igual sin conexión**, como todo lo demás.
+> El selector quedó en el `ItemForm`, debajo del `<select>` de tema — no hay
+> pantalla de "gestionar temas" y no valía inventarla justo antes de que la
+> Fase 3 reorganice la navegación; y el chip de Biblioteca ya es un control de
+> filtro, meterle un segundo gesto lo volvía ambiguo.
+> El punto se aplicó en los chips y en los encabezados de grupo. El tercer lugar
+> previsto —las tarjetas de tema de la vista **Hoy**— espera a la Fase 3, que es
+> cuando esa vista existe.
+> Detalle completo en [PLAN_ORGANIZADOR.md](PLAN_ORGANIZADOR.md).
 
 ### Fase 3 — Navegación (el bloque riesgoso)
 
@@ -399,7 +422,7 @@ grande de todos: es la única de las 4 pendientes que necesita backend nuevo de 
 ```
 Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
-Fase 2:  6 [D]                            → color por tema
+Fase 2:  6 [D] ✅                          → color por tema
 Fase 3:  7 [N] · 8 [N] · 9 [N] · 10 [N] · 11 [N]   ← el bloque riesgoso (necesita D1)
 Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
 ```
@@ -427,9 +450,13 @@ Mi recomendación: aceptar radius y píldoras; limitar la sombra a lo que **flot
 Existe en el modelo y en el form; la propuesta lo omite. ¿Se elimina, se oculta, o se agrega al
 segmented?
 
-**D4 — Colores de tema: ¿automáticos o elegidos?**
+**D4 — Colores de tema: ¿automáticos o elegidos?** — ✅ **resuelta e implementada**
 El prototipo hardcodea 5 colores fríos y no ofrece UI de asignación. ¿Asignación automática al
 crear el tema (con opción de cambiar), o selector explícito?
+
+> Automática al crear, con selector para cambiarla después (Fase 2, ítem 6). La
+> paleta pasó de 5 a **7** colores para que la asignación automática pueda
+> repartir sin repetir en temas seguidos.
 
 **D5 — ¿Se corta el alcance en algún punto?**
 Las Fases 0-2 son 6 ítems de riesgo bajo que ya entregan la mayor parte del rediseño visible.

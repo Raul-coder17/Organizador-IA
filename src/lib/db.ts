@@ -171,6 +171,11 @@ export async function saveRecordatoriosToCache(recordatorios: Recordatorio[]): P
 // de que el motor de sync la suba. El re-fetch posterior a la sincronización
 // vuelve a reemplazar el store completo con lo del servidor.
 
+export async function getLocalTema(id: string): Promise<Tema | undefined> {
+  const db = await getDB()
+  return db.get('temas', id)
+}
+
 export async function putLocalTema(tema: Tema): Promise<void> {
   const db = await getDB()
   await db.put('temas', tema)

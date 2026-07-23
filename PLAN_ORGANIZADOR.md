@@ -1163,6 +1163,145 @@ mostraba toda la lista mezclada, sin separación por tipo ni por tema.
   recarga, el filtro por tipo incluyendo "Recordatorios", que el grupo "Sin tema"
   aparezca con datos reales, y los recordatorios agrupados con fechas reales.
 
+## Rediseño — Fase 2: color propio por tema
+
+Ítem 6 de [`PLAN_REDISEÑO.md`](PLAN_REDISEÑO.md), la única fase que toca el
+modelo de datos. Cierra la segunda dimensión de color del sistema: la
+**prioridad** ya vivía en el lomo cálido de la ficha; el **tema** pasa a vivir en
+un punto frío. **Nunca comparten superficie** — si lo hicieran, ninguna de las
+dos se leería.
+
+### La paleta (7 colores fríos)
+
+- Siete matices en oklch, repartidos cada ~26° entre **verde-agua (168°)** y
+  **ciruela (325°)**: verde-agua · turquesa · celeste · azul · índigo · violeta ·
+  ciruela. Es el arco que queda **lejos del rust (~40°) y el gold (~75°)** de
+  prioridad, y **arranca después del moss de la marca (~150°)** para que un punto
+  de tema no se lea como marca.
+- Misma L y C en los siete: ningún tema pesa más que otro en la página.
+- En modo oscuro suben de 0.55 a 0.72 de luminosidad y bajan un punto de croma —
+  sobre el papel oscuro los mismos tonos se apagaban. **Los matices no cambian**,
+  así que un tema no "cambia de color" al cambiar de modo.
+
+### Lo que se guarda es el slug, no el color
+
+`temas.color` guarda `'azul'`, no `oklch(...)`. El color sale de los tokens
+`--color-tema-*`, que `index.css` redefine en oscuro. Consecuencia práctica: la
+paleta se puede retocar en CSS sin migrar una sola fila, y el mismo dato se
+resuelve distinto en claro y en oscuro.
+
+### Migración
+
+[`20260723120000_temas_color.sql`](supabase/migrations/20260723120000_temas_color.sql):
+
+- `temas.color text not null default 'azul'` + `CHECK` contra los siete slugs. La
+  paleta queda cerrada **en la base**, no solo en el cliente.
+- **Backfill que reparte**, no que uniforma: los temas que ya existen reciben la
+  paleta rotando por orden de creación dentro de cada usuario, así no salen todos
+  del mismo color.
+- **`temas.updated_at` + trigger.** Hasta ahora los temas no se editaban desde la
+  UI y no hacía falta; con el selector de color sí se editan, y sin columna de
+  tiempo el motor de sync **no puede resolver conflictos por LWW** — dos
+  dispositivos cambiando el color offline resolvían por orden de llegada. El
+  trigger reusa `set_updated_at()`, que ya respeta el timestamp del cliente.
+- El backfill de `updated_at` usa `created_at` y no el `now()` de la migración:
+  un cambio hecho offline antes de esto no debería perder contra la fecha en que
+  se corrió la migración.
+
+### Asignación automática (decisión D4)
+
+[`src/lib/temaColores.ts`](src/lib/temaColores.ts), módulo **puro** (sin
+IndexedDB, sin red, sin DOM) y testeado con `deno test` como `syncCore` y
+`reminderScheduling`. `siguienteColorTema()` elige en tres pasos:
+
+1. entre los colores **menos usados** — la paleta se reparte pareja en vez de
+   amontonarse en los primeros;
+2. **descartando el del último tema creado**, que es la repetición que más se
+   nota;
+3. desempate por **hash del nombre** (FNV-1a): el mismo nombre tiende al mismo
+   color en cualquier dispositivo, sin depender del orden de creación.
+
+El default vive en **`repo.createTema()`, no en el form**. Eso es lo que
+garantiza que ningún camino de creación deje un tema sin color: ni el formulario,
+ni el asistente de IA, ni lo que se agregue después. `createTema` acepta un color
+explícito para el caso en que el usuario lo elija a mano.
+
+`colorDeTema()` tolera la fila **sin** color: la caché local puede tener temas
+guardados antes de la migración y, hasta la próxima reconciliación, es preferible
+un color derivado del id (estable) a un punto gris que parezca un error.
+
+### Dónde se cambia el color, y por qué ahí
+
+No hay pantalla de "gestionar temas" y **no valía la pena inventarla para esto**
+(la Fase 3 va a reorganizar la navegación entera; una pantalla nueva ahora sería
+trabajo para tirar). Descartado también el selector en el chip de Biblioteca: el
+chip es un **control de filtro**, un click ahí ya significa otra cosa, y meterle
+un segundo gesto lo vuelve ambiguo.
+
+Quedó en el **`ItemForm`, debajo del `<select>` de tema** — el único lugar donde
+el tema ya está en pantalla y seleccionado:
+
+- con un tema existente elegido → muestra su color actual y **cambiarlo guarda al
+  instante** (es propiedad del tema, no del ítem: atarlo al submit del formulario
+  sería mentir sobre qué se está editando);
+- con "+ crear tema nuevo" → muestra el color **propuesto automáticamente**, que
+  se puede cambiar antes de crear. D4 completa —automático con opción de
+  cambiarlo— en un solo control.
+- La nota al pie dice de cuál de los dos casos se trata, incluyendo el nombre del
+  tema, para que nadie crea que está pintando el ítem.
+
+### Offline-first
+
+El cambio de color **no toca Supabase directo**: pasa por
+`repo.updateTemaColor()`, que escribe el espejo local y encola la op, igual que
+todo lo demás. Sin conexión el punto cambia al instante y la escritura sube
+cuando haya red. El `updated_at` viaja en el payload, así que el motor aplica la
+**guarda LWW** (`.lte('updated_at', …)`) y no pisa un cambio más nuevo hecho en
+otro dispositivo.
+
+Efecto lateral bueno: como la asignación automática lee el espejo local —donde el
+tema recién creado ya está—, dos temas creados en la **misma tanda de acciones
+del asistente** tampoco salen iguales.
+
+### Dónde se ve el punto
+
+- **Chips de tema** en Biblioteca ([`ItemsPage`](src/pages/ItemsPage.tsx)). Sobre
+  el chip activo (fondo `ink` sólido) el punto lleva un aro del color del fondo
+  para despegarlo del borde.
+- **Encabezados de grupo colapsables** ([`ItemList`](src/components/ItemList.tsx)),
+  a 10px para acompañar al Fraunces de 19px.
+- **No** en "Sin tema" ni en "Tema eliminado": no son temas, y un color ahí
+  prometería algo que no existe.
+- Las tarjetas de tema de la vista **Hoy** son el tercer lugar previsto en el
+  plan; esa vista es de la Fase 3 y todavía no existe.
+
+### Verificación
+
+- `npm run build` sin errores. `npm run lint` con **0 errores** (los 3 warnings
+  son previos y de archivos que esta fase no tocó).
+- `npx deno test src/lib/` → **47 tests OK**, 11 de ellos nuevos para la
+  asignación de color: que reparte la paleta entera antes de repetir, que no
+  repite el color del último tema creado, que el "último" se decide por
+  `created_at` y no por el orden del array, que el mismo nombre cae siempre en el
+  mismo color, y que ignora valores fuera de la paleta.
+- **Visual, con el harness de CSS compilado** (no puedo autenticarme): chips con
+  punto (activo e inactivo), encabezados de grupo con y sin punto, y el selector
+  de siete muestras con el aro del activo, en **desktop y 375px, claro y
+  oscuro**. Sin errores de consola. A 375px las siete muestras entran en una fila
+  y la fila de chips se lleva su propio scroll.
+- Ajuste hecho **a partir de mirarlo**: el verde-agua y el turquesa originales
+  (178°/200°) se confundían entre sí a 9px; se abrieron a 168°/196°.
+- La app real carga sin errores de consola hasta el `AuthPage`.
+- **Pendiente de tu prueba en vivo** (requiere tu sesión y la migración
+  aplicada): que los temas que ya tenés salgan con colores distintos entre sí;
+  crear dos temas seguidos y ver que no repiten color; cambiar el color de uno
+  desde el form y ver que cambia en los chips y en los encabezados; y el ciclo
+  offline — cambiar un color sin conexión, ver el contador de pendientes subir,
+  volver online y confirmar que el color quedó arriba.
+- **⚠️ Orden de despliegue:** la migración va **antes** que el frontend. Con la
+  columna todavía sin crear, el insert de un tema nuevo falla en el servidor con
+  error permanente y la op se queda trabada en el outbox.
+
 ## Deploy
 
 ### GitHub
@@ -1217,6 +1356,27 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-23 — Rediseño, **Fase 2** (ítem 6 de `PLAN_REDISEÑO.md`): **color
+  propio por tema**, la única fase que toca el modelo de datos. Migración
+  `temas.color` con paleta cerrada por `CHECK` (siete matices fríos en oklch,
+  repartidos cada ~26° entre verde-agua y ciruela, lejos del rust/gold de
+  prioridad y del moss de la marca) y backfill que reparte la paleta por orden de
+  creación en vez de uniformar. Se guarda el **slug**, no el color: el valor sale
+  de los tokens `--color-tema-*`, que se redefinen en modo oscuro — la paleta se
+  retoca en CSS sin migrar filas. La migración además le agrega **`updated_at` a
+  `temas`**: hasta ahora no se editaban desde la UI y sin columna de tiempo el
+  motor de sync no podía resolver conflictos por LWW. Asignación automática (D4)
+  en `src/lib/temaColores.ts`, módulo puro con 11 tests: elige entre los colores
+  menos usados, descarta el del último tema creado y desempata por hash del
+  nombre. El default vive en `repo.createTema()` y no en el form, así que **el
+  asistente de IA tampoco crea temas sin color**. El cambio de color pasa por
+  `repo.updateTemaColor()` → espejo local + outbox, con guarda LWW: **funciona
+  igual sin conexión**. El selector quedó en el `ItemForm`, debajo del select de
+  tema (no hay pantalla de "gestionar temas" y no valía inventarla antes de la
+  Fase 3): con tema existente guarda al instante, con tema nuevo muestra el color
+  propuesto y deja cambiarlo. El punto se ve en los chips de Biblioteca y en los
+  encabezados de grupo; no en "Sin tema" ni "Tema eliminado". **Requiere aplicar
+  la migración en Supabase antes de desplegar el frontend.**
 - 2026-07-23 — Rediseño, Fases 0 y 1 (ítems 1-5 de `PLAN_REDISEÑO.md`): cinco
   tokens nuevos (`card-2`, `ink-mute`, `line-soft`, `moss-tint`, `shadow-float`)
   y **modo oscuro** completo — 14 tokens bajo `:root[data-theme="dark"]`,

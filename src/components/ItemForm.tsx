@@ -9,9 +9,18 @@ import {
   deleteRecordatoriosForItem,
   getRecordatorioForItem,
   updateItem,
+  updateTemaColor,
   upsertRecordatorio,
 } from '../lib/repo'
 import { datetimeLocalToIso, isoToDatetimeLocal } from '../lib/recordatorios'
+import {
+  COLORES_TEMA,
+  TEMA_COLOR_LABEL,
+  colorDeTema,
+  siguienteColorTema,
+  temaColorVar,
+  type TemaColor,
+} from '../lib/temaColores'
 
 function nuevaLinea(): LineaLista {
   return { id: crypto.randomUUID(), texto: '', hecho: false }
@@ -24,15 +33,30 @@ interface ItemFormProps {
   onSaved: () => void
   onCancel: () => void
   onTemaCreated: (tema: Tema) => void
+  /** Un tema cambió (hoy: su color). Se avisa aparte de onSaved porque el
+   *  cambio es del tema, no del item, y ya está guardado cuando llega. */
+  onTemaUpdated: (tema: Tema) => void
 }
 
 const TIPOS: TipoItem[] = ['nota', 'recordatorio', 'lista', 'tabla']
 const PRIORIDADES: Prioridad[] = ['alta', 'media', 'baja']
 
-export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTemaCreated }: ItemFormProps) {
+export function ItemForm({
+  userId,
+  temas,
+  editingItem,
+  onSaved,
+  onCancel,
+  onTemaCreated,
+  onTemaUpdated,
+}: ItemFormProps) {
   const [tipo, setTipo] = useState<TipoItem>('nota')
   const [temaId, setTemaId] = useState<string>('')
   const [nuevoTemaNombre, setNuevoTemaNombre] = useState('')
+  // Color que llevará el tema nuevo. Se propone solo al elegir "+ crear tema
+  // nuevo" y queda fijo mientras se escribe el nombre: recalcularlo en cada
+  // tecla haría parpadear la muestra elegida.
+  const [nuevoTemaColor, setNuevoTemaColor] = useState<TemaColor>(COLORES_TEMA[0])
   const [prioridad, setPrioridad] = useState<Prioridad | ''>('')
   const [contenidoTexto, setContenidoTexto] = useState('')
   const [lineas, setLineas] = useState<LineaLista[]>([])
@@ -103,6 +127,34 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
     }
   }, [tipo, lineas.length])
 
+  // El tema seleccionado, si es uno real (no '' ni 'new'). Es el que puede
+  // cambiar de color desde acá.
+  const temaSeleccionado = temas.find((t) => t.id === temaId) ?? null
+  const colorActivo = temaId === 'new' ? nuevoTemaColor : temaSeleccionado ? colorDeTema(temaSeleccionado) : null
+
+  function handleTemaChange(value: string) {
+    setTemaId(value)
+    // Al entrar en "tema nuevo" se propone un color libre de la paleta (D4:
+    // automático al crear, con opción de cambiarlo acá mismo).
+    if (value === 'new') setNuevoTemaColor(siguienteColorTema(temas))
+  }
+
+  // Para un tema nuevo solo se recuerda la elección (se guarda al crear el
+  // item); para uno existente, el cambio se persiste ya — es una propiedad del
+  // tema, no del item, y no tiene sentido atarla al submit del form.
+  async function handleColorClick(color: TemaColor) {
+    if (temaId === 'new') {
+      setNuevoTemaColor(color)
+      return
+    }
+    if (!temaSeleccionado) return
+    try {
+      onTemaUpdated(await updateTemaColor(temaSeleccionado.id, color))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo cambiar el color del tema')
+    }
+  }
+
   const updateLinea = (id: string, texto: string) =>
     setLineas((prev) => prev.map((l) => (l.id === id ? { ...l, texto } : l)))
   const removeLinea = (id: string) => setLineas((prev) => prev.filter((l) => l.id !== id))
@@ -147,7 +199,7 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
       let temaIdFinal: string | null = temaId === '' ? null : temaId
 
       if (temaId === 'new') {
-        const tema = await createTema(userId, nuevoTemaNombre.trim())
+        const tema = await createTema(userId, nuevoTemaNombre.trim(), nuevoTemaColor)
         onTemaCreated(tema)
         temaIdFinal = tema.id
       }
@@ -230,7 +282,7 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
         <select
           id="tema"
           value={temaId}
-          onChange={(e) => setTemaId(e.target.value)}
+          onChange={(e) => handleTemaChange(e.target.value)}
           className="ctl ctl--mono w-full"
         >
           <option value="">Sin tema</option>
@@ -250,6 +302,33 @@ export function ItemForm({ userId, temas, editingItem, onSaved, onCancel, onTema
             placeholder="Nombre del tema nuevo"
             className="ctl w-full mt-2"
           />
+        )}
+
+        {/* Color del tema. Vive acá y no en una pantalla de "gestionar temas"
+            (que no existe) porque este es el único lugar donde el tema ya está
+            en pantalla y seleccionado. */}
+        {colorActivo && (
+          <>
+            <div className="tema-colores" role="group" aria-label="Color del tema">
+              {COLORES_TEMA.map((color) => (
+                <button
+                  key={color}
+                  type="button"
+                  onClick={() => handleColorClick(color)}
+                  aria-pressed={color === colorActivo}
+                  aria-label={TEMA_COLOR_LABEL[color]}
+                  title={TEMA_COLOR_LABEL[color]}
+                  style={{ background: temaColorVar(color) }}
+                  className={`swatch${color === colorActivo ? ' swatch--activa' : ''}`}
+                />
+              ))}
+            </div>
+            <p className="tema-colores__nota">
+              {temaId === 'new'
+                ? 'Color del tema nuevo — se asigna solo, podés cambiarlo'
+                : `Color de "${temaSeleccionado?.nombre}" en toda la app — se guarda al instante`}
+            </p>
+          </>
         )}
       </div>
 

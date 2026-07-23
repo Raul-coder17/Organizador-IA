@@ -21,7 +21,9 @@ import {
   getLocalItem,
   getLocalRecordatorio,
   getLocalRecordatoriosByItem,
+  getLocalTema,
   loadRecordatoriosFromCache,
+  loadTemasFromCache,
   putLocalItem,
   putLocalRecordatorio,
   putLocalTema,
@@ -30,6 +32,7 @@ import {
 import { requestSync } from './sync'
 import { joinRecordatoriosConItems } from './recordatorios'
 import { loadItemsFromCache } from './db'
+import { siguienteColorTema, type TemaColor } from './temaColores'
 import type {
   Item,
   ItemInsert,
@@ -52,15 +55,26 @@ async function enqueue(op: Omit<NewOutboxOp, 'createdAt' | 'tries' | 'lastError'
 // Temas
 // ============================================================
 
-export async function createTema(userId: string, nombre: string): Promise<Tema> {
+// Crea un tema. El color es opcional: si no viene, se asigna solo desde la
+// paleta fría (decisión D4). Que el default viva ACÁ y no en el form es lo que
+// garantiza que ningún camino de creación deje un tema sin color — ni el form,
+// ni el asistente de IA, ni lo que venga después.
+export async function createTema(
+  userId: string,
+  nombre: string,
+  color?: TemaColor,
+): Promise<Tema> {
   // El UUID lo genera el cliente (ítem 1): el id es el mismo local y en el
   // servidor, así el item que referencie este tema ya puede apuntarle antes de
   // que exista arriba.
+  const ts = nowIso()
   const tema: Tema = {
     id: crypto.randomUUID(),
     user_id: userId,
     nombre,
-    created_at: nowIso(),
+    color: color ?? siguienteColorTema(await loadTemasFromCache(), nombre),
+    created_at: ts,
+    updated_at: ts,
   }
   await putLocalTema(tema)
   await enqueue({
@@ -71,6 +85,28 @@ export async function createTema(userId: string, nombre: string): Promise<Tema> 
     baseUpdatedAt: null,
   })
   return tema
+}
+
+// Cambia el color de un tema ya creado. Pasa por el mismo camino que todo lo
+// demás (espejo local + outbox), así que anda igual sin conexión: el punto
+// cambia al instante en la UI y la escritura sube cuando haya red.
+export async function updateTemaColor(id: string, color: TemaColor): Promise<Tema> {
+  const current = await getLocalTema(id)
+  if (!current) throw new Error('Ese tema ya no existe.')
+
+  const updatedAt = nowIso()
+  const next: Tema = { ...current, color, updated_at: updatedAt }
+  await putLocalTema(next)
+  await enqueue({
+    entity: 'tema',
+    op: 'update',
+    entityId: id,
+    // El updated_at viaja en el payload: es lo que usa la guarda LWW del motor
+    // de sync para no pisar un cambio más nuevo hecho en otro dispositivo.
+    payload: { color, updated_at: updatedAt },
+    baseUpdatedAt: current.updated_at ?? null,
+  })
+  return next
 }
 
 // ============================================================

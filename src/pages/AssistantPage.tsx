@@ -166,6 +166,11 @@ export function AssistantPage() {
     }
   }
 
+  // Resuelve el nombre de tema que propuso la IA a un id, creándolo si no
+  // existe. El tema creado por la IA sale con color automático igual que el
+  // manual: el default vive en repo.createTema, no en el form (Fase 2, D4). Y
+  // como la asignación lee el espejo local — donde el tema recién creado ya
+  // está —, dos temas creados en la misma tanda de acciones no salen iguales.
   async function resolveTemaId(nombre: string | null | undefined): Promise<string | null> {
     if (!nombre) return null
     const existing = temas.find((t) => t.nombre.toLowerCase() === nombre.toLowerCase())

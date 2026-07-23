@@ -209,8 +209,10 @@ async function applyOp(op: PlannedOp): Promise<ApplyOutcome> {
   const clientUpdatedAt = typeof patch.updated_at === 'string' ? patch.updated_at : null
 
   if (!clientUpdatedAt) {
-    // `temas` no tiene updated_at (no se editan en la UI). Sin columna de
-    // tiempo no hay guarda LWW posible: escritura directa.
+    // Update sin updated_at en el payload: sin marca de tiempo del cliente no
+    // hay guarda LWW posible, así que va escritura directa. Hoy no lo usa
+    // nadie (las tres entidades tienen updated_at desde la Fase 2), pero es la
+    // red de contención para una op vieja que haya quedado encolada.
     const { error } = await supabase.from(table).update(patch).eq('id', op.entityId)
     if (error) throw error
     return 'applied'
