@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { deleteItem, updateItem } from '../lib/repo'
 import { loadItemsFromCache, loadRecordatoriosFromCache, loadTemasFromCache } from '../lib/db'
@@ -6,7 +7,6 @@ import { hasSyncSettled, subscribeSyncSettled } from '../lib/sync'
 import type { Item, LineaLista, Recordatorio, Tema, TipoItem } from '../types/database'
 import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
-import { AppNav } from '../components/AppNav'
 import { colorDeTema, temaColorVar } from '../lib/temaColores'
 
 // Filtro por tipo. 'todos' es el estado neutro; el resto son los cuatro tipos
@@ -66,6 +66,7 @@ export function ItemsPage() {
   const [filterTemaId, setFilterTemaId] = useState('todos')
   const [filterTipo, setFilterTipo] = useState<FiltroTipo>('todos')
   const [showForm, setShowForm] = useState(false)
+  const location = useLocation()
 
   // La pantalla lee SIEMPRE del espejo local (instantáneo, igual con o sin
   // red). Quien lo pone al día contra el servidor es el motor de sync, que al
@@ -97,6 +98,16 @@ export function ItemsPage() {
   }, [load])
 
   useEffect(() => subscribeSyncSettled(load), [load])
+
+  // El "+ Nuevo item" del shell no tiene formulario propio todavía (ítem 11):
+  // navega hasta acá pidiendo que se abra este. `location.key` cambia en cada
+  // navegación, así que pedirlo dos veces seguidas vuelve a abrirlo.
+  useEffect(() => {
+    if ((location.state as { nuevoItem?: boolean } | null)?.nuevoItem) {
+      setEditingItem(null)
+      setShowForm(true)
+    }
+  }, [location.key, location.state])
 
   function handleSaved() {
     setShowForm(false)
@@ -160,121 +171,117 @@ export function ItemsPage() {
   const hayFiltroActivo = filterTemaId !== 'todos' || filterTipo !== 'todos'
 
   return (
-    <div className="min-h-screen bg-paper">
-      <AppNav />
+    <main className="shell-main space-y-6">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="tema-head grow">
+          <h2>Biblioteca</h2>
+          <span className="count">
+            {items.length} item{items.length === 1 ? '' : 's'} · {temas.length} tema
+            {temas.length === 1 ? '' : 's'}
+          </span>
+        </div>
 
-      <main className="max-w-[840px] mx-auto px-6 py-8 space-y-6">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="tema-head grow">
-            <h2>Biblioteca</h2>
-            <span className="count">
-              {items.length} item{items.length === 1 ? '' : 's'} · {temas.length} tema
-              {temas.length === 1 ? '' : 's'}
-            </span>
-          </div>
+        <button
+          onClick={() => {
+            setEditingItem(null)
+            setShowForm((v) => !v)
+          }}
+          className="btn-moss"
+        >
+          {showForm ? 'Cancelar' : '+ Nuevo item'}
+        </button>
+      </div>
 
+      {/* Dos niveles de filtro: el tipo acota qué clase de ficha se ve, el
+          tema acota de qué va. Se combinan. */}
+      <div className="space-y-3">
+        <div className="segmented hscroll" role="group" aria-label="Filtrar por tipo">
+          {FILTROS_TIPO.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setFilterTipo(value)}
+              aria-pressed={filterTipo === value}
+              className={`segmented__btn${filterTipo === value ? ' segmented__btn--active' : ''}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <div className="chips hscroll" role="group" aria-label="Filtrar por tema">
           <button
-            onClick={() => {
-              setEditingItem(null)
-              setShowForm((v) => !v)
-            }}
-            className="btn-moss"
+            type="button"
+            onClick={() => setFilterTemaId('todos')}
+            aria-pressed={filterTemaId === 'todos'}
+            className={`chip${filterTemaId === 'todos' ? ' chip--active' : ''}`}
           >
-            {showForm ? 'Cancelar' : '+ Nuevo item'}
+            Todos los temas
+          </button>
+          {temas.map((tema) => (
+            <button
+              key={tema.id}
+              type="button"
+              onClick={() => setFilterTemaId(tema.id)}
+              aria-pressed={filterTemaId === tema.id}
+              className={`chip${filterTemaId === tema.id ? ' chip--active' : ''}`}
+            >
+              <span
+                className="tema-dot"
+                style={{ background: temaColorVar(colorDeTema(tema)) }}
+                aria-hidden="true"
+              />
+              {tema.nombre}
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => setFilterTemaId(FILTRO_SIN_TEMA)}
+            aria-pressed={filterTemaId === FILTRO_SIN_TEMA}
+            className={`chip${filterTemaId === FILTRO_SIN_TEMA ? ' chip--active' : ''}`}
+          >
+            Sin tema
           </button>
         </div>
+      </div>
 
-        {/* Dos niveles de filtro: el tipo acota qué clase de ficha se ve, el
-            tema acota de qué va. Se combinan. */}
-        <div className="space-y-3">
-          <div className="segmented hscroll" role="group" aria-label="Filtrar por tipo">
-            {FILTROS_TIPO.map(({ value, label }) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setFilterTipo(value)}
-                aria-pressed={filterTipo === value}
-                className={`segmented__btn${filterTipo === value ? ' segmented__btn--active' : ''}`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+      {showForm && (
+        <ItemForm
+          userId={user.id}
+          temas={temas}
+          editingItem={editingItem}
+          onSaved={handleSaved}
+          onCancel={() => {
+            setShowForm(false)
+            setEditingItem(null)
+          }}
+          onTemaCreated={handleTemaCreated}
+          onTemaUpdated={handleTemaUpdated}
+        />
+      )}
 
-          <div className="chips hscroll" role="group" aria-label="Filtrar por tema">
-            <button
-              type="button"
-              onClick={() => setFilterTemaId('todos')}
-              aria-pressed={filterTemaId === 'todos'}
-              className={`chip${filterTemaId === 'todos' ? ' chip--active' : ''}`}
-            >
-              Todos los temas
-            </button>
-            {temas.map((tema) => (
-              <button
-                key={tema.id}
-                type="button"
-                onClick={() => setFilterTemaId(tema.id)}
-                aria-pressed={filterTemaId === tema.id}
-                className={`chip${filterTemaId === tema.id ? ' chip--active' : ''}`}
-              >
-                <span
-                  className="tema-dot"
-                  style={{ background: temaColorVar(colorDeTema(tema)) }}
-                  aria-hidden="true"
-                />
-                {tema.nombre}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => setFilterTemaId(FILTRO_SIN_TEMA)}
-              aria-pressed={filterTemaId === FILTRO_SIN_TEMA}
-              className={`chip${filterTemaId === FILTRO_SIN_TEMA ? ' chip--active' : ''}`}
-            >
-              Sin tema
-            </button>
-          </div>
-        </div>
+      {error && <p className="text-sm text-rust">{error}</p>}
 
-        {showForm && (
-          <ItemForm
-            userId={user.id}
-            temas={temas}
-            editingItem={editingItem}
-            onSaved={handleSaved}
-            onCancel={() => {
-              setShowForm(false)
-              setEditingItem(null)
-            }}
-            onTemaCreated={handleTemaCreated}
-            onTemaUpdated={handleTemaUpdated}
-          />
-        )}
-
-        {error && <p className="text-sm text-rust">{error}</p>}
-
-        {loading ? (
-          <p className="text-sm text-ink-soft">Cargando…</p>
-        ) : filteredItems.length === 0 ? (
-          <p className="text-sm text-ink-soft">
-            {items.length === 0
-              ? 'Todavía no tenés items. Creá el primero con el botón de arriba.'
-              : hayFiltroActivo
-                ? 'No hay items con este filtro.'
-                : 'No hay items para mostrar.'}
-          </p>
-        ) : (
-          <ItemList
-            items={filteredItems}
-            temas={temas}
-            recordatorios={recordatorios}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onToggleLinea={handleToggleLinea}
-          />
-        )}
-      </main>
-    </div>
+      {loading ? (
+        <p className="text-sm text-ink-soft">Cargando…</p>
+      ) : filteredItems.length === 0 ? (
+        <p className="text-sm text-ink-soft">
+          {items.length === 0
+            ? 'Todavía no tenés items. Creá el primero con el botón de arriba.'
+            : hayFiltroActivo
+              ? 'No hay items con este filtro.'
+              : 'No hay items para mostrar.'}
+        </p>
+      ) : (
+        <ItemList
+          items={filteredItems}
+          temas={temas}
+          recordatorios={recordatorios}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onToggleLinea={handleToggleLinea}
+        />
+      )}
+    </main>
   )
 }

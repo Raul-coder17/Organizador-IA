@@ -4,7 +4,8 @@
 > tomadas: **D2** radius 2→3-4px y chips en píldora aceptados, sombra sólo en lo
 > que flota; **D3** "recordatorio" se agrega al segmented de tipo; **D4** color de
 > tema automático al crear con opción de cambiarlo, ya implementado.
-> **D1** (router) sigue abierta y bloquea la Fase 3.
+> **D1 resuelta: se conserva `react-router`.** La Fase 3 arrancó en la rama
+> `rediseno-fase-3`; el ítem 7 (chasis) está implementado ahí.
 > Detalle de lo implementado en [PLAN_ORGANIZADOR.md](PLAN_ORGANIZADOR.md).
 
 > Documento de análisis y planificación. **No se tocó código para producirlo.**
@@ -379,11 +380,61 @@ existirían.
 > Todo lo de esta fase toca cómo se llega a las pantallas. Conviene hacerla de corrido, en rama
 > aparte, y con la decisión D1 (§7) ya tomada.
 
-**7. Chasis nuevo: AppShell.** `[N]` · **riesgo alto**
+**7. Chasis nuevo: AppShell.** `[N]` · **riesgo alto** — ✅ **implementado** (rama `rediseno-fase-3`)
 Reemplazar `AppNav` por un shell con sidebar 264px / tab bar + FAB, breakpoint 900px. Toca las 4
 páginas. Puntos de cuidado: `useRecordatoriosBadge` depende de `useLocation`; el indicador de
 sync necesita lugar en mobile (§3.3-C); mantener el estado deshabilitado del asistente cuando la
 IA está apagada.
+
+> Hecho en [`AppShell`](src/components/AppShell.tsx) + [`useIsWide`](src/lib/useIsWide.ts).
+> `AppNav` se eliminó.
+>
+> **El shell es un layout route, no un componente por página.** Antes cada
+> página importaba y dibujaba su propia `<AppNav>`, así que al navegar la nav
+> se desmontaba y se volvía a montar. Ahora se monta una vez y las páginas
+> entran por su `<Outlet>`; cada una sólo aporta su `<main className="shell-main">`.
+> Eso es lo que hace que el badge y el estado de sync no parpadeen al cambiar de vista.
+>
+> **Breakpoint.** `useIsWide` (listener de `resize` + `window.innerWidth >= 900`)
+> decide qué piezas se **montan**: en ancho no existe la tab bar en el DOM, y en
+> angosto no existe el sidebar. No es `display:none` sobre las dos, porque eso
+> duplicaría el buscador y los cuatro links en el árbol de accesibilidad. El
+> mismo 900px vive además en un `@media` de `index.css`, pero sólo para el
+> padding del contenido, que sí es puro estilo.
+>
+> **§3.3-C resuelto — dónde va el indicador de sync.** En ancho, en el bloque de
+> cuenta del sidebar, bajo el email: es donde el prototipo dibuja
+> "EN LÍNEA · SYNC OK". En angosto, en la **barra superior sticky**, entre la
+> marca y el toggle de tema. La alternativa era mandarlo a Ajustes y era una
+> regresión: en una app offline-first, "esto todavía no subió" tiene que verse
+> sin ir a buscarlo. Como la barra es sticky y la nav vieja no lo era, ahora se
+> ve *más* que antes. Y `SyncStatus` sigue sin dibujar nada cuando todo está al
+> día, así que en el caso normal no ocupa lugar en ninguno de los dos lados.
+>
+> **Badge.** Sin cambios de comportamiento: sigue siendo `useRecordatoriosBadge`
+> (vencidos + de hoy, §2.3), y sigue dependiendo de `useLocation`, que existe
+> porque conservamos el router (D1). Cambia sólo dónde se dibuja: pastilla con
+> `margin-left:auto` en el sidebar, y badge encimado al ícono en la tab bar.
+>
+> **Asistente.** Mismo criterio que la nav vieja: mientras `useAiEnabled` carga
+> (`null`) y cuando la IA está apagada, el ítem se ve apagado y lleva a Ajustes
+> con el `title` de siempre. Sigue siendo la ruta `/assistant` hasta el ítem 10.
+>
+> **Dos cosas provisorias, las dos por el orden de los ítems:**
+> - "Hoy" apunta a `/` (la vista no existe hasta el ítem 8). Para que dos
+>   destinos no se marquen activos a la vez, la Biblioteca ya tiene su ruta:
+>   `/` y `/biblioteca` renderizan `ItemsPage` por ahora. En el ítem 8, `/` pasa
+>   a ser Hoy y el shell no se toca.
+> - El "+ Nuevo item" del shell no tiene sheet propio hasta el ítem 11, así que
+>   navega a la Biblioteca con `state.nuevoItem` y abre el `ItemForm` de ahí. Es
+>   la única línea de este ítem que entra en una página en vez del shell.
+> - El buscador se dibuja **deshabilitado** (ítem 9): un input que acepta texto
+>   y no busca miente más que uno que se declara apagado.
+>
+> **Un arreglo que no estaba previsto:** "cerrar sesión" sólo existía en la nav.
+> Con el chasis nuevo vive en el sidebar, que en móvil no se monta — un teléfono
+> se quedaba sin forma de salir de la sesión. Se agregó un bloque **Cuenta**
+> (email + cerrar sesión) al final de Ajustes.
 
 **8. Vista Hoy como landing.** `[N]` · riesgo medio
 Vista nueva + Biblioteca pasa a su propia ruta. Es el cambio que más se nota para el usuario:
@@ -423,7 +474,7 @@ grande de todos: es la única de las 4 pendientes que necesita backend nuevo de 
 Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
-Fase 3:  7 [N] · 8 [N] · 9 [N] · 10 [N] · 11 [N]   ← el bloque riesgoso (necesita D1)
+Fase 3:  7 [N] ✅ · 8 [N] · 9 [N] · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
 Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
 ```
 
@@ -435,7 +486,7 @@ convence, se descartó poco.
 
 ## 7. Decisiones que necesito de vos antes de empezar
 
-**D1 — ¿Se conserva `react-router` y las URLs?** *(bloqueante para la Fase 3)*
+**D1 — ¿Se conserva `react-router` y las URLs?** — ✅ **resuelta: se conserva**
 El prototipo navega por estado, sin rutas. Mi recomendación: conservar el router y mapear las
 vistas a rutas, con el asistente y el sheet como overlays del shell. Motivo: `useRecordatoriosBadge`
 depende de `useLocation`, y en una PWA instalada el botón atrás del sistema es como se cierran los

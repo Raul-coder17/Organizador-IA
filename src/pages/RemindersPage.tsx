@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
-import { AppNav } from '../components/AppNav'
 import {
   formatFechaHora,
   joinRecordatoriosConItems,
@@ -137,94 +136,90 @@ export function RemindersPage() {
   const visibles = grupos.reduce((n, g) => n + g.items.length, 0)
 
   return (
-    <div className="min-h-screen bg-paper">
-      <AppNav />
+    <main className="shell-main space-y-6">
+      <div className="tema-head">
+        <h2>Recordatorios</h2>
+        {!loading && (
+          <span className="count">
+            {recordatorios.length} recordatorio{recordatorios.length === 1 ? '' : 's'}
+          </span>
+        )}
+      </div>
 
-      <main className="max-w-[840px] mx-auto px-6 py-8 space-y-6">
-        <div className="tema-head">
-          <h2>Recordatorios</h2>
-          {!loading && (
-            <span className="count">
-              {recordatorios.length} recordatorio{recordatorios.length === 1 ? '' : 's'}
-            </span>
-          )}
+      {error && <p className="text-sm text-rust">{error}</p>}
+
+      {!loading && recordatorios.length > 0 && (
+        <div className="segmented hscroll" role="group" aria-label="Filtrar recordatorios">
+          {FILTROS.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setFiltro(value)}
+              aria-pressed={filtro === value}
+              className={`segmented__btn${filtro === value ? ' segmented__btn--active' : ''}`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
+      )}
 
-        {error && <p className="text-sm text-rust">{error}</p>}
+      {loading ? (
+        <p className="text-sm text-ink-soft">Cargando…</p>
+      ) : recordatorios.length === 0 ? (
+        <p className="text-sm text-ink-soft">
+          Todavía no tenés recordatorios. Agregá uno desde un item, marcando “Agregar
+          recordatorio” al crearlo o editarlo.
+        </p>
+      ) : visibles === 0 ? (
+        <p className="text-sm text-ink-soft">No hay recordatorios con este filtro.</p>
+      ) : (
+        grupos.map((grupo) => (
+          <section key={grupo.estado} className="mt-8 first:mt-0">
+            <div className={`tema-head${grupo.estado === 'vencido' ? ' tema-head--rust' : ''}`}>
+              <h2>{TITULO_GRUPO[grupo.estado]}</h2>
+              <span className="count">{grupo.items.length}</span>
+            </div>
 
-        {!loading && recordatorios.length > 0 && (
-          <div className="segmented hscroll" role="group" aria-label="Filtrar recordatorios">
-            {FILTROS.map(({ value, label }) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setFiltro(value)}
-                aria-pressed={filtro === value}
-                className={`segmented__btn${filtro === value ? ' segmented__btn--active' : ''}`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {loading ? (
-          <p className="text-sm text-ink-soft">Cargando…</p>
-        ) : recordatorios.length === 0 ? (
-          <p className="text-sm text-ink-soft">
-            Todavía no tenés recordatorios. Agregá uno desde un item, marcando “Agregar
-            recordatorio” al crearlo o editarlo.
-          </p>
-        ) : visibles === 0 ? (
-          <p className="text-sm text-ink-soft">No hay recordatorios con este filtro.</p>
-        ) : (
-          grupos.map((grupo) => (
-            <section key={grupo.estado} className="mt-8 first:mt-0">
-              <div className={`tema-head${grupo.estado === 'vencido' ? ' tema-head--rust' : ''}`}>
-                <h2>{TITULO_GRUPO[grupo.estado]}</h2>
-                <span className="count">{grupo.items.length}</span>
-              </div>
-
-              <ul className="rem-list">
-                {grupo.items.map(({ rec, estado }) => (
-                  <li key={rec.id} className={`rem rem--${estado}`}>
-                    <div className="rem__body">
-                      <div className="rem__meta">
-                        <span className={`rem__estado rem__estado--${estado}`}>
-                          {ESTADO_LABEL[estado]}
+            <ul className="rem-list">
+              {grupo.items.map(({ rec, estado }) => (
+                <li key={rec.id} className={`rem rem--${estado}`}>
+                  <div className="rem__body">
+                    <div className="rem__meta">
+                      <span className={`rem__estado rem__estado--${estado}`}>
+                        {ESTADO_LABEL[estado]}
+                      </span>
+                      <span className="rem__when">{formatFechaHora(rec.fecha_hora)}</span>
+                      {rec.estado === 'enviado' && (
+                        <span className="rem__notificado" title="Ya te enviamos la notificación">
+                          ● Notificado
                         </span>
-                        <span className="rem__when">{formatFechaHora(rec.fecha_hora)}</span>
-                        {rec.estado === 'enviado' && (
-                          <span className="rem__notificado" title="Ya te enviamos la notificación">
-                            ● Notificado
-                          </span>
-                        )}
-                        {rec.item && (
-                          <span className="rem__tipo">
-                            {TIPO_LABEL[rec.item.tipo] ?? rec.item.tipo}
-                          </span>
-                        )}
-                      </div>
-                      <p className="rem__contenido">{resumenContenido(rec.item)}</p>
+                      )}
+                      {rec.item && (
+                        <span className="rem__tipo">
+                          {TIPO_LABEL[rec.item.tipo] ?? rec.item.tipo}
+                        </span>
+                      )}
                     </div>
-                    {estado !== 'hecho' && (
-                      <div className="rem__actions">
-                        <button
-                          onClick={() => handleMarcarHecho(rec.id)}
-                          disabled={marcando === rec.id}
-                          className="btn-ghost"
-                        >
-                          {marcando === rec.id ? 'Guardando…' : 'Marcar hecho'}
-                        </button>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))
-        )}
-      </main>
-    </div>
+                    <p className="rem__contenido">{resumenContenido(rec.item)}</p>
+                  </div>
+                  {estado !== 'hecho' && (
+                    <div className="rem__actions">
+                      <button
+                        onClick={() => handleMarcarHecho(rec.id)}
+                        disabled={marcando === rec.id}
+                        className="btn-ghost"
+                      >
+                        {marcando === rec.id ? 'Guardando…' : 'Marcar hecho'}
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      )}
+    </main>
   )
 }

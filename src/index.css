@@ -108,83 +108,363 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Nav                                                                  */
+/* Chasis (AppShell) — PLAN_REDISEÑO.md ítem 7                          */
+/*                                                                     */
+/* Un solo breakpoint, 900px. Qué piezas se montan lo decide JS         */
+/* (useIsWide): acá sólo vive lo que es estilo. Por eso el media query  */
+/* de abajo toca padding y ancho, y nunca `display:none` sobre el       */
+/* sidebar o la tab bar — en el DOM existe una sola de las dos.         */
 /* ------------------------------------------------------------------ */
-.app-nav {
+.shell {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px 28px;
-  flex-wrap: wrap;
-  padding: 16px 24px;
-  background: var(--color-card);
-  border-bottom: 1px solid var(--color-line);
+  min-height: 100dvh;
+  max-width: 1360px;
+  margin: 0 auto;
 }
-.app-nav__left {
+.shell__main {
+  flex: 1;
+  min-width: 0;
   display: flex;
-  align-items: center;
-  gap: 20px 28px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  position: relative;
 }
+
+/* El <main> de cada página. Sustituye al `max-w-[840px] mx-auto px-6 py-8`
+   que cada una repetía. Queda alineado a la izquierda, no centrado: con el
+   sidebar al lado, centrarlo lo empujaría fuera del eje de lectura. */
+.shell-main {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  padding: 34px 40px 60px;
+}
+/* Para páginas que necesitan repartir alto (el chat del asistente). */
+.shell-main--alto {
+  min-height: 0;
+}
+@media (max-width: 899px) {
+  .shell-main {
+    max-width: 100%;
+    padding: 18px 16px 40px;
+  }
+}
+
 .app-brand {
   font-family: var(--font-fraunces);
   font-weight: 600;
   font-size: 20px;
   letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--color-ink);
+  padding: 0 4px;
+}
+
+/* --- Sidebar (≥900px) --------------------------------------------- */
+.shell__sidebar {
+  width: 264px;
+  flex: none;
+  border-right: 1px solid var(--color-line);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+}
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.side-nav__item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 11px;
+  border-radius: 3px;
+  color: var(--color-ink-soft);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.side-nav__item:hover {
+  color: var(--color-ink);
+  background: var(--color-card);
+}
+.side-nav__item--active,
+.side-nav__item--active:hover {
+  background: var(--color-moss-tint);
   color: var(--color-ink);
 }
-.nav-links {
+.side-nuevo {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.nav-link {
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px;
+  background: var(--color-moss);
+  color: var(--color-moss-ink);
+  border-radius: 3px;
   font-family: var(--font-mono);
   font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-ink-soft);
   text-decoration: none;
-  padding-bottom: 4px;
-  border-bottom: 2px solid transparent;
 }
-.nav-link:hover {
+.side-nuevo:hover {
+  filter: brightness(1.08);
+}
+.side-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.side-asistente {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  background: var(--color-moss-tint);
+  border: 1px solid var(--color-line);
+  border-radius: 3px;
+  color: var(--color-ink);
+  font-size: 13px;
+  text-decoration: none;
+}
+.side-asistente svg {
+  color: var(--color-moss);
+  flex: none;
+}
+/* IA apagada: mismo destino que antes (Ajustes) y misma lectura de
+   "no disponible todavía" que tenía el link deshabilitado de la nav vieja. */
+.side-asistente--off {
+  background: none;
+  color: var(--color-ink-soft);
+}
+.side-asistente--off svg {
+  color: var(--color-slate);
+}
+.side-cuenta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-line-soft);
+}
+.side-cuenta__avatar {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-moss);
+  color: var(--color-moss-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+.side-cuenta__datos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+.side-cuenta__email {
+  font-size: 12px;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.side-salir {
+  align-self: flex-start;
+  font-size: 12px;
+}
+
+/* --- Barra superior (<900px) --------------------------------------- */
+.shell__topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--color-paper);
+  border-bottom: 1px solid var(--color-line);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.shell__topbar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.shell__brand-mobile {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-fraunces);
+  font-weight: 600;
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.icon-btn {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 3px;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+.icon-btn:hover {
   color: var(--color-ink);
 }
-.nav-link--active {
+
+/* --- Buscador (ítem 9: todavía sin funcionalidad) ------------------- */
+.shell-search {
+  position: relative;
+}
+.shell-search__icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  color: var(--color-ink-mute);
+  pointer-events: none;
+}
+.shell-search__input {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 3px;
+  font-size: 13.5px;
   color: var(--color-ink);
-  border-bottom-color: var(--color-moss);
 }
-.nav-link--disabled {
-  color: var(--color-line);
+.shell-search__input:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
 }
-/* Badge de conteo (recordatorios vencidos/de hoy) en la nav */
-.nav-badge {
-  display: inline-block;
-  margin-left: 6px;
-  min-width: 16px;
-  padding: 0 5px;
+
+/* --- Tab bar + FAB (<900px) ---------------------------------------- */
+/* `margin-top:auto` la manda al pie aunque la página de turno no llene la
+   pantalla; `sticky` la mantiene ahí cuando sí la llena y hay scroll. Sin el
+   margen, una vista corta la dejaba flotando a media altura. */
+.tabbar {
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: var(--color-paper);
+  border-top: 1px solid var(--color-line);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+}
+.tabbar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 2px;
+  color: var(--color-ink-mute);
+  text-decoration: none;
+}
+.tabbar__item--active {
+  color: var(--color-moss);
+}
+.tabbar__icon {
+  position: relative;
+  display: flex;
+}
+.tabbar__label {
   font-family: var(--font-mono);
   font-size: 10px;
-  line-height: 16px;
-  text-align: center;
+  letter-spacing: 0.02em;
+}
+/* El "+" sobresale de la barra: es la única acción de la tab bar que no es
+   navegación, y el relieve es lo que la distingue. */
+.tabbar__fab {
+  justify-self: center;
+  width: 52px;
+  height: 52px;
+  margin-top: -22px;
+  border-radius: 50%;
+  background: var(--color-moss);
+  color: var(--color-moss-ink);
+  border: 3px solid var(--color-paper);
+  box-shadow: var(--shadow-float);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fab-asistente {
+  position: fixed;
+  right: 16px;
+  bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+  z-index: 19;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-float);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-moss);
+}
+.fab-asistente--off {
+  color: var(--color-slate);
+}
+
+/* --- Badges de recordatorios pendientes ----------------------------- */
+/* Cuenta vencidos + de hoy (countRecordatoriosPendientesHoy), no todos los
+   pendientes: "los que ya te tocan". Ver PLAN_REDISEÑO.md §2.3. */
+.nav-badge {
+  margin-left: auto;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
   color: var(--color-moss-ink);
   background: var(--color-rust);
   border-radius: 9px;
-  vertical-align: 1px;
 }
-.app-nav__right {
+/* El mismo dato, encimado al ícono cuando no hay lugar para una fila. */
+.tab-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: center;
   font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-ink-soft);
-  min-width: 0;
-}
-.app-nav__email {
-  overflow-wrap: anywhere;
+  font-size: 9px;
+  color: var(--color-moss-ink);
+  background: var(--color-rust);
+  border-radius: 9px;
 }
 /* Indicador de conexión / sincronización. Solo se dibuja cuando hay algo que
    decir (sin conexión, cambios en cola, error): ver SyncStatus.tsx. */

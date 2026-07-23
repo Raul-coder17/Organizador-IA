@@ -20,7 +20,6 @@ import { useSyncStatus } from '../lib/useSyncStatus'
 import { datetimeLocalToIso, formatFechaHora, isoToDatetimeLocal } from '../lib/recordatorios'
 import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
 import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
-import { AppNav } from '../components/AppNav'
 
 function contenidoTexto(item: Item): string {
   return typeof item.contenido?.texto === 'string' ? item.contenido.texto : JSON.stringify(item.contenido)
@@ -85,17 +84,14 @@ export function AssistantPage() {
 
   if (aiEnabled === false) {
     return (
-      <div className="min-h-screen bg-paper">
-        <AppNav />
-        <main className="max-w-2xl mx-auto px-6 py-8">
-          <div className="bg-card border border-line rounded-[2px] p-6 text-center">
-            <p className="text-sm text-ink-soft mb-3">La IA no está activada.</p>
-            <Link to="/settings" className="link-underline text-sm">
-              Activá la IA en Settings para usar el asistente
-            </Link>
-          </div>
-        </main>
-      </div>
+      <main className="shell-main">
+        <div className="bg-card border border-line rounded-[4px] p-6 text-center">
+          <p className="text-sm text-ink-soft mb-3">La IA no está activada.</p>
+          <Link to="/settings" className="link-underline text-sm">
+            Activá la IA en Ajustes para usar el asistente
+          </Link>
+        </div>
+      </main>
     )
   }
 
@@ -315,111 +311,107 @@ export function AssistantPage() {
   const idleCount = pending.filter((p) => p.estado === 'idle').length
 
   return (
-    <div className="min-h-screen bg-paper flex flex-col">
-      <AppNav />
+    <main className="shell-main shell-main--alto flex flex-col gap-4 max-w-[720px]">
+      {!online && (
+        <div className="bg-card border border-line border-l-4 border-l-rust rounded-[2px] p-4">
+          <p className="text-sm text-ink">El asistente necesita conexión a internet.</p>
+          <p className="text-xs text-slate mt-1.5">
+            Tus items siguen acá: podés crear, editar y borrar sin señal, y se sincroniza solo
+            cuando vuelva.
+          </p>
+        </div>
+      )}
 
-      <main className="flex-1 w-full max-w-2xl mx-auto px-6 py-8 flex flex-col gap-4">
-        {!online && (
-          <div className="bg-card border border-line border-l-4 border-l-rust rounded-[2px] p-4">
-            <p className="text-sm text-ink">El asistente necesita conexión a internet.</p>
-            <p className="text-xs text-slate mt-1.5">
-              Tus items siguen acá: podés crear, editar y borrar sin señal, y se sincroniza solo
-              cuando vuelva.
-            </p>
+      <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 min-h-[300px]">
+        {messages.length === 0 && (
+          <p className="text-sm text-ink-soft">
+            Preguntale al asistente por tus items, o pedile que cree/edite/borre uno. Cualquier cambio
+            te lo va a mostrar para confirmar antes de aplicarlo.
+          </p>
+        )}
+
+        {messages.map((m, i) => (
+          <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
+            <span
+              className={`inline-block rounded-[2px] px-3 py-2 text-sm whitespace-pre-wrap ${
+                m.role === 'user'
+                  ? 'bg-moss text-moss-ink'
+                  : 'bg-card border border-line text-ink'
+              }`}
+            >
+              {m.text}
+            </span>
+          </div>
+        ))}
+
+        {sending && <p className="text-sm text-ink-soft">Pensando…</p>}
+
+        {pending.length > 0 && (
+          <div className="space-y-2">
+            {pending.length > 1 && idleCount > 0 && (
+              <div className="flex items-center gap-3">
+                <button onClick={confirmAll} disabled={anyApplying} className="btn-moss">
+                  {anyApplying ? 'Aplicando…' : `Confirmar todas (${idleCount})`}
+                </button>
+                <span className="text-xs text-slate font-mono">
+                  o confirmá/cancelá una por una abajo
+                </span>
+              </div>
+            )}
+
+            {pending.map((p, i) => (
+              <ProposedActionCard
+                key={i}
+                accion={p.accion}
+                estado={p.estado}
+                errorMsg={p.error}
+                items={items}
+                onConfirm={() => confirmOne(i)}
+                onCancel={() => cancelOne(i)}
+              />
+            ))}
           </div>
         )}
+      </div>
 
-        <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 min-h-[300px]">
-          {messages.length === 0 && (
-            <p className="text-sm text-ink-soft">
-              Preguntale al asistente por tus items, o pedile que cree/edite/borre uno. Cualquier cambio
-              te lo va a mostrar para confirmar antes de aplicarlo.
-            </p>
-          )}
+      {error && <p className="text-sm text-rust">{error}</p>}
 
-          {messages.map((m, i) => (
-            <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
-              <span
-                className={`inline-block rounded-[2px] px-3 py-2 text-sm whitespace-pre-wrap ${
-                  m.role === 'user'
-                    ? 'bg-moss text-moss-ink'
-                    : 'bg-card border border-line text-ink'
-                }`}
-              >
-                {m.text}
-              </span>
-            </div>
-          ))}
+      {cooldown > 0 && (
+        <p className="text-sm text-gold">
+          Esperá {cooldown} segundo{cooldown === 1 ? '' : 's'} antes de enviar otro mensaje.
+        </p>
+      )}
 
-          {sending && <p className="text-sm text-ink-soft">Pensando…</p>}
+      <form onSubmit={handleSend} className="flex items-center gap-2">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={
+            !online
+              ? 'Sin conexión — el asistente no está disponible'
+              : cooldown > 0
+                ? `Esperá ${cooldown}s…`
+                : 'Escribí un mensaje…'
+          }
+          disabled={!online || sending || cooldown > 0}
+          className="ctl flex-1 disabled:opacity-60"
+        />
+        <button
+          type="submit"
+          disabled={!online || sending || cooldown > 0 || !input.trim()}
+          className="btn-moss"
+        >
+          Enviar
+        </button>
+      </form>
 
-          {pending.length > 0 && (
-            <div className="space-y-2">
-              {pending.length > 1 && idleCount > 0 && (
-                <div className="flex items-center gap-3">
-                  <button onClick={confirmAll} disabled={anyApplying} className="btn-moss">
-                    {anyApplying ? 'Aplicando…' : `Confirmar todas (${idleCount})`}
-                  </button>
-                  <span className="text-xs text-slate font-mono">
-                    o confirmá/cancelá una por una abajo
-                  </span>
-                </div>
-              )}
-
-              {pending.map((p, i) => (
-                <ProposedActionCard
-                  key={i}
-                  accion={p.accion}
-                  estado={p.estado}
-                  errorMsg={p.error}
-                  items={items}
-                  onConfirm={() => confirmOne(i)}
-                  onCancel={() => cancelOne(i)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
-        {error && <p className="text-sm text-rust">{error}</p>}
-
-        {cooldown > 0 && (
-          <p className="text-sm text-gold">
-            Esperá {cooldown} segundo{cooldown === 1 ? '' : 's'} antes de enviar otro mensaje.
-          </p>
-        )}
-
-        <form onSubmit={handleSend} className="flex items-center gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={
-              !online
-                ? 'Sin conexión — el asistente no está disponible'
-                : cooldown > 0
-                  ? `Esperá ${cooldown}s…`
-                  : 'Escribí un mensaje…'
-            }
-            disabled={!online || sending || cooldown > 0}
-            className="ctl flex-1 disabled:opacity-60"
-          />
-          <button
-            type="submit"
-            disabled={!online || sending || cooldown > 0 || !input.trim()}
-            className="btn-moss"
-          >
-            Enviar
-          </button>
-        </form>
-
-        {usage?.daily_quota != null && (
-          <p className="text-xs text-slate text-right font-mono">
-            {usage.used_today ?? 0} de {usage.daily_quota} mensajes de IA usados hoy
-          </p>
-        )}
-      </main>
-    </div>
+      {usage?.daily_quota != null && (
+        <p className="text-xs text-slate text-right font-mono">
+          {usage.used_today ?? 0} de {usage.daily_quota} mensajes de IA usados hoy
+        </p>
+      )}
+    </main>
   )
 }
 

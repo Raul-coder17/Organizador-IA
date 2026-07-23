@@ -1,7 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { supabase } from '../lib/supabase'
-import { AppNav } from '../components/AppNav'
 import { PushSettings } from '../components/PushSettings'
 import { SyncSettings } from '../components/SyncSettings'
 import { setTheme, useTheme, type Theme } from '../lib/theme'
@@ -124,74 +123,87 @@ export function SettingsPage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-paper">
-      <AppNav />
+    <main className="shell-main space-y-6 max-w-[560px]">
+      <h2 className="font-fraunces text-[19px] font-medium text-ink">Apariencia</h2>
 
-      <main className="max-w-lg mx-auto px-6 py-8 space-y-6">
-        <h2 className="font-fraunces text-[19px] font-medium text-ink">Apariencia</h2>
+      <Apariencia />
 
-        <Apariencia />
+      <hr className="border-line" />
 
-        <hr className="border-line" />
+      <h2 className="font-fraunces text-[19px] font-medium text-ink">Configuración de IA</h2>
 
-        <h2 className="font-fraunces text-[19px] font-medium text-ink">Configuración de IA</h2>
-
-        {loading ? (
-          <p className="text-sm text-ink-soft">Cargando…</p>
-        ) : (
-          <div className="bg-card border border-line rounded-[2px] p-5 space-y-4">
-            <p className="text-sm text-ink-soft">
-              Estado:{' '}
-              {aiEnabled ? (
-                <span className="font-mono uppercase tracking-wide text-moss">Activa</span>
-              ) : (
-                <span className="font-mono uppercase tracking-wide text-slate">Inactiva</span>
-              )}
-            </p>
-
-            {!aiEnabled ? (
-              <form onSubmit={handleSave} className="space-y-3">
-                <div>
-                  <label className="label" htmlFor="apiKey">
-                    API key de Gemini
-                  </label>
-                  <input
-                    id="apiKey"
-                    type="password"
-                    autoComplete="off"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    className="ctl w-full"
-                  />
-                </div>
-                <button type="submit" disabled={saving || !apiKey.trim()} className="btn-moss">
-                  {saving ? 'Validando…' : 'Guardar y activar'}
-                </button>
-              </form>
+      {loading ? (
+        <p className="text-sm text-ink-soft">Cargando…</p>
+      ) : (
+        <div className="bg-card border border-line rounded-[2px] p-5 space-y-4">
+          <p className="text-sm text-ink-soft">
+            Estado:{' '}
+            {aiEnabled ? (
+              <span className="font-mono uppercase tracking-wide text-moss">Activa</span>
             ) : (
-              <button onClick={handleRemove} disabled={saving} className="btn-outline">
-                {saving ? 'Procesando…' : 'Desactivar / quitar key'}
-              </button>
+              <span className="font-mono uppercase tracking-wide text-slate">Inactiva</span>
             )}
+          </p>
 
-            {error && <p className="text-sm text-rust">{error}</p>}
-            {info && <p className="text-sm text-moss">{info}</p>}
-          </div>
-        )}
+          {!aiEnabled ? (
+            <form onSubmit={handleSave} className="space-y-3">
+              <div>
+                <label className="label" htmlFor="apiKey">
+                  API key de Gemini
+                </label>
+                <input
+                  id="apiKey"
+                  type="password"
+                  autoComplete="off"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  className="ctl w-full"
+                />
+              </div>
+              <button type="submit" disabled={saving || !apiKey.trim()} className="btn-moss">
+                {saving ? 'Validando…' : 'Guardar y activar'}
+              </button>
+            </form>
+          ) : (
+            <button onClick={handleRemove} disabled={saving} className="btn-outline">
+              {saving ? 'Procesando…' : 'Desactivar / quitar key'}
+            </button>
+          )}
 
-        <p className="text-xs text-slate">
-          Tu API key se valida contra Gemini y se guarda cifrada en el servidor. Nunca se guarda en el
-          navegador ni se vuelve a mostrar en pantalla.
-        </p>
+          {error && <p className="text-sm text-rust">{error}</p>}
+          {info && <p className="text-sm text-moss">{info}</p>}
+        </div>
+      )}
 
-        <hr className="border-line" />
+      <p className="text-xs text-slate">
+        Tu API key se valida contra Gemini y se guarda cifrada en el servidor. Nunca se guarda en el
+        navegador ni se vuelve a mostrar en pantalla.
+      </p>
 
-        <PushSettings />
+      <hr className="border-line" />
 
-        <hr className="border-line" />
+      <PushSettings />
 
-        <SyncSettings />
-      </main>
-    </div>
+      <hr className="border-line" />
+
+      <SyncSettings />
+
+      <hr className="border-line" />
+
+      {/* Cuenta. El chasis nuevo sólo muestra el email y el "cerrar sesión"
+          en el sidebar, que en móvil no existe: sin este bloque, un teléfono
+          se quedaba sin forma de salir de la sesión. */}
+      <h2 className="font-fraunces text-[19px] font-medium text-ink">Cuenta</h2>
+
+      <div className="bg-card border border-line rounded-[4px] p-5 flex items-center justify-between gap-4 flex-wrap">
+        <div className="min-w-0">
+          <p className="text-sm text-ink break-words">{user.email}</p>
+          <p className="text-xs text-ink-soft mt-1">Sesión iniciada en este dispositivo.</p>
+        </div>
+        <button onClick={() => supabase.auth.signOut()} className="btn-outline">
+          Cerrar sesión
+        </button>
+      </div>
+    </main>
   )
 }
