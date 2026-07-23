@@ -991,9 +991,10 @@ que sin red queda en el outbox y sube al reconectar.
   tag viejo), que es el mismo del aviso local — el push **reemplaza** la
   notificación local en vez de apilar una segunda.
 
-> ⚠️ El `tag` en el payload requiere **redeployar** la Edge Function
-> `send-reminder-notifications`. Sin ese deploy el resto anda igual; solo se
-> pierde el dedup (el SW cae al tag viejo).
+> El `tag` en el payload viaja desde la Edge Function, así que necesitó
+> redeploy: `send-reminder-notifications` quedó en **versión 2, `ACTIVE`**
+> (desplegada con `--no-verify-jwt --use-api`, como la v1). Guard verificado
+> después del deploy: `401 {"error":"No autorizado."}` sin el `x-cron-secret`.
 
 ### Asistente sin conexión (ítem 9)
 
@@ -1106,8 +1107,9 @@ del servidor y no depende del dominio del frontend.
   dedup por `tag` que anticipaba §6.2 (el cron manda `recordatorio-<id>`, el SW
   lo usa con fallback al tag viejo). 6 tests nuevos (36 en total); verificado en
   la app real con `onLine` simulado y `showNotification` interceptado.
-  **Requiere redeployar `send-reminder-notifications`** para que el dedup por
-  tag tome efecto.
+  `send-reminder-notifications` redeployada para que el tag viaje en el payload:
+  **versión 2, `ACTIVE`**, `verify_jwt: false` intacto, guard verificado (401 sin
+  el secret).
 - 2026-07-22 — Offline, indicador de estado (ítems 7 y 9 de `PLAN_OFFLINE.md`):
   el motor pasa a publicar un estado observable (`online`/`running`/`pending`/
   `lastSyncAt`/`error`) que React consume con `useSyncExternalStore`.

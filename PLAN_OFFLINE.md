@@ -647,6 +647,7 @@ anticipaba §6.2: el cron manda `tag: recordatorio-<id>` en el payload y el
 service worker lo usa (con fallback al `'recordatorio'` viejo), que es el mismo
 tag del aviso local. Si los dos avisan por el mismo recordatorio, el push
 **reemplaza** la notificación local en vez de apilar una segunda.
+(`send-reminder-notifications` ya redeployada con esto: versión 2, `ACTIVE`.)
 
 ---
 
