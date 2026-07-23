@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
-import { listItems, deleteItem, updateItem } from '../lib/items'
-import { listTemas } from '../lib/temas'
-import {
-  loadItemsFromCache,
-  loadTemasFromCache,
-  saveItemsToCache,
-  saveTemasToCache,
-} from '../lib/db'
+import { deleteItem, updateItem } from '../lib/repo'
+import { loadItemsFromCache, loadTemasFromCache } from '../lib/db'
+import { hasSyncSettled, subscribeSyncSettled } from '../lib/sync'
 import type { Item, LineaLista, Tema } from '../types/database'
 import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
@@ -23,37 +18,22 @@ export function ItemsPage() {
   const [filterTemaId, setFilterTemaId] = useState('todos')
   const [showForm, setShowForm] = useState(false)
 
+  // La pantalla lee SIEMPRE del espejo local (instantáneo, igual con o sin
+  // red). Quien lo pone al día contra el servidor es el motor de sync, que al
+  // terminar cada ciclo avisa y volvemos a leer.
   const load = useCallback(async () => {
     if (!user) return
     setError(null)
-
-    // 1) Hidratar desde la caché local (instantáneo, sirve sin conexión).
-    let hydrated = false
     try {
       const [ci, ct] = await Promise.all([loadItemsFromCache(), loadTemasFromCache()])
-      if (ci.length || ct.length) {
-        setItems(ci)
-        setTemas(ct)
-        setLoading(false)
-        hydrated = true
-      }
-    } catch {
-      /* caché best-effort: si falla, seguimos con la red */
-    }
-
-    // 2) Refrescar desde la red y actualizar la caché.
-    try {
-      const [itemsData, temasData] = await Promise.all([listItems(user.id), listTemas(user.id)])
-      setItems(itemsData)
-      setTemas(temasData)
-      // Persistimos el estado fresco (best-effort, no bloquea la UI).
-      saveItemsToCache(itemsData).catch(() => {})
-      saveTemasToCache(temasData).catch(() => {})
+      setItems(ci)
+      setTemas(ct)
+      // Espejo vacío y todavía sin ningún ciclo de sync (primer arranque con
+      // red): seguimos en "Cargando…" hasta que baje algo, para no mostrar un
+      // "no tenés items" que es mentira.
+      setLoading(ci.length === 0 && !hasSyncSettled() && navigator.onLine)
     } catch (err) {
-      // Sin red: si ya mostramos datos de la caché, los mantenemos sin error
-      // destructivo. Si no había caché, sí informamos el fallo (igual que antes).
-      if (!hydrated) setError(err instanceof Error ? err.message : 'Error cargando datos')
-    } finally {
+      setError(err instanceof Error ? err.message : 'Error cargando datos')
       setLoading(false)
     }
   }, [user])
@@ -61,6 +41,8 @@ export function ItemsPage() {
   useEffect(() => {
     load()
   }, [load])
+
+  useEffect(() => subscribeSyncSettled(load), [load])
 
   function handleSaved() {
     setShowForm(false)

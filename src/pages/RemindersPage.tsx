@@ -4,16 +4,11 @@ import { AppNav } from '../components/AppNav'
 import {
   formatFechaHora,
   joinRecordatoriosConItems,
-  listRecordatorios,
-  marcarHecho,
   resumenContenido,
-  toPlainRecordatorio,
 } from '../lib/recordatorios'
-import {
-  loadItemsFromCache,
-  loadRecordatoriosFromCache,
-  saveRecordatoriosToCache,
-} from '../lib/db'
+import { marcarHecho } from '../lib/repo'
+import { loadItemsFromCache, loadRecordatoriosFromCache } from '../lib/db'
+import { hasSyncSettled, subscribeSyncSettled } from '../lib/sync'
 import type { RecordatorioConItem } from '../types/database'
 
 type Estado = 'vencido' | 'proximo' | 'hecho'
@@ -46,36 +41,21 @@ export function RemindersPage() {
   const [error, setError] = useState<string | null>(null)
   const [marcando, setMarcando] = useState<string | null>(null)
 
+  // Igual que ItemsPage: leemos siempre del espejo local (recordatorios planos
+  // + items, unidos acá en la forma que usa la vista) y releemos cuando el
+  // motor de sync termina un ciclo.
   const load = useCallback(async () => {
     if (!user) return
     setError(null)
-
-    // 1) Hidratar desde la caché local: recordatorios planos + items cacheados
-    // (los cachea la pantalla de items) unidos en la forma que usa la vista.
-    let hydrated = false
     try {
       const [recs, items] = await Promise.all([
         loadRecordatoriosFromCache(),
         loadItemsFromCache(),
       ])
-      if (recs.length) {
-        setRecordatorios(joinRecordatoriosConItems(recs, items))
-        setLoading(false)
-        hydrated = true
-      }
-    } catch {
-      /* caché best-effort */
-    }
-
-    // 2) Refrescar desde la red y actualizar la caché (guardamos los
-    // recordatorios planos, sin el item embebido).
-    try {
-      const data = await listRecordatorios()
-      setRecordatorios(data)
-      saveRecordatoriosToCache(data.map(toPlainRecordatorio)).catch(() => {})
+      setRecordatorios(joinRecordatoriosConItems(recs, items))
+      setLoading(recs.length === 0 && !hasSyncSettled() && navigator.onLine)
     } catch (err) {
-      if (!hydrated) setError(err instanceof Error ? err.message : 'Error cargando recordatorios')
-    } finally {
+      setError(err instanceof Error ? err.message : 'Error cargando recordatorios')
       setLoading(false)
     }
   }, [user])
@@ -84,10 +64,13 @@ export function RemindersPage() {
     load()
   }, [load])
 
+  useEffect(() => subscribeSyncSettled(load), [load])
+
   async function handleMarcarHecho(id: string) {
     setMarcando(id)
     setError(null)
     try {
+      // Escribe el espejo local y encola la subida: anda igual sin conexión.
       await marcarHecho(id)
       setRecordatorios((prev) =>
         prev.map((r) => (r.id === id ? { ...r, estado: 'hecho' } : r)),

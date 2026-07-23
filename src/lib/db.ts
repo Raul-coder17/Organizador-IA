@@ -1,31 +1,36 @@
 // Capa de almacenamiento local (IndexedDB) para soporte offline.
-// Ver PLAN_OFFLINE.md §3.2. Hoy (ítems 3-4) se usa como CACHÉ READ-THROUGH: al
-// cargar cada pantalla hidratamos desde acá (instantáneo, funciona sin red) y
-// refrescamos de la red después. Los stores `outbox` y `meta` ya se crean desde
-// el día 1 (aunque la escritura offline —outbox— es el ítem 5, todavía sin
-// implementar) para no tener que versionar la DB de nuevo entonces.
+// Ver PLAN_OFFLINE.md §3.2. Desde los ítems 5-6, IndexedDB es la FUENTE DE
+// VERDAD que leen las pantallas: los stores `temas`/`items`/`recordatorios` son
+// el espejo local (se reemplazan completos en cada reconciliación) y `outbox`
+// guarda las mutaciones pendientes de subir al servidor.
+//
+// Este módulo es solo almacenamiento: las mutaciones de negocio pasan por
+// repo.ts y el motor que las sube por sync.ts.
 
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item, Recordatorio, Tema } from '../types/database'
+import type { QueuedOp, SyncEntity } from './syncCore'
 
 // Subir DB_VERSION cuando cambie el esquema de stores/índices, y manejar el
 // salto en el `upgrade` de abajo con un bloque `if (oldVersion < N)`.
 const DB_NAME = 'organizador'
 const DB_VERSION = 1
 
-// Una operación pendiente de sincronizar. Se llena en el ítem 5 (escritura
-// offline); acá solo se define el tipo y se crea el store desde ya.
-export interface OutboxOp {
-  seq?: number // autoincrement; lo asigna IndexedDB al agregar
-  entity: 'tema' | 'item' | 'recordatorio'
-  op: 'insert' | 'update' | 'delete'
-  entityId: string
-  payload: Record<string, unknown> | null
-  baseUpdatedAt: string | null
+// Una operación pendiente de sincronizar. `seq` (autoincrement) define el orden
+// FIFO, que ya respeta las dependencias causales (tema → item → recordatorio).
+export interface OutboxOp extends QueuedOp {
   createdAt: string
-  tries: number
   lastError: string | null
 }
+
+// Lo mismo pero sin `seq`: es lo que se encola (IndexedDB asigna el seq).
+export type NewOutboxOp = Omit<OutboxOp, 'seq'>
+
+const TABLE_STORE = {
+  tema: 'temas',
+  item: 'items',
+  recordatorio: 'recordatorios',
+} as const
 
 // Fila del store de metadatos (lastSyncAt, etc.). `key` es el identificador.
 export interface MetaRow {
@@ -156,6 +161,127 @@ export async function saveRecordatoriosToCache(recordatorios: Recordatorio[]): P
   await tx.store.clear()
   await Promise.all(recordatorios.map((r) => tx.store.put(r)))
   await tx.done
+}
+
+// ============================================================
+// Espejo local — escrituras fila a fila (mutaciones offline)
+// ============================================================
+//
+// Las usa repo.ts para reflejar cada mutación al instante (UI optimista) antes
+// de que el motor de sync la suba. El re-fetch posterior a la sincronización
+// vuelve a reemplazar el store completo con lo del servidor.
+
+export async function putLocalTema(tema: Tema): Promise<void> {
+  const db = await getDB()
+  await db.put('temas', tema)
+}
+
+export async function getLocalItem(id: string): Promise<Item | undefined> {
+  const db = await getDB()
+  return db.get('items', id)
+}
+
+export async function putLocalItem(item: Item): Promise<void> {
+  const db = await getDB()
+  await db.put('items', item)
+}
+
+export async function getLocalRecordatorio(id: string): Promise<Recordatorio | undefined> {
+  const db = await getDB()
+  return db.get('recordatorios', id)
+}
+
+export async function putLocalRecordatorio(rec: Recordatorio): Promise<void> {
+  const db = await getDB()
+  await db.put('recordatorios', rec)
+}
+
+// Recordatorios de un item, ordenados por fecha_hora (el más próximo primero).
+export async function getLocalRecordatoriosByItem(itemId: string): Promise<Recordatorio[]> {
+  const db = await getDB()
+  const recs = await db.getAllFromIndex('recordatorios', 'by_item', itemId)
+  return recs.sort((a, b) => a.fecha_hora.localeCompare(b.fecha_hora))
+}
+
+// Borra una fila del espejo, sea de la entidad que sea. La usa el motor de
+// sync cuando descubre que el servidor ya no tiene esa fila.
+export async function deleteLocalRow(entity: SyncEntity, id: string): Promise<void> {
+  const db = await getDB()
+  await db.delete(TABLE_STORE[entity], id)
+}
+
+// ============================================================
+// Outbox (PLAN_OFFLINE.md §3.2)
+// ============================================================
+
+export async function enqueueOp(op: NewOutboxOp): Promise<number> {
+  const db = await getDB()
+  // El store es autoIncrement: IndexedDB asigna el `seq` al agregar, así que la
+  // fila entra sin él (por eso el cast: el tipo lo declara siempre presente
+  // para todos los que la LEEN).
+  return db.add('outbox', op as OutboxOp)
+}
+
+// Todo el outbox en orden FIFO (el índice primario ya es `seq` ascendente).
+export async function getOutbox(): Promise<OutboxOp[]> {
+  const db = await getDB()
+  return db.getAll('outbox')
+}
+
+export async function countOutbox(): Promise<number> {
+  const db = await getDB()
+  return db.count('outbox')
+}
+
+export async function deleteOps(seqs: number[]): Promise<void> {
+  if (seqs.length === 0) return
+  const db = await getDB()
+  const tx = db.transaction('outbox', 'readwrite')
+  await Promise.all(seqs.map((seq) => tx.store.delete(seq)))
+  await tx.done
+}
+
+// Suma un intento fallido y guarda el error. `tries` es lo que después decide
+// si un insert que nunca salió se puede cancelar contra su delete (ver
+// syncCore.fold) y alimenta el backoff.
+export async function markOpsFailed(seqs: number[], error: string): Promise<void> {
+  if (seqs.length === 0) return
+  const db = await getDB()
+  const tx = db.transaction('outbox', 'readwrite')
+  for (const seq of seqs) {
+    const row = await tx.store.get(seq)
+    if (row) await tx.store.put({ ...row, tries: row.tries + 1, lastError: error })
+  }
+  await tx.done
+}
+
+// Descarta las ops pendientes de una entidad. Se usa al borrar un item: sus
+// recordatorios los borra el servidor en cascada, así que cualquier escritura
+// encolada para ellos quedaría huérfana (fallaría por FK para siempre).
+export async function deleteOpsForEntity(entity: SyncEntity, entityId: string): Promise<void> {
+  const db = await getDB()
+  const tx = db.transaction('outbox', 'readwrite')
+  let cursor = await tx.store.index('by_entity').openCursor(IDBKeyRange.only([entity, entityId]))
+  while (cursor) {
+    await cursor.delete()
+    cursor = await cursor.continue()
+  }
+  await tx.done
+}
+
+// ============================================================
+// Meta (lastSyncAt, etc.)
+// ============================================================
+
+export async function getMeta<T>(key: string): Promise<T | null> {
+  const db = await getDB()
+  const row = await db.get('meta', key)
+  return row ? (row.value as T) : null
+}
+
+export async function setMeta(key: string, value: unknown): Promise<void> {
+  const db = await getDB()
+  await db.put('meta', { key, value })
 }
 
 // ============================================================

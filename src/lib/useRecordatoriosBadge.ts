@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useAuth } from './AuthContext'
-import { countRecordatoriosPendientesHoy } from './recordatorios'
+import { countRecordatoriosPendientesHoy } from './repo'
+import { subscribeSyncSettled } from './sync'
 
 // Conteo de recordatorios pendientes vencidos o que vencen hoy, para el badge de
-// la nav. Devuelve 0 mientras carga (el badge simplemente no se muestra). Se
-// recalcula al cambiar de ruta, así al volver de /reminders el número se
-// actualiza tras marcar alguno como hecho.
+// la nav. Devuelve 0 mientras carga (el badge simplemente no se muestra). Sale
+// del espejo local, así que también anda sin conexión y ya cuenta los cambios
+// que todavía no subieron. Se recalcula al cambiar de ruta (al volver de
+// /reminders el número refleja lo que se marcó hecho) y al terminar un sync.
 export function useRecordatoriosBadge(): number {
   const { user } = useAuth()
   const location = useLocation()
   const [count, setCount] = useState(0)
+  const [tick, setTick] = useState(0)
+
+  useEffect(() => subscribeSyncSettled(() => setTick((t) => t + 1)), [])
 
   useEffect(() => {
     if (!user) return
@@ -27,7 +32,7 @@ export function useRecordatoriosBadge(): number {
     return () => {
       cancelled = true
     }
-  }, [user, location.pathname])
+  }, [user, location.pathname, tick])
 
   return count
 }

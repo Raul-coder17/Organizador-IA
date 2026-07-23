@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './lib/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { LocalReminderWatcher } from './components/LocalReminderWatcher'
+import { SyncEngine } from './components/SyncEngine'
 import { ItemsPage } from './pages/ItemsPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { AssistantPage } from './pages/AssistantPage'
@@ -11,6 +12,7 @@ function App() {
   return (
     <AuthProvider>
       <ProtectedRoute>
+        <SyncEngine />
         <LocalReminderWatcher />
         <BrowserRouter>
           <Routes>

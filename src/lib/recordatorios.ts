@@ -1,3 +1,7 @@
+// Acceso de LECTURA a `recordatorios` en el servidor + helpers de presentación.
+// Las mutaciones (crear/editar/borrar, marcar hecho/enviado) pasan por repo.ts
+// y las sube sync.ts; ver la nota en items.ts.
+
 import { supabase } from './supabase'
 import type { Item, Recordatorio, RecordatorioConItem } from '../types/database'
 
@@ -80,94 +84,6 @@ export async function listRecordatoriosParaDisparo(): Promise<RecordatorioConIte
 
   if (error) throw error
   return (data ?? []) as unknown as RecordatorioConItem[]
-}
-
-// Marca un recordatorio como 'enviado' desde el aviso local (mismo estado que
-// pone el cron del servidor). El filtro extra por estado='pendiente' evita
-// pisar un 'hecho' si el usuario lo marcó entre que se armó el timer y disparó.
-export async function marcarEnviado(id: string): Promise<void> {
-  const { error } = await supabase
-    .from('recordatorios')
-    .update({ estado: 'enviado' })
-    .eq('id', id)
-    .eq('estado', 'pendiente')
-  if (error) throw error
-}
-
-// El recordatorio (si existe) asociado a un item, para prellenar el form.
-export async function getRecordatorioForItem(itemId: string): Promise<Recordatorio | null> {
-  const { data, error } = await supabase
-    .from('recordatorios')
-    .select('*')
-    .eq('item_id', itemId)
-    .order('fecha_hora', { ascending: true })
-    .limit(1)
-    .maybeSingle()
-
-  if (error) throw error
-  return data
-}
-
-// Crea o actualiza el recordatorio de un item. Como un item tiene a lo sumo un
-// recordatorio en esta UI, buscamos el existente y hacemos update, o insert si
-// no hay. (No usamos upsert por item_id porque no hay unique constraint ahí.)
-export async function upsertRecordatorio(itemId: string, fechaHora: string): Promise<Recordatorio> {
-  const existente = await getRecordatorioForItem(itemId)
-
-  if (existente) {
-    const { data, error } = await supabase
-      .from('recordatorios')
-      .update({ fecha_hora: fechaHora, estado: 'pendiente' })
-      .eq('id', existente.id)
-      .select('*')
-      .single()
-    if (error) throw error
-    return data
-  }
-
-  const { data, error } = await supabase
-    .from('recordatorios')
-    // UUID generado en el cliente (ver nota en items.ts): id estable
-    // local↔servidor desde el insert. Default gen_random_uuid() como fallback.
-    .insert({ id: crypto.randomUUID(), item_id: itemId, fecha_hora: fechaHora, estado: 'pendiente' })
-    .select('*')
-    .single()
-  if (error) throw error
-  return data
-}
-
-// Elimina cualquier recordatorio asociado a un item (usado cuando se desmarca el
-// toggle en el form).
-export async function deleteRecordatoriosForItem(itemId: string): Promise<void> {
-  const { error } = await supabase.from('recordatorios').delete().eq('item_id', itemId)
-  if (error) throw error
-}
-
-export async function marcarHecho(id: string): Promise<Recordatorio> {
-  const { data, error } = await supabase
-    .from('recordatorios')
-    .update({ estado: 'hecho' })
-    .eq('id', id)
-    .select('*')
-    .single()
-  if (error) throw error
-  return data
-}
-
-// Cuenta los recordatorios pendientes que están vencidos o vencen hoy (para el
-// badge de la nav). El corte es el fin del día local del usuario.
-export async function countRecordatoriosPendientesHoy(): Promise<number> {
-  const finDeHoy = new Date()
-  finDeHoy.setHours(23, 59, 59, 999)
-
-  const { data, error } = await supabase
-    .from('recordatorios')
-    .select('id, fecha_hora')
-    .eq('estado', 'pendiente')
-    .lte('fecha_hora', finDeHoy.toISOString())
-
-  if (error) throw error
-  return (data ?? []).length
 }
 
 // --- Helpers de fecha/hora --------------------------------------------------

@@ -1,11 +1,8 @@
 import { useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { swReadyOrNull } from './push'
-import {
-  listRecordatoriosParaDisparo,
-  marcarEnviado,
-  resumenContenido,
-} from './recordatorios'
+import { listRecordatoriosParaDisparo, resumenContenido } from './recordatorios'
+import { marcarEnviado } from './repo'
 import { reconcileTimers } from './reminderScheduling'
 import type { RecordatorioConItem } from '../types/database'
 
@@ -94,10 +91,12 @@ export function useLocalReminderWatcher(): void {
           fired.add(id) // marcamos antes de esperar a la red, para no duplicar
           await fireReminder(rec)
           try {
+            // Marca local + encolado: si no hay red, el 'enviado' sube solo al
+            // reconectar en vez de perderse.
             await marcarEnviado(id)
           } catch {
-            // Si no se pudo marcar 'enviado', el cron del servidor queda como
-            // respaldo (encontrará el recordatorio aún pendiente).
+            // Si ni siquiera se pudo escribir local, el cron del servidor queda
+            // como respaldo (encontrará el recordatorio aún pendiente).
           }
         }, Math.min(delayMs, MAX_DELAY_MS))
         timers.set(id, { timeoutId, fechaHora })

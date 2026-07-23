@@ -1,14 +1,17 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import type { Item, ItemInsert, LineaLista, Prioridad, Tema, TipoItem } from '../types/database'
-import { createItem, updateItem } from '../lib/items'
-import { createTema } from '../lib/temas'
+// Todas las escrituras del form pasan por el repositorio local: se guardan al
+// instante en IndexedDB y se encolan para subir, así el form funciona igual con
+// o sin conexión (PLAN_OFFLINE.md ítems 5-6).
 import {
-  datetimeLocalToIso,
+  createItem,
+  createTema,
   deleteRecordatoriosForItem,
   getRecordatorioForItem,
-  isoToDatetimeLocal,
+  updateItem,
   upsertRecordatorio,
-} from '../lib/recordatorios'
+} from '../lib/repo'
+import { datetimeLocalToIso, isoToDatetimeLocal } from '../lib/recordatorios'
 
 function nuevaLinea(): LineaLista {
   return { id: crypto.randomUUID(), texto: '', hecho: false }

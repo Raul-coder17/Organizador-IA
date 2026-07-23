@@ -3,21 +3,20 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { useAiEnabled } from '../lib/useAiEnabled'
 import { supabase } from '../lib/supabase'
-import { listItems, createItem, updateItem, deleteItem } from '../lib/items'
-import { listTemas, createTema } from '../lib/temas'
+// Las acciones que confirma el usuario escriben por el repositorio local (igual
+// que el CRUD manual): si la conexión se corta entre proponer y confirmar, el
+// cambio no se pierde, queda encolado.
 import {
-  loadItemsFromCache,
-  loadTemasFromCache,
-  saveItemsToCache,
-  saveTemasToCache,
-} from '../lib/db'
-import {
-  datetimeLocalToIso,
+  createItem,
+  createTema,
+  deleteItem,
   deleteRecordatoriosForItem,
-  formatFechaHora,
-  isoToDatetimeLocal,
+  updateItem,
   upsertRecordatorio,
-} from '../lib/recordatorios'
+} from '../lib/repo'
+import { loadItemsFromCache, loadTemasFromCache } from '../lib/db'
+import { requestSync } from '../lib/sync'
+import { datetimeLocalToIso, formatFechaHora, isoToDatetimeLocal } from '../lib/recordatorios'
 import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
 import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
 import { AppNav } from '../components/AppNav'
@@ -59,24 +58,16 @@ export function AssistantPage() {
 
   async function loadData() {
     if (!user) return
-    // Hidratar desde la caché local primero (instantáneo, sirve sin red).
+    // Leemos del espejo local (instantáneo) y pedimos un sync para que se ponga
+    // al día contra el servidor en segundo plano.
     try {
       const [ci, ct] = await Promise.all([loadItemsFromCache(), loadTemasFromCache()])
-      if (ci.length) setItems(ci)
-      if (ct.length) setTemas(ct)
+      setItems(ci)
+      setTemas(ct)
     } catch {
-      /* caché best-effort */
+      /* lectura local best-effort */
     }
-    // Refrescar de la red y actualizar la caché. Sin red, mantenemos lo cacheado.
-    try {
-      const [itemsData, temasData] = await Promise.all([listItems(user.id), listTemas(user.id)])
-      setItems(itemsData)
-      setTemas(temasData)
-      saveItemsToCache(itemsData).catch(() => {})
-      saveTemasToCache(temasData).catch(() => {})
-    } catch {
-      /* offline: el asistente igual necesita red para responder (ítem 9) */
-    }
+    requestSync()
   }
 
   useEffect(() => {
@@ -110,6 +101,15 @@ export function AssistantPage() {
     e.preventDefault()
     const text = input.trim()
     if (!text || sending) return
+
+    // El asistente necesita a Gemini vía Edge Function: sin red no hay forma de
+    // proponer nada. Cortamos acá con un mensaje claro en vez de mandar la
+    // llamada y mostrar un error de red genérico. (El gateo completo de la
+    // pantalla —banner + input deshabilitado— es el ítem 9 del plan.)
+    if (!navigator.onLine) {
+      setError('El asistente necesita conexión a internet. Probá de nuevo cuando vuelva la señal.')
+      return
+    }
 
     const userMsg: ChatMessage = { role: 'user', text }
     const history = [...messages, userMsg]

@@ -14,8 +14,10 @@ texto o foto.
 - **vite-plugin-pwa** — instalable, offline-first.
 - **Gemini API** — captura asistida por IA (texto/foto → estructura).
 
-> **Plan de soporte offline completo** (propuesta, aún sin implementar):
-> [`PLAN_OFFLINE.md`](PLAN_OFFLINE.md).
+> **Plan de soporte offline completo**: [`PLAN_OFFLINE.md`](PLAN_OFFLINE.md).
+> Ítems 1-6 implementados (lectura y escritura offline con sincronización
+> automática); faltan el indicador visual (7), los recordatorios offline (8) y
+> el gating completo del asistente (9).
 
 ## Schema de base de datos
 
@@ -888,6 +890,87 @@ persistente queda para el próximo ítem.)
   guard de auth intacto (401 sin sesión).
 - **Pendiente de tu prueba en vivo** (requiere tu cuenta + tu key): ver abajo.
 
+## Soporte offline — espejo local, outbox y motor de sync
+
+Detalle completo del diseño y del estado de cada ítem en
+[`PLAN_OFFLINE.md`](PLAN_OFFLINE.md). Resumen de lo que hay hoy en el código.
+
+### Arquitectura
+
+Las páginas ya **no** hablan con Supabase para leer ni escribir. Hablan con una
+capa local sobre IndexedDB, y un motor aparte la sincroniza con el servidor:
+
+```
+páginas → repo.ts → IndexedDB (espejo + outbox)
+                         ▲
+                         │ flush + reconcile
+                    sync.ts → Supabase
+```
+
+- [`src/lib/db.ts`](src/lib/db.ts) — IndexedDB vía `idb`: stores espejo
+  (`temas`, `items`, `recordatorios`), `outbox` (autoincrement = orden FIFO,
+  índice compuesto `[entity, entityId]`) y `meta`.
+- [`src/lib/repo.ts`](src/lib/repo.ts) — **todas** las mutaciones. Cada una
+  escribe el espejo local (UI optimista instantánea), encola la op en el outbox
+  y pide un sync. Ninguna falla por falta de red.
+- [`src/lib/syncCore.ts`](src/lib/syncCore.ts) — lógica pura y testeada:
+  `planOutbox` (FIFO, coalescing, cancelación insert+delete),
+  `resolveConditionalUpdate` (LWW), `classifySyncError`, `blockedByParent`,
+  `backoffDelayMs`.
+- [`src/lib/sync.ts`](src/lib/sync.ts) — el motor: flush del outbox contra
+  Supabase, reconciliación por re-fetch, disparadores y Web Locks.
+- [`src/components/SyncEngine.tsx`](src/components/SyncEngine.tsx) — lo monta
+  con la sesión, una vez, en la raíz.
+
+`items.ts` / `temas.ts` / `recordatorios.ts` quedaron **solo de lectura**: sus
+funciones de mutación se borraron para que nadie pueda saltarse el motor.
+
+### Reglas de sincronización
+
+- **Orden:** FIFO por `seq`, que ya respeta las dependencias causales
+  (tema → item → recordatorio). Si un item falla, sus recordatorios se saltean
+  ese ciclo y se reintentan en el siguiente (FK + RLS los rechazarían).
+- **Insert:** `upsert` por el UUID que generó el cliente → reintentar no duplica.
+- **Update:** escritura condicional `updated_at <= :clientUpdatedAt`. Si afecta
+  0 filas, un `select` de control distingue "el servidor tiene algo más nuevo"
+  (descarto mi cambio) de "la fila ya no existe" (gana el borrado y limpio local).
+- **Delete:** borrado duro, idempotente.
+- **Coalescing:** varias ops de la misma fila se pliegan en una sola escritura.
+  `insert` + `delete` sin haber salido nunca a la red se **cancelan** entre sí;
+  si el insert ya se había intentado, se manda igual el delete (podría haber
+  quedado aplicado con la respuesta perdida).
+- **Reconcile:** solo cuando el outbox quedó vacío, re-fetch completo y reemplazo
+  del espejo. Nunca al revés: bajar antes de subir pisaría cambios locales.
+- **Disparadores:** `online`, foco, `visibilitychange`, intervalo de 30 s,
+  arranque, y cada mutación (debounce 200 ms). Single-flight entre pestañas con
+  `navigator.locks`. Backoff exponencial 5 s → 5 min tras fallos.
+
+### Asistente sin conexión
+
+Necesita a Gemini vía Edge Function, así que sigue **bloqueado** offline: ahora
+corta antes de llamar y avisa "El asistente necesita conexión a internet" en vez
+de mostrar un error de red genérico. Las acciones que **sí** confirma el usuario
+pasan por el repositorio, así que un corte entre proponer y confirmar no pierde
+el cambio. El gating completo de la pantalla (banner + input deshabilitado) sigue
+siendo el ítem 9 del plan offline.
+
+### Verificación
+
+- **20/20 tests unitarios** de la lógica pura (`npx deno test
+  src/lib/syncCore.test.ts`): orden FIFO y dependencias, coalescing,
+  cancelación insert+delete y el matiz del ack perdido, idempotencia al
+  replanificar tras un fallo, los tres desenlaces del LWW condicional,
+  clasificación de errores y backoff.
+- **Harness de integración en el navegador** (build de producción, temporal):
+  29 checks contra IndexedDB real ejercitando `db.ts` + `repo.ts` + `syncCore.ts`
+  sin red — crear/editar/borrar deja el espejo y el outbox como corresponde, el
+  plan sale en orden causal, el `baseUpdatedAt` y el `updated_at` del update son
+  los correctos, y el badge de recordatorios sale del espejo local.
+- `npm run build` y `npm run lint` sin errores; la app arranca en el preview de
+  producción sin errores de consola.
+- **Pendiente de tu prueba en vivo** (requiere tu sesión): el ciclo completo
+  offline → crear/editar/borrar → online → ver que sincronizó.
+
 ## Deploy
 
 ### GitHub
@@ -942,6 +1025,24 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-22 — Offline, escritura completa (ítems 5-6 de `PLAN_OFFLINE.md`):
+  `repo.ts` (toda mutación escribe primero el espejo de IndexedDB y encola la op
+  en el `outbox`), `syncCore.ts` (lógica pura: plan FIFO con coalescing y
+  cancelación insert+delete, LWW condicional, clasificación de errores, backoff)
+  y `sync.ts` (flush del outbox con upsert idempotente + escritura condicional
+  `updated_at <= client`, reconciliación por re-fetch completo, disparadores
+  `online`/foco/visibilidad/intervalo/post-mutación y single-flight con Web
+  Locks), montado por `SyncEngine`. Las páginas leen siempre del espejo local y
+  releen al terminar cada ciclo; `items.ts`/`temas.ts`/`recordatorios.ts`
+  quedaron solo de lectura. El asistente corta con mensaje claro sin red. 20/20
+  tests `deno` de la lógica pura + 29 checks de integración contra IndexedDB
+  real en el navegador; build y lint sin errores. Falta el indicador visual de
+  estado/pendientes (ítem 7).
+- 2026-07-22 — Offline, lectura (ítems 1-4 de `PLAN_OFFLINE.md`): UUID generado
+  en el cliente en todos los inserts, migración `recordatorios.updated_at` +
+  trigger que respeta el `updated_at` del cliente, capa `db.ts` sobre IndexedDB
+  (`idb`) con stores versionados, caché read-through en las pantallas y
+  `storage.persist()` al iniciar sesión.
 - 2026-07-22 — Notificaciones de dos vías: aviso **local instantáneo** cuando la
   app está abierta (`useLocalReminderWatcher` montado en la raíz vía
   `LocalReminderWatcher`, sondeo cada ~25s + `setTimeout` por recordatorio que

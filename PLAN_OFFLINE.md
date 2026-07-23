@@ -2,12 +2,21 @@
 
 > **Estado de implementación:**
 > - **Ítems 1-4 + `storage.persist()` (ítem 10 adelantado): implementados**
->   (2026-07-22). Da **lectura offline** (ver items/temas/recordatorios sin red);
->   la **escritura** offline sigue necesitando red hasta el ítem 5.
-> - **Ítems 5-6 (outbox de escritura + motor de sync): pendientes** (próximo
->   tramo grande).
-> - El asistente de IA queda **fuera de alcance** (necesita conexión a Gemini;
->   solo se deshabilitará con gracia sin red — ítem 9, aún pendiente).
+>   (2026-07-22). Dan **lectura offline**.
+> - **Ítems 5-6 (outbox de escritura + motor de sync): implementados**
+>   (2026-07-22). Con esto **crear / editar / borrar** items, temas y
+>   recordatorios funciona **sin conexión** y se sincroniza solo al volver la
+>   señal. Archivos nuevos: [`src/lib/repo.ts`](src/lib/repo.ts) (mutaciones →
+>   espejo local + outbox), [`src/lib/sync.ts`](src/lib/sync.ts) (flush +
+>   reconcile + disparadores + Web Locks) y
+>   [`src/lib/syncCore.ts`](src/lib/syncCore.ts) (lógica pura, con
+>   [tests](src/lib/syncCore.test.ts)).
+> - **Ítem 7 (indicador visual de estado / pendientes): pendiente** — es el
+>   próximo. Hoy el motor no tiene superficie en la UI: los errores de sync solo
+>   van a `console.warn`.
+> - **Ítems 8 (recordatorios offline) y 9 (gating del asistente): pendientes.**
+>   El asistente ya corta con un mensaje claro sin red (`navigator.onLine`), pero
+>   falta el banner + input deshabilitado que pide el ítem 9.
 >
 > **Decisiones confirmadas por Raúl** (resuelven §8): **borrado duro** + re-fetch
 > completo al reconciliar; **1-2 dispositivos propios** → LWW por `updated_at` con
@@ -198,13 +207,20 @@ interface OutboxOp {
 ```
 
 Notas:
-- **Coalescing opcional:** varias ediciones seguidas del mismo `entityId` offline
-  pueden colapsarse en una sola op `update` (menos tráfico al reconectar). Para el
-  MVP es aceptable dejar N updates y que el último gane; el coalescing es una
-  optimización posterior.
+- **Coalescing** (implementado en `planOutbox`): las ops del mismo `entityId` se
+  pliegan en una sola escritura. `insert` + N `update` → un solo `insert` con el
+  estado final; `update` + `update` → un `update` con los patches mergeados, que
+  conserva el `baseUpdatedAt` del primero y el `updated_at` del último;
+  `update`(s) + `delete` → solo el `delete`. La op resultante recuerda **todas**
+  las filas del outbox que cubre (`seqs`), que se borran juntas al aplicarla.
 - `insert` seguido de `delete` del mismo id **antes** de sincronizar → se cancelan
-  (se elimina del outbox sin tocar el servidor). Vale la pena manejar este caso
-  desde el principio: evita mandar basura.
+  (se elimina del outbox sin tocar el servidor).
+  **Matiz que agregamos al implementarlo:** solo se cancelan si el insert
+  **nunca se intentó** (`tries === 0`). Si ya se había intentado, pudo haberse
+  aplicado en el servidor y haberse perdido la respuesta (*ack perdido*); en ese
+  caso cancelar dejaría una fila huérfana que el re-fetch volvería a bajar y el
+  usuario vería **reaparecer lo que borró**. Con `tries > 0` se descarta el
+  insert pero **se manda el delete**, que es idempotente y barato.
 
 ### 3.3 Generación de IDs en el cliente (impacto)
 
@@ -472,12 +488,12 @@ cuando ya hay dónde apoyarlo.
 
 | # | Ítem | Riesgo | Qué entrega | Toca |
 |---|---|---|---|---|
-| **1** | **UUID en cliente en todos los inserts** (`createItem`/`createTema`/insert de recordatorio pasan `id: crypto.randomUUID()`). Sin cambio visible; sigue todo online. | Muy bajo | Prepara IDs estables para el outbox. | `items.ts`, `temas.ts`, `recordatorios.ts`, `ItemForm`, `AssistantPage` |
-| **2** | **Migración: `recordatorios.updated_at`** + backfill + ajuste de triggers (`items` y `recordatorios`) para respetar `updated_at` del cliente. Online-only, sin cambio de comportamiento. | Bajo | Habilita LWW por `updated_at` en las 3 tablas relevantes. | `supabase/migrations/*`, tipos |
-| **3** | **Capa IndexedDB con `idb`** (`db.ts`): definición de stores + `upgrade` versionado. Sin wiring todavía. | Bajo | Base de almacenamiento local. | nuevo `src/lib/db.ts` |
-| **4** | **Caché read-through**: en cada `load()`, escribir lo que llega del server en IndexedDB; al abrir, **hidratar desde IndexedDB primero** (instantáneo) y luego refrescar de red. | Bajo-medio | **Lectura offline** (los datos ya se ven sin red). Escritura sigue necesitando red. | repos + páginas |
-| **5** | **Repositorio + outbox (escritura offline)**: las mutaciones escriben local + encolan en `outbox`; offline no fallan. | Medio | **Crear/editar/borrar offline** (sin subir todavía). | repos, `db.ts` |
-| **6** | **Motor de sync**: flush del outbox (FIFO + dependencias), **upsert idempotente**, **LWW condicional** (§4.3), disparadores (`online`/foco/intervalo), **Web Locks**, y **reconcile por re-fetch**. | Alto | **Sincronización automática** al reconectar. | nuevo `src/lib/sync.ts` |
+| **1** ✅ | **UUID en cliente en todos los inserts** (`createItem`/`createTema`/insert de recordatorio pasan `id: crypto.randomUUID()`). Sin cambio visible; sigue todo online. | Muy bajo | Prepara IDs estables para el outbox. | `items.ts`, `temas.ts`, `recordatorios.ts`, `ItemForm`, `AssistantPage` |
+| **2** ✅ | **Migración: `recordatorios.updated_at`** + backfill + ajuste de triggers (`items` y `recordatorios`) para respetar `updated_at` del cliente. Online-only, sin cambio de comportamiento. | Bajo | Habilita LWW por `updated_at` en las 3 tablas relevantes. | `supabase/migrations/*`, tipos |
+| **3** ✅ | **Capa IndexedDB con `idb`** (`db.ts`): definición de stores + `upgrade` versionado. Sin wiring todavía. | Bajo | Base de almacenamiento local. | nuevo `src/lib/db.ts` |
+| **4** ✅ | **Caché read-through**: en cada `load()`, escribir lo que llega del server en IndexedDB; al abrir, **hidratar desde IndexedDB primero** (instantáneo) y luego refrescar de red. | Bajo-medio | **Lectura offline** (los datos ya se ven sin red). Escritura sigue necesitando red. | repos + páginas |
+| **5** ✅ | **Repositorio + outbox (escritura offline)**: las mutaciones escriben local + encolan en `outbox`; offline no fallan. | Medio | **Crear/editar/borrar offline** (sin subir todavía). | `repo.ts`, `db.ts` |
+| **6** ✅ | **Motor de sync**: flush del outbox (FIFO + dependencias), **upsert idempotente**, **LWW condicional** (§4.3), disparadores (`online`/foco/visibilidad/intervalo/post-mutación), **Web Locks**, y **reconcile por re-fetch**. | Alto | **Sincronización automática** al reconectar. | `sync.ts`, `syncCore.ts` |
 | **7** | **UI de estado**: indicador sin conexión, conteo de pendientes, última sync, reintentar/errores. | Bajo-medio | Feedback al usuario. | `AppNav`, componente nuevo |
 | **8** | **Recordatorios offline**: watcher lee del store local (dispara offline), `marcarEnviado` al outbox, catch-up de vencidos al reabrir. | Medio | Notificaciones locales sin red (con app abierta) + catch-up. | `useLocalReminderWatcher`, repos |
 | **9** | **Asistente: gating offline** (banner + input deshabilitado). | Muy bajo | Que no falle feo sin red. | `AssistantPage` |
@@ -488,6 +504,61 @@ cuando ya hay dónde apoyarlo.
 son el corazón (escritura + sync) y conviene hacerlos con los tests del paso 10
 en paralelo. **7–9** son la capa de experiencia. Sugiero pedir luz verde por
 tramos: primero **1–4**, revisar en vivo, y recién ahí seguir con **5–6**.
+
+---
+
+## 7 bis. Cómo quedaron implementados los ítems 5-6
+
+### Módulos
+
+| Archivo | Rol |
+|---|---|
+| [`src/lib/db.ts`](src/lib/db.ts) | Almacenamiento puro sobre IndexedDB: espejo (`temas`/`items`/`recordatorios`), `outbox`, `meta`. Escrituras fila a fila para las mutaciones y reemplazo total del store para la reconciliación. |
+| [`src/lib/repo.ts`](src/lib/repo.ts) | **Todas** las mutaciones de la app. Cada una: (1) escribe el espejo local → UI optimista instantánea, (2) encola la op en el `outbox`, (3) pide un sync. Ninguna falla por falta de red. |
+| [`src/lib/syncCore.ts`](src/lib/syncCore.ts) | Lógica **pura** y testeada: `planOutbox` (FIFO + coalescing + cancelación), `resolveConditionalUpdate` (LWW), `classifySyncError`, `blockedByParent`, `backoffDelayMs`. |
+| [`src/lib/sync.ts`](src/lib/sync.ts) | El motor con efectos: flush del outbox contra Supabase, reconciliación por re-fetch, disparadores y Web Locks. |
+| [`src/components/SyncEngine.tsx`](src/components/SyncEngine.tsx) | Monta/desmonta el motor con la sesión (una sola vez, en la raíz). |
+
+`items.ts` / `temas.ts` / `recordatorios.ts` quedaron **solo de lectura** contra
+el servidor: sus funciones de mutación se eliminaron para que no haya forma de
+saltarse el motor por accidente. Lo único que usa esas lecturas es el re-fetch
+de reconciliación.
+
+### Ciclo de sync
+
+1. **Flush.** `planOutbox` agrupa el outbox por entidad, pliega las ops
+   redundantes y devuelve el plan en orden FIFO (el `seq` más viejo de cada
+   grupo), que es el orden causal tema → item → recordatorio.
+   - `insert` → `upsert` por `id` (idempotente ante ack perdido).
+   - `update` → escritura condicional con `updated_at <= :clientUpdatedAt`
+     (§4.3). 0 filas + `select` de control resuelve *server-newer* (descarto mi
+     cambio) vs *deleted-on-server* (borro la fila local).
+   - `delete` → borrado duro idempotente.
+   - Cada op aplicada sale del outbox; una que falla se queda con `tries++` y
+     `lastError`. Si falla un item, sus recordatorios se saltean en ese ciclo
+     (`blockedByParent`) y se reintentan en el siguiente.
+   - Un error de red o de auth corta el ciclo entero (no tiene sentido seguir);
+     uno permanente se marca y el resto de la cola sigue.
+2. **Reconcile.** Solo si el outbox quedó **vacío**: re-fetch completo de
+   temas/items/recordatorios y reemplazo del espejo. Si mientras bajábamos entró
+   una mutación nueva, se aborta el reemplazo (no pisamos una escritura optimista
+   sin subir) y reconcilia el ciclo siguiente.
+
+### Disparadores
+
+Evento `online`, `focus` y `visibilitychange` de la pestaña, intervalo de 30 s,
+arranque de la app, y cada mutación nueva (con 200 ms de debounce para que una
+ráfaga suba en un solo ciclo). Todo pasa por
+`navigator.locks.request('organizador-sync', { ifAvailable: true })`: **un solo
+sync a la vez entre todas las pestañas**. Backoff exponencial (5 s → 5 min) tras
+ciclos fallidos, que se resetea al volver la red.
+
+### Lo que las pantallas ven
+
+Las páginas leen **siempre** del espejo local y se resuscriben a
+`subscribeSyncSettled` para releer cuando el motor termina un ciclo. Por eso la
+UI se siente igual online que offline. Lo que **todavía no** hay es la
+superficie de estado (sin conexión / N pendientes / errores): eso es el ítem 7.
 
 ---
 
