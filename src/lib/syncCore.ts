@@ -225,3 +225,27 @@ export function backoffDelayMs(fails: number): number {
   if (fails <= 0) return 0
   return Math.min(BACKOFF_BASE_MS * 2 ** (fails - 1), BACKOFF_MAX_MS)
 }
+
+// ============================================================
+// Presentación del estado (indicador de la UI, §5)
+// ============================================================
+
+// "hace 2 min" / "hace 3 h" / "nunca". Para la última sincronización, que es
+// información de diagnóstico: no hace falta precisión al segundo.
+export function formatHaceCuanto(iso: string | null, now: number): string {
+  if (!iso) return 'nunca'
+  const t = Date.parse(iso)
+  if (Number.isNaN(t)) return 'nunca'
+
+  const segundos = Math.floor((now - t) / 1000)
+  if (segundos < 60) return 'recién'
+
+  const minutos = Math.floor(segundos / 60)
+  if (minutos < 60) return `hace ${minutos} min`
+
+  const horas = Math.floor(minutos / 60)
+  if (horas < 24) return `hace ${horas} h`
+
+  const dias = Math.floor(horas / 24)
+  return `hace ${dias} día${dias === 1 ? '' : 's'}`
+}

@@ -5,6 +5,7 @@ import {
   backoffDelayMs,
   blockedByParent,
   classifySyncError,
+  formatHaceCuanto,
   planOutbox,
   resolveConditionalUpdate,
   type PlannedOp,
@@ -234,4 +235,31 @@ Deno.test('backoffDelayMs: crece exponencialmente con techo de 5 min', () => {
   assertEquals(backoffDelayMs(2), 10_000)
   assertEquals(backoffDelayMs(3), 20_000)
   assertEquals(backoffDelayMs(20), 300_000)
+})
+
+// ============================================================
+// Presentación del estado (§5)
+// ============================================================
+
+Deno.test('formatHaceCuanto: escalas de tiempo', () => {
+  const ahora = Date.parse('2026-07-22T12:00:00.000Z')
+  const hace = (ms: number) => new Date(ahora - ms).toISOString()
+
+  assertEquals(formatHaceCuanto(hace(10_000), ahora), 'recién')
+  assertEquals(formatHaceCuanto(hace(2 * 60_000), ahora), 'hace 2 min')
+  assertEquals(formatHaceCuanto(hace(59 * 60_000), ahora), 'hace 59 min')
+  assertEquals(formatHaceCuanto(hace(3 * 3_600_000), ahora), 'hace 3 h')
+  assertEquals(formatHaceCuanto(hace(24 * 3_600_000), ahora), 'hace 1 día')
+  assertEquals(formatHaceCuanto(hace(72 * 3_600_000), ahora), 'hace 3 días')
+})
+
+Deno.test('formatHaceCuanto: sin fecha o fecha inválida dice "nunca"', () => {
+  const ahora = Date.parse('2026-07-22T12:00:00.000Z')
+  assertEquals(formatHaceCuanto(null, ahora), 'nunca')
+  assertEquals(formatHaceCuanto('no-es-fecha', ahora), 'nunca')
+})
+
+Deno.test('formatHaceCuanto: un reloj adelantado no dice "hace -1 min"', () => {
+  const ahora = Date.parse('2026-07-22T12:00:00.000Z')
+  assertEquals(formatHaceCuanto(new Date(ahora + 30_000).toISOString(), ahora), 'recién')
 })

@@ -15,9 +15,9 @@ texto o foto.
 - **Gemini API** — captura asistida por IA (texto/foto → estructura).
 
 > **Plan de soporte offline completo**: [`PLAN_OFFLINE.md`](PLAN_OFFLINE.md).
-> Ítems 1-6 implementados (lectura y escritura offline con sincronización
-> automática); faltan el indicador visual (7), los recordatorios offline (8) y
-> el gating completo del asistente (9).
+> Ítems 1-7, 9 y 10 implementados (lectura y escritura offline con
+> sincronización automática e indicador de estado). Falta el ítem 8:
+> recordatorios que disparen sin conexión.
 
 ## Schema de base de datos
 
@@ -945,31 +945,61 @@ funciones de mutación se borraron para que nadie pueda saltarse el motor.
   arranque, y cada mutación (debounce 200 ms). Single-flight entre pestañas con
   `navigator.locks`. Backoff exponencial 5 s → 5 min tras fallos.
 
-### Asistente sin conexión
+### Indicador de estado (ítem 7)
 
-Necesita a Gemini vía Edge Function, así que sigue **bloqueado** offline: ahora
-corta antes de llamar y avisa "El asistente necesita conexión a internet" en vez
-de mostrar un error de red genérico. Las acciones que **sí** confirma el usuario
-pasan por el repositorio, así que un corte entre proponer y confirmar no pierde
-el cambio. El gating completo de la pantalla (banner + input deshabilitado) sigue
-siendo el ítem 9 del plan offline.
+El motor publica un estado observable —`getSyncState()` / `subscribeSync()`, que
+[`useSyncStatus`](src/lib/useSyncStatus.ts) expone a React con
+`useSyncExternalStore`— con `online`, `running`, `pending`, `lastSyncAt` y
+`error`.
+
+- [`SyncStatus`](src/components/SyncStatus.tsx) en la nav: píldora en mono
+  uppercase con punto de color, que **solo aparece cuando hay algo que decir**.
+  Sin conexión → slate; error → rust; subiendo la cola → gold con el punto
+  latiendo; cambios en cola → gold con el conteo. Con todo al día no dibuja nada.
+  `Sincronizando…` sale solo si hay algo que subir, así el re-fetch periódico no
+  hace parpadear la barra cada 30 s.
+- [`SyncSettings`](src/components/SyncSettings.tsx) en Settings: conexión,
+  cambios pendientes, última sincronización ("hace 2 min", desde `meta` de
+  IndexedDB) y botón **Sincronizar ahora** que saltea el backoff.
+- **Errores:** un fallo aislado de red no molesta (se reporta recién al segundo
+  ciclo fallido seguido); el de sesión vencida se muestra desde el primero,
+  porque reintentar no lo arregla. `flushOutbox` además distingue las ops
+  trabadas por un error permanente y las reporta — antes esas dejaban el
+  contador clavado sin explicación, porque el ciclo terminaba sin lanzar.
+
+### Asistente sin conexión (ítem 9)
+
+Necesita a Gemini vía Edge Function, así que queda **bloqueado** offline con un
+estado explícito: banner con borde rust arriba del chat, input y botón
+deshabilitados con placeholder que lo explica, y la guarda de `navigator.onLine`
+en el envío como red de seguridad si la señal se cae entre escribir y mandar.
+Las acciones que **sí** confirma el usuario pasan por el repositorio, así que un
+corte entre proponer y confirmar no pierde el cambio.
 
 ### Verificación
 
-- **20/20 tests unitarios** de la lógica pura (`npx deno test
+- **23/23 tests unitarios** de la lógica pura (`npx deno test
   src/lib/syncCore.test.ts`): orden FIFO y dependencias, coalescing,
   cancelación insert+delete y el matiz del ack perdido, idempotencia al
   replanificar tras un fallo, los tres desenlaces del LWW condicional,
-  clasificación de errores y backoff.
+  clasificación de errores, backoff y el formateo de "hace cuánto".
 - **Harness de integración en el navegador** (build de producción, temporal):
   29 checks contra IndexedDB real ejercitando `db.ts` + `repo.ts` + `syncCore.ts`
   sin red — crear/editar/borrar deja el espejo y el outbox como corresponde, el
   plan sale en orden causal, el `baseUpdatedAt` y el `updated_at` del update son
   los correctos, y el badge de recordatorios sale del espejo local.
+- **Indicador**: verificado en la app real (build de producción) con una sesión
+  de prueba inyectada en el navegador del harness — crear dos items con el
+  `navigator.onLine` simulado en `false` deja "Sin conexión · 2 sin sincronizar"
+  en la nav y el detalle correspondiente en Settings, y el conteo sobrevive a un
+  reload. Los seis estados de la píldora, la sección de Settings y el banner del
+  asistente se revisaron con el CSS compilado en desktop y a 375px (colores,
+  tipografías, tamaños del punto, sin desbordes horizontales).
 - `npm run build` y `npm run lint` sin errores; la app arranca en el preview de
   producción sin errores de consola.
 - **Pendiente de tu prueba en vivo** (requiere tu sesión): el ciclo completo
-  offline → crear/editar/borrar → online → ver que sincronizó.
+  offline → crear/editar/borrar → online → ver que el contador baja a 0 y que
+  los cambios están arriba.
 
 ## Deploy
 
@@ -1025,6 +1055,20 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-22 — Offline, indicador de estado (ítems 7 y 9 de `PLAN_OFFLINE.md`):
+  el motor pasa a publicar un estado observable (`online`/`running`/`pending`/
+  `lastSyncAt`/`error`) que React consume con `useSyncExternalStore`.
+  `SyncStatus` pinta una píldora en la nav que solo aparece cuando hay algo que
+  decir (sin conexión en slate, error en rust, cola subiendo en gold con el
+  punto latiendo, conteo de pendientes), y `SyncSettings` agrega a Settings el
+  detalle completo con "última sincronización" y un botón para forzar el ciclo.
+  Los errores dejaron de irse solo a la consola: los de red se reportan al
+  segundo ciclo fallido seguido, los de sesión vencida desde el primero, y
+  `flushOutbox` ahora distingue las ops trabadas por un error permanente (antes
+  dejaban el contador clavado sin explicación). El asistente quedó gateado con
+  banner + input deshabilitado sin conexión. 3 tests nuevos de `formatHaceCuanto`
+  (23 en total); verificado en la app real con sesión de prueba y con el CSS
+  compilado en desktop y 375px.
 - 2026-07-22 — Offline, escritura completa (ítems 5-6 de `PLAN_OFFLINE.md`):
   `repo.ts` (toda mutación escribe primero el espejo de IndexedDB y encola la op
   en el `outbox`), `syncCore.ts` (lógica pura: plan FIFO con coalescing y

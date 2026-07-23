@@ -16,6 +16,7 @@ import {
 } from '../lib/repo'
 import { loadItemsFromCache, loadTemasFromCache } from '../lib/db'
 import { requestSync } from '../lib/sync'
+import { useSyncStatus } from '../lib/useSyncStatus'
 import { datetimeLocalToIso, formatFechaHora, isoToDatetimeLocal } from '../lib/recordatorios'
 import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
 import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
@@ -36,6 +37,7 @@ interface PendingAction {
 export function AssistantPage() {
   const { user } = useAuth()
   const aiEnabled = useAiEnabled()
+  const { online } = useSyncStatus()
 
   const [items, setItems] = useState<Item[]>([])
   const [temas, setTemas] = useState<Tema[]>([])
@@ -102,10 +104,9 @@ export function AssistantPage() {
     const text = input.trim()
     if (!text || sending) return
 
-    // El asistente necesita a Gemini vía Edge Function: sin red no hay forma de
-    // proponer nada. Cortamos acá con un mensaje claro en vez de mandar la
-    // llamada y mostrar un error de red genérico. (El gateo completo de la
-    // pantalla —banner + input deshabilitado— es el ítem 9 del plan.)
+    // Red de seguridad: el input ya está deshabilitado sin conexión, pero si la
+    // señal se cae entre que se escribió y se envió, cortamos acá en vez de
+    // mandar la llamada y mostrar un error de red genérico.
     if (!navigator.onLine) {
       setError('El asistente necesita conexión a internet. Probá de nuevo cuando vuelva la señal.')
       return
@@ -313,6 +314,16 @@ export function AssistantPage() {
       <AppNav />
 
       <main className="flex-1 w-full max-w-2xl mx-auto px-6 py-8 flex flex-col gap-4">
+        {!online && (
+          <div className="bg-card border border-line border-l-4 border-l-rust rounded-[2px] p-4">
+            <p className="text-sm text-ink">El asistente necesita conexión a internet.</p>
+            <p className="text-xs text-slate mt-1.5">
+              Tus items siguen acá: podés crear, editar y borrar sin señal, y se sincroniza solo
+              cuando vuelva.
+            </p>
+          </div>
+        )}
+
         <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 min-h-[300px]">
           {messages.length === 0 && (
             <p className="text-sm text-ink-soft">
@@ -378,11 +389,21 @@ export function AssistantPage() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={cooldown > 0 ? `Esperá ${cooldown}s…` : 'Escribí un mensaje…'}
-            disabled={sending || cooldown > 0}
+            placeholder={
+              !online
+                ? 'Sin conexión — el asistente no está disponible'
+                : cooldown > 0
+                  ? `Esperá ${cooldown}s…`
+                  : 'Escribí un mensaje…'
+            }
+            disabled={!online || sending || cooldown > 0}
             className="ctl flex-1 disabled:opacity-60"
           />
-          <button type="submit" disabled={sending || cooldown > 0 || !input.trim()} className="btn-moss">
+          <button
+            type="submit"
+            disabled={!online || sending || cooldown > 0 || !input.trim()}
+            className="btn-moss"
+          >
             Enviar
           </button>
         </form>

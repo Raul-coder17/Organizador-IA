@@ -11,12 +11,15 @@
 >   reconcile + disparadores + Web Locks) y
 >   [`src/lib/syncCore.ts`](src/lib/syncCore.ts) (lógica pura, con
 >   [tests](src/lib/syncCore.test.ts)).
-> - **Ítem 7 (indicador visual de estado / pendientes): pendiente** — es el
->   próximo. Hoy el motor no tiene superficie en la UI: los errores de sync solo
->   van a `console.warn`.
-> - **Ítems 8 (recordatorios offline) y 9 (gating del asistente): pendientes.**
->   El asistente ya corta con un mensaje claro sin red (`navigator.onLine`), pero
->   falta el banner + input deshabilitado que pide el ítem 9.
+> - **Ítem 7 (indicador visual de estado / pendientes): implementado**
+>   (2026-07-22). El motor publica un estado observable
+>   (`getSyncState`/`subscribeSync`) que pinta
+>   [`SyncStatus`](src/components/SyncStatus.tsx) en la nav y
+>   [`SyncSettings`](src/components/SyncSettings.tsx) en Settings.
+> - **Ítem 9 (gating del asistente): implementado** junto con el 7 (banner +
+>   input deshabilitado sin conexión).
+> - **Ítem 8 (recordatorios offline): pendiente.** El watcher local sigue
+>   sondeando la red, así que sin conexión no dispara avisos.
 >
 > **Decisiones confirmadas por Raúl** (resuelven §8): **borrado duro** + re-fetch
 > completo al reconciliar; **1-2 dispositivos propios** → LWW por `updated_at` con
@@ -494,9 +497,9 @@ cuando ya hay dónde apoyarlo.
 | **4** ✅ | **Caché read-through**: en cada `load()`, escribir lo que llega del server en IndexedDB; al abrir, **hidratar desde IndexedDB primero** (instantáneo) y luego refrescar de red. | Bajo-medio | **Lectura offline** (los datos ya se ven sin red). Escritura sigue necesitando red. | repos + páginas |
 | **5** ✅ | **Repositorio + outbox (escritura offline)**: las mutaciones escriben local + encolan en `outbox`; offline no fallan. | Medio | **Crear/editar/borrar offline** (sin subir todavía). | `repo.ts`, `db.ts` |
 | **6** ✅ | **Motor de sync**: flush del outbox (FIFO + dependencias), **upsert idempotente**, **LWW condicional** (§4.3), disparadores (`online`/foco/visibilidad/intervalo/post-mutación), **Web Locks**, y **reconcile por re-fetch**. | Alto | **Sincronización automática** al reconectar. | `sync.ts`, `syncCore.ts` |
-| **7** | **UI de estado**: indicador sin conexión, conteo de pendientes, última sync, reintentar/errores. | Bajo-medio | Feedback al usuario. | `AppNav`, componente nuevo |
+| **7** ✅ | **UI de estado**: indicador sin conexión, conteo de pendientes, última sync, reintentar/errores. | Bajo-medio | Feedback al usuario. | `AppNav`, componente nuevo |
 | **8** | **Recordatorios offline**: watcher lee del store local (dispara offline), `marcarEnviado` al outbox, catch-up de vencidos al reabrir. | Medio | Notificaciones locales sin red (con app abierta) + catch-up. | `useLocalReminderWatcher`, repos |
-| **9** | **Asistente: gating offline** (banner + input deshabilitado). | Muy bajo | Que no falle feo sin red. | `AssistantPage` |
+| **9** ✅ | **Asistente: gating offline** (banner + input deshabilitado). | Muy bajo | Que no falle feo sin red. | `AssistantPage` |
 | **10** | **Endurecimiento**: `storage.persist()`, manejo de auth vencido, dedup multi-pestaña, y **tests unitarios** de la lógica pura de sync (orden del outbox, LWW, cancelación insert+delete) — al estilo de `reminderScheduling.test.ts` / `actions.test.ts`. | Medio | Robustez + red de seguridad. | `sync.ts`, tests |
 
 **Recomendación de corte de release:** los pasos **1–4** ya dan un salto grande
@@ -557,8 +560,49 @@ ciclos fallidos, que se resetea al volver la red.
 
 Las páginas leen **siempre** del espejo local y se resuscriben a
 `subscribeSyncSettled` para releer cuando el motor termina un ciclo. Por eso la
-UI se siente igual online que offline. Lo que **todavía no** hay es la
-superficie de estado (sin conexión / N pendientes / errores): eso es el ítem 7.
+UI se siente igual online que offline.
+
+---
+
+## 7 ter. Indicador de estado (ítem 7)
+
+El motor publica un estado observable —`getSyncState()` / `subscribeSync()`, que
+[`useSyncStatus`](src/lib/useSyncStatus.ts) expone a React vía
+`useSyncExternalStore`— con cinco campos: `online`, `running`, `pending`
+(operaciones en el outbox), `lastSyncAt` y `error`.
+
+**En la nav** ([`SyncStatus`](src/components/SyncStatus.tsx)): una píldora en
+mono uppercase con un punto de color, que **solo aparece cuando tiene algo que
+decir**. Con todo al día no dibuja nada, para no dejar un adorno permanente en
+la barra. Precedencia:
+
+| Estado | Color | Texto |
+|---|---|---|
+| Sin conexión | slate | `Sin conexión` (+ `· N sin sincronizar` si hay cola) |
+| Error de sync | rust | `No se pudo sincronizar` / `Sesión vencida — reingresá` |
+| Subiendo la cola | gold, punto con latido | `Sincronizando…` |
+| Cambios en cola | gold | `N sin sincronizar` |
+
+`Sincronizando…` sale **solo si `pending > 0`**: el re-fetch periódico con la
+cola vacía es invisible a propósito, si no el indicador parpadearía cada 30 s
+sin que pase nada. El `title` de la píldora lleva la última sincronización.
+
+**En Settings** ([`SyncSettings`](src/components/SyncSettings.tsx)): el detalle
+completo (conexión, pendientes, última sincronización con
+`formatHaceCuanto`, error) y un botón **Sincronizar ahora** que saltea el
+backoff (`forceSyncNow`).
+
+**Errores:** un fallo aislado de red no se muestra (puede ser un parpadeo); se
+reporta recién al **segundo ciclo fallido seguido**. El de auth se muestra desde
+el primero, porque reintentar no lo arregla. Además, `flushOutbox` ahora
+distingue las ops trabadas por un error **permanente** y las reporta: antes una
+op así dejaba el contador clavado en "N sin sincronizar" sin explicación, porque
+el ciclo terminaba "bien" (no lanzaba) y nadie se enteraba.
+
+**Asistente sin conexión (ítem 9):** banner con borde rust arriba del chat,
+input y botón deshabilitados con placeholder explicativo, y la guarda de
+`navigator.onLine` en el envío como red de seguridad por si la señal se cae
+entre que se escribe y se manda.
 
 ---
 

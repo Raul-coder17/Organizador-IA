@@ -3,6 +3,7 @@ import { useAuth } from '../lib/AuthContext'
 import { supabase } from '../lib/supabase'
 import { AppNav } from '../components/AppNav'
 import { PushSettings } from '../components/PushSettings'
+import { SyncSettings } from '../components/SyncSettings'
 
 export function SettingsPage() {
   const { user } = useAuth()
@@ -140,6 +141,10 @@ export function SettingsPage() {
         <hr className="border-line" />
 
         <PushSettings />
+
+        <hr className="border-line" />
+
+        <SyncSettings />
       </main>
     </div>
   )

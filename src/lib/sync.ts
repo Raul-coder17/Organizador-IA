@@ -20,6 +20,7 @@ import {
   countOutbox,
   deleteLocalRow,
   deleteOps,
+  getMeta,
   getOutbox,
   markOpsFailed,
   saveItemsToCache,
@@ -38,6 +39,7 @@ import {
   resolveConditionalUpdate,
   type PlannedOp,
   type SyncEntity,
+  type SyncErrorKind,
 } from './syncCore'
 
 const SYNC_LOCK = 'organizador-sync'
@@ -64,19 +66,22 @@ let nextAttemptAt = 0
 let debounceId: number | undefined
 
 type Listener = () => void
-const listeners = new Set<Listener>()
 
 // Aviso de "ya podés releer el espejo local": lo emitimos al terminar cada
 // ciclo de sync, haya cambiado algo o no. Las pantallas se resuscriben y
-// recargan desde IndexedDB. (El indicador visual de estado es el ítem 7.)
+// recargan desde IndexedDB.
+const settledListeners = new Set<Listener>()
+
 export function subscribeSyncSettled(cb: Listener): () => void {
-  listeners.add(cb)
-  return () => listeners.delete(cb)
+  settledListeners.add(cb)
+  return () => {
+    settledListeners.delete(cb)
+  }
 }
 
 function emitSettled(): void {
   settledOnce = true
-  for (const cb of listeners) {
+  for (const cb of settledListeners) {
     try {
       cb()
     } catch {
@@ -89,6 +94,83 @@ function emitSettled(): void {
 // para decidir si un espejo vacío significa "todavía cargando" o "no hay nada".
 export function hasSyncSettled(): boolean {
   return settledOnce
+}
+
+// ============================================================
+// Estado observable (PLAN_OFFLINE.md ítem 7 / §5)
+// ============================================================
+
+export interface SyncState {
+  online: boolean
+  // Hay un ciclo de sync corriendo ahora mismo.
+  running: boolean
+  // Operaciones en el outbox todavía sin subir.
+  pending: number
+  // ISO del último ciclo que terminó con el outbox vacío y el espejo al día.
+  lastSyncAt: string | null
+  // Mensaje listo para mostrar; null si no hay nada que reportar.
+  error: string | null
+}
+
+// Mensajes cortos: el indicador de la nav es una píldora, no un párrafo (una
+// etiqueta larga se parte en dos renglones a 375px y engorda la barra).
+const ERROR_LABEL: Record<SyncErrorKind, string> = {
+  auth: 'Sesión vencida — reingresá',
+  network: 'No se pudo sincronizar',
+  dependency: 'No se pudo sincronizar',
+  permanent: 'Un cambio no se pudo guardar',
+}
+
+let state: SyncState = {
+  online: typeof navigator === 'undefined' || navigator.onLine !== false,
+  running: false,
+  pending: 0,
+  lastSyncAt: null,
+  error: null,
+}
+
+const stateListeners = new Set<Listener>()
+
+// La referencia solo cambia si cambió algún campo: así `useSyncExternalStore`
+// puede descartar las notificaciones que no mueven la aguja.
+export function getSyncState(): SyncState {
+  return state
+}
+
+export function subscribeSync(cb: Listener): () => void {
+  stateListeners.add(cb)
+  return () => {
+    stateListeners.delete(cb)
+  }
+}
+
+function setState(patch: Partial<SyncState>): void {
+  const next = { ...state, ...patch }
+  if (
+    next.online === state.online &&
+    next.running === state.running &&
+    next.pending === state.pending &&
+    next.lastSyncAt === state.lastSyncAt &&
+    next.error === state.error
+  ) {
+    return
+  }
+  state = next
+  for (const cb of stateListeners) {
+    try {
+      cb()
+    } catch {
+      /* un suscriptor roto no puede tumbar el motor */
+    }
+  }
+}
+
+async function refreshPending(): Promise<void> {
+  try {
+    setState({ pending: await countOutbox() })
+  } catch {
+    /* el conteo es informativo: si falla, no rompemos el ciclo */
+  }
 }
 
 function isOnline(): boolean {
@@ -161,8 +243,16 @@ async function applyOp(op: PlannedOp): Promise<ApplyOutcome> {
 // Flush del outbox
 // ============================================================
 
-// Devuelve true si el outbox quedó vacío (condición para reconciliar).
-async function flushOutbox(): Promise<boolean> {
+interface FlushResult {
+  // El outbox quedó vacío (condición para reconciliar).
+  drained: boolean
+  // Una op que falló con un error que no se va a arreglar sola: se queda en la
+  // cola y hay que contárselo al usuario, porque si no ve "N sin sincronizar"
+  // para siempre y sin explicación.
+  stuck: string | null
+}
+
+async function flushOutbox(): Promise<FlushResult> {
   const { toApply, toDrop } = planOutbox(await getOutbox())
   await deleteOps(toDrop)
 
@@ -170,6 +260,7 @@ async function flushOutbox(): Promise<boolean> {
   // todavía (FK + RLS), así que se saltean y se reintentan en el próximo.
   const blockedItems = new Set<string>()
   let pendientes = 0
+  let stuck: string | null = null
 
   for (const op of toApply) {
     if (blockedByParent(op, blockedItems)) {
@@ -186,6 +277,8 @@ async function flushOutbox(): Promise<boolean> {
         // Ganó el borrado del servidor: limpiamos la fila local.
         await deleteLocalRow(op.entity, op.entityId)
       }
+      // El contador baja op por op, así se ve avanzar la cola.
+      await refreshPending()
     } catch (err) {
       const kind = classifySyncError(err)
       await markOpsFailed(op.seqs, errorMessage(err))
@@ -195,12 +288,13 @@ async function flushOutbox(): Promise<boolean> {
       // Sin red o sin auth no tiene sentido seguir intentando el resto del
       // outbox en este ciclo: cortamos y reintentamos entero más tarde.
       if (kind === 'network' || kind === 'auth') throw err
-      // 'dependency' y 'permanent' quedan marcadas y seguimos con las demás
-      // ops, que pueden ser independientes.
+      // 'dependency' se resuelve sola en el próximo ciclo (una vez que suba el
+      // padre); 'permanent' no, así que esa sí se reporta.
+      if (kind === 'permanent') stuck = ERROR_LABEL.permanent
     }
   }
 
-  return pendientes === 0 && (await countOutbox()) === 0
+  return { drained: pendientes === 0 && (await countOutbox()) === 0, stuck }
 }
 
 // ============================================================
@@ -222,7 +316,12 @@ async function reconcile(userId: string): Promise<void> {
   await saveTemasToCache(temas)
   await saveItemsToCache(items)
   await saveRecordatoriosToCache(recordatorios.map(toPlainRecordatorio))
-  await setMeta('lastSyncAt', new Date().toISOString())
+
+  // Solo acá se estampa `lastSyncAt`: es el único punto donde el outbox quedó
+  // vacío Y el espejo quedó igual al servidor.
+  const ts = new Date().toISOString()
+  await setMeta('lastSyncAt', ts)
+  setState({ lastSyncAt: ts })
 }
 
 // ============================================================
@@ -230,17 +329,27 @@ async function reconcile(userId: string): Promise<void> {
 // ============================================================
 
 async function runSync(userId: string): Promise<void> {
+  setState({ running: true })
   try {
-    const drained = await flushOutbox()
+    const { drained, stuck } = await flushOutbox()
     if (drained) await reconcile(userId)
     consecutiveFails = 0
     nextAttemptAt = 0
+    setState({ error: stuck })
   } catch (err) {
     // El outbox NO se pierde: las ops fallidas siguen en cola con su contador
     // de intentos. Backoff para no martillar mientras el problema persista.
     consecutiveFails++
     nextAttemptAt = Date.now() + backoffDelayMs(consecutiveFails)
+    const kind = classifySyncError(err)
     console.warn('[sync] ciclo fallido:', errorMessage(err))
+    // Un fallo aislado de red puede ser un parpadeo y no vale molestar: lo
+    // mostramos recién al segundo seguido. El de auth sí desde el primero,
+    // porque no se arregla reintentando (hay que reloguear).
+    if (kind === 'auth' || consecutiveFails >= 2) setState({ error: ERROR_LABEL[kind] })
+  } finally {
+    await refreshPending()
+    setState({ running: false })
   }
 }
 
@@ -280,13 +389,23 @@ export async function syncNow(): Promise<void> {
 }
 
 // Pide un sync tras una mutación local. Debounce corto para agrupar ráfagas.
+// El conteo de pendientes se refresca YA (sin esperar al debounce) para que el
+// indicador reaccione en el mismo instante en que el usuario guarda.
 export function requestSync(): void {
+  void refreshPending()
   if (typeof window === 'undefined') {
     void syncNow()
     return
   }
   window.clearTimeout(debounceId)
   debounceId = window.setTimeout(() => void syncNow(), DEBOUNCE_MS)
+}
+
+// Sync a pedido del usuario (botón "Sincronizar ahora"): saltea el backoff.
+export async function forceSyncNow(): Promise<void> {
+  consecutiveFails = 0
+  nextAttemptAt = 0
+  await syncNow()
 }
 
 // ============================================================
@@ -298,25 +417,37 @@ export function startSyncEngine(userId: string): () => void {
   currentUserId = userId
 
   const onOnline = () => {
-    // Volvió la red: reseteamos el backoff para subir enseguida.
+    // Volvió la red: reseteamos el backoff para subir enseguida y limpiamos el
+    // error, que a esta altura ya es historia vieja.
     consecutiveFails = 0
     nextAttemptAt = 0
+    setState({ online: true, error: null })
     void syncNow()
   }
+  // Estar sin conexión no es un error: es un estado, y tiene su propio cartel.
+  const onOffline = () => setState({ online: false, error: null })
   const onFocus = () => void syncNow()
   const onVisibility = () => {
     if (document.visibilityState === 'visible') void syncNow()
   }
 
   window.addEventListener('online', onOnline)
+  window.addEventListener('offline', onOffline)
   window.addEventListener('focus', onFocus)
   document.addEventListener('visibilitychange', onVisibility)
   const intervalId = window.setInterval(() => void syncNow(), RETRY_MS)
+
+  // Estado inicial del indicador: conexión, pendientes en cola y la última
+  // sincronización que quedó guardada de la sesión anterior.
+  setState({ online: isOnline() })
+  void refreshPending()
+  void getMeta<string>('lastSyncAt').then((ts) => setState({ lastSyncAt: ts }))
 
   void syncNow()
 
   return () => {
     window.removeEventListener('online', onOnline)
+    window.removeEventListener('offline', onOffline)
     window.removeEventListener('focus', onFocus)
     document.removeEventListener('visibilitychange', onVisibility)
     window.clearInterval(intervalId)

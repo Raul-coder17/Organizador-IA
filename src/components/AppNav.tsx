@@ -3,6 +3,7 @@ import { useAuth } from '../lib/AuthContext'
 import { useAiEnabled } from '../lib/useAiEnabled'
 import { useRecordatoriosBadge } from '../lib/useRecordatoriosBadge'
 import { supabase } from '../lib/supabase'
+import { SyncStatus } from './SyncStatus'
 
 export function AppNav() {
   const { user } = useAuth()
@@ -46,6 +47,7 @@ export function AppNav() {
         </nav>
       </div>
       <div className="app-nav__right">
+        <SyncStatus />
         <span className="app-nav__email">{user?.email}</span>
         <button onClick={() => supabase.auth.signOut()} className="link-underline">
           Cerrar sesión
