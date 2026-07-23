@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { LocalReminderWatcher } from './components/LocalReminderWatcher'
 import { SyncEngine } from './components/SyncEngine'
 import { AppShell } from './components/AppShell'
+import { HoyPage } from './pages/HoyPage'
 import { ItemsPage } from './pages/ItemsPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { AssistantPage } from './pages/AssistantPage'
@@ -21,11 +22,10 @@ function App() {
                 entran por su <Outlet>. Antes cada página dibujaba su propia
                 <AppNav>, así que al navegar la nav se desmontaba y volvía. */}
             <Route element={<AppShell />}>
-              {/* "/" y "/biblioteca" muestran lo mismo hasta el ítem 8, que
-                  convierte "/" en la vista Hoy y deja la Biblioteca en su
-                  ruta. Tener las dos ya permite que el shell marque un solo
-                  destino activo. */}
-              <Route path="/" element={<ItemsPage />} />
+              {/* La landing es la vista Hoy (ítem 8): la puerta de entrada
+                  dejó de ser la lista completa. La Biblioteca tiene su ruta
+                  desde el ítem 7, que ya la había separado. */}
+              <Route path="/" element={<HoyPage />} />
               <Route path="/biblioteca" element={<ItemsPage />} />
               <Route path="/reminders" element={<RemindersPage />} />
               <Route path="/assistant" element={<AssistantPage />} />

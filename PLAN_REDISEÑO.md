@@ -1,11 +1,12 @@
 # Plan de rediseño — análisis de la propuesta de Claude Design
 
-> **Estado: Fases 0, 1 y 2 implementadas** (ítems 1-6), 2026-07-23. Decisiones
+> **Estado: Fases 0-2 implementadas** (ítems 1-6) **y Fase 3 en curso**
+> (ítems 7-8 hechos), 2026-07-23. Decisiones
 > tomadas: **D2** radius 2→3-4px y chips en píldora aceptados, sombra sólo en lo
 > que flota; **D3** "recordatorio" se agrega al segmented de tipo; **D4** color de
 > tema automático al crear con opción de cambiarlo, ya implementado.
-> **D1 resuelta: se conserva `react-router`.** La Fase 3 arrancó en la rama
-> `rediseno-fase-3`; el ítem 7 (chasis) está implementado ahí.
+> **D1 resuelta: se conserva `react-router`.** La Fase 3 va en la rama
+> `rediseno-fase-3`: ítems 7 (chasis) y 8 (vista Hoy) implementados ahí.
 > Detalle de lo implementado en [PLAN_ORGANIZADOR.md](PLAN_ORGANIZADOR.md).
 
 > Documento de análisis y planificación. **No se tocó código para producirlo.**
@@ -436,9 +437,60 @@ IA está apagada.
 > se quedaba sin forma de salir de la sesión. Se agregó un bloque **Cuenta**
 > (email + cerrar sesión) al final de Ajustes.
 
-**8. Vista Hoy como landing.** `[N]` · riesgo medio
+**8. Vista Hoy como landing.** `[N]` · riesgo medio — ✅ **implementado** (rama `rediseno-fase-3`)
 Vista nueva + Biblioteca pasa a su propia ruta. Es el cambio que más se nota para el usuario:
 la puerta de entrada deja de ser la lista completa.
+
+> Hecho en [`HoyPage`](src/pages/HoyPage.tsx). `/` → Hoy, `/biblioteca` →
+> `ItemsPage` (la ruta ya existía desde el ítem 7, que la había separado
+> justamente para esto).
+>
+> **Nada de lógica nueva de clasificación.** `clasificar`, `mismoDia`,
+> `ESTADO_LABEL` y `TIPO_LABEL` salieron de `RemindersPage` y viven ahora en
+> [`lib/recordatorios.ts`](src/lib/recordatorios.ts); las dos pantallas importan
+> de ahí. Era la única forma de que "vencido" signifique lo mismo en los dos
+> lugares: el usuario ve el conteo de Hoy y la lista de /reminders en la misma
+> sesión, y dos definiciones habrían dado dos números que se contradicen.
+> `clasificar` además pasó a pedir sólo `{estado, fecha_hora}` en vez de un
+> `RecordatorioConItem`, así sirve igual para la fila plana de la caché.
+>
+> **La fila de recordatorio también se compartió.** Se extrajo a
+> [`RecordatorioRow`](src/components/RecordatorioRow.tsx): mismo lomo por
+> estado, mismo meta (incluido "● Notificado") y misma acción "Marcar hecho" en
+> las dos pantallas. `/reminders` perdió ~30 líneas de JSX y no cambió de
+> comportamiento.
+>
+> **Offline por construcción.** Todo el contenido —las tres cifras, Vencidos,
+> Para hoy y el grid de temas— sale de `load*FromCache` (IndexedDB) y se
+> recalcula con `subscribeSyncSettled`, igual que la Biblioteca y Recordatorios.
+> "Marcar hecho" pasa por `repo.marcarHecho` (espejo local + outbox), así que
+> también anda sin señal. La única llamada a Supabase de la vista es
+> `useAiEnabled`, heredada del shell, y sólo decide a dónde apunta PREGUNTAR:
+> sin red queda en `null` y el botón lleva a Ajustes, que es exactamente lo que
+> ya hace el botón del asistente del sidebar.
+>
+> **Grid de temas.** Punto de color por tema (los mismos tokens `--color-tema-*`
+> de la Fase 2 — es el tercer lugar que el ítem 6 había dejado pendiente,
+> esperando justamente a que esta vista existiera) + contador de ítems. Al
+> tocar una tarjeta se navega a la Biblioteca ya filtrada por ese tema. Hay
+> también una tarjeta **"Sin tema"** cuando corresponde, por la misma razón que
+> el grupo homónimo de la Biblioteca (§5.3-3): con `tema_id` nullable, mostrar
+> sólo los temas dejaría ítems sin ninguna puerta de entrada.
+>
+> El contrato de esa navegación es `state.temaId`, con `null` = "los que no
+> tienen tema". Hoy no conoce el nombre interno del filtro (`'sin-tema'`): cómo
+> se llama es asunto de la Biblioteca.
+>
+> **Accesos rápidos.** NUEVO abre el `ItemForm` de la Biblioteca (mismo camino
+> que el "+" del shell, hasta el ítem 11). PREGUNTAR va al asistente con el
+> mismo criterio de IA apagada que el shell. **FOTO va deshabilitado con
+> `title`**: la captura por foto es el ítem 14 y no existe. Se deja visible y
+> apagado en vez de oculto — el lugar de la función ya está decidido y
+> esconderlo lo volvería a poner en discusión.
+>
+> **El saludo no usa nombre.** Sale de la hora (buenos días / buenas tardes /
+> buenas noches). Lo único que tenemos del usuario es el email, y recortarlo
+> para fabricar un nombre acierta poco.
 
 **9. Buscador global.** `[N]` · riesgo medio
 Input en sidebar/header; al escribir reemplaza el contenido de la vista. Definir si cubre
@@ -474,7 +526,7 @@ grande de todos: es la única de las 4 pendientes que necesita backend nuevo de 
 Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
-Fase 3:  7 [N] ✅ · 8 [N] · 9 [N] · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
+Fase 3:  7 [N] ✅ · 8 [N] ✅ · 9 [N] · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
 Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
 ```
 

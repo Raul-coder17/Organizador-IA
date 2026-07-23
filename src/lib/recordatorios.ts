@@ -63,6 +63,54 @@ export async function listRecordatorios(): Promise<RecordatorioConItem[]> {
   return (data ?? []) as unknown as RecordatorioConItem[]
 }
 
+// --- Clasificación por estado ----------------------------------------------
+//
+// Vive acá, y no en la página de recordatorios donde nació, porque la vista Hoy
+// necesita exactamente el mismo criterio (ítem 8): si "vencido" quisiera decir
+// una cosa en /reminders y otra en Hoy, los dos números que el usuario ve al
+// mismo tiempo se contradirían.
+
+export type EstadoRecordatorio = 'vencido' | 'hoy' | 'proximo' | 'hecho'
+
+export const ESTADO_LABEL: Record<EstadoRecordatorio, string> = {
+  vencido: 'Vencido',
+  hoy: 'Hoy',
+  proximo: 'Próximo',
+  hecho: 'Hecho',
+}
+
+export const TIPO_LABEL: Record<string, string> = {
+  nota: 'Nota',
+  recordatorio: 'Recordatorio',
+  lista: 'Lista',
+  tabla: 'Tabla',
+}
+
+export function mismoDia(a: Date, b: Date): boolean {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  )
+}
+
+// Clasifica un recordatorio: hecho si su estado ya es 'hecho'; vencido si su
+// fecha ya pasó y sigue pendiente; hoy si todavía no venció pero es del día en
+// curso; próximo en el resto de los casos.
+//
+// Pide lo mínimo que mira (estado + fecha) en vez de un RecordatorioConItem, así
+// sirve igual para la fila plana de la caché y para la unida con su item.
+export function clasificar(
+  rec: Pick<Recordatorio, 'estado' | 'fecha_hora'>,
+  ahora: Date,
+): EstadoRecordatorio {
+  if (rec.estado === 'hecho') return 'hecho'
+  const fecha = new Date(rec.fecha_hora)
+  if (fecha.getTime() < ahora.getTime()) return 'vencido'
+  if (mismoDia(fecha, ahora)) return 'hoy'
+  return 'proximo'
+}
+
 // --- Helpers de fecha/hora --------------------------------------------------
 
 // Convierte un ISO (UTC, como lo guarda Postgres) al formato que espera un

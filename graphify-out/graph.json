@@ -76,8 +76,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "package",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "package.json"
     },
     {
@@ -87,8 +87,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "package_name",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "name"
     },
     {
@@ -98,8 +98,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "package_private",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "private"
     },
     {
@@ -109,8 +109,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "package_version",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "version"
     },
     {
@@ -120,8 +120,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "package_type",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "type"
     },
     {
@@ -131,8 +131,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "package_scripts",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "scripts"
     },
     {
@@ -142,8 +142,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "package_scripts_dev",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "dev"
     },
     {
@@ -153,8 +153,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "package_scripts_build",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "build"
     },
     {
@@ -164,8 +164,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "package_scripts_lint",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "lint"
     },
     {
@@ -175,8 +175,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "package_scripts_preview",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 7,
+      "community_name": "package.json - dependencias",
       "norm_label": "preview"
     },
     {
@@ -318,8 +318,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "package_devdependencies_eslint_js",
-      "community": 35,
-      "community_name": "@eslint/js",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@eslint/js"
     },
     {
@@ -329,8 +329,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "eslint_js",
-      "community": 35,
-      "community_name": "@eslint/js",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@eslint/js"
     },
     {
@@ -340,8 +340,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss_vite",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@tailwindcss/vite"
     },
     {
@@ -351,8 +351,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "tailwindcss_vite",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@tailwindcss/vite"
     },
     {
@@ -362,8 +362,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "package_devdependencies_types_react",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@types/react"
     },
     {
@@ -373,8 +373,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "types_react",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@types/react"
     },
     {
@@ -384,8 +384,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "package_devdependencies_types_react_dom",
-      "community": 39,
-      "community_name": "@types/react-dom",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@types/react-dom"
     },
     {
@@ -395,8 +395,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "types_react_dom",
-      "community": 39,
-      "community_name": "@types/react-dom",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@types/react-dom"
     },
     {
@@ -406,8 +406,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "package_devdependencies_vitejs_plugin_react",
-      "community": 42,
-      "community_name": "@vitejs/plugin-react",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -417,8 +417,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "vitejs_plugin_react",
-      "community": 42,
-      "community_name": "@vitejs/plugin-react",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -428,8 +428,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "package_devdependencies_eslint",
-      "community": 34,
-      "community_name": "eslint",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -439,8 +439,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "eslint",
-      "community": 34,
-      "community_name": "eslint",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -538,8 +538,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss",
-      "community": 36,
-      "community_name": "tailwindcss",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "tailwindcss"
     },
     {
@@ -549,8 +549,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "tailwindcss",
-      "community": 36,
-      "community_name": "tailwindcss",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "tailwindcss"
     },
     {
@@ -604,8 +604,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "package_devdependencies_vite",
-      "community": 40,
-      "community_name": "vite",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "vite"
     },
     {
@@ -615,8 +615,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "vite",
-      "community": 40,
-      "community_name": "vite",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "vite"
     },
     {
@@ -626,8 +626,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "package_devdependencies_vite_plugin_pwa",
-      "community": 41,
-      "community_name": "vite-plugin-pwa",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "vite-plugin-pwa"
     },
     {
@@ -637,8 +637,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "vite_plugin_pwa",
-      "community": 41,
-      "community_name": "vite-plugin-pwa",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "vite-plugin-pwa"
     },
     {
@@ -747,19 +747,19 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_app",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "app.tsx"
     },
     {
       "label": "App()",
       "file_type": "code",
       "source_file": "src/App.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "src_app_app",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "app()"
     },
     {
@@ -1165,8 +1165,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "localreminderwatcher.tsx"
     },
     {
@@ -1176,8 +1176,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher_localreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "localreminderwatcher()"
     },
     {
@@ -1187,8 +1187,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_protectedroute",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "protectedroute.tsx"
     },
     {
@@ -1198,8 +1198,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_protectedroute_protectedroute",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "protectedroute()"
     },
     {
@@ -1209,8 +1209,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_pushsettings",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "pushsettings.tsx"
     },
     {
@@ -1220,9 +1220,31 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_components_pushsettings_pushsettings",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "pushsettings()"
+    },
+    {
+      "label": "RecordatorioRow.tsx",
+      "file_type": "code",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_components_recordatoriorow",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "recordatoriorow.tsx"
+    },
+    {
+      "label": "RecordatorioRow()",
+      "file_type": "code",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "src_components_recordatoriorow_recordatoriorow",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "recordatoriorow()"
     },
     {
       "label": "SyncEngine.tsx",
@@ -1231,8 +1253,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncengine",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "syncengine.tsx"
     },
     {
@@ -1242,8 +1264,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncengine_syncengine",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "syncengine()"
     },
     {
@@ -1253,8 +1275,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncsettings",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "syncsettings.tsx"
     },
     {
@@ -1264,8 +1286,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncsettings_syncsettings",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "syncsettings()"
     },
     {
@@ -1275,8 +1297,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "syncstatus.tsx"
     },
     {
@@ -1286,8 +1308,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncstatus_syncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "syncstatus()"
     },
     {
@@ -1297,8 +1319,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_authcontext",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "authcontext.tsx"
     },
     {
@@ -1308,8 +1330,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_authcontext_authcontextvalue",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "authcontextvalue"
     },
     {
@@ -1319,8 +1341,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_lib_authcontext_authcontext",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
       "norm_label": "authcontext"
     },
     {
@@ -1330,8 +1352,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_lib_authcontext_readcachedsession",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "readcachedsession()"
     },
     {
@@ -1341,8 +1363,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_lib_authcontext_authprovider",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "authprovider()"
     },
     {
@@ -1352,8 +1374,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_lib_authcontext_useauth",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "useauth()"
     },
     {
@@ -1363,8 +1385,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_db",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "db.ts"
     },
     {
@@ -1385,8 +1407,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_db_newoutboxop",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "newoutboxop"
     },
     {
@@ -1396,8 +1418,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_db_table_store",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "table_store"
     },
     {
@@ -1407,8 +1429,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_lib_db_metarow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "metarow"
     },
     {
@@ -1429,8 +1451,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_lib_db_getdb",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getdb()"
     },
     {
@@ -1440,8 +1462,8 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_lib_db_loadtemasfromcache",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "loadtemasfromcache()"
     },
     {
@@ -1451,8 +1473,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_db_loaditemsfromcache",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "loaditemsfromcache()"
     },
     {
@@ -1462,8 +1484,8 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_lib_db_loadrecordatoriosfromcache",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "loadrecordatoriosfromcache()"
     },
     {
@@ -1506,8 +1528,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_lib_db_getlocaltema",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocaltema()"
     },
     {
@@ -1517,8 +1539,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_lib_db_putlocaltema",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocaltema()"
     },
     {
@@ -1528,8 +1550,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_db_getlocalitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalitem()"
     },
     {
@@ -1539,8 +1561,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_lib_db_putlocalitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocalitem()"
     },
     {
@@ -1550,8 +1572,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalrecordatorio()"
     },
     {
@@ -1561,8 +1583,8 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_db_putlocalrecordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocalrecordatorio()"
     },
     {
@@ -1572,8 +1594,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatoriosbyitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalrecordatoriosbyitem()"
     },
     {
@@ -1583,8 +1605,8 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "src_lib_db_deletelocalrow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deletelocalrow()"
     },
     {
@@ -1594,8 +1616,8 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "src_lib_db_enqueueop",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "enqueueop()"
     },
     {
@@ -1605,8 +1627,8 @@
       "source_location": "L231",
       "_origin": "ast",
       "id": "src_lib_db_getoutbox",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getoutbox()"
     },
     {
@@ -1627,8 +1649,8 @@
       "source_location": "L241",
       "_origin": "ast",
       "id": "src_lib_db_deleteops",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleteops()"
     },
     {
@@ -1638,8 +1660,8 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "src_lib_db_markopsfailed",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "markopsfailed()"
     },
     {
@@ -1649,8 +1671,8 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "src_lib_db_deleteopsforentity",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleteopsforentity()"
     },
     {
@@ -1660,8 +1682,8 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "src_lib_db_getmeta",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getmeta()"
     },
     {
@@ -1682,8 +1704,8 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "src_lib_db_ensurepersistentstorage",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "ensurepersistentstorage()"
     },
     {
@@ -1715,8 +1737,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_push",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "push.ts"
     },
     {
@@ -1726,8 +1748,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_lib_push_vapid_public_key",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "vapid_public_key"
     },
     {
@@ -1737,8 +1759,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_push_pushstatus",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "pushstatus"
     },
     {
@@ -1748,8 +1770,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_lib_push_ispushsupported",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "ispushsupported()"
     },
     {
@@ -1759,8 +1781,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_push_swreadyornull",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "swreadyornull()"
     },
     {
@@ -1770,8 +1792,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_lib_push_getpushstatus",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "getpushstatus()"
     },
     {
@@ -1781,8 +1803,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_lib_push_urlbase64touint8array",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "urlbase64touint8array()"
     },
     {
@@ -1792,8 +1814,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_lib_push_keytobase64",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "keytobase64()"
     },
     {
@@ -1803,8 +1825,8 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_lib_push_subscribetopush",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "subscribetopush()"
     },
     {
@@ -1814,8 +1836,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_push_unsubscribefrompush",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "unsubscribefrompush()"
     },
     {
@@ -1825,8 +1847,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_recordatorios",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "recordatorios.ts"
     },
     {
@@ -1847,8 +1869,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_recordatorios_joinrecordatoriosconitems",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "joinrecordatoriosconitems()"
     },
     {
@@ -1858,15 +1880,70 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_lib_recordatorios_listrecordatorios",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "norm_label": "listrecordatorios()"
+    },
+    {
+      "label": "EstadoRecordatorio",
+      "file_type": "code",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "src_lib_recordatorios_estadorecordatorio",
       "community": 29,
       "community_name": "ItemsPage.tsx",
-      "norm_label": "listrecordatorios()"
+      "norm_label": "estadorecordatorio"
+    },
+    {
+      "label": "ESTADO_LABEL",
+      "file_type": "code",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "src_lib_recordatorios_estado_label",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "estado_label"
+    },
+    {
+      "label": "TIPO_LABEL",
+      "file_type": "code",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "src_lib_recordatorios_tipo_label",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "tipo_label"
+    },
+    {
+      "label": "mismoDia()",
+      "file_type": "code",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "src_lib_recordatorios_mismodia",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "mismodia()"
+    },
+    {
+      "label": "clasificar()",
+      "file_type": "code",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L103",
+      "_origin": "ast",
+      "id": "src_lib_recordatorios_clasificar",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "clasificar()"
     },
     {
       "label": "isoToDatetimeLocal()",
       "file_type": "code",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L70",
+      "source_location": "L118",
       "_origin": "ast",
       "id": "src_lib_recordatorios_isotodatetimelocal",
       "community": 13,
@@ -1877,7 +1954,7 @@
       "label": "datetimeLocalToIso()",
       "file_type": "code",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L77",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "src_lib_recordatorios_datetimelocaltoiso",
       "community": 13,
@@ -1888,18 +1965,18 @@
       "label": "formatFechaHora()",
       "file_type": "code",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L82",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_recordatorios_formatfechahora",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "formatfechahora()"
     },
     {
       "label": "resumenContenido()",
       "file_type": "code",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L94",
+      "source_location": "L142",
       "_origin": "ast",
       "id": "src_lib_recordatorios_resumencontenido",
       "community": 29,
@@ -2111,8 +2188,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_repo",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "repo.ts"
     },
     {
@@ -2122,8 +2199,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_lib_repo_nowiso",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "nowiso()"
     },
     {
@@ -2133,8 +2210,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_lib_repo_enqueue",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "enqueue()"
     },
     {
@@ -2144,8 +2221,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_lib_repo_createtema",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "createtema()"
     },
     {
@@ -2155,8 +2232,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_lib_repo_updatetemacolor",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "updatetemacolor()"
     },
     {
@@ -2166,8 +2243,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_repo_item_editable",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "item_editable"
     },
     {
@@ -2177,8 +2254,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_repo_itempatch",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "itempatch()"
     },
     {
@@ -2188,8 +2265,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_lib_repo_createitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "createitem()"
     },
     {
@@ -2199,8 +2276,8 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_lib_repo_updateitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "updateitem()"
     },
     {
@@ -2210,8 +2287,8 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "src_lib_repo_deleteitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleteitem()"
     },
     {
@@ -2221,8 +2298,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_lib_repo_getrecordatorioforitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getrecordatorioforitem()"
     },
     {
@@ -2232,8 +2309,8 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "src_lib_repo_upsertrecordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "upsertrecordatorio()"
     },
     {
@@ -2243,8 +2320,8 @@
       "source_location": "L255",
       "_origin": "ast",
       "id": "src_lib_repo_deleterecordatoriosforitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleterecordatoriosforitem()"
     },
     {
@@ -2254,8 +2331,8 @@
       "source_location": "L269",
       "_origin": "ast",
       "id": "src_lib_repo_cambiarestado",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "cambiarestado()"
     },
     {
@@ -2265,8 +2342,8 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "marcarhecho()"
     },
     {
@@ -2276,8 +2353,8 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "src_lib_repo_marcarenviado",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "marcarenviado()"
     },
     {
@@ -2287,8 +2364,8 @@
       "source_location": "L313",
       "_origin": "ast",
       "id": "src_lib_repo_listrecordatoriosparadisparo",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "listrecordatoriosparadisparo()"
     },
     {
@@ -2298,8 +2375,8 @@
       "source_location": "L323",
       "_origin": "ast",
       "id": "src_lib_repo_countrecordatoriospendienteshoy",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "countrecordatoriospendienteshoy()"
     },
     {
@@ -2375,8 +2452,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesyncsettled",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "subscribesyncsettled()"
     },
     {
@@ -2408,8 +2485,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_lib_sync_syncstate",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "syncstate"
     },
     {
@@ -2452,8 +2529,8 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "src_lib_sync_getsyncstate",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "getsyncstate()"
     },
     {
@@ -2463,8 +2540,8 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesync",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "subscribesync()"
     },
     {
@@ -2606,8 +2683,8 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "src_lib_sync_requestsync",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "requestsync()"
     },
     {
@@ -2617,8 +2694,8 @@
       "source_location": "L407",
       "_origin": "ast",
       "id": "src_lib_sync_forcesyncnow",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "forcesyncnow()"
     },
     {
@@ -2628,8 +2705,8 @@
       "source_location": "L418",
       "_origin": "ast",
       "id": "src_lib_sync_startsyncengine",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "startsyncengine()"
     },
     {
@@ -2859,8 +2936,8 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_lib_synccore_formathacecuanto",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "formathacecuanto()"
     },
     {
@@ -2881,8 +2958,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_temacolores_test_tema",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "tema()"
     },
     {
@@ -3156,8 +3233,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_useaienabled",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "useaienabled.ts"
     },
     {
@@ -3167,8 +3244,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_lib_useaienabled_useaienabled",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "useaienabled()"
     },
     {
@@ -3211,8 +3288,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "uselocalreminderwatcher.ts"
     },
     {
@@ -3222,8 +3299,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher_uselocalreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "uselocalreminderwatcher()"
     },
     {
@@ -3233,8 +3310,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_userecordatoriosbadge",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "userecordatoriosbadge.ts"
     },
     {
@@ -3244,8 +3321,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_lib_userecordatoriosbadge_userecordatoriosbadge",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "userecordatoriosbadge()"
     },
     {
@@ -3255,8 +3332,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "usesyncstatus.ts"
     },
     {
@@ -3266,8 +3343,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus_usesyncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "usesyncstatus()"
     },
     {
@@ -3277,8 +3354,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "main.tsx"
     },
     {
@@ -3321,8 +3398,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_assistantpage_pendingaction",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "pendingaction"
     },
     {
@@ -3332,8 +3409,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_pages_assistantpage_assistantpage",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
       "norm_label": "assistantpage()"
     },
     {
@@ -3365,8 +3442,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_authpage",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "authpage.tsx"
     },
     {
@@ -3376,9 +3453,64 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_pages_authpage_authpage",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "authpage()"
+    },
+    {
+      "label": "HoyPage.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_pages_hoypage",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "hoypage.tsx"
+    },
+    {
+      "label": "saludo()",
+      "file_type": "code",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "src_pages_hoypage_saludo",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "saludo()"
+    },
+    {
+      "label": "fechaLarga()",
+      "file_type": "code",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "src_pages_hoypage_fechalarga",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "fechalarga()"
+    },
+    {
+      "label": "contarPorTema()",
+      "file_type": "code",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "src_pages_hoypage_contarportema",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "contarportema()"
+    },
+    {
+      "label": "HoyPage()",
+      "file_type": "code",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "src_pages_hoypage_hoypage",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "hoypage()"
     },
     {
       "label": "ItemsPage.tsx",
@@ -3420,8 +3552,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_pages_itemspage_indexarrecordatorios",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "indexarrecordatorios()"
     },
     {
@@ -3431,8 +3563,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_pages_itemspage_itemspage",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "itemspage()"
     },
     {
@@ -3447,21 +3579,10 @@
       "norm_label": "reminderspage.tsx"
     },
     {
-      "label": "Estado",
-      "file_type": "code",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L13",
-      "_origin": "ast",
-      "id": "src_pages_reminderspage_estado",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
-      "norm_label": "estado"
-    },
-    {
       "label": "Filtro",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L14",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtro",
       "community": 29,
@@ -3469,32 +3590,10 @@
       "norm_label": "filtro"
     },
     {
-      "label": "TIPO_LABEL",
-      "file_type": "code",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L16",
-      "_origin": "ast",
-      "id": "src_pages_reminderspage_tipo_label",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
-      "norm_label": "tipo_label"
-    },
-    {
-      "label": "ESTADO_LABEL",
-      "file_type": "code",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L23",
-      "_origin": "ast",
-      "id": "src_pages_reminderspage_estado_label",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
-      "norm_label": "estado_label"
-    },
-    {
       "label": "ORDEN_GRUPOS",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L32",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "src_pages_reminderspage_orden_grupos",
       "community": 29,
@@ -3505,7 +3604,7 @@
       "label": "TITULO_GRUPO",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L34",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "src_pages_reminderspage_titulo_grupo",
       "community": 29,
@@ -3516,7 +3615,7 @@
       "label": "FILTROS",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L41",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtros",
       "community": 29,
@@ -3524,32 +3623,10 @@
       "norm_label": "filtros"
     },
     {
-      "label": "mismoDia()",
-      "file_type": "code",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L48",
-      "_origin": "ast",
-      "id": "src_pages_reminderspage_mismodia",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
-      "norm_label": "mismodia()"
-    },
-    {
-      "label": "clasificar()",
-      "file_type": "code",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L59",
-      "_origin": "ast",
-      "id": "src_pages_reminderspage_clasificar",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
-      "norm_label": "clasificar()"
-    },
-    {
       "label": "pasaFiltro()",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L70",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "src_pages_reminderspage_pasafiltro",
       "community": 29,
@@ -3560,7 +3637,7 @@
       "label": "RemindersPage()",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L76",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "src_pages_reminderspage_reminderspage",
       "community": 29,
@@ -3640,8 +3717,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_types_assistant",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "assistant.ts"
     },
     {
@@ -3651,8 +3728,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_types_assistant_accioncrear",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "accioncrear"
     },
     {
@@ -3662,8 +3739,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_types_assistant_accioneditar",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "accioneditar"
     },
     {
@@ -3673,8 +3750,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_types_assistant_accionborrar",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "accionborrar"
     },
     {
@@ -3684,8 +3761,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_types_assistant_accionpropuesta",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "accionpropuesta"
     },
     {
@@ -3695,8 +3772,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_types_assistant_chatmessage",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "chatmessage"
     },
     {
@@ -3706,8 +3783,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_types_assistant_ratelimit",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "ratelimit"
     },
     {
@@ -3717,8 +3794,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_types_assistant_assistantusage",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "assistantusage"
     },
     {
@@ -3728,8 +3805,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_types_assistant_assistantresponse",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "assistantresponse"
     },
     {
@@ -3750,8 +3827,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_types_database_tipoitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "tipoitem"
     },
     {
@@ -3761,8 +3838,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_types_database_prioridad",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "prioridad"
     },
     {
@@ -3871,8 +3948,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_types_database_recordatorioconitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "recordatorioconitem"
     },
     {
@@ -5628,7 +5705,7 @@
       "label": "0. Veredicto en una p\u00e1gina",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L20",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_0_veredicto_en_una_p\u00e1gina",
       "community": 17,
@@ -5639,7 +5716,7 @@
       "label": "1. Vistas: propuesta vs. estado real",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L46",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_1_vistas_propuesta_vs_estado_real",
       "community": 17,
@@ -5650,7 +5727,7 @@
       "label": "1.1 Mapa de correspondencias",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L48",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_1_1_mapa_de_correspondencias",
       "community": 17,
@@ -5661,7 +5738,7 @@
       "label": "1.2 Lo que la propuesta simplifica de m\u00e1s",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L63",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_1_2_lo_que_la_propuesta_simplifica_de_m\u00e1s",
       "community": 17,
@@ -5672,7 +5749,7 @@
       "label": "2. Navegaci\u00f3n",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L80",
+      "source_location": "L81",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_navegaci\u00f3n",
       "community": 17,
@@ -5683,7 +5760,7 @@
       "label": "2.1 Qu\u00e9 cambia",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L82",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_1_qu\u00e9_cambia",
       "community": 17,
@@ -5694,7 +5771,7 @@
       "label": "2.2 El punto cr\u00edtico: el prototipo no tiene router",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L96",
+      "source_location": "L97",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_2_el_punto_cr\u00edtico_el_prototipo_no_tiene_router",
       "community": 17,
@@ -5705,7 +5782,7 @@
       "label": "2.3 Detalle menor a reconciliar",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L114",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_3_detalle_menor_a_reconciliar",
       "community": 17,
@@ -5716,7 +5793,7 @@
       "label": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L122",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
       "community": 17,
@@ -5727,7 +5804,7 @@
       "label": "3.1 Evoluciona. Continuidad casi total.",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L124",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_1_evoluciona_continuidad_casi_total",
       "community": 17,
@@ -5738,7 +5815,7 @@
       "label": "3.2 Las tres desviaciones reales (a aprobar, \u00a76-D2)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L159",
+      "source_location": "L160",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_2_las_tres_desviaciones_reales_a_aprobar_6_d2",
       "community": 17,
@@ -5749,7 +5826,7 @@
       "label": "3.3 Lo que el sistema visual propuesto no cubre",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L171",
+      "source_location": "L172",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_3_lo_que_el_sistema_visual_propuesto_no_cubre",
       "community": 17,
@@ -5760,7 +5837,7 @@
       "label": "4. Las 4 funciones pendientes",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L185",
+      "source_location": "L186",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_4_las_4_funciones_pendientes",
       "community": 17,
@@ -5771,7 +5848,7 @@
       "label": "5. Clasificaci\u00f3n: qu\u00e9 se puede hacer ya, qu\u00e9 no",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L198",
+      "source_location": "L199",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
       "community": 17,
@@ -5782,7 +5859,7 @@
       "label": "5.1 Implementable directo (reorganizar/restylear lo que ya existe)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L200",
+      "source_location": "L201",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_1_implementable_directo_reorganizar_restylear_lo_que_ya_existe",
       "community": 17,
@@ -5793,7 +5870,7 @@
       "label": "5.2 Depende de features que todav\u00eda no existen",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L223",
+      "source_location": "L224",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_2_depende_de_features_que_todav\u00eda_no_existen",
       "community": 17,
@@ -5804,7 +5881,7 @@
       "label": "5.3 Ambiguo o incompleto en la propuesta",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L234",
+      "source_location": "L235",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_3_ambiguo_o_incompleto_en_la_propuesta",
       "community": 17,
@@ -5815,7 +5892,7 @@
       "label": "5.4 Dos detalles t\u00e9cnicos que conviene fijar ahora",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L258",
+      "source_location": "L259",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_4_dos_detalles_t\u00e9cnicos_que_conviene_fijar_ahora",
       "community": 17,
@@ -5826,7 +5903,7 @@
       "label": "6. \u00cdtems de trabajo, ordenados",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L275",
+      "source_location": "L276",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
       "community": 17,
@@ -5837,7 +5914,7 @@
       "label": "Fase 0 \u2014 Base (nada se rompe, nada cambia de lugar) \u2014 \u2705 HECHA",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L280",
+      "source_location": "L281",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_0_base_nada_se_rompe_nada_cambia_de_lugar_hecha",
       "community": 17,
@@ -5848,7 +5925,7 @@
       "label": "Fase 1 \u2014 Reestilado y reorganizaci\u00f3n dentro de las p\u00e1ginas actuales \u2014 \u2705 HECHA",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L308",
+      "source_location": "L309",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_1_reestilado_y_reorganizaci\u00f3n_dentro_de_las_p\u00e1ginas_actuales_hecha",
       "community": 17,
@@ -5859,7 +5936,7 @@
       "label": "Fase 2 \u2014 Modelo de datos \u2014 \u2705 HECHA",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L347",
+      "source_location": "L348",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_2_modelo_de_datos_hecha",
       "community": 17,
@@ -5870,7 +5947,7 @@
       "label": "Fase 3 \u2014 Navegaci\u00f3n (el bloque riesgoso)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L378",
+      "source_location": "L379",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_3_navegaci\u00f3n_el_bloque_riesgoso",
       "community": 17,
@@ -5881,7 +5958,7 @@
       "label": "Fase 4 \u2014 Funciones pendientes",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L457",
+      "source_location": "L509",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_4_funciones_pendientes",
       "community": 17,
@@ -5892,7 +5969,7 @@
       "label": "Resumen de orden",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L471",
+      "source_location": "L523",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_resumen_de_orden",
       "community": 17,
@@ -5903,7 +5980,7 @@
       "label": "7. Decisiones que necesito de vos antes de empezar",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L487",
+      "source_location": "L539",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_7_decisiones_que_necesito_de_vos_antes_de_empezar",
       "community": 17,
@@ -5914,7 +5991,7 @@
       "label": "Dos cosas que quiero dejar dichas, no preguntadas",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L516",
+      "source_location": "L568",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_dos_cosas_que_quiero_dejar_dichas_no_preguntadas",
       "community": 17,
@@ -5925,7 +6002,7 @@
       "label": "8. Auditor\u00eda de contraste (\u00edtem 2)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L526",
+      "source_location": "L578",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
       "community": 17,
@@ -5936,7 +6013,7 @@
       "label": "El resultado inesperado: la paleta oscura contrasta mejor que la clara",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L532",
+      "source_location": "L584",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_el_resultado_inesperado_la_paleta_oscura_contrasta_mejor_que_la_clara",
       "community": 17,
@@ -5947,7 +6024,7 @@
       "label": "Lo que esto significa",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L543",
+      "source_location": "L595",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_lo_que_esto_significa",
       "community": 17,
@@ -6161,9 +6238,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "graphify project rules",
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community_name": "Asistente IA - acciones propuestas",
       "id": "claude_graphify"
     },
     {
@@ -6175,9 +6252,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "offline support architecture plan",
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community_name": "Asistente IA - acciones propuestas",
       "id": "plan_offline_plan"
     },
     {
@@ -6189,9 +6266,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "organizador personal ia - master plan",
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community_name": "Asistente IA - acciones propuestas",
       "id": "plan_organizador_plan"
     },
     {
@@ -6231,9 +6308,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 29,
       "norm_label": "render static site blueprint (organizador-ia)",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "ItemsPage.tsx",
       "id": "render_service"
     },
     {
@@ -6245,9 +6322,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 3,
       "norm_label": "outbox pattern for offline mutations",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Asistente IA - acciones propuestas",
       "id": "plan_offline_outbox_pattern"
     },
     {
@@ -6273,9 +6350,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 33,
       "norm_label": "last-write-wins via updated_at + conditional update",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "id": "plan_offline_lww_conflict_resolution"
     },
     {
@@ -6287,9 +6364,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 33,
       "norm_label": "hard delete + full re-fetch reconciliation (vs soft-delete)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "id": "plan_offline_hard_delete_decision"
     },
     {
@@ -6315,9 +6392,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "web locks api single-flight sync",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "id": "plan_offline_web_locks_singleflight"
     },
     {
@@ -6343,9 +6420,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "sync trigger events (online/focus/visibility/interval/post-mutation)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "id": "plan_offline_sync_triggers"
     },
     {
@@ -6399,9 +6476,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 33,
       "norm_label": "trigger adjustment to respect client-sent updated_at",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "id": "plan_offline_updated_at_trigger_fix"
     },
     {
@@ -6427,9 +6504,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 33,
       "norm_label": "rls design: join-based policies for recordatorios",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "id": "plan_organizador_rls_design"
     },
     {
@@ -6455,9 +6532,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 11,
+      "community": 3,
       "norm_label": "propose/confirm pattern for ai-driven mutations",
-      "community_name": "CRUD items/temas y handler asistente IA",
+      "community_name": "Asistente IA - acciones propuestas",
       "id": "plan_organizador_ai_assistant_propose_confirm"
     },
     {
@@ -6539,9 +6616,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 29,
       "norm_label": "adoption of react-router-dom for /settings route",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "ItemsPage.tsx",
       "id": "plan_organizador_react_router_adoption"
     },
     {
@@ -6567,9 +6644,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 29,
       "norm_label": "render static site deployment",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "ItemsPage.tsx",
       "id": "plan_organizador_render_deploy"
     },
     {
@@ -6693,9 +6770,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 29,
       "norm_label": "listrecordatoriosparadisparo",
-      "community_name": "Recordatorios y watcher local",
+      "community_name": "ItemsPage.tsx",
       "id": "src_lib_recordatorios_listrecordatoriosparadisparo"
     },
     {
@@ -6707,9 +6784,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 3,
       "norm_label": "db.ts (indexeddb store layer)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Asistente IA - acciones propuestas",
       "id": "src_lib_db_db"
     },
     {
@@ -6721,9 +6798,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 3,
       "norm_label": "repo.ts (local mutation repository)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Asistente IA - acciones propuestas",
       "id": "src_lib_repo_repo"
     },
     {
@@ -6735,9 +6812,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "sync.ts (sync engine)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "id": "src_lib_sync_sync"
     },
     {
@@ -6805,9 +6882,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 33,
       "norm_label": "schema_inicial migration (temas/items/recordatorios)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "id": "supabase_migrations_20260720120000_schema_inicial_schema"
     },
     {
@@ -7639,7 +7716,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7771,7 +7848,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7783,7 +7860,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7799,7 +7876,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
-      "target": "src_pages_itemspage",
+      "target": "src_pages_hoypage",
       "confidence_score": 1.0
     },
     {
@@ -7811,6 +7888,30 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
+      "target": "src_pages_hoypage_hoypage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_app",
+      "target": "src_pages_itemspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_app",
       "target": "src_pages_itemspage_itemspage",
       "confidence_score": 1.0
     },
@@ -7819,7 +7920,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7831,7 +7932,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7843,7 +7944,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7855,7 +7956,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -9545,6 +9646,185 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_components_recordatoriorow_recordatoriorow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_lib_recordatorios",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_lib_recordatorios_estado_label",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_lib_recordatorios_estadorecordatorio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_lib_recordatorios_formatfechahora",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_lib_recordatorios_resumencontenido",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_lib_recordatorios_tipo_label",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_types_database",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow",
+      "target": "src_types_database_recordatorioconitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_components_recordatoriorow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/RemindersPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_reminderspage",
+      "target": "src_components_recordatoriorow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow_recordatoriorow",
+      "target": "src_lib_recordatorios_formatfechahora"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/RecordatorioRow.tsx",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_recordatoriorow_recordatoriorow",
+      "target": "src_lib_recordatorios_resumencontenido"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_components_recordatoriorow_recordatoriorow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/RemindersPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_reminderspage",
+      "target": "src_components_recordatoriorow_recordatoriorow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "src/components/SyncEngine.tsx",
       "source_location": "L9",
       "weight": 1.0,
@@ -10012,6 +10292,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_authcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -10166,6 +10458,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_authcontext_useauth"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -10204,7 +10520,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L77",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -10677,6 +10993,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_db",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -11061,6 +11389,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_db_loadtemasfromcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_db_loadtemasfromcache"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -11121,6 +11473,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_db_loaditemsfromcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_db_loaditemsfromcache"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -11159,7 +11535,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L93",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -11205,6 +11581,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_db_loadrecordatoriosfromcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_db_loadrecordatoriosfromcache"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -11243,7 +11643,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L92",
+      "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -12189,7 +12589,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L77",
+      "source_location": "L103",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_recordatorios",
+      "target": "src_lib_recordatorios_clasificar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_recordatorios",
@@ -12200,7 +12611,29 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L82",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_recordatorios",
+      "target": "src_lib_recordatorios_estado_label",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_recordatorios",
+      "target": "src_lib_recordatorios_estadorecordatorio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L130",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_recordatorios",
@@ -12211,7 +12644,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L70",
+      "source_location": "L118",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_recordatorios",
@@ -12244,11 +12677,33 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/recordatorios.ts",
-      "source_location": "L94",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_recordatorios",
+      "target": "src_lib_recordatorios_mismodia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_recordatorios",
       "target": "src_lib_recordatorios_resumencontenido",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_recordatorios",
+      "target": "src_lib_recordatorios_tipo_label",
       "confidence_score": 1.0
     },
     {
@@ -12386,6 +12841,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_recordatorios",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -12446,6 +12913,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_recordatorios_joinrecordatoriosconitems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_recordatorios_joinrecordatoriosconitems"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -12460,7 +12951,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L95",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -12499,6 +12990,78 @@
       "source": "src_lib_sync_reconcile",
       "target": "src_lib_recordatorios_listrecordatorios",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/RemindersPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_reminderspage",
+      "target": "src_lib_recordatorios_estadorecordatorio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/recordatorios.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_recordatorios_clasificar",
+      "target": "src_lib_recordatorios_mismodia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_recordatorios_clasificar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L107",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_recordatorios_clasificar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/RemindersPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_reminderspage",
+      "target": "src_lib_recordatorios_clasificar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/RemindersPage.tsx",
+      "source_location": "L101",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_reminderspage_reminderspage",
+      "target": "src_lib_recordatorios_clasificar"
     },
     {
       "relation": "imports",
@@ -12552,30 +13115,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_lib_recordatorios_formatfechahora",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L192",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage_reminderspage",
-      "target": "src_lib_recordatorios_formatfechahora"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/lib/useLocalReminderWatcher.ts",
       "source_location": "L4",
       "weight": 1.0,
@@ -12583,30 +13122,6 @@
       "source": "src_lib_uselocalreminderwatcher",
       "target": "src_lib_recordatorios_resumencontenido",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_lib_recordatorios_resumencontenido",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L204",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage_reminderspage",
-      "target": "src_lib_recordatorios_resumencontenido"
     },
     {
       "relation": "imports_from",
@@ -13269,6 +13784,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_repo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L4",
       "weight": 1.0,
@@ -13635,6 +14162,18 @@
       "_origin": "ast",
       "source": "src_lib_repo_marcarhecho",
       "target": "src_lib_repo_cambiarestado",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_repo_marcarhecho",
       "confidence_score": 1.0
     },
     {
@@ -14321,6 +14860,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_sync",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L6",
       "weight": 1.0,
@@ -14369,6 +14920,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_sync_subscribesyncsettled",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_sync_subscribesyncsettled"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L6",
       "weight": 1.0,
@@ -14407,7 +14982,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L107",
+      "source_location": "L77",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -14424,6 +14999,30 @@
       "source": "src_lib_sync_syncnow",
       "target": "src_lib_sync_emitsettled",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_sync_hassyncsettled",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_sync_hassyncsettled"
     },
     {
       "relation": "imports",
@@ -14467,7 +15066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L96",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -15400,8 +15999,20 @@
       "context": "argument",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_temacolores_test_tema"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L231",
+      "source_location": "L243",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -15510,6 +16121,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_temacolores",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L10",
       "weight": 1.0,
@@ -15606,6 +16229,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_temacolores_colordetema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_temacolores_colordetema"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L10",
       "weight": 1.0,
@@ -15620,11 +16267,35 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L231",
+      "source_location": "L243",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
       "target": "src_lib_temacolores_colordetema"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_temacolores_temacolorvar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_lib_temacolores_temacolorvar"
     },
     {
       "relation": "imports",
@@ -15644,7 +16315,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L231",
+      "source_location": "L243",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -16008,6 +16679,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_useaienabled",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -16029,6 +16712,30 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage_assistantpage",
+      "target": "src_lib_useaienabled_useaienabled"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_lib_useaienabled_useaienabled",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
       "target": "src_lib_useaienabled_useaienabled"
     },
     {
@@ -16442,6 +17149,134 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_pages_hoypage_contarportema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_pages_hoypage_fechalarga",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_pages_hoypage_hoypage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_pages_hoypage_saludo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_types_database",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_types_database_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_types_database_recordatorioconitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage",
+      "target": "src_types_database_tema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_pages_hoypage_saludo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L120",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_pages_hoypage_fechalarga",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/HoyPage.tsx",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_hoypage_hoypage",
+      "target": "src_pages_hoypage_contarportema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L17",
       "weight": 1.0,
@@ -16591,40 +17426,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L59",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_pages_reminderspage_clasificar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_pages_reminderspage_estado",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_pages_reminderspage_estado_label",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L14",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16635,7 +17437,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L41",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16646,18 +17448,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L48",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_pages_reminderspage_mismodia",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L32",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16668,7 +17459,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L70",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16679,7 +17470,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L76",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16690,18 +17481,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_pages_reminderspage_tipo_label",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L34",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16713,7 +17493,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16725,7 +17505,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16737,31 +17517,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L63",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage_clasificar",
-      "target": "src_pages_reminderspage_mismodia",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L131",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage_reminderspage",
-      "target": "src_pages_reminderspage_clasificar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L134",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -18754,7 +19510,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o",
@@ -18875,7 +19631,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o",
@@ -19040,7 +19796,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19051,7 +19807,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L46",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19062,7 +19818,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L80",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19073,7 +19829,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L122",
+      "source_location": "L123",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19084,7 +19840,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L185",
+      "source_location": "L186",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19095,7 +19851,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L198",
+      "source_location": "L199",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19106,7 +19862,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L275",
+      "source_location": "L276",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19117,7 +19873,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L487",
+      "source_location": "L539",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19128,7 +19884,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L526",
+      "source_location": "L578",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -19139,7 +19895,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_1_vistas_propuesta_vs_estado_real",
@@ -19150,7 +19906,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L63",
+      "source_location": "L64",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_1_vistas_propuesta_vs_estado_real",
@@ -19161,7 +19917,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L82",
+      "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_2_navegaci\u00f3n",
@@ -19172,7 +19928,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L96",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_2_navegaci\u00f3n",
@@ -19183,7 +19939,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L114",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_2_navegaci\u00f3n",
@@ -19194,7 +19950,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L124",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
@@ -19205,7 +19961,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L159",
+      "source_location": "L160",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
@@ -19216,7 +19972,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L171",
+      "source_location": "L172",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
@@ -19227,7 +19983,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L200",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -19238,7 +19994,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L223",
+      "source_location": "L224",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -19249,7 +20005,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L234",
+      "source_location": "L235",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -19260,7 +20016,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L258",
+      "source_location": "L259",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -19271,7 +20027,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L280",
+      "source_location": "L281",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -19282,7 +20038,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L308",
+      "source_location": "L309",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -19293,7 +20049,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L347",
+      "source_location": "L348",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -19304,7 +20060,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L378",
+      "source_location": "L379",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -19315,7 +20071,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L457",
+      "source_location": "L509",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -19326,7 +20082,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L471",
+      "source_location": "L523",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -19337,7 +20093,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L516",
+      "source_location": "L568",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_7_decisiones_que_necesito_de_vos_antes_de_empezar",
@@ -19348,7 +20104,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L532",
+      "source_location": "L584",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
@@ -19359,7 +20115,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L543",
+      "source_location": "L595",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
@@ -20047,5 +20803,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "654a35318214c7792f012bb577ded873616612f0"
+  "built_at_commit": "ac72aeffee20081b1a1ff96223deb4cd02b76184"
 }

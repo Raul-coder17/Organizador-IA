@@ -99,13 +99,25 @@ export function ItemsPage() {
 
   useEffect(() => subscribeSyncSettled(load), [load])
 
-  // El "+ Nuevo item" del shell no tiene formulario propio todavía (ítem 11):
-  // navega hasta acá pidiendo que se abra este. `location.key` cambia en cada
-  // navegación, así que pedirlo dos veces seguidas vuelve a abrirlo.
+  // Peticiones que llegan por navegación, de dos lugares distintos:
+  //   · `nuevoItem` — el "+" del shell, que no tiene sheet propio hasta el
+  //     ítem 11 y abre este formulario (ítem 7).
+  //   · `temaId` — una tarjeta de tema de la vista Hoy, que llega pidiendo la
+  //     Biblioteca ya filtrada por ese tema (ítem 8). `null` significa "los que
+  //     no tienen tema": cómo se llama ese filtro es asunto de esta página.
+  // `location.key` cambia en cada navegación, así que pedir lo mismo dos veces
+  // seguidas vuelve a aplicarlo.
   useEffect(() => {
-    if ((location.state as { nuevoItem?: boolean } | null)?.nuevoItem) {
+    const nav = location.state as { nuevoItem?: boolean; temaId?: string | null } | null
+    if (!nav) return
+
+    if (nav.nuevoItem) {
       setEditingItem(null)
       setShowForm(true)
+    }
+    if ('temaId' in nav) {
+      setFilterTemaId(nav.temaId === null ? FILTRO_SIN_TEMA : nav.temaId!)
+      setFilterTipo('todos')
     }
   }, [location.key, location.state])
 

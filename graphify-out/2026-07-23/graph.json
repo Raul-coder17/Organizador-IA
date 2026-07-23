@@ -76,8 +76,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "package",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "package.json"
     },
     {
@@ -87,8 +87,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "package_name",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "name"
     },
     {
@@ -98,8 +98,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "package_private",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "private"
     },
     {
@@ -109,8 +109,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "package_version",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "version"
     },
     {
@@ -120,8 +120,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "package_type",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "type"
     },
     {
@@ -131,8 +131,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "package_scripts",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "scripts"
     },
     {
@@ -142,8 +142,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "package_scripts_dev",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "dev"
     },
     {
@@ -153,8 +153,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "package_scripts_build",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "build"
     },
     {
@@ -164,8 +164,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "package_scripts_lint",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "lint"
     },
     {
@@ -175,8 +175,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "package_scripts_preview",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 8,
+      "community_name": "Notificaciones push",
       "norm_label": "preview"
     },
     {
@@ -318,8 +318,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "package_devdependencies_eslint_js",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 35,
+      "community_name": "@eslint/js",
       "norm_label": "@eslint/js"
     },
     {
@@ -329,8 +329,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "eslint_js",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 35,
+      "community_name": "@eslint/js",
       "norm_label": "@eslint/js"
     },
     {
@@ -340,8 +340,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss_vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "@tailwindcss/vite"
     },
     {
@@ -351,8 +351,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "tailwindcss_vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "@tailwindcss/vite"
     },
     {
@@ -362,8 +362,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "package_devdependencies_types_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "@types/react"
     },
     {
@@ -373,8 +373,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "types_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "@types/react"
     },
     {
@@ -384,8 +384,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "package_devdependencies_types_react_dom",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 39,
+      "community_name": "@types/react-dom",
       "norm_label": "@types/react-dom"
     },
     {
@@ -395,8 +395,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "types_react_dom",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 39,
+      "community_name": "@types/react-dom",
       "norm_label": "@types/react-dom"
     },
     {
@@ -406,8 +406,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "package_devdependencies_vitejs_plugin_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 42,
+      "community_name": "@vitejs/plugin-react",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -417,8 +417,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "vitejs_plugin_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 42,
+      "community_name": "@vitejs/plugin-react",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -428,8 +428,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "package_devdependencies_eslint",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 34,
+      "community_name": "eslint",
       "norm_label": "eslint"
     },
     {
@@ -439,8 +439,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "eslint",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 34,
+      "community_name": "eslint",
       "norm_label": "eslint"
     },
     {
@@ -538,8 +538,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 36,
+      "community_name": "tailwindcss",
       "norm_label": "tailwindcss"
     },
     {
@@ -549,8 +549,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "tailwindcss",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 36,
+      "community_name": "tailwindcss",
       "norm_label": "tailwindcss"
     },
     {
@@ -604,8 +604,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "package_devdependencies_vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 40,
+      "community_name": "vite",
       "norm_label": "vite"
     },
     {
@@ -615,8 +615,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 40,
+      "community_name": "vite",
       "norm_label": "vite"
     },
     {
@@ -626,8 +626,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "package_devdependencies_vite_plugin_pwa",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 41,
+      "community_name": "vite-plugin-pwa",
       "norm_label": "vite-plugin-pwa"
     },
     {
@@ -637,8 +637,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "vite_plugin_pwa",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 41,
+      "community_name": "vite-plugin-pwa",
       "norm_label": "vite-plugin-pwa"
     },
     {
@@ -755,7 +755,7 @@
       "label": "App()",
       "file_type": "code",
       "source_file": "src/App.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "src_app_app",
       "community": 2,
@@ -763,26 +763,180 @@
       "norm_label": "app()"
     },
     {
-      "label": "AppNav.tsx",
+      "label": "AppShell.tsx",
       "file_type": "code",
-      "source_file": "src/components/AppNav.tsx",
+      "source_file": "src/components/AppShell.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_components_appnav",
+      "id": "src_components_appshell",
       "community": 2,
       "community_name": "Layout, ruteo y estado de sync de la app",
-      "norm_label": "appnav.tsx"
+      "norm_label": "appshell.tsx"
     },
     {
-      "label": "AppNav()",
+      "label": "TRAZO",
       "file_type": "code",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L8",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L32",
       "_origin": "ast",
-      "id": "src_components_appnav_appnav",
+      "id": "src_components_appshell_trazo",
       "community": 2,
       "community_name": "Layout, ruteo y estado de sync de la app",
-      "norm_label": "appnav()"
+      "norm_label": "trazo"
+    },
+    {
+      "label": "IconoHoy()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconohoy",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconohoy()"
+    },
+    {
+      "label": "IconoBiblioteca()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconobiblioteca",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconobiblioteca()"
+    },
+    {
+      "label": "IconoRecordatorios()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconorecordatorios",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconorecordatorios()"
+    },
+    {
+      "label": "IconoAjustes()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L64",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconoajustes",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconoajustes()"
+    },
+    {
+      "label": "IconoBuscar()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconobuscar",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconobuscar()"
+    },
+    {
+      "label": "IconoMas()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L83",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconomas",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconomas()"
+    },
+    {
+      "label": "IconoChispa()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconochispa",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconochispa()"
+    },
+    {
+      "label": "IconoSol()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L99",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconosol",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconosol()"
+    },
+    {
+      "label": "IconoLuna()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L108",
+      "_origin": "ast",
+      "id": "src_components_appshell_iconoluna",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "iconoluna()"
+    },
+    {
+      "label": "Destino",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L116",
+      "_origin": "ast",
+      "id": "src_components_appshell_destino",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "destino"
+    },
+    {
+      "label": "DESTINOS",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L129",
+      "_origin": "ast",
+      "id": "src_components_appshell_destinos",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "destinos"
+    },
+    {
+      "label": "NUEVO_ITEM",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L145",
+      "_origin": "ast",
+      "id": "src_components_appshell_nuevo_item",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "nuevo_item"
+    },
+    {
+      "label": "Buscador()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L147",
+      "_origin": "ast",
+      "id": "src_components_appshell_buscador",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "buscador()"
+    },
+    {
+      "label": "AppShell()",
+      "file_type": "code",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L171",
+      "_origin": "ast",
+      "id": "src_components_appshell_appshell",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "appshell()"
     },
     {
       "label": "ItemForm.tsx",
@@ -1055,8 +1209,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_pushsettings",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "pushsettings.tsx"
     },
     {
@@ -1066,8 +1220,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_components_pushsettings_pushsettings",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "pushsettings()"
     },
     {
@@ -1209,8 +1363,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_db",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "db.ts"
     },
     {
@@ -1231,8 +1385,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_db_newoutboxop",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "newoutboxop"
     },
     {
@@ -1242,8 +1396,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_db_table_store",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "table_store"
     },
     {
@@ -1253,8 +1407,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_lib_db_metarow",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "metarow"
     },
     {
@@ -1275,8 +1429,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_lib_db_getdb",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getdb()"
     },
     {
@@ -1286,8 +1440,8 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_lib_db_loadtemasfromcache",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "loadtemasfromcache()"
     },
     {
@@ -1297,8 +1451,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_db_loaditemsfromcache",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "loaditemsfromcache()"
     },
     {
@@ -1308,8 +1462,8 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_lib_db_loadrecordatoriosfromcache",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "loadrecordatoriosfromcache()"
     },
     {
@@ -1352,8 +1506,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_lib_db_getlocaltema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocaltema()"
     },
     {
@@ -1363,8 +1517,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_lib_db_putlocaltema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocaltema()"
     },
     {
@@ -1374,8 +1528,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_db_getlocalitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalitem()"
     },
     {
@@ -1385,8 +1539,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_lib_db_putlocalitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocalitem()"
     },
     {
@@ -1396,8 +1550,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalrecordatorio()"
     },
     {
@@ -1407,8 +1561,8 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_db_putlocalrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocalrecordatorio()"
     },
     {
@@ -1418,8 +1572,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatoriosbyitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalrecordatoriosbyitem()"
     },
     {
@@ -1429,8 +1583,8 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "src_lib_db_deletelocalrow",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deletelocalrow()"
     },
     {
@@ -1440,8 +1594,8 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "src_lib_db_enqueueop",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "enqueueop()"
     },
     {
@@ -1451,8 +1605,8 @@
       "source_location": "L231",
       "_origin": "ast",
       "id": "src_lib_db_getoutbox",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getoutbox()"
     },
     {
@@ -1473,8 +1627,8 @@
       "source_location": "L241",
       "_origin": "ast",
       "id": "src_lib_db_deleteops",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleteops()"
     },
     {
@@ -1484,8 +1638,8 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "src_lib_db_markopsfailed",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "markopsfailed()"
     },
     {
@@ -1495,8 +1649,8 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "src_lib_db_deleteopsforentity",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleteopsforentity()"
     },
     {
@@ -1506,8 +1660,8 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "src_lib_db_getmeta",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getmeta()"
     },
     {
@@ -1561,8 +1715,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_push",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "push.ts"
     },
     {
@@ -1572,8 +1726,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_lib_push_vapid_public_key",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "vapid_public_key"
     },
     {
@@ -1583,8 +1737,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_push_pushstatus",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "pushstatus"
     },
     {
@@ -1594,8 +1748,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_lib_push_ispushsupported",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "ispushsupported()"
     },
     {
@@ -1605,8 +1759,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_push_swreadyornull",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "swreadyornull()"
     },
     {
@@ -1616,8 +1770,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_lib_push_getpushstatus",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "getpushstatus()"
     },
     {
@@ -1627,8 +1781,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_lib_push_urlbase64touint8array",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "urlbase64touint8array()"
     },
     {
@@ -1638,8 +1792,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_lib_push_keytobase64",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "keytobase64()"
     },
     {
@@ -1649,8 +1803,8 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_lib_push_subscribetopush",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "subscribetopush()"
     },
     {
@@ -1660,8 +1814,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_push_unsubscribefrompush",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "unsubscribefrompush()"
     },
     {
@@ -1693,8 +1847,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_recordatorios_joinrecordatoriosconitems",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "joinrecordatoriosconitems()"
     },
     {
@@ -1704,8 +1858,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_lib_recordatorios_listrecordatorios",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "listrecordatorios()"
     },
     {
@@ -1737,8 +1891,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_lib_recordatorios_formatfechahora",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "formatfechahora()"
     },
     {
@@ -1748,8 +1902,8 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_lib_recordatorios_resumencontenido",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "resumencontenido()"
     },
     {
@@ -1957,8 +2111,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_repo",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "repo.ts"
     },
     {
@@ -1968,8 +2122,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_lib_repo_nowiso",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "nowiso()"
     },
     {
@@ -1979,8 +2133,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_lib_repo_enqueue",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "enqueue()"
     },
     {
@@ -1990,8 +2144,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_lib_repo_createtema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "createtema()"
     },
     {
@@ -2001,8 +2155,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_lib_repo_updatetemacolor",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "updatetemacolor()"
     },
     {
@@ -2012,8 +2166,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_repo_item_editable",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "item_editable"
     },
     {
@@ -2023,8 +2177,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_repo_itempatch",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itempatch()"
     },
     {
@@ -2034,8 +2188,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_lib_repo_createitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "createitem()"
     },
     {
@@ -2045,8 +2199,8 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_lib_repo_updateitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "updateitem()"
     },
     {
@@ -2056,8 +2210,8 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "src_lib_repo_deleteitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleteitem()"
     },
     {
@@ -2067,8 +2221,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_lib_repo_getrecordatorioforitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getrecordatorioforitem()"
     },
     {
@@ -2078,8 +2232,8 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "src_lib_repo_upsertrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "upsertrecordatorio()"
     },
     {
@@ -2089,8 +2243,8 @@
       "source_location": "L255",
       "_origin": "ast",
       "id": "src_lib_repo_deleterecordatoriosforitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleterecordatoriosforitem()"
     },
     {
@@ -2100,8 +2254,8 @@
       "source_location": "L269",
       "_origin": "ast",
       "id": "src_lib_repo_cambiarestado",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "cambiarestado()"
     },
     {
@@ -2111,8 +2265,8 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "marcarhecho()"
     },
     {
@@ -2122,8 +2276,8 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "src_lib_repo_marcarenviado",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "marcarenviado()"
     },
     {
@@ -2133,8 +2287,8 @@
       "source_location": "L313",
       "_origin": "ast",
       "id": "src_lib_repo_listrecordatoriosparadisparo",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "listrecordatoriosparadisparo()"
     },
     {
@@ -2221,8 +2375,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesyncsettled",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "subscribesyncsettled()"
     },
     {
@@ -2452,8 +2606,8 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "src_lib_sync_requestsync",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "requestsync()"
     },
     {
@@ -3018,6 +3172,39 @@
       "norm_label": "useaienabled()"
     },
     {
+      "label": "useIsWide.ts",
+      "file_type": "code",
+      "source_file": "src/lib/useIsWide.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_useiswide",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "useiswide.ts"
+    },
+    {
+      "label": "medir()",
+      "file_type": "code",
+      "source_file": "src/lib/useIsWide.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "src_lib_useiswide_medir",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "medir()"
+    },
+    {
+      "label": "useIsWide()",
+      "file_type": "code",
+      "source_file": "src/lib/useIsWide.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "src_lib_useiswide_useiswide",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "useiswide()"
+    },
+    {
       "label": "useLocalReminderWatcher.ts",
       "file_type": "code",
       "source_file": "src/lib/useLocalReminderWatcher.ts",
@@ -3101,37 +3288,37 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_assistantpage",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "assistantpage.tsx"
     },
     {
       "label": "contenidoTexto()",
       "file_type": "code",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L25",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "src_pages_assistantpage_contenidotexto",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "contenidotexto()"
     },
     {
       "label": "EstadoAccion",
       "file_type": "code",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L30",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "src_pages_assistantpage_estadoaccion",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "estadoaccion"
     },
     {
       "label": "PendingAction",
       "file_type": "code",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L31",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_assistantpage_pendingaction",
       "community": 1,
@@ -3142,7 +3329,7 @@
       "label": "AssistantPage()",
       "file_type": "code",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L37",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_pages_assistantpage_assistantpage",
       "community": 2,
@@ -3153,22 +3340,22 @@
       "label": "EstadoBadge()",
       "file_type": "code",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L426",
+      "source_location": "L418",
       "_origin": "ast",
       "id": "src_pages_assistantpage_estadobadge",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "estadobadge()"
     },
     {
       "label": "ProposedActionCard()",
       "file_type": "code",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L434",
+      "source_location": "L426",
       "_origin": "ast",
       "id": "src_pages_assistantpage_proposedactioncard",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "proposedactioncard()"
     },
     {
@@ -3200,8 +3387,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_itemspage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itemspage.tsx"
     },
     {
@@ -3211,8 +3398,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtrotipo",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "filtrotipo"
     },
     {
@@ -3222,8 +3409,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtros_tipo",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "filtros_tipo"
     },
     {
@@ -3233,8 +3420,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_pages_itemspage_indexarrecordatorios",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "indexarrecordatorios()"
     },
     {
@@ -3244,8 +3431,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_pages_itemspage_itemspage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itemspage()"
     },
     {
@@ -3263,7 +3450,7 @@
       "label": "Estado",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "src_pages_reminderspage_estado",
       "community": 29,
@@ -3274,7 +3461,7 @@
       "label": "Filtro",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L15",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtro",
       "community": 29,
@@ -3285,7 +3472,7 @@
       "label": "TIPO_LABEL",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L17",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "src_pages_reminderspage_tipo_label",
       "community": 29,
@@ -3296,7 +3483,7 @@
       "label": "ESTADO_LABEL",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L24",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "src_pages_reminderspage_estado_label",
       "community": 29,
@@ -3307,7 +3494,7 @@
       "label": "ORDEN_GRUPOS",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L33",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "src_pages_reminderspage_orden_grupos",
       "community": 29,
@@ -3318,7 +3505,7 @@
       "label": "TITULO_GRUPO",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L35",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "src_pages_reminderspage_titulo_grupo",
       "community": 29,
@@ -3329,7 +3516,7 @@
       "label": "FILTROS",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L42",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtros",
       "community": 29,
@@ -3340,7 +3527,7 @@
       "label": "mismoDia()",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L49",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "src_pages_reminderspage_mismodia",
       "community": 29,
@@ -3351,7 +3538,7 @@
       "label": "clasificar()",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L60",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "src_pages_reminderspage_clasificar",
       "community": 29,
@@ -3362,7 +3549,7 @@
       "label": "pasaFiltro()",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L71",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "src_pages_reminderspage_pasafiltro",
       "community": 29,
@@ -3373,7 +3560,7 @@
       "label": "RemindersPage()",
       "file_type": "code",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L77",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "src_pages_reminderspage_reminderspage",
       "community": 29,
@@ -3395,7 +3582,7 @@
       "label": "TEMAS_UI",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "_origin": "ast",
       "id": "src_pages_settingspage_temas_ui",
       "community": 2,
@@ -3406,7 +3593,7 @@
       "label": "Apariencia()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "src_pages_settingspage_apariencia",
       "community": 2,
@@ -3417,7 +3604,7 @@
       "label": "SettingsPage()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L48",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "src_pages_settingspage_settingspage",
       "community": 2,
@@ -3651,8 +3838,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_types_database_iteminsert",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "iteminsert"
     },
     {
@@ -5441,7 +5628,7 @@
       "label": "0. Veredicto en una p\u00e1gina",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L19",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_0_veredicto_en_una_p\u00e1gina",
       "community": 17,
@@ -5452,7 +5639,7 @@
       "label": "1. Vistas: propuesta vs. estado real",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L45",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_1_vistas_propuesta_vs_estado_real",
       "community": 17,
@@ -5463,7 +5650,7 @@
       "label": "1.1 Mapa de correspondencias",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L47",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_1_1_mapa_de_correspondencias",
       "community": 17,
@@ -5474,7 +5661,7 @@
       "label": "1.2 Lo que la propuesta simplifica de m\u00e1s",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L62",
+      "source_location": "L63",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_1_2_lo_que_la_propuesta_simplifica_de_m\u00e1s",
       "community": 17,
@@ -5485,7 +5672,7 @@
       "label": "2. Navegaci\u00f3n",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L79",
+      "source_location": "L80",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_navegaci\u00f3n",
       "community": 17,
@@ -5496,7 +5683,7 @@
       "label": "2.1 Qu\u00e9 cambia",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L81",
+      "source_location": "L82",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_1_qu\u00e9_cambia",
       "community": 17,
@@ -5507,7 +5694,7 @@
       "label": "2.2 El punto cr\u00edtico: el prototipo no tiene router",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L95",
+      "source_location": "L96",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_2_el_punto_cr\u00edtico_el_prototipo_no_tiene_router",
       "community": 17,
@@ -5518,7 +5705,7 @@
       "label": "2.3 Detalle menor a reconciliar",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L113",
+      "source_location": "L114",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_3_detalle_menor_a_reconciliar",
       "community": 17,
@@ -5529,7 +5716,7 @@
       "label": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L121",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
       "community": 17,
@@ -5540,7 +5727,7 @@
       "label": "3.1 Evoluciona. Continuidad casi total.",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L123",
+      "source_location": "L124",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_1_evoluciona_continuidad_casi_total",
       "community": 17,
@@ -5551,7 +5738,7 @@
       "label": "3.2 Las tres desviaciones reales (a aprobar, \u00a76-D2)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L158",
+      "source_location": "L159",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_2_las_tres_desviaciones_reales_a_aprobar_6_d2",
       "community": 17,
@@ -5562,7 +5749,7 @@
       "label": "3.3 Lo que el sistema visual propuesto no cubre",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L170",
+      "source_location": "L171",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_3_lo_que_el_sistema_visual_propuesto_no_cubre",
       "community": 17,
@@ -5573,7 +5760,7 @@
       "label": "4. Las 4 funciones pendientes",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L184",
+      "source_location": "L185",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_4_las_4_funciones_pendientes",
       "community": 17,
@@ -5584,7 +5771,7 @@
       "label": "5. Clasificaci\u00f3n: qu\u00e9 se puede hacer ya, qu\u00e9 no",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L197",
+      "source_location": "L198",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
       "community": 17,
@@ -5595,7 +5782,7 @@
       "label": "5.1 Implementable directo (reorganizar/restylear lo que ya existe)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L199",
+      "source_location": "L200",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_1_implementable_directo_reorganizar_restylear_lo_que_ya_existe",
       "community": 17,
@@ -5606,7 +5793,7 @@
       "label": "5.2 Depende de features que todav\u00eda no existen",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L222",
+      "source_location": "L223",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_2_depende_de_features_que_todav\u00eda_no_existen",
       "community": 17,
@@ -5617,7 +5804,7 @@
       "label": "5.3 Ambiguo o incompleto en la propuesta",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L233",
+      "source_location": "L234",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_3_ambiguo_o_incompleto_en_la_propuesta",
       "community": 17,
@@ -5628,7 +5815,7 @@
       "label": "5.4 Dos detalles t\u00e9cnicos que conviene fijar ahora",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L257",
+      "source_location": "L258",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_4_dos_detalles_t\u00e9cnicos_que_conviene_fijar_ahora",
       "community": 17,
@@ -5639,7 +5826,7 @@
       "label": "6. \u00cdtems de trabajo, ordenados",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L274",
+      "source_location": "L275",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
       "community": 17,
@@ -5650,7 +5837,7 @@
       "label": "Fase 0 \u2014 Base (nada se rompe, nada cambia de lugar) \u2014 \u2705 HECHA",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L279",
+      "source_location": "L280",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_0_base_nada_se_rompe_nada_cambia_de_lugar_hecha",
       "community": 17,
@@ -5661,7 +5848,7 @@
       "label": "Fase 1 \u2014 Reestilado y reorganizaci\u00f3n dentro de las p\u00e1ginas actuales \u2014 \u2705 HECHA",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L307",
+      "source_location": "L308",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_1_reestilado_y_reorganizaci\u00f3n_dentro_de_las_p\u00e1ginas_actuales_hecha",
       "community": 17,
@@ -5672,7 +5859,7 @@
       "label": "Fase 2 \u2014 Modelo de datos \u2014 \u2705 HECHA",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L346",
+      "source_location": "L347",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_2_modelo_de_datos_hecha",
       "community": 17,
@@ -5683,7 +5870,7 @@
       "label": "Fase 3 \u2014 Navegaci\u00f3n (el bloque riesgoso)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L377",
+      "source_location": "L378",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_3_navegaci\u00f3n_el_bloque_riesgoso",
       "community": 17,
@@ -5694,7 +5881,7 @@
       "label": "Fase 4 \u2014 Funciones pendientes",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L406",
+      "source_location": "L457",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_4_funciones_pendientes",
       "community": 17,
@@ -5705,7 +5892,7 @@
       "label": "Resumen de orden",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L420",
+      "source_location": "L471",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_resumen_de_orden",
       "community": 17,
@@ -5716,7 +5903,7 @@
       "label": "7. Decisiones que necesito de vos antes de empezar",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L436",
+      "source_location": "L487",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_7_decisiones_que_necesito_de_vos_antes_de_empezar",
       "community": 17,
@@ -5727,7 +5914,7 @@
       "label": "Dos cosas que quiero dejar dichas, no preguntadas",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L465",
+      "source_location": "L516",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_dos_cosas_que_quiero_dejar_dichas_no_preguntadas",
       "community": 17,
@@ -5738,7 +5925,7 @@
       "label": "8. Auditor\u00eda de contraste (\u00edtem 2)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L475",
+      "source_location": "L526",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
       "community": 17,
@@ -5749,7 +5936,7 @@
       "label": "El resultado inesperado: la paleta oscura contrasta mejor que la clara",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L481",
+      "source_location": "L532",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_el_resultado_inesperado_la_paleta_oscura_contrasta_mejor_que_la_clara",
       "community": 17,
@@ -5760,7 +5947,7 @@
       "label": "Lo que esto significa",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L492",
+      "source_location": "L543",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_lo_que_esto_significa",
       "community": 17,
@@ -5976,8 +6163,8 @@
       "contributor": null,
       "community": 2,
       "norm_label": "graphify project rules",
-      "id": "claude_graphify",
-      "community_name": "Layout, ruteo y estado de sync de la app"
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "id": "claude_graphify"
     },
     {
       "label": "Offline Support Architecture Plan",
@@ -5990,8 +6177,8 @@
       "contributor": null,
       "community": 2,
       "norm_label": "offline support architecture plan",
-      "id": "plan_offline_plan",
-      "community_name": "Layout, ruteo y estado de sync de la app"
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "id": "plan_offline_plan"
     },
     {
       "label": "Organizador Personal IA - Master Plan",
@@ -6004,8 +6191,8 @@
       "contributor": null,
       "community": 2,
       "norm_label": "organizador personal ia - master plan",
-      "id": "plan_organizador_plan",
-      "community_name": "Layout, ruteo y estado de sync de la app"
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "id": "plan_organizador_plan"
     },
     {
       "label": "Organizador Catalog-Style Mockup (HTML)",
@@ -6018,8 +6205,8 @@
       "contributor": null,
       "community": 29,
       "norm_label": "organizador catalog-style mockup (html)",
-      "id": "dise_o_mockup_organizador_mockup",
-      "community_name": "ItemsPage.tsx"
+      "community_name": "ItemsPage.tsx",
+      "id": "dise_o_mockup_organizador_mockup"
     },
     {
       "label": "App HTML Shell (Vite entry)",
@@ -6032,8 +6219,8 @@
       "contributor": null,
       "community": 29,
       "norm_label": "app html shell (vite entry)",
-      "id": "index_page",
-      "community_name": "ItemsPage.tsx"
+      "community_name": "ItemsPage.tsx",
+      "id": "index_page"
     },
     {
       "label": "Render Static Site Blueprint (organizador-ia)",
@@ -6044,10 +6231,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 33,
       "norm_label": "render static site blueprint (organizador-ia)",
-      "id": "render_service",
-      "community_name": "ItemsPage.tsx"
+      "community_name": "Adoption of react-router-dom for /settings Route",
+      "id": "render_service"
     },
     {
       "label": "Outbox Pattern for Offline Mutations",
@@ -6058,10 +6245,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 0,
       "norm_label": "outbox pattern for offline mutations",
-      "id": "plan_offline_outbox_pattern",
-      "community_name": "Layout, ruteo y estado de sync de la app"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_offline_outbox_pattern"
     },
     {
       "label": "Choice of idb Wrapper over Raw IndexedDB",
@@ -6074,8 +6261,8 @@
       "contributor": null,
       "community": 25,
       "norm_label": "choice of idb wrapper over raw indexeddb",
-      "id": "plan_offline_idb_choice",
-      "community_name": "Decision: eleccion de idb"
+      "community_name": "Decision: eleccion de idb",
+      "id": "plan_offline_idb_choice"
     },
     {
       "label": "Last-Write-Wins via updated_at + Conditional Update",
@@ -6088,8 +6275,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "last-write-wins via updated_at + conditional update",
-      "id": "plan_offline_lww_conflict_resolution",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_offline_lww_conflict_resolution"
     },
     {
       "label": "Hard Delete + Full Re-fetch Reconciliation (vs Soft-Delete)",
@@ -6102,8 +6289,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "hard delete + full re-fetch reconciliation (vs soft-delete)",
-      "id": "plan_offline_hard_delete_decision",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_offline_hard_delete_decision"
     },
     {
       "label": "Client-Generated UUIDs for Stable Cross-Sync IDs",
@@ -6116,8 +6303,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "client-generated uuids for stable cross-sync ids",
-      "id": "plan_offline_client_uuid_generation",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "plan_offline_client_uuid_generation"
     },
     {
       "label": "Web Locks API Single-Flight Sync",
@@ -6130,8 +6317,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "web locks api single-flight sync",
-      "id": "plan_offline_web_locks_singleflight",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_offline_web_locks_singleflight"
     },
     {
       "label": "navigator.storage.persist() Durability Request",
@@ -6144,8 +6331,8 @@
       "contributor": null,
       "community": 26,
       "norm_label": "navigator.storage.persist() durability request",
-      "id": "plan_offline_storage_persist",
-      "community_name": "Decision: storage.persist()"
+      "community_name": "Decision: storage.persist()",
+      "id": "plan_offline_storage_persist"
     },
     {
       "label": "Sync Trigger Events (online/focus/visibility/interval/post-mutation)",
@@ -6158,8 +6345,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "sync trigger events (online/focus/visibility/interval/post-mutation)",
-      "id": "plan_offline_sync_triggers",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_offline_sync_triggers"
     },
     {
       "label": "Catch-up Notification for Stale Reminders",
@@ -6172,8 +6359,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "catch-up notification for stale reminders",
-      "id": "plan_offline_catchup_reminders",
-      "community_name": "Recordatorios y watcher local"
+      "community_name": "Recordatorios y watcher local",
+      "id": "plan_offline_catchup_reminders"
     },
     {
       "label": "Notification Tag Dedup between Local Watcher and Cron Push",
@@ -6184,10 +6371,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 5,
       "norm_label": "notification tag dedup between local watcher and cron push",
-      "id": "plan_offline_reminder_dedup_tag",
-      "community_name": "Notificaciones push"
+      "community_name": "Recordatorios y watcher local",
+      "id": "plan_offline_reminder_dedup_tag"
     },
     {
       "label": "Decision: No Runtime Caching of Supabase Data in Service Worker",
@@ -6198,10 +6385,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 5,
       "norm_label": "decision: no runtime caching of supabase data in service worker",
-      "id": "plan_offline_sw_no_data_cache",
-      "community_name": "Notificaciones push"
+      "community_name": "Recordatorios y watcher local",
+      "id": "plan_offline_sw_no_data_cache"
     },
     {
       "label": "Trigger Adjustment to Respect Client-Sent updated_at",
@@ -6214,8 +6401,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "trigger adjustment to respect client-sent updated_at",
-      "id": "plan_offline_updated_at_trigger_fix",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_offline_updated_at_trigger_fix"
     },
     {
       "label": "Database Schema (temas/items/recordatorios)",
@@ -6228,8 +6415,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "database schema (temas/items/recordatorios)",
-      "id": "plan_organizador_schema",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_organizador_schema"
     },
     {
       "label": "RLS Design: Join-Based Policies for recordatorios",
@@ -6242,8 +6429,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "rls design: join-based policies for recordatorios",
-      "id": "plan_organizador_rls_design",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "plan_organizador_rls_design"
     },
     {
       "label": "AES-256-GCM Encryption of User Gemini API Keys",
@@ -6256,8 +6443,8 @@
       "contributor": null,
       "community": 21,
       "norm_label": "aes-256-gcm encryption of user gemini api keys",
-      "id": "plan_organizador_gemini_key_encryption",
-      "community_name": "Encriptacion de clave Gemini"
+      "community_name": "Encriptacion de clave Gemini",
+      "id": "plan_organizador_gemini_key_encryption"
     },
     {
       "label": "Propose/Confirm Pattern for AI-Driven Mutations",
@@ -6270,8 +6457,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "propose/confirm pattern for ai-driven mutations",
-      "id": "plan_organizador_ai_assistant_propose_confirm",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "plan_organizador_ai_assistant_propose_confirm"
     },
     {
       "label": "Adaptive Rate-Limit Learning from Gemini 429 Body",
@@ -6284,8 +6471,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "adaptive rate-limit learning from gemini 429 body",
-      "id": "plan_organizador_rate_limit_adaptive",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "plan_organizador_rate_limit_adaptive"
     },
     {
       "label": "Spanish-Translated Gemini Error Messages",
@@ -6298,8 +6485,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "spanish-translated gemini error messages",
-      "id": "plan_organizador_gemini_error_translation",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "plan_organizador_gemini_error_translation"
     },
     {
       "label": "Fix: Gemini Candidate without parts (MAX_TOKENS)",
@@ -6312,8 +6499,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "fix: gemini candidate without parts (max_tokens)",
-      "id": "plan_organizador_gemini_parts_bugfix",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "plan_organizador_gemini_parts_bugfix"
     },
     {
       "label": "Two-Way Reminder Notifications (Local + Cron)",
@@ -6326,8 +6513,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "two-way reminder notifications (local + cron)",
-      "id": "plan_organizador_two_way_notifications",
-      "community_name": "Recordatorios y watcher local"
+      "community_name": "Recordatorios y watcher local",
+      "id": "plan_organizador_two_way_notifications"
     },
     {
       "label": "Catalog Card Visual Design System",
@@ -6340,8 +6527,8 @@
       "contributor": null,
       "community": 29,
       "norm_label": "catalog card visual design system",
-      "id": "plan_organizador_visual_redesign",
-      "community_name": "ItemsPage.tsx"
+      "community_name": "ItemsPage.tsx",
+      "id": "plan_organizador_visual_redesign"
     },
     {
       "label": "Adoption of react-router-dom for /settings Route",
@@ -6352,10 +6539,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 33,
       "norm_label": "adoption of react-router-dom for /settings route",
-      "id": "plan_organizador_react_router_adoption",
-      "community_name": "ItemsPage.tsx"
+      "community_name": "Adoption of react-router-dom for /settings Route",
+      "id": "plan_organizador_react_router_adoption"
     },
     {
       "label": "Multi-Action Parallel Function-Calling",
@@ -6368,8 +6555,8 @@
       "contributor": null,
       "community": 3,
       "norm_label": "multi-action parallel function-calling",
-      "id": "plan_organizador_multiaction_assistant",
-      "community_name": "Asistente IA - acciones propuestas"
+      "community_name": "Asistente IA - acciones propuestas",
+      "id": "plan_organizador_multiaction_assistant"
     },
     {
       "label": "Render Static Site Deployment",
@@ -6380,10 +6567,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 33,
       "norm_label": "render static site deployment",
-      "id": "plan_organizador_render_deploy",
-      "community_name": "ItemsPage.tsx"
+      "community_name": "Adoption of react-router-dom for /settings Route",
+      "id": "plan_organizador_render_deploy"
     },
     {
       "label": "Web Push via VAPID Keys + pg_cron",
@@ -6394,10 +6581,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 5,
       "norm_label": "web push via vapid keys + pg_cron",
-      "id": "plan_organizador_vapid_push",
-      "community_name": "Notificaciones push"
+      "community_name": "Recordatorios y watcher local",
+      "id": "plan_organizador_vapid_push"
     },
     {
       "label": "createItem",
@@ -6410,8 +6597,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "createitem",
-      "id": "src_lib_items_createitem",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "src_lib_items_createitem"
     },
     {
       "label": "updateItem",
@@ -6424,8 +6611,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "updateitem",
-      "id": "src_lib_items_updateitem",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "src_lib_items_updateitem"
     },
     {
       "label": "deleteItem",
@@ -6438,8 +6625,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "deleteitem",
-      "id": "src_lib_items_deleteitem",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "src_lib_items_deleteitem"
     },
     {
       "label": "createTema",
@@ -6452,8 +6639,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "createtema",
-      "id": "src_lib_temas_createtema",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "src_lib_temas_createtema"
     },
     {
       "label": "upsertRecordatorio",
@@ -6466,8 +6653,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "upsertrecordatorio",
-      "id": "src_lib_recordatorios_upsertrecordatorio",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "src_lib_recordatorios_upsertrecordatorio"
     },
     {
       "label": "marcarHecho",
@@ -6480,8 +6667,8 @@
       "contributor": null,
       "community": 29,
       "norm_label": "marcarhecho",
-      "id": "src_lib_recordatorios_marcarhecho",
-      "community_name": "ItemsPage.tsx"
+      "community_name": "ItemsPage.tsx",
+      "id": "src_lib_recordatorios_marcarhecho"
     },
     {
       "label": "marcarEnviado",
@@ -6494,8 +6681,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "marcarenviado",
-      "id": "src_lib_recordatorios_marcarenviado",
-      "community_name": "Recordatorios y watcher local"
+      "community_name": "Recordatorios y watcher local",
+      "id": "src_lib_recordatorios_marcarenviado"
     },
     {
       "label": "listRecordatoriosParaDisparo",
@@ -6508,8 +6695,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "listrecordatoriosparadisparo",
-      "id": "src_lib_recordatorios_listrecordatoriosparadisparo",
-      "community_name": "Recordatorios y watcher local"
+      "community_name": "Recordatorios y watcher local",
+      "id": "src_lib_recordatorios_listrecordatoriosparadisparo"
     },
     {
       "label": "db.ts (IndexedDB store layer)",
@@ -6520,10 +6707,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 0,
       "norm_label": "db.ts (indexeddb store layer)",
-      "id": "src_lib_db_db",
-      "community_name": "Layout, ruteo y estado de sync de la app"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "src_lib_db_db"
     },
     {
       "label": "repo.ts (local mutation repository)",
@@ -6534,10 +6721,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 0,
       "norm_label": "repo.ts (local mutation repository)",
-      "id": "src_lib_repo_repo",
-      "community_name": "Layout, ruteo y estado de sync de la app"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "src_lib_repo_repo"
     },
     {
       "label": "sync.ts (sync engine)",
@@ -6550,8 +6737,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "sync.ts (sync engine)",
-      "id": "src_lib_sync_sync",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "src_lib_sync_sync"
     },
     {
       "label": "sw.ts (service worker)",
@@ -6562,10 +6749,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 5,
       "norm_label": "sw.ts (service worker)",
-      "id": "src_sw_sw",
-      "community_name": "Notificaciones push"
+      "community_name": "Recordatorios y watcher local",
+      "id": "src_sw_sw"
     },
     {
       "label": "manage-ai-key Edge Function handler",
@@ -6578,8 +6765,8 @@
       "contributor": null,
       "community": 21,
       "norm_label": "manage-ai-key edge function handler",
-      "id": "supabase_functions_manage_ai_key_index_handlemanagekey",
-      "community_name": "Encriptacion de clave Gemini"
+      "community_name": "Encriptacion de clave Gemini",
+      "id": "supabase_functions_manage_ai_key_index_handlemanagekey"
     },
     {
       "label": "ai-assistant Edge Function handler",
@@ -6592,8 +6779,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "ai-assistant edge function handler",
-      "id": "supabase_functions_ai_assistant_index_handleassistant",
-      "community_name": "CRUD items/temas y handler asistente IA"
+      "community_name": "CRUD items/temas y handler asistente IA",
+      "id": "supabase_functions_ai_assistant_index_handleassistant"
     },
     {
       "label": "send-reminder-notifications Edge Function handler",
@@ -6604,10 +6791,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 5,
       "norm_label": "send-reminder-notifications edge function handler",
-      "id": "supabase_functions_send_reminder_notifications_index_handlesend",
-      "community_name": "Notificaciones push"
+      "community_name": "Recordatorios y watcher local",
+      "id": "supabase_functions_send_reminder_notifications_index_handlesend"
     },
     {
       "label": "schema_inicial migration (temas/items/recordatorios)",
@@ -6620,8 +6807,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "schema_inicial migration (temas/items/recordatorios)",
-      "id": "supabase_migrations_20260720120000_schema_inicial_schema",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)"
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "id": "supabase_migrations_20260720120000_schema_inicial_schema"
     },
     {
       "label": "push_subscriptions migration",
@@ -6632,10 +6819,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 5,
       "norm_label": "push_subscriptions migration",
-      "id": "supabase_migrations_20260721181500_push_subscriptions_pushsubscriptions",
-      "community_name": "Notificaciones push"
+      "community_name": "Recordatorios y watcher local",
+      "id": "supabase_migrations_20260721181500_push_subscriptions_pushsubscriptions"
     },
     {
       "label": "Organizador App Icon (Notepad + Bell)",
@@ -6648,8 +6835,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "organizador app icon (notepad + bell)",
-      "id": "dise\u00f1o_code_generated_image_app_icon",
-      "community_name": "Imagen de diseno (Code_Generated_Image)"
+      "community_name": "Imagen de diseno (Code_Generated_Image)",
+      "id": "dise\u00f1o_code_generated_image_app_icon"
     },
     {
       "label": "Clipboard with three checked-off checklist items",
@@ -6662,8 +6849,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "clipboard with three checked-off checklist items",
-      "id": "dise\u00f1o_code_generated_image_checklist_clipboard",
-      "community_name": "Imagen de diseno (Code_Generated_Image)"
+      "community_name": "Imagen de diseno (Code_Generated_Image)",
+      "id": "dise\u00f1o_code_generated_image_checklist_clipboard"
     },
     {
       "label": "Three-column data table below checklist",
@@ -6676,8 +6863,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "three-column data table below checklist",
-      "id": "dise\u00f1o_code_generated_image_data_table",
-      "community_name": "Imagen de diseno (Code_Generated_Image)"
+      "community_name": "Imagen de diseno (Code_Generated_Image)",
+      "id": "dise\u00f1o_code_generated_image_data_table"
     },
     {
       "label": "Notification bell badge (orange bell, green dot, dark circle) overlaid top-right",
@@ -6690,8 +6877,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "notification bell badge (orange bell, green dot, dark circle) overlaid top-right",
-      "id": "dise\u00f1o_code_generated_image_notification_bell",
-      "community_name": "Imagen de diseno (Code_Generated_Image)"
+      "community_name": "Imagen de diseno (Code_Generated_Image)",
+      "id": "dise\u00f1o_code_generated_image_notification_bell"
     },
     {
       "label": "Pencil icon beside the notepad, symbolizing editing/note-taking",
@@ -6704,8 +6891,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "pencil icon beside the notepad, symbolizing editing/note-taking",
-      "id": "dise\u00f1o_code_generated_image_pencil",
-      "community_name": "Imagen de diseno (Code_Generated_Image)"
+      "community_name": "Imagen de diseno (Code_Generated_Image)",
+      "id": "dise\u00f1o_code_generated_image_pencil"
     },
     {
       "label": "App icon mockup: notebook with checklist and notification bell",
@@ -6718,8 +6905,8 @@
       "contributor": null,
       "community": 18,
       "norm_label": "app icon mockup: notebook with checklist and notification bell",
-      "id": "dise\u00f1o_gemini_generated_image_hdqaqphdqaqphdqa_app_icon_mockup",
-      "community_name": "Imagen de diseno (Gemini_Generated_Image)"
+      "community_name": "Imagen de diseno (Gemini_Generated_Image)",
+      "id": "dise\u00f1o_gemini_generated_image_hdqaqphdqaqphdqa_app_icon_mockup"
     },
     {
       "label": "Notification bell badge element (top-right circular badge with bell icon and green dot)",
@@ -6732,8 +6919,8 @@
       "contributor": null,
       "community": 18,
       "norm_label": "notification bell badge element (top-right circular badge with bell icon and green dot)",
-      "id": "dise\u00f1o_gemini_generated_image_hdqaqphdqaqphdqa_notification_bell_badge",
-      "community_name": "Imagen de diseno (Gemini_Generated_Image)"
+      "community_name": "Imagen de diseno (Gemini_Generated_Image)",
+      "id": "dise\u00f1o_gemini_generated_image_hdqaqphdqaqphdqa_notification_bell_badge"
     },
     {
       "label": "Checklist/notebook motif (ring-bound notepad, green checkmarks, pencil, table grid)",
@@ -6746,8 +6933,8 @@
       "contributor": null,
       "community": 18,
       "norm_label": "checklist/notebook motif (ring-bound notepad, green checkmarks, pencil, table grid)",
-      "id": "dise\u00f1o_gemini_generated_image_hdqaqphdqaqphdqa_checklist_notebook_motif",
-      "community_name": "Imagen de diseno (Gemini_Generated_Image)"
+      "community_name": "Imagen de diseno (Gemini_Generated_Image)",
+      "id": "dise\u00f1o_gemini_generated_image_hdqaqphdqaqphdqa_checklist_notebook_motif"
     },
     {
       "label": "App Icon: Clipboard Task Manager (Organizador)",
@@ -6760,8 +6947,8 @@
       "contributor": null,
       "community": 20,
       "norm_label": "app icon: clipboard task manager (organizador)",
-      "id": "dise\u00f1o_svg_icono_app_icon",
-      "community_name": "Iconos SVG de la app"
+      "community_name": "Iconos SVG de la app",
+      "id": "dise\u00f1o_svg_icono_app_icon"
     },
     {
       "label": "App Icon (rounded square, dark navy, white 'O')",
@@ -6774,8 +6961,8 @@
       "contributor": null,
       "community": 20,
       "norm_label": "app icon (rounded square, dark navy, white 'o')",
-      "id": "public_icon_app_icon",
-      "community_name": "Iconos SVG de la app"
+      "community_name": "Iconos SVG de la app",
+      "id": "public_icon_app_icon"
     }
   ],
   "links": [
@@ -7452,11 +7639,35 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
       "target": "src_app_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_app",
+      "target": "src_components_appshell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_app",
+      "target": "src_components_appshell_appshell",
       "confidence_score": 1.0
     },
     {
@@ -7560,7 +7771,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7572,7 +7783,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7584,7 +7795,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7596,7 +7807,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7608,7 +7819,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7620,7 +7831,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7632,7 +7843,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7644,7 +7855,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app",
@@ -7664,37 +7875,183 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports",
-      "context": "import",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/main.tsx",
-      "source_location": "L4",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L171",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_main",
-      "target": "src_app_app",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_appshell",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L8",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L147",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
-      "target": "src_components_appnav_appnav",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_buscador",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L116",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_destino",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L129",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_destinos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "confidence": "INFERRED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L139",
+      "weight": 1.0,
+      "_origin": "ast",
+      "context": "collection",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconoajustes",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "indirect_call",
+      "confidence": "INFERRED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L131",
+      "weight": 1.0,
+      "_origin": "ast",
+      "context": "collection",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconobiblioteca",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconobuscar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconochispa",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "confidence": "INFERRED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L130",
+      "weight": 1.0,
+      "_origin": "ast",
+      "context": "collection",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconohoy",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L108",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconoluna",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L83",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconomas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "confidence": "INFERRED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L136",
+      "weight": 1.0,
+      "_origin": "ast",
+      "context": "collection",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconorecordatorios",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L99",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_iconosol",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_nuevo_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_components_appshell_trazo",
       "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L6",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_components_syncstatus",
       "confidence_score": 1.0
     },
@@ -7702,11 +8059,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L6",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_components_syncstatus_syncstatus",
       "confidence_score": 1.0
     },
@@ -7714,11 +8071,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L2",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_lib_authcontext",
       "confidence_score": 1.0
     },
@@ -7726,11 +8083,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L2",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_lib_authcontext_useauth",
       "confidence_score": 1.0
     },
@@ -7738,11 +8095,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L5",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_lib_supabase",
       "confidence_score": 1.0
     },
@@ -7750,11 +8107,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L5",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_lib_supabase_supabase",
       "confidence_score": 1.0
     },
@@ -7762,11 +8119,47 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L3",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
+      "target": "src_lib_theme",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_lib_theme_settheme",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_lib_theme_usetheme",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
       "target": "src_lib_useaienabled",
       "confidence_score": 1.0
     },
@@ -7774,11 +8167,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L3",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_lib_useaienabled_useaienabled",
       "confidence_score": 1.0
     },
@@ -7786,11 +8179,35 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L4",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
+      "target": "src_lib_useiswide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
+      "target": "src_lib_useiswide_useiswide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell",
       "target": "src_lib_userecordatoriosbadge",
       "confidence_score": 1.0
     },
@@ -7798,72 +8215,36 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L4",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav",
+      "source": "src_components_appshell",
       "target": "src_lib_userecordatoriosbadge_userecordatoriosbadge",
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
+      "relation": "references",
+      "context": "call",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L23",
+      "confidence_score": 1.0,
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L297",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_pages_assistantpage",
-      "target": "src_components_appnav",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_itemspage",
-      "target": "src_components_appnav",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_components_appnav",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_settingspage",
-      "target": "src_components_appnav",
-      "confidence_score": 1.0
+      "source": "src_components_appshell_appshell",
+      "target": "src_components_appshell_destinos"
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L9",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L172",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav_appnav",
+      "source": "src_components_appshell_appshell",
       "target": "src_lib_authcontext_useauth"
     },
     {
@@ -7871,11 +8252,35 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L10",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L278",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav_appnav",
+      "source": "src_components_appshell_appshell",
+      "target": "src_lib_theme_settheme"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L177",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell_appshell",
+      "target": "src_lib_theme_usetheme"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L173",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell_appshell",
       "target": "src_lib_useaienabled_useaienabled"
     },
     {
@@ -7883,60 +8288,24 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/components/AppNav.tsx",
-      "source_location": "L11",
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L176",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_components_appnav_appnav",
+      "source": "src_components_appshell_appshell",
+      "target": "src_lib_useiswide_useiswide"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/AppShell.tsx",
+      "source_location": "L174",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_appshell_appshell",
       "target": "src_lib_userecordatoriosbadge_userecordatoriosbadge"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_assistantpage",
-      "target": "src_components_appnav_appnav",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_itemspage",
-      "target": "src_components_appnav_appnav",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_reminderspage",
-      "target": "src_components_appnav_appnav",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_settingspage",
-      "target": "src_components_appnav_appnav",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8298,7 +8667,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -8394,7 +8763,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -8681,7 +9050,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -8837,7 +9206,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -9110,7 +9479,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -9166,7 +9535,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -9354,7 +9723,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -9412,7 +9781,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -9644,7 +10013,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -9787,7 +10156,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L38",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage_assistantpage",
@@ -9798,7 +10167,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -9835,7 +10204,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L78",
+      "source_location": "L77",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -9859,7 +10228,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L49",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_settingspage",
@@ -10309,7 +10678,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -10321,7 +10690,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -10693,7 +11062,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -10706,7 +11075,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L79",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -10753,7 +11122,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -10766,7 +11135,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L78",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -10777,7 +11146,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -10790,7 +11159,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L94",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -10837,7 +11206,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -10850,7 +11219,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L80",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -10861,7 +11230,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -10874,7 +11243,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L93",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -12018,7 +12387,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L4",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -12078,7 +12447,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L4",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -12091,7 +12460,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L96",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -12173,7 +12542,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L484",
+      "source_location": "L476",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage_proposedactioncard",
@@ -12184,7 +12553,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L4",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -12197,7 +12566,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L196",
+      "source_location": "L192",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -12220,7 +12589,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L4",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -12233,7 +12602,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L208",
+      "source_location": "L204",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -12901,7 +13270,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -12913,7 +13282,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -13177,7 +13546,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -13201,7 +13570,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -13273,7 +13642,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -13953,7 +14322,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -13965,7 +14334,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -14001,7 +14370,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -14014,7 +14383,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L99",
+      "source_location": "L100",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -14025,7 +14394,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -14038,7 +14407,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L108",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -14061,7 +14430,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -14074,7 +14443,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L88",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -14085,7 +14454,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -14098,7 +14467,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L97",
+      "source_location": "L96",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -15032,7 +15401,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L223",
+      "source_location": "L231",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -15251,7 +15620,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L223",
+      "source_location": "L231",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -15275,7 +15644,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L223",
+      "source_location": "L231",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -15452,7 +15821,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15464,7 +15833,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15560,7 +15929,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15572,7 +15941,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L30",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_apariencia",
@@ -15596,7 +15965,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15608,7 +15977,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L15",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_apariencia",
@@ -15656,11 +16025,45 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L39",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage_assistantpage",
       "target": "src_lib_useaienabled_useaienabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useIsWide.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_useiswide",
+      "target": "src_lib_useiswide_medir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useIsWide.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_useiswide",
+      "target": "src_lib_useiswide_useiswide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "source_file": "src/lib/useIsWide.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_useiswide_useiswide",
+      "target": "src_lib_useiswide_medir",
+      "confidence_score": 0.5
     },
     {
       "relation": "contains",
@@ -15779,7 +16182,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L40",
+      "source_location": "L39",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage_assistantpage",
@@ -15789,7 +16192,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L37",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage",
@@ -15800,7 +16203,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L25",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage",
@@ -15811,7 +16214,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L30",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage",
@@ -15822,7 +16225,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L426",
+      "source_location": "L418",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage",
@@ -15833,7 +16236,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L31",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage",
@@ -15844,7 +16247,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L434",
+      "source_location": "L426",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage",
@@ -15976,7 +16379,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L495",
+      "source_location": "L487",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage_proposedactioncard",
@@ -15988,7 +16391,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AssistantPage.tsx",
-      "source_location": "L32",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_assistantpage_pendingaction",
@@ -16085,7 +16488,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -16097,7 +16500,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -16109,7 +16512,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -16121,7 +16524,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -16133,7 +16536,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -16145,7 +16548,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -16157,7 +16560,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L84",
+      "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -16188,7 +16591,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L60",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16199,7 +16602,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16210,7 +16613,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L24",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16221,7 +16624,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L15",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16232,7 +16635,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L42",
+      "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16243,7 +16646,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L49",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16254,7 +16657,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L33",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16265,7 +16668,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L71",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16276,7 +16679,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L77",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16287,7 +16690,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L17",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16298,7 +16701,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L35",
+      "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16310,7 +16713,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16322,7 +16725,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage",
@@ -16334,7 +16737,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L64",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_clasificar",
@@ -16346,7 +16749,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L132",
+      "source_location": "L131",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -16358,7 +16761,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/RemindersPage.tsx",
-      "source_location": "L135",
+      "source_location": "L134",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
@@ -16389,7 +16792,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -16400,7 +16803,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L48",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -16411,7 +16814,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -18351,7 +18754,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o",
@@ -18472,7 +18875,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o",
@@ -18637,7 +19040,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L19",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18648,7 +19051,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18659,7 +19062,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L79",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18670,7 +19073,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L121",
+      "source_location": "L122",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18681,7 +19084,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L184",
+      "source_location": "L185",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18692,7 +19095,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L197",
+      "source_location": "L198",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18703,7 +19106,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L274",
+      "source_location": "L275",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18714,7 +19117,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L436",
+      "source_location": "L487",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18725,7 +19128,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L475",
+      "source_location": "L526",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -18736,7 +19139,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_1_vistas_propuesta_vs_estado_real",
@@ -18747,7 +19150,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L62",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_1_vistas_propuesta_vs_estado_real",
@@ -18758,7 +19161,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L81",
+      "source_location": "L82",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_2_navegaci\u00f3n",
@@ -18769,7 +19172,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L95",
+      "source_location": "L96",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_2_navegaci\u00f3n",
@@ -18780,7 +19183,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L113",
+      "source_location": "L114",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_2_navegaci\u00f3n",
@@ -18791,7 +19194,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L123",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
@@ -18802,7 +19205,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L158",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
@@ -18813,7 +19216,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L170",
+      "source_location": "L171",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
@@ -18824,7 +19227,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L199",
+      "source_location": "L200",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -18835,7 +19238,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L222",
+      "source_location": "L223",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -18846,7 +19249,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L233",
+      "source_location": "L234",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -18857,7 +19260,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L257",
+      "source_location": "L258",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
@@ -18868,7 +19271,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L279",
+      "source_location": "L280",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -18879,7 +19282,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L307",
+      "source_location": "L308",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -18890,7 +19293,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L346",
+      "source_location": "L347",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -18901,7 +19304,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L377",
+      "source_location": "L378",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -18912,7 +19315,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L406",
+      "source_location": "L457",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -18923,7 +19326,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L420",
+      "source_location": "L471",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -18934,7 +19337,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L465",
+      "source_location": "L516",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_7_decisiones_que_necesito_de_vos_antes_de_empezar",
@@ -18945,7 +19348,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L481",
+      "source_location": "L532",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
@@ -18956,7 +19359,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L492",
+      "source_location": "L543",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
@@ -19644,5 +20047,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "076564bc70e390d472058d1523b637575eed51f2"
+  "built_at_commit": "654a35318214c7792f012bb577ded873616612f0"
 }

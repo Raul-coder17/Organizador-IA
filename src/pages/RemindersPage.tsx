@@ -1,37 +1,26 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import {
-  formatFechaHora,
+  clasificar,
   joinRecordatoriosConItems,
-  resumenContenido,
+  type EstadoRecordatorio,
 } from '../lib/recordatorios'
 import { marcarHecho } from '../lib/repo'
 import { loadItemsFromCache, loadRecordatoriosFromCache } from '../lib/db'
 import { hasSyncSettled, subscribeSyncSettled } from '../lib/sync'
+import { RecordatorioRow } from '../components/RecordatorioRow'
 import type { RecordatorioConItem } from '../types/database'
 
-type Estado = 'vencido' | 'hoy' | 'proximo' | 'hecho'
+// La clasificación (y las etiquetas de estado y tipo) viven en lib/recordatorios
+// desde el ítem 8: la vista Hoy usa el mismo criterio, y dos definiciones de
+// "vencido" darían dos números distintos en pantallas que se ven a la vez.
 type Filtro = 'todos' | 'vencido' | 'proximo' | 'hecho'
-
-const TIPO_LABEL: Record<string, string> = {
-  nota: 'Nota',
-  recordatorio: 'Recordatorio',
-  lista: 'Lista',
-  tabla: 'Tabla',
-}
-
-const ESTADO_LABEL: Record<Estado, string> = {
-  vencido: 'Vencido',
-  hoy: 'Hoy',
-  proximo: 'Próximo',
-  hecho: 'Hecho',
-}
 
 // Orden de los grupos en pantalla: lo que ya se pasó primero, lo resuelto al
 // final. Es el orden en que hay que prestarles atención.
-const ORDEN_GRUPOS: Estado[] = ['vencido', 'hoy', 'proximo', 'hecho']
+const ORDEN_GRUPOS: EstadoRecordatorio[] = ['vencido', 'hoy', 'proximo', 'hecho']
 
-const TITULO_GRUPO: Record<Estado, string> = {
+const TITULO_GRUPO: Record<EstadoRecordatorio, string> = {
   vencido: 'Vencidos',
   hoy: 'Hoy',
   proximo: 'Próximos',
@@ -45,29 +34,10 @@ const FILTROS: { value: Filtro; label: string }[] = [
   { value: 'hecho', label: 'Hechos' },
 ]
 
-function mismoDia(a: Date, b: Date): boolean {
-  return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  )
-}
-
-// Clasifica un recordatorio: hecho si su estado ya es 'hecho'; vencido si su
-// fecha ya pasó y sigue pendiente; hoy si todavía no venció pero es del día en
-// curso; próximo en el resto de los casos.
-function clasificar(rec: RecordatorioConItem, ahora: Date): Estado {
-  if (rec.estado === 'hecho') return 'hecho'
-  const fecha = new Date(rec.fecha_hora)
-  if (fecha.getTime() < ahora.getTime()) return 'vencido'
-  if (mismoDia(fecha, ahora)) return 'hoy'
-  return 'proximo'
-}
-
 // "Próximos" en el filtro incluye lo de hoy: son los dos grupos de lo que
 // todavía no pasó, y separarlos en el filtro obligaría a un quinto botón para
 // una distinción que ya hacen los grupos.
-function pasaFiltro(estado: Estado, filtro: Filtro): boolean {
+function pasaFiltro(estado: EstadoRecordatorio, filtro: Filtro): boolean {
   if (filtro === 'todos') return true
   if (filtro === 'proximo') return estado === 'proximo' || estado === 'hoy'
   return estado === filtro
@@ -183,38 +153,13 @@ export function RemindersPage() {
 
             <ul className="rem-list">
               {grupo.items.map(({ rec, estado }) => (
-                <li key={rec.id} className={`rem rem--${estado}`}>
-                  <div className="rem__body">
-                    <div className="rem__meta">
-                      <span className={`rem__estado rem__estado--${estado}`}>
-                        {ESTADO_LABEL[estado]}
-                      </span>
-                      <span className="rem__when">{formatFechaHora(rec.fecha_hora)}</span>
-                      {rec.estado === 'enviado' && (
-                        <span className="rem__notificado" title="Ya te enviamos la notificación">
-                          ● Notificado
-                        </span>
-                      )}
-                      {rec.item && (
-                        <span className="rem__tipo">
-                          {TIPO_LABEL[rec.item.tipo] ?? rec.item.tipo}
-                        </span>
-                      )}
-                    </div>
-                    <p className="rem__contenido">{resumenContenido(rec.item)}</p>
-                  </div>
-                  {estado !== 'hecho' && (
-                    <div className="rem__actions">
-                      <button
-                        onClick={() => handleMarcarHecho(rec.id)}
-                        disabled={marcando === rec.id}
-                        className="btn-ghost"
-                      >
-                        {marcando === rec.id ? 'Guardando…' : 'Marcar hecho'}
-                      </button>
-                    </div>
-                  )}
-                </li>
+                <RecordatorioRow
+                  key={rec.id}
+                  rec={rec}
+                  estado={estado}
+                  marcando={marcando === rec.id}
+                  onMarcarHecho={handleMarcarHecho}
+                />
               ))}
             </ul>
           </section>
