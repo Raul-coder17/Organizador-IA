@@ -22,10 +22,12 @@ interface PushPayload {
   title?: string
   body?: string
   url?: string
+  tag?: string
 }
 
 // Notificación push: el payload viene como JSON desde la Edge Function con
-// { title, body, url }. Si no se puede parsear, mostramos un texto genérico.
+// { title, body, url, tag }. Si no se puede parsear, mostramos un texto
+// genérico.
 self.addEventListener('push', (event) => {
   let payload: PushPayload = {}
   try {
@@ -37,6 +39,12 @@ self.addEventListener('push', (event) => {
   const title = payload.title ?? 'Recordatorio'
   const body = payload.body ?? 'Tenés un recordatorio pendiente.'
   const url = payload.url ?? '/reminders'
+  // El cron manda `recordatorio-<id>`, el mismo tag que usa el aviso local del
+  // watcher. Así, si los dos avisan por el mismo recordatorio (el 'enviado' del
+  // watcher todavía no había subido porque el dispositivo estaba sin señal), el
+  // push REEMPLAZA la notificación local en vez de apilar una segunda.
+  // Fallback al tag viejo por si llega un push anterior a este cambio.
+  const tag = payload.tag ?? 'recordatorio'
 
   event.waitUntil(
     self.registration.showNotification(title, {
@@ -44,7 +52,7 @@ self.addEventListener('push', (event) => {
       icon: '/icon.svg',
       badge: '/icon.svg',
       data: { url },
-      tag: 'recordatorio',
+      tag,
     }),
   )
 })

@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { swReadyOrNull } from './push'
-import { listRecordatoriosParaDisparo, resumenContenido } from './recordatorios'
-import { marcarEnviado } from './repo'
-import { reconcileTimers } from './reminderScheduling'
+import { resumenContenido } from './recordatorios'
+import { listRecordatoriosParaDisparo, marcarEnviado } from './repo'
+import { reconcileTimers, splitStaleReminders } from './reminderScheduling'
 import type { RecordatorioConItem } from '../types/database'
 
 // Cada cuánto sondeamos los recordatorios que vencen pronto. La ventana que
@@ -15,11 +15,22 @@ const POLL_MS = 25_000
 // recordatorios dentro de la ventana (~2 min), esto es un tope defensivo.
 const MAX_DELAY_MS = 5 * 60 * 1000
 
+// Un recordatorio que venció hace más que esto no puede haber vencido "recién"
+// con la app abierta: o la app estuvo cerrada, o el dispositivo dormido. Esos
+// van al aviso agregado de catch-up en vez de dispararse de a uno con fecha
+// vieja. El margen cubre holgadamente el intervalo de sondeo.
+const GRACIA_CATCHUP_MS = 2 * 60 * 1000
+
 // Watcher del aviso LOCAL de recordatorios: mientras la app está abierta (en
 // cualquier pantalla), dispara la notificación en el momento exacto sin
-// depender del servidor. Es complementario al cron: como marca 'enviado' apenas
-// dispara, el cron del servidor encuentra el recordatorio ya no-pendiente y no
-// reenvía. Montar UNA sola vez cerca de la raíz (ver LocalReminderWatcher).
+// depender del servidor.
+//
+// Lee del ESPEJO LOCAL (IndexedDB), no de la red: por eso sigue avisando sin
+// conexión (PLAN_OFFLINE.md §6.2). El 'enviado' que marca al disparar pasa por
+// el repositorio, así que sin señal queda encolado en el outbox y sube al
+// reconectar. Ese 'enviado' es también lo que evita que el cron del servidor
+// reenvíe lo mismo. Montar UNA sola vez cerca de la raíz (ver
+// LocalReminderWatcher).
 export function useLocalReminderWatcher(): void {
   const { user } = useAuth()
 
@@ -53,6 +64,27 @@ export function useLocalReminderWatcher(): void {
       })
     }
 
+    // Un solo aviso por todo lo que venció mientras la app estaba cerrada o sin
+    // señal, en vez de una ráfaga de notificaciones con fecha vieja.
+    async function fireCatchUp(cantidad: number) {
+      if (cancelled) return
+      if (Notification.permission !== 'granted') return
+      const reg = await swReadyOrNull()
+      if (!reg || cancelled) return
+      await reg.showNotification('Recordatorios vencidos', {
+        body:
+          cantidad === 1
+            ? 'Tenías 1 recordatorio vencido.'
+            : `Tenías ${cantidad} recordatorios vencidos.`,
+        icon: '/icon.svg',
+        badge: '/icon.svg',
+        data: { url: '/reminders' },
+        // tag fijo: si se acumulan varios catch-up, se reemplazan en vez de
+        // apilarse.
+        tag: 'recordatorios-catchup',
+      })
+    }
+
     async function poll() {
       if (cancelled) return
       // Sin permiso concedido no podemos mostrar nada; no armamos timers.
@@ -66,9 +98,35 @@ export function useLocalReminderWatcher(): void {
       }
       if (cancelled) return
 
+      // Primero apartamos los vencidos viejos: no se avisan de a uno.
+      const { fresh, stale } = splitStaleReminders({
+        pending: pendientes.map((r) => ({ id: r.id, fecha_hora: r.fecha_hora })),
+        suppressIds: [...fired],
+        now: Date.now(),
+        graceMs: GRACIA_CATCHUP_MS,
+      })
+
+      if (stale.length > 0) {
+        // Marcamos antes de esperar a la red para no reavisar en el próximo
+        // sondeo (mismo criterio que el disparo individual).
+        for (const s of stale) fired.add(s.id)
+        await fireCatchUp(stale.length)
+        if (cancelled) return
+        for (const s of stale) {
+          try {
+            // 'enviado' local + encolado: en /reminders siguen viéndose como
+            // vencidos (estado 'enviado' no es 'hecho') y el cron del servidor
+            // ya no los reenvía.
+            await marcarEnviado(s.id)
+          } catch {
+            /* si no se pudo escribir local, el próximo sondeo reintenta */
+          }
+        }
+      }
+
       const armed = [...timers.entries()].map(([id, t]) => ({ id, fechaHora: t.fechaHora }))
       const { toArm, toCancel } = reconcileTimers({
-        pending: pendientes.map((r) => ({ id: r.id, fecha_hora: r.fecha_hora })),
+        pending: fresh,
         armed,
         suppressIds: [...fired],
         now: Date.now(),

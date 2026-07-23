@@ -18,8 +18,11 @@
 >   [`SyncSettings`](src/components/SyncSettings.tsx) en Settings.
 > - **Ítem 9 (gating del asistente): implementado** junto con el 7 (banner +
 >   input deshabilitado sin conexión).
-> - **Ítem 8 (recordatorios offline): pendiente.** El watcher local sigue
->   sondeando la red, así que sin conexión no dispara avisos.
+> - **Ítem 8 (recordatorios offline): implementado** (2026-07-22). El watcher
+>   local sondea el espejo, así que **avisa igual sin conexión** mientras la app
+>   esté abierta, y los vencidos viejos se resumen en un aviso de catch-up.
+>
+> **Con esto el plan queda completo**: los diez ítems están implementados.
 >
 > **Decisiones confirmadas por Raúl** (resuelven §8): **borrado duro** + re-fetch
 > completo al reconciliar; **1-2 dispositivos propios** → LWW por `updated_at` con
@@ -498,9 +501,9 @@ cuando ya hay dónde apoyarlo.
 | **5** ✅ | **Repositorio + outbox (escritura offline)**: las mutaciones escriben local + encolan en `outbox`; offline no fallan. | Medio | **Crear/editar/borrar offline** (sin subir todavía). | `repo.ts`, `db.ts` |
 | **6** ✅ | **Motor de sync**: flush del outbox (FIFO + dependencias), **upsert idempotente**, **LWW condicional** (§4.3), disparadores (`online`/foco/visibilidad/intervalo/post-mutación), **Web Locks**, y **reconcile por re-fetch**. | Alto | **Sincronización automática** al reconectar. | `sync.ts`, `syncCore.ts` |
 | **7** ✅ | **UI de estado**: indicador sin conexión, conteo de pendientes, última sync, reintentar/errores. | Bajo-medio | Feedback al usuario. | `AppNav`, componente nuevo |
-| **8** | **Recordatorios offline**: watcher lee del store local (dispara offline), `marcarEnviado` al outbox, catch-up de vencidos al reabrir. | Medio | Notificaciones locales sin red (con app abierta) + catch-up. | `useLocalReminderWatcher`, repos |
+| **8** ✅ | **Recordatorios offline**: watcher lee del store local (dispara offline), `marcarEnviado` al outbox, catch-up de vencidos al reabrir. | Medio | Notificaciones locales sin red (con app abierta) + catch-up. | `useLocalReminderWatcher`, repos |
 | **9** ✅ | **Asistente: gating offline** (banner + input deshabilitado). | Muy bajo | Que no falle feo sin red. | `AssistantPage` |
-| **10** | **Endurecimiento**: `storage.persist()`, manejo de auth vencido, dedup multi-pestaña, y **tests unitarios** de la lógica pura de sync (orden del outbox, LWW, cancelación insert+delete) — al estilo de `reminderScheduling.test.ts` / `actions.test.ts`. | Medio | Robustez + red de seguridad. | `sync.ts`, tests |
+| **10** ✅ | **Endurecimiento**: `storage.persist()`, manejo de auth vencido, dedup multi-pestaña, y **tests unitarios** de la lógica pura de sync (orden del outbox, LWW, cancelación insert+delete) — al estilo de `reminderScheduling.test.ts` / `actions.test.ts`. | Medio | Robustez + red de seguridad. | `sync.ts`, tests |
 
 **Recomendación de corte de release:** los pasos **1–4** ya dan un salto grande
 (lectura offline instantánea) con riesgo bajo y se pueden mergear rápido. **5–6**
@@ -603,6 +606,47 @@ el ciclo terminaba "bien" (no lanzaba) y nadie se enteraba.
 input y botón deshabilitados con placeholder explicativo, y la guarda de
 `navigator.onLine` en el envío como red de seguridad por si la señal se cae
 entre que se escribe y se manda.
+
+---
+
+## 7 quater. Recordatorios sin conexión (ítem 8)
+
+El watcher local ([`useLocalReminderWatcher`](src/lib/useLocalReminderWatcher.ts))
+sondea cada ~25 s **el espejo local** —`repo.listRecordatoriosParaDisparo()`, que
+filtra los `pendiente` dentro de la ventana de ~2 min y les une el item desde la
+caché— en vez de consultar Supabase. Por eso **sigue avisando sin conexión**
+mientras la app esté abierta: la notificación es local, no necesita servidor. El
+`marcarEnviado` posterior pasa por `repo`, así que sin red queda en el outbox y
+sube al reconectar.
+
+**Catch-up de vencidos viejos.** Antes, un recordatorio que había vencido con la
+app cerrada se armaba con `delayMs: 0` y disparaba un aviso individual con fecha
+vieja, haciéndose pasar por recién vencido — y varios a la vez, una ráfaga.
+Ahora [`splitStaleReminders`](src/lib/reminderScheduling.ts) separa los
+pendientes en dos:
+
+- **fresh** (vence en el futuro, o venció hace menos de 2 min): camino normal,
+  se le arma un timer que dispara en su fecha exacta con el contenido del item.
+- **stale** (venció hace más de 2 min): no se avisa de a uno. Se resumen en
+  **un solo aviso** — *"Recordatorios vencidos / Tenías N recordatorios
+  vencidos."*, con `tag` fijo para que no se apilen — y se marcan `enviado`.
+
+La gracia de 2 min cubre holgadamente el intervalo de sondeo: un recordatorio que
+vence con la app abierta y cae entre dos sondeos sigue avisándose normal.
+
+Marcarlos `enviado` **no** los esconde: en `/reminders` `clasificar()` solo trata
+como `hecho` los de estado `hecho`, así que siguen apareciendo como **Vencido**
+(con el sello *● Notificado*) y con su botón **Marcar hecho** hasta que el
+usuario los resuelva.
+
+**Doble aviso con el cron.** El `enviado` es lo que evita que el cron reenvíe.
+Online sube en segundos, igual que antes. Sin conexión queda encolado, así que la
+ventana en que el cron podría reenviar el mismo recordatorio ahora dura lo que
+dure el corte. Como mitigación se implementó el **dedup por `tag`** que ya
+anticipaba §6.2: el cron manda `tag: recordatorio-<id>` en el payload y el
+service worker lo usa (con fallback al `'recordatorio'` viejo), que es el mismo
+tag del aviso local. Si los dos avisan por el mismo recordatorio, el push
+**reemplaza** la notificación local en vez de apilar una segunda.
 
 ---
 

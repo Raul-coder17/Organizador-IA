@@ -28,7 +28,15 @@ import {
   type NewOutboxOp,
 } from './db'
 import { requestSync } from './sync'
-import type { Item, ItemInsert, Recordatorio, Tema } from '../types/database'
+import { joinRecordatoriosConItems } from './recordatorios'
+import { loadItemsFromCache } from './db'
+import type {
+  Item,
+  ItemInsert,
+  Recordatorio,
+  RecordatorioConItem,
+  Tema,
+} from '../types/database'
 
 function nowIso(): string {
   return new Date().toISOString()
@@ -254,6 +262,23 @@ export async function marcarEnviado(id: string): Promise<void> {
   const current = await getLocalRecordatorio(id)
   if (!current || current.estado !== 'pendiente') return
   await cambiarEstado(id, 'enviado')
+}
+
+// Ventana (ms) hacia adelante que mira el watcher local: los recordatorios que
+// vencen dentro de los próximos ~2 min (o ya vencidos) son candidatos a armar
+// un timer. Igualarla al intervalo de sondeo + margen alcanza para no perder
+// ninguno entre dos sondeos.
+const VENTANA_DISPARO_MS = 2 * 60 * 1000
+
+// Recordatorios propios en estado 'pendiente' que vencen pronto o ya vencieron,
+// con el item embebido para armar el cuerpo de la notificación local. Sale del
+// espejo local (no de la red): por eso el aviso local sigue disparando sin
+// conexión mientras la app esté abierta (PLAN_OFFLINE.md §6.2).
+export async function listRecordatoriosParaDisparo(): Promise<RecordatorioConItem[]> {
+  const [recs, items] = await Promise.all([loadRecordatoriosFromCache(), loadItemsFromCache()])
+  const limite = new Date(Date.now() + VENTANA_DISPARO_MS).toISOString()
+  const candidatos = recs.filter((r) => r.estado === 'pendiente' && r.fecha_hora <= limite)
+  return joinRecordatoriosConItems(candidatos, items)
 }
 
 // Cuenta los recordatorios pendientes vencidos o que vencen hoy (badge de la

@@ -118,6 +118,11 @@ Deno.serve(async (req) => {
       title: 'Recordatorio',
       body: resumen(rec.item),
       url: '/reminders',
+      // Mismo tag que usa el aviso local del watcher para este recordatorio: si
+      // los dos avisan (el 'enviado' del watcher no había subido todavía porque
+      // el dispositivo estaba sin señal), el push reemplaza la notificación
+      // local en vez de apilar una segunda.
+      tag: `recordatorio-${rec.id}`,
     })
 
     let algunoOk = false

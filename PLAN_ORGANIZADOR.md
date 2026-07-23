@@ -15,9 +15,9 @@ texto o foto.
 - **Gemini API** — captura asistida por IA (texto/foto → estructura).
 
 > **Plan de soporte offline completo**: [`PLAN_OFFLINE.md`](PLAN_OFFLINE.md).
-> Ítems 1-7, 9 y 10 implementados (lectura y escritura offline con
-> sincronización automática e indicador de estado). Falta el ítem 8:
-> recordatorios que disparen sin conexión.
+> **Los diez ítems están implementados**: lectura y escritura offline,
+> sincronización automática, indicador de estado y recordatorios que avisan sin
+> conexión.
 
 ## Schema de base de datos
 
@@ -967,6 +967,34 @@ El motor publica un estado observable —`getSyncState()` / `subscribeSync()`, q
   trabadas por un error permanente y las reporta — antes esas dejaban el
   contador clavado sin explicación, porque el ciclo terminaba sin lanzar.
 
+### Recordatorios sin conexión (ítem 8)
+
+[`useLocalReminderWatcher`](src/lib/useLocalReminderWatcher.ts) sondea el
+**espejo local** (`repo.listRecordatoriosParaDisparo()`) en vez de Supabase, así
+que **sigue avisando sin conexión** con la app abierta: la notificación es local,
+no necesita servidor. El `marcarEnviado` posterior pasa por el repositorio, así
+que sin red queda en el outbox y sube al reconectar.
+
+- **Catch-up:** [`splitStaleReminders`](src/lib/reminderScheduling.ts) aparta los
+  que vencieron hace más de 2 min (la app estuvo cerrada o el dispositivo
+  dormido). En vez de una ráfaga de avisos individuales con fecha vieja,
+  disparan **uno solo** — "Tenías N recordatorios vencidos" — y se marcan
+  `enviado`. Los que vencen con la app abierta, o cayeron entre dos sondeos,
+  siguen avisando normal con el contenido del item.
+- Marcarlos `enviado` **no** los esconde: en `/reminders` siguen como **Vencido**
+  con el sello *● Notificado* y su botón **Marcar hecho**, porque `clasificar()`
+  solo trata como `hecho` los de estado `hecho`.
+- **Doble aviso con el cron:** el `enviado` es lo que lo frena, y online sube en
+  segundos como antes. Sin conexión queda encolado, así que la ventana en que el
+  cron podría reenviar dura lo que dure el corte. Mitigación implementada: el
+  cron manda `tag: recordatorio-<id>` y el service worker lo usa (con fallback al
+  tag viejo), que es el mismo del aviso local — el push **reemplaza** la
+  notificación local en vez de apilar una segunda.
+
+> ⚠️ El `tag` en el payload requiere **redeployar** la Edge Function
+> `send-reminder-notifications`. Sin ese deploy el resto anda igual; solo se
+> pierde el dedup (el SW cae al tag viejo).
+
 ### Asistente sin conexión (ítem 9)
 
 Necesita a Gemini vía Edge Function, así que queda **bloqueado** offline con un
@@ -978,16 +1006,25 @@ corte entre proponer y confirmar no pierde el cambio.
 
 ### Verificación
 
-- **23/23 tests unitarios** de la lógica pura (`npx deno test
-  src/lib/syncCore.test.ts`): orden FIFO y dependencias, coalescing,
-  cancelación insert+delete y el matiz del ack perdido, idempotencia al
-  replanificar tras un fallo, los tres desenlaces del LWW condicional,
-  clasificación de errores, backoff y el formateo de "hace cuánto".
+- **36/36 tests unitarios** de la lógica pura (`npx deno test src/lib/`): orden
+  FIFO y dependencias, coalescing, cancelación insert+delete y el matiz del ack
+  perdido, idempotencia al replanificar tras un fallo, los tres desenlaces del
+  LWW condicional, clasificación de errores, backoff, el formateo de "hace
+  cuánto", y el reparto fresh/stale del catch-up encadenado con el armado de
+  timers.
 - **Harness de integración en el navegador** (build de producción, temporal):
   29 checks contra IndexedDB real ejercitando `db.ts` + `repo.ts` + `syncCore.ts`
   sin red — crear/editar/borrar deja el espejo y el outbox como corresponde, el
   plan sale en orden causal, el `baseUpdatedAt` y el `updated_at` del update son
   los correctos, y el badge de recordatorios sale del espejo local.
+- **Recordatorios offline**: verificado en la app real (build de producción) con
+  `navigator.onLine` simulado en `false` y `showNotification` interceptado. Con
+  dos recordatorios escritos a mano en el espejo (uno venciendo en 8 s, otro
+  vencido hacía 3 h) el watcher disparó exactamente dos avisos: el catch-up
+  agregado (`tag: recordatorios-catchup`) y el individual con el contenido del
+  item (`tag: recordatorio-<id>`). Ambos quedaron `enviado` en el espejo y
+  encolados en el outbox, y `/reminders` los mostró como **Vencido · ●
+  Notificado** con su botón **Marcar hecho**.
 - **Indicador**: verificado en la app real (build de producción) con una sesión
   de prueba inyectada en el navegador del harness — crear dos items con el
   `navigator.onLine` simulado en `false` deja "Sin conexión · 2 sin sincronizar"
@@ -1055,6 +1092,22 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-22 — Offline, recordatorios sin conexión (ítem 8 de
+  `PLAN_OFFLINE.md`, último del plan): `useLocalReminderWatcher` sondea el
+  espejo local (`repo.listRecordatoriosParaDisparo`, que filtra los pendientes
+  de la ventana y les une el item desde la caché) en vez de Supabase, así que
+  sigue avisando sin conexión con la app abierta; el `marcarEnviado` ya pasaba
+  por el repositorio, así que queda encolado y sube al reconectar. Nuevo
+  `splitStaleReminders`: los vencidos hace más de 2 min (app cerrada o
+  dispositivo dormido) ya no disparan una ráfaga de avisos individuales con
+  fecha vieja, se resumen en uno solo ("Tenías N recordatorios vencidos") y se
+  marcan enviado — en `/reminders` siguen viéndose como Vencido · ● Notificado
+  con su botón Marcar hecho. Para el doble aviso con el cron se implementó el
+  dedup por `tag` que anticipaba §6.2 (el cron manda `recordatorio-<id>`, el SW
+  lo usa con fallback al tag viejo). 6 tests nuevos (36 en total); verificado en
+  la app real con `onLine` simulado y `showNotification` interceptado.
+  **Requiere redeployar `send-reminder-notifications`** para que el dedup por
+  tag tome efecto.
 - 2026-07-22 — Offline, indicador de estado (ítems 7 y 9 de `PLAN_OFFLINE.md`):
   el motor pasa a publicar un estado observable (`online`/`running`/`pending`/
   `lastSyncAt`/`error`) que React consume con `useSyncExternalStore`.
