@@ -1,5 +1,7 @@
 # Organizador Personal IA
 
+> **Flujo de trabajo:** toda sesión nueva debe leer [MAPA_PROYECTO.md](MAPA_PROYECTO.md) primero, antes de explorar el código o usar Grep/Glob directo.
+
 ## Objetivo
 
 App PWA para organizar información personal (notas, recordatorios, listas y

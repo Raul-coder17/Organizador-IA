@@ -32,3 +32,8 @@ dev-dist
 # supabase cli local cache
 supabase/.temp
 supabase/.branches
+
+# graphify local machine state
+graphify-out/.graphify_python
+graphify-out/.graphify_root
+graphify-out/cache/*.tmp
