@@ -191,7 +191,7 @@ Las cuatro tienen lugar. Calidad de la solución, una por una:
 | Función | ¿Tiene lugar? | Dónde | Qué falta definir |
 |---|---|---|---|
 | **Captura por foto** | ✅ Sí, bien | Opción 2 del menú "+ Nuevo ítem" + acceso rápido "FOTO" en Hoy. Modo foto = dropzone → "ANALIZAR IMAGEN" → tarjeta de preview con tipo/tema/prioridad/contenido → Guardar / Editar | Todo el backend: endpoint de Vision, manejo de la imagen, cuota, qué pasa offline (¿se puede encolar?), estado de "analizando" |
-| **Editor de tabla** | ✅ Sí, bien | Modo formulario, tipo "Tabla": grilla con headers y celdas editables + botones "COLUMNA" y "FILA" | Quitar columna/fila (el prototipo solo agrega), y el formato de guardado (§5.4) |
+| **Editor de tabla** | ✅ Sí, bien | Modo formulario, tipo "Tabla": grilla con headers y celdas editables + botones "COLUMNA" y "FILA" | ~~Quitar columna/fila (el prototipo solo agrega), y el formato de guardado (§5.4)~~ → resuelto en el ítem 12 |
 | **Modo oscuro** | ✅ Sí, completo | Paleta dark completa + segmented Claro/Oscuro en Ajustes + botón sol en el header mobile | Mecanismo (`data-theme` en qué nodo, persistencia, ¿respeta `prefers-color-scheme` la primera vez?) y auditoría de contraste |
 | **Memoria del asistente** | ⚠️ Sí, pero superficial | Botón historial en el header del drawer → lista de conversaciones (título, preview, fecha, borrar) + "NUEVA CONVERSACIÓN" | El modelo de datos entero: dónde se persiste (¿tabla Supabase? ¿IndexedDB? ¿ambos vía outbox?), cómo se genera el título, cuántas se guardan, si se sincronizan entre dispositivos |
 
@@ -267,11 +267,16 @@ su estado (`idle | applying | done | cancelled | error`), confirmar-una y confir
 diseñarla para N acciones, tomando el estilo visual del prototipo (lomo moss, header mono
 "PROPUESTA · CREAR ÍTEM") pero conservando el comportamiento actual.
 
-**Formato de tablas.** Hoy hay una asimetría: `ItemList.parseTabla` ya lee
+**Formato de tablas.** — ✅ **resuelta en el ítem 12**
+Hoy hay una asimetría: `ItemList.parseTabla` ya lee
 `{columnas|headers, filas|rows}`, pero `ItemForm` escribe `{texto}` con pipes. El editor de
 grilla debería escribir la forma estructurada, y hace falta decidir qué pasa con las tablas ya
 guardadas como texto (lo más seguro: al abrir en el editor, parsear los pipes y convertir al
 guardar).
+
+> Se tomó esa opción: el editor escribe `{columnas, filas}` y las tablas viejas se parsean al
+> abrirlas, así que se convierten solas al primer guardado. Sin migración y sin dejar de leer
+> los pipes — el parseo de las dos formas vive en [`lib/tabla.ts`](src/lib/tabla.ts).
 
 ---
 
@@ -688,9 +693,31 @@ oculta; a decidir.
 
 ### Fase 4 — Funciones pendientes
 
-**12. Editor de tabla inline.** `[D]` · riesgo medio — *cierra una de las 4 pendientes*
+**12. Editor de tabla inline.** `[D]` ✅ — *cierra una de las 4 pendientes*
 Grilla editable con agregar/quitar fila y columna, escribiendo `{columnas, filas}`, con
 compatibilidad hacia atrás para las tablas guardadas como texto con pipes (§5.4).
+
+> Hecho. El textarea con pipes de `ItemForm` pasó a ser una grilla: encabezados y celdas
+> editables, `+ COLUMNA` / `+ FILA` arriba y una × para quitar pegada a cada fila y a cada
+> columna (la última no se puede quitar). Al guardar escribe `{ columnas, filas }`, que es lo
+> que `ItemList` ya leía: **la asimetría de §5.4 queda cerrada**.
+>
+> El parseo se mudó de `ItemList` a [`lib/tabla.ts`](src/lib/tabla.ts), porque ahora la lista y
+> el editor tienen que leer exactamente lo mismo. Ese módulo lee las dos formas —la
+> estructurada y la vieja de texto con pipes— y agrega lo que necesita una grilla, que la
+> lista no necesitaba: encabezados siempre presentes y filas parejas (`grillaDesdeContenido`).
+> Tests en [`lib/tabla.test.ts`](src/lib/tabla.test.ts), incluido el ida y vuelta de una tabla
+> vieja.
+>
+> **No hay migración de datos**: una tabla guardada con pipes se abre parseada y sale
+> estructurada la primera vez que se la edita. Las que nunca se editen se siguen viendo igual.
+> Por eso `contenidoDeAccionCrear` (el asistente y la foto) sigue escribiendo pipes por ahora:
+> pasarlo a estructurado es un cambio aparte, chico, y toca la tarjeta de propuesta.
+>
+> Un efecto lateral que hubo que atender: `resumenContenido` —la línea de contenido en
+> /recordatorios y el cuerpo de la notificación local— caía a `JSON.stringify` con cualquier
+> contenido sin `.texto`, así que una tabla estructurada con recordatorio habría mostrado el
+> jsonb crudo. Ahora las resume por encabezados y cantidad de filas.
 
 **13. Historial de conversaciones.** `[D]` · riesgo medio-alto — *cierra una de las 4 pendientes*
 Persistencia de conversaciones (tabla + RLS + IndexedDB + outbox si va offline-first), títulos,
@@ -711,7 +738,7 @@ Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
 Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] ✅ · 10 [N] ✅ · 11 [N] ✅  ← COMPLETA (D1 tomada)
-Fase 4:  14 [D] ✅ · 12 [D] · 13 [D]        → quedan 2 pendientes
+Fase 4:  14 [D] ✅ · 12 [D] ✅ · 13 [D]      → queda 1 pendiente
 ```
 
 Un corte natural para evaluar: **después de la Fase 1** ya se ve gran parte del rediseño y está

@@ -22,9 +22,30 @@ import {
   temaColorVar,
   type TemaColor,
 } from '../lib/temaColores'
+import {
+  contenidoDeGrilla,
+  grillaDesdeContenido,
+  grillaDesdeTexto,
+  grillaVacia,
+  nombreColumna,
+  type Grilla,
+} from '../lib/tabla'
 
 function nuevaLinea(): LineaLista {
   return { id: crypto.randomUUID(), texto: '', hecho: false }
+}
+
+// Una fila de la grilla mientras se edita. Lleva id por el mismo motivo que las
+// líneas de una lista: quitar la fila del medio con la clave puesta en el índice
+// haría que React reusara los inputs de la fila de abajo y el foco saltara.
+// El id es de la edición, no del dato: no se guarda.
+interface FilaEditable {
+  id: string
+  celdas: string[]
+}
+
+function aFilasEditables(filas: string[][]): FilaEditable[] {
+  return filas.map((celdas) => ({ id: crypto.randomUUID(), celdas }))
 }
 
 interface ItemFormProps {
@@ -42,6 +63,14 @@ interface ItemFormProps {
   /** Un tema cambió (hoy: su color). Se avisa aparte de onSaved porque el
    *  cambio es del tema, no del item, y ya está guardado cuando llega. */
   onTemaUpdated: (tema: Tema) => void
+}
+
+function IconMas() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  )
 }
 
 const TIPOS: TipoItem[] = ['nota', 'recordatorio', 'lista', 'tabla']
@@ -67,6 +96,11 @@ export function ItemForm({
   const [prioridad, setPrioridad] = useState<Prioridad | ''>('')
   const [contenidoTexto, setContenidoTexto] = useState('')
   const [lineas, setLineas] = useState<LineaLista[]>([])
+  // Grilla del editor de tablas (ítem 12). Se guarda como { columnas, filas };
+  // lo que se lee puede venir en esa forma o en la vieja de texto con pipes —
+  // de eso se ocupa `grillaDesdeContenido`.
+  const [columnas, setColumnas] = useState<string[]>([])
+  const [filas, setFilas] = useState<FilaEditable[]>([])
   const [conRecordatorio, setConRecordatorio] = useState(false)
   const [recordatorioFecha, setRecordatorioFecha] = useState('')
   // Marca si el item que estamos editando ya tenía un recordatorio, para saber
@@ -93,6 +127,15 @@ export function ItemForm({
             }))
           : [],
       )
+      // Al editar una tabla se precarga la grilla. Sirve tanto para las nuevas
+      // ({columnas, filas}) como para las viejas ({texto} con pipes, incluidas
+      // las que salieron de una foto): se parsean al abrir y, al guardar, el
+      // item sale ya en la forma estructurada. No hay migración de datos — cada
+      // tabla se convierte sola la primera vez que se la edita.
+      const grilla =
+        editingItem.tipo === 'tabla' ? grillaDesdeContenido(editingItem.contenido) : null
+      setColumnas(grilla?.columnas ?? [])
+      setFilas(grilla ? aFilasEditables(grilla.filas) : [])
     } else if (borrador) {
       // Creación arrancada desde una propuesta de la IA (hoy: la foto). Mismos
       // campos que una creación a mano — el form no sabe ni le importa de dónde
@@ -104,6 +147,11 @@ export function ItemForm({
       setLineas(
         borrador.lineas.map((texto) => ({ id: crypto.randomUUID(), texto, hecho: false })),
       )
+      // La propuesta trae la tabla aplanada a texto con pipes; acá se abre como
+      // grilla y se guarda estructurada, igual que cualquier otra.
+      const grilla = borrador.tipo === 'tabla' ? grillaDesdeTexto(borrador.contenidoTexto) : null
+      setColumnas(grilla?.columnas ?? [])
+      setFilas(grilla ? aFilasEditables(grilla.filas) : [])
 
       // El tema viene por nombre: si ya existe se selecciona (sin duplicarlo), y
       // si no, se precarga el flujo de "crear tema nuevo" con el nombre puesto.
@@ -129,6 +177,8 @@ export function ItemForm({
       setPrioridad('')
       setContenidoTexto('')
       setLineas([])
+      setColumnas([])
+      setFilas([])
     }
     // El nombre de tema nuevo lo fija la rama del borrador; en los otros dos
     // casos se limpia.
@@ -172,6 +222,17 @@ export function ItemForm({
     }
   }, [tipo, lineas.length])
 
+  // Lo mismo para "tabla": si todavía no hay grilla (item nuevo, o el usuario
+  // acaba de cambiar el tipo), se arranca con una 2×2 vacía. Si ya hay, no se
+  // toca: cambiar de tipo y volver no debería perder lo escrito.
+  useEffect(() => {
+    if (tipo === 'tabla' && columnas.length === 0) {
+      const g = grillaVacia()
+      setColumnas(g.columnas)
+      setFilas(aFilasEditables(g.filas))
+    }
+  }, [tipo, columnas.length])
+
   // El tema seleccionado, si es uno real (no '' ni 'new'). Es el que puede
   // cambiar de color desde acá.
   const temaSeleccionado = temas.find((t) => t.id === temaId) ?? null
@@ -205,10 +266,48 @@ export function ItemForm({
   const removeLinea = (id: string) => setLineas((prev) => prev.filter((l) => l.id !== id))
   const addLinea = () => setLineas((prev) => [...prev, nuevaLinea()])
 
+  // --- Grilla de la tabla ---------------------------------------------------
+  // Agregar y quitar columna tocan las dos mitades del estado (los encabezados y
+  // todas las filas) para que la grilla nunca quede dentada: si una fila tuviera
+  // más celdas que columnas, la de más no se vería y se guardaría igual.
+
+  const updateColumna = (ci: number, valor: string) =>
+    setColumnas((prev) => prev.map((c, i) => (i === ci ? valor : c)))
+
+  const updateCelda = (id: string, ci: number, valor: string) =>
+    setFilas((prev) =>
+      prev.map((f) =>
+        f.id === id ? { ...f, celdas: f.celdas.map((c, i) => (i === ci ? valor : c)) } : f,
+      ),
+    )
+
+  const addColumna = () => {
+    setColumnas((prev) => [...prev, nombreColumna(prev.length)])
+    setFilas((prev) => prev.map((f) => ({ ...f, celdas: [...f.celdas, ''] })))
+  }
+
+  const removeColumna = (ci: number) => {
+    if (columnas.length <= 1) return
+    setColumnas((prev) => prev.filter((_, i) => i !== ci))
+    setFilas((prev) => prev.map((f) => ({ ...f, celdas: f.celdas.filter((_, i) => i !== ci) })))
+  }
+
+  const addFila = () =>
+    setFilas((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), celdas: columnas.map(() => '') },
+    ])
+
+  const removeFila = (id: string) => {
+    if (filas.length <= 1) return
+    setFilas((prev) => prev.filter((f) => f.id !== id))
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    // Para "lista" el contenido son las líneas; para el resto, el textarea.
+    // Cada tipo arma su contenido: "lista" desde las líneas, "tabla" desde la
+    // grilla y el resto desde el textarea.
     let contenido: Record<string, unknown>
     if (tipo === 'lista') {
       const items = lineas
@@ -219,6 +318,16 @@ export function ItemForm({
         return
       }
       contenido = { items }
+    } else if (tipo === 'tabla') {
+      // Estructurado, no más texto con pipes: es lo que cierra la asimetría con
+      // `ItemList`, que ya leía {columnas, filas} (PLAN_REDISEÑO.md §5.4).
+      const grilla: Grilla = { columnas, filas: filas.map((f) => f.celdas) }
+      const tabla = contenidoDeGrilla(grilla)
+      if (!tabla) {
+        setError('Completá al menos una fila de la tabla.')
+        return
+      }
+      contenido = tabla
     } else {
       if (!contenidoTexto.trim()) {
         setError('El contenido no puede estar vacío.')
@@ -384,9 +493,28 @@ export function ItemForm({
       </div>
 
       <div>
-        <label className="label" htmlFor="contenido">
-          {tipo === 'lista' ? 'Líneas de la lista' : 'Contenido'}
-        </label>
+        {tipo === 'tabla' ? (
+          // La tabla lleva sus dos acciones de "agregar" en la misma línea que
+          // el rótulo: son de la grilla entera, no de una fila ni una columna.
+          // Las de quitar, en cambio, van pegadas a lo que quitan.
+          <div className="tabla-editor__head">
+            <span className="label">Tabla</span>
+            <div className="tabla-editor__agregar">
+              <button type="button" onClick={addColumna} className="btn-dashed">
+                <IconMas />
+                Columna
+              </button>
+              <button type="button" onClick={addFila} className="btn-dashed">
+                <IconMas />
+                Fila
+              </button>
+            </div>
+          </div>
+        ) : (
+          <label className="label" htmlFor="contenido">
+            {tipo === 'lista' ? 'Líneas de la lista' : 'Contenido'}
+          </label>
+        )}
 
         {tipo === 'lista' ? (
           <div className="space-y-2">
@@ -414,15 +542,86 @@ export function ItemForm({
               + Agregar línea
             </button>
           </div>
+        ) : tipo === 'tabla' ? (
+          <>
+            {/* El scroll horizontal se lo queda el contenedor, no la página:
+                mismo criterio que `.item-table-wrap` cuando la tabla se muestra
+                en la ficha, para que una grilla ancha no ensanche el sheet. */}
+            <div className="tabla-editor__wrap">
+              <table className="tabla-editor">
+                <thead>
+                  <tr>
+                    {columnas.map((c, ci) => (
+                      <th key={ci}>
+                        <div className="tabla-editor__col">
+                          <input
+                            type="text"
+                            value={c}
+                            onChange={(e) => updateColumna(ci, e.target.value)}
+                            aria-label={`Encabezado de la columna ${ci + 1}`}
+                            className="tabla-editor__celda tabla-editor__celda--head"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeColumna(ci)}
+                            disabled={columnas.length === 1}
+                            aria-label={`Quitar la columna ${ci + 1}`}
+                            title="Quitar columna"
+                            className="tabla-editor__quitar"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </th>
+                    ))}
+                    {/* La columna de las × lleva su nombre en aria-label y no
+                        en un `.sr-only`: esa utilidad posiciona en absoluto, y
+                        adentro de una tabla que scrollea a lo ancho el span
+                        aterriza fuera de la página y la ensancha entera. */}
+                    <th className="tabla-editor__acciones" aria-label="Quitar fila" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {filas.map((f, ri) => (
+                    <tr key={f.id}>
+                      {columnas.map((col, ci) => (
+                        <td key={ci}>
+                          <input
+                            type="text"
+                            value={f.celdas[ci] ?? ''}
+                            onChange={(e) => updateCelda(f.id, ci, e.target.value)}
+                            aria-label={`Fila ${ri + 1}, ${col || `columna ${ci + 1}`}`}
+                            className="tabla-editor__celda"
+                          />
+                        </td>
+                      ))}
+                      <td className="tabla-editor__acciones">
+                        <button
+                          type="button"
+                          onClick={() => removeFila(f.id)}
+                          disabled={filas.length === 1}
+                          aria-label={`Quitar la fila ${ri + 1}`}
+                          title="Quitar fila"
+                          className="tabla-editor__quitar"
+                        >
+                          ×
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="tabla-editor__nota">
+              Editá cada celda directamente. Las filas que queden vacías no se guardan.
+            </p>
+          </>
         ) : (
           <textarea
             id="contenido"
             value={contenidoTexto}
             onChange={(e) => setContenidoTexto(e.target.value)}
             rows={4}
-            placeholder={
-              tipo === 'tabla' ? 'Columna1 | Columna2\nDato1 | Dato2\nDato3 | Dato4' : undefined
-            }
             className="ctl w-full"
           />
         )}

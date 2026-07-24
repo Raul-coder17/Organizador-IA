@@ -1535,6 +1535,140 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
+/* Editor de tabla (ItemForm) — grilla editable                         */
+/* Se parece a propósito a `.item-table`, que es como la misma tabla se  */
+/* ve en la ficha: mismo encabezado mono en mayúsculas sobre card-2 y    */
+/* mismas líneas. Lo que cambia es que cada celda es un input que ocupa  */
+/* la celda entera, así se puede hacer clic en cualquier parte de ella.  */
+/* ------------------------------------------------------------------ */
+.tabla-editor__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+/* El margen de abajo lo pone la fila, no el rótulo. */
+.tabla-editor__head .label {
+  margin-bottom: 0;
+}
+.tabla-editor__agregar {
+  display: flex;
+  gap: 6px;
+}
+/* Botón de agregar, con borde punteado: el punteado dice "esto crea algo que
+   todavía no está", y lo separa de los botones que confirman (moss/outline). */
+.btn-dashed {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background: none;
+  border: 1px dashed var(--color-line);
+  border-radius: 2px;
+  color: var(--color-ink-soft);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn-dashed:hover {
+  border-color: var(--color-moss);
+  color: var(--color-ink);
+}
+/* El scroll horizontal se lo queda el contenedor: una tabla de seis columnas
+   no tiene que ensanchar el sheet ni la página en mobile. Mismo criterio que
+   `.item-table-wrap`. */
+.tabla-editor__wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: 2px;
+}
+.tabla-editor {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 320px;
+}
+/* Sin padding en la celda: lo pone el input, que la ocupa entera. */
+.tabla-editor th,
+.tabla-editor td {
+  padding: 0;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.tabla-editor th {
+  background: var(--color-card-2);
+  border-bottom-color: var(--color-line);
+  text-align: left;
+}
+.tabla-editor th + th,
+.tabla-editor td + td {
+  border-left: 1px solid var(--color-line-soft);
+}
+.tabla-editor tbody tr:last-child td {
+  border-bottom: none;
+}
+.tabla-editor__col {
+  display: flex;
+  align-items: center;
+}
+.tabla-editor__celda {
+  width: 100%;
+  min-width: 96px;
+  padding: 9px 11px;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-ink);
+}
+/* La celda enfocada se tiñe en vez de llevar aro: adentro de una grilla, un
+   borde de foco sobre celdas que ya están separadas por líneas ensucia. */
+.tabla-editor__celda:focus {
+  outline: none;
+  background: var(--color-moss-tint);
+}
+.tabla-editor__celda--head {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+/* Columna de acciones: sólo la × de quitar fila, tan angosta como el botón. */
+.tabla-editor__acciones {
+  width: 30px;
+  text-align: center;
+}
+.tabla-editor__quitar {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  line-height: 1;
+  font-size: 16px;
+  background: none;
+  border: none;
+  border-radius: 2px;
+  color: var(--color-ink-mute);
+  cursor: pointer;
+}
+.tabla-editor__col .tabla-editor__quitar {
+  margin-right: 3px;
+}
+.tabla-editor__quitar:hover {
+  color: var(--color-rust);
+}
+.tabla-editor__quitar:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.tabla-editor__nota {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--color-ink-mute);
+}
+
+/* ------------------------------------------------------------------ */
 /* Selector de color de tema (ItemForm)                                 */
 /* Siete muestras de la paleta fría. El activo se marca con un aro (no  */
 /* con un tilde adentro): a 22px, un check tapa el color que se está    */

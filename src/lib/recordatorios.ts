@@ -3,6 +3,7 @@
 // y las sube sync.ts; ver la nota en items.ts.
 
 import { supabase } from './supabase'
+import { leerTabla } from './tabla'
 import type { Item, Recordatorio, RecordatorioConItem } from '../types/database'
 
 // Rearma la forma RecordatorioConItem (recordatorio + item embebido) que usa la
@@ -151,6 +152,18 @@ export function resumenContenido(item: Pick<Item, 'tipo' | 'contenido'> | null):
       .filter(Boolean)
       .join(', ')
     return total > 3 ? `${preview}… (${total} líneas)` : preview || 'Lista vacía'
+  }
+  // Una tabla se resume por sus encabezados y cuántas filas tiene: volcar las
+  // celdas en una línea no se lee, y desde que el editor guarda {columnas,
+  // filas} el fallback de abajo mostraría el jsonb crudo — también en el cuerpo
+  // de la notificación local, que sale de acá.
+  if (item.tipo === 'tabla') {
+    const tabla = leerTabla(c)
+    if (tabla) {
+      const cabeceras = (tabla.headers ?? []).map((h) => h.trim()).filter(Boolean).join(' · ')
+      const filas = `${tabla.rows.length} fila${tabla.rows.length === 1 ? '' : 's'}`
+      return cabeceras ? `${cabeceras} (${filas})` : filas
+    }
   }
   if (typeof c.texto === 'string' && c.texto.trim()) return c.texto.trim()
   return JSON.stringify(c)
