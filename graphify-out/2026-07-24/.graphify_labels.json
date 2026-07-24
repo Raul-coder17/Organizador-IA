@@ -42,7 +42,5 @@
   "40": "vite",
   "41": "vite-plugin-pwa",
   "42": "@vitejs/plugin-react",
-  "43": "Outbox Pattern for Offline Mutations",
-  "44": "AssistantDrawer.tsx",
-  "45": "extract-from-photo/index.ts"
+  "43": "Outbox Pattern for Offline Mutations"
 }
