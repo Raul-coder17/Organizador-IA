@@ -2,7 +2,7 @@
 // Gemini y normalización a una AccionCrear coherente.
 // Correr con: npx deno test supabase/functions/extract-from-photo/extract.test.ts
 import { assertEquals } from 'jsr:@std/assert@1'
-import { buildPrompt, normalizarExtraccion, parseJsonLaxo } from './extract.ts'
+import { type AccionCrear, buildPrompt, normalizarExtraccion, parseJsonLaxo } from './extract.ts'
 
 Deno.test('parseJsonLaxo: JSON pelado (el caso normal con responseSchema)', () => {
   const out = parseJsonLaxo('{"tipo":"nota","contenido":"hola","resumen":"una nota"}')
@@ -157,17 +157,89 @@ Deno.test('normalizar: siempre marca tipo_accion create (misma forma que el asis
 })
 
 Deno.test('buildPrompt: incluye los temas existentes para no inventar sinónimos', () => {
-  const p = buildPrompt(['Casa', 'Trabajo'])
+  const p = buildPrompt({ temas: ['Casa', 'Trabajo'] })
   assertEquals(p.includes('"Casa", "Trabajo"'), true)
   assertEquals(p.includes('EXACTAMENTE'), true)
 })
 
 Deno.test('buildPrompt: sin temas dice que proponga uno nuevo', () => {
-  const p = buildPrompt([])
+  const p = buildPrompt({ temas: [] })
   assertEquals(p.includes('todavía no tiene temas'), true)
 })
 
 Deno.test('buildPrompt: la hora local entra sólo si se pasa', () => {
-  assertEquals(buildPrompt([], '2026-07-24T09:00').includes('2026-07-24T09:00'), true)
-  assertEquals(buildPrompt([]).includes('fecha y hora local'), false)
+  assertEquals(buildPrompt({ temas: [], clientNow: '2026-07-24T09:00' }).includes('2026-07-24T09:00'), true)
+  assertEquals(buildPrompt({ temas: [] }).includes('fecha y hora local'), false)
+})
+
+// --- Lo dudoso se marca, no se borra ----------------------------------------
+
+Deno.test('buildPrompt: manda marcar lo dudoso en vez de omitirlo', () => {
+  const p = buildPrompt({ temas: [] })
+  // La regla vieja perdía el dato en silencio; la nueva lo marca y lo avisa.
+  assertEquals(p.includes('omitilo'), false)
+  assertEquals(p.includes('[?]'), true)
+  assertEquals(p.includes('"resumen"'), true)
+})
+
+// --- Comentario previo -------------------------------------------------------
+
+Deno.test('buildPrompt: el comentario entra marcado como del usuario y con prioridad', () => {
+  const p = buildPrompt({ temas: [], comentario: 'es un recibo, ignorá el total' })
+  assertEquals(p.includes('es un recibo, ignorá el total'), true)
+  assertEquals(p.includes('HACELE CASO AL USUARIO'), true)
+})
+
+Deno.test('buildPrompt: sin comentario no aparece el bloque', () => {
+  assertEquals(buildPrompt({ temas: [] }).includes('escribió este comentario'), false)
+})
+
+// --- Corrección --------------------------------------------------------------
+
+// Fábrica y no constante: cada test recibe su propia copia mutable, que es lo
+// que espera `AccionCrear` (arrays, no tuplas readonly).
+function anterior(): AccionCrear {
+  return {
+    tipo_accion: 'create',
+    tipo: 'tabla',
+    tema: 'Compras',
+    prioridad: null,
+    columnas: ['Producto', 'Precio'],
+    filas: [['Pan', '1200']],
+  }
+}
+
+Deno.test('buildPrompt: la corrección cambia la apertura y muestra lo propuesto', () => {
+  const p = buildPrompt({
+    temas: [],
+    correccion: { anterior: anterior(), texto: 'te faltó la última fila' },
+  })
+  assertEquals(p.startsWith('Ya leíste esta foto'), true)
+  assertEquals(p.includes('te faltó la última fila'), true)
+  assertEquals(p.includes('"Producto"'), true)
+  assertEquals(p.includes('CORREGIDA ENTERA'), true)
+  // Ajustar, no rehacer: es lo que evita que vuelva media tabla reordenada.
+  assertEquals(p.includes('Todo lo demás dejalo igual'), true)
+})
+
+Deno.test('buildPrompt: la propuesta anterior va sin tipo_accion (ruido interno)', () => {
+  const p = buildPrompt({
+    temas: [],
+    correccion: { anterior: anterior(), texto: 'x' },
+  })
+  assertEquals(p.includes('tipo_accion'), false)
+})
+
+Deno.test('buildPrompt: el comentario original sigue valiendo en una corrección', () => {
+  const p = buildPrompt({
+    temas: [],
+    comentario: 'ignorá el total',
+    correccion: { anterior: anterior(), texto: 'falta una fila' },
+  })
+  assertEquals(p.includes('ignorá el total'), true)
+  assertEquals(p.includes('falta una fila'), true)
+})
+
+Deno.test('buildPrompt: sin corrección arranca con la lectura normal', () => {
+  assertEquals(buildPrompt({ temas: [] }).startsWith('Mirá esta foto'), true)
 })

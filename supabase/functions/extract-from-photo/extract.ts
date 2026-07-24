@@ -55,11 +55,52 @@ export const RESPONSE_SCHEMA = {
   propertyOrdering: ['tipo', 'tema', 'prioridad', 'contenido', 'lineas', 'columnas', 'filas', 'resumen'],
 } as const
 
+/** Lo que necesita `buildPrompt` para armar el texto de un turno. */
+export interface PromptOpts {
+  /** Temas que el usuario ya tiene, para que Gemini reuse uno en vez de inventar
+   *  un sinónimo. */
+  temas: string[]
+  /** Fecha y hora local del usuario ("YYYY-MM-DDTHH:mm"). */
+  clientNow?: string
+  /** Comentario que el usuario escribió ANTES de analizar ("es un recibo,
+   *  ignorá el total"). Manda sobre las reglas generales. */
+  comentario?: string
+  /** Corrección posterior: la propuesta que ya se le mostró al usuario y lo que
+   *  el usuario dice que está mal. Cambia el modo del prompt. */
+  correccion?: { anterior: AccionCrear; texto: string }
+}
+
+// Serializa la propuesta anterior para mostrársela a Gemini. Se arman los campos
+// a mano en vez de volcar el objeto entero por dos motivos: `tipo_accion` es
+// ruido interno del frontend, y los campos vacíos no aportan nada al prompt más
+// que ocupar tokens y sugerir formas que no vienen al caso.
+function propuestaComoJson(accion: AccionCrear): string {
+  const salida: Record<string, unknown> = {
+    tipo: accion.tipo,
+    tema: accion.tema,
+    prioridad: accion.prioridad,
+  }
+  if (accion.contenido) salida.contenido = accion.contenido
+  if (accion.lineas) salida.lineas = accion.lineas
+  if (accion.columnas) salida.columnas = accion.columnas
+  if (accion.filas) salida.filas = accion.filas
+  return JSON.stringify(salida, null, 2)
+}
+
 // El prompt. Recibe los temas que el usuario YA tiene para que Gemini reuse uno
 // existente en vez de inventar un sinónimo ("Compras" vs "Compra") y llenar la
 // biblioteca de temas casi iguales. Puede proponer uno nuevo igual: el usuario
 // confirma, y `createTema` le asigna color solo (repo.ts, decisión D4).
-export function buildPrompt(temasExistentes: string[], clientNow?: string): string {
+//
+// Tiene dos modos, y la diferencia arranca en la primera línea porque es lo que
+// fija la tarea:
+//   - lectura inicial — "mirá esta foto y proponé un item", con o sin comentario
+//     del usuario.
+//   - corrección — la MISMA foto ya se leyó, el usuario dijo qué está mal, y lo
+//     que se pide es AJUSTAR esa propuesta, no rehacerla de cero.
+export function buildPrompt(opts: PromptOpts): string {
+  const { temas: temasExistentes, clientNow, comentario, correccion } = opts
+
   const temas = temasExistentes.length
     ? `\n\nTemas que el usuario ya tiene: ${temasExistentes.map((t) => `"${t}"`).join(', ')}. Si la foto encaja en alguno, usá EXACTAMENTE ese nombre. Si no encaja en ninguno, proponé un tema nuevo, corto y en singular.`
     : '\n\nEl usuario todavía no tiene temas. Proponé uno nuevo, corto y en singular.'
@@ -68,7 +109,41 @@ export function buildPrompt(temasExistentes: string[], clientNow?: string): stri
     ? `\n- La fecha y hora local del usuario ahora es ${clientNow}. Si la foto tiene una fecha (un turno, un vencimiento), tenela en cuenta para la prioridad.`
     : ''
 
-  return `Mirá esta foto y proponé UN item para el organizador personal del usuario. Respondé SIEMPRE en español.
+  // El comentario del usuario gana sobre las reglas generales: si dice "ignorá
+  // el total", eso le tiene que poder ganar a "transcribí todo lo que se lee".
+  // Por eso va marcado como dicho por él y con la instrucción explícita de a
+  // quién hacerle caso cuando se contradicen.
+  const bloqueComentario = comentario
+    ? `\n\nEl usuario escribió este comentario sobre la foto, antes de que la leas:
+"""
+${comentario}
+"""
+Tratalo como una instrucción tuya, no como un dato a transcribir. Si contradice alguna de las reglas de arriba, HACELE CASO AL USUARIO. Si te pide ignorar algo, no lo incluyas ni lo menciones en "resumen" como si faltara.`
+    : ''
+
+  // Modo corrección: se le muestra lo que ya propuso y lo que el usuario objetó.
+  // "Ajustá sólo lo señalado" es lo que evita que una corrección chica venga con
+  // media tabla reordenada de arriba abajo.
+  const bloqueCorreccion = correccion
+    ? `\n\nEsto es lo que ya le propusiste al usuario a partir de esta MISMA foto:
+${propuestaComoJson(correccion.anterior)}
+
+Y el usuario respondió que está mal:
+"""
+${correccion.texto}
+"""
+
+Volvé a mirar la foto y devolvé la propuesta CORREGIDA ENTERA, con la forma de siempre (no un parche ni sólo el pedazo que cambia).
+- Ajustá lo que el usuario señala y lo que dependa de eso. Todo lo demás dejalo igual: no lo reescribas, no lo reordenes y no le cambies el estilo.
+- Si lo que pide no está en la foto, no lo inventes: dejá esa parte como estaba y explicá en "resumen" por qué no pudiste.
+- En "resumen" contá en una frase qué cambiaste respecto de la propuesta anterior.`
+    : ''
+
+  const apertura = correccion
+    ? 'Ya leíste esta foto y le propusiste un item al usuario, y ahora te está corrigiendo. Devolvé la propuesta corregida. Respondé SIEMPRE en español.'
+    : 'Mirá esta foto y proponé UN item para el organizador personal del usuario. Respondé SIEMPRE en español.'
+
+  return `${apertura}
 
 Elegí el tipo según lo que veas:
 - "tabla" — si la foto tiene datos en filas y columnas (un recibo con items y precios, una planilla, un cuadro de horarios). Llená "columnas" con los encabezados y "filas" con una fila por renglón; cada fila tiene que tener la misma cantidad de celdas que "columnas". No uses "contenido".
@@ -77,10 +152,12 @@ Elegí el tipo según lo que veas:
 - "recordatorio" — sólo si la foto es explícitamente algo que hay que hacer o a lo que hay que ir en una fecha (un turno médico, una invitación con fecha). Llená "contenido".
 
 Reglas:
-- Transcribí lo que se lee de verdad. No inventes datos que no estén en la imagen ni completes lo que no se llega a leer: si algo está borroso o cortado, omitilo.
+- Transcribí lo que se lee de verdad y no inventes datos que no estén en la imagen.
+- Lo dudoso NO se borra, se marca. Si algo está borroso, cortado o tapado, transcribí lo que alcances a leer y agregale "[?]" (por ejemplo "Ferretería [?]"); si de una celda no se lee nada, poné "[?]" sola para no correr la fila. Un dato perdido en silencio es peor que uno marcado como dudoso: el usuario puede corregir lo que ve, no lo que no está.
+- Si quedó algo ilegible, o sospechás que la foto está cortada y te perdiste parte, decilo explícitamente en "resumen" (por ejemplo "no pude leer bien la última fila").
 - "prioridad" es opcional: ponela sólo si la foto lo justifica (vencimientos, urgencias marcadas). Si no, dejala vacía.
 - "resumen" es una frase corta en español contando qué viste y qué proponés guardar. Es lo que lee el usuario antes de confirmar.
-- Si la imagen no tiene nada legible ni interpretable como item, devolvé tipo "nota", contenido vacío y explicá en "resumen" que no se pudo leer nada.${temas}${ahora}`
+- Si la imagen no tiene nada legible ni interpretable como item, devolvé tipo "nota", contenido vacío y explicá en "resumen" que no se pudo leer nada.${temas}${ahora}${bloqueComentario}${bloqueCorreccion}`
 }
 
 // --- Parseo defensivo de lo que devuelve Gemini -----------------------------

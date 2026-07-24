@@ -39,6 +39,12 @@ const MAX_BASE64_BYTES = 5 * 1024 * 1024
 
 const MIMES_PERMITIDOS = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'])
 
+// Tope de los textos libres que escribe el usuario (el comentario previo y la
+// corrección posterior). Con 2000 caracteres entra cualquier aclaración real y
+// no hay forma de que un pegado accidental se coma el presupuesto de tokens de
+// la transcripción.
+const MAX_TEXTO_USUARIO = 2000
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -193,14 +199,22 @@ async function callGeminiVision(
             parts: [{ text: prompt }, { inlineData: { mimeType, data: imagenBase64 } }],
           },
         ],
-        // Mismo criterio que ai-assistant: 2.5-flash es un modelo "thinking" y
-        // con el budget por defecto puede gastarlo entero antes de emitir parts
-        // (candidate sin parts + MAX_TOKENS). Acá además la salida puede ser
-        // larga de verdad —una tabla transcripta entera—, así que el margen es
-        // el doble que en el chat.
+        // 2.5-flash es un modelo "thinking". Con el budget por defecto puede
+        // gastarlo entero antes de emitir parts (candidate sin parts +
+        // MAX_TOKENS), y por eso al principio se apagó del todo
+        // (`thinkingBudget: 0`). Pero leer una foto no es lo mismo que
+        // contestar un chat: transcribir una tabla larga sin saltearse
+        // renglones ni correr una columna es justamente donde el razonamiento
+        // ayuda, y apagarlo era una de las causas de que se perdieran datos.
+        //
+        // Así que ahora hay presupuesto, pero ACOTADO —no `-1` (dinámico, sin
+        // techo)—, y `maxOutputTokens` sube en consecuencia: en 2.5 los tokens
+        // de pensamiento salen del mismo tope que la salida, así que dejarlo en
+        // 4096 con budget 2048 habría dejado la transcripción con menos aire
+        // que antes. 8192 - 2048 = ~6k para el item, más que los 4096 previos.
         generationConfig: {
-          maxOutputTokens: 4096,
-          thinkingConfig: { thinkingBudget: 0 },
+          maxOutputTokens: 8192,
+          thinkingConfig: { thinkingBudget: 2048 },
           responseMimeType: 'application/json',
           responseSchema: RESPONSE_SCHEMA,
         },
@@ -310,6 +324,12 @@ Deno.serve(async (req) => {
     mime_type?: string
     temas?: unknown
     client_now?: string
+    /** Comentario opcional escrito antes de analizar. */
+    comentario?: string
+    /** Corrección posterior: la propuesta que se le mostró al usuario… */
+    propuesta_anterior?: unknown
+    /** …y lo que dice que está mal. Las dos juntas activan el modo corrección. */
+    correccion?: string
   }
   try {
     body = await req.json()
@@ -343,13 +363,40 @@ Deno.serve(async (req) => {
     : []
   const clientNow = typeof body.client_now === 'string' ? body.client_now : undefined
 
+  // Texto libre del usuario: se recorta a un tamaño razonable antes de entrar al
+  // prompt. No es una defensa contra nada malicioso —es su propia cuenta y su
+  // propia key—, sino contra un pegado accidental de diez páginas que se coma el
+  // presupuesto de tokens que necesita la transcripción.
+  const textoUsuario = (v: unknown): string | undefined => {
+    if (typeof v !== 'string') return undefined
+    const limpio = v.trim().slice(0, MAX_TEXTO_USUARIO)
+    return limpio.length > 0 ? limpio : undefined
+  }
+
+  const comentario = textoUsuario(body.comentario)
+  const textoCorreccion = textoUsuario(body.correccion)
+
+  // La propuesta anterior vuelve del cliente, así que no se confía tal cual: se
+  // pasa por el MISMO normalizador que sanea lo que devuelve Gemini. Sale una
+  // AccionCrear con los campos conocidos y nada más, lista para serializar en el
+  // prompt.
+  const anterior =
+    textoCorreccion && body.propuesta_anterior && typeof body.propuesta_anterior === 'object'
+      ? (normalizarExtraccion(body.propuesta_anterior as Record<string, unknown>)?.accion ?? null)
+      : null
+
+  // El modo corrección necesita las dos mitades. Si falta una (el cliente mandó
+  // el texto pero la propuesta llegó vacía o irreconocible), se degrada a una
+  // lectura inicial en vez de fallar: peor sería un 400 con la foto ya subida.
+  const correccion = anterior && textoCorreccion ? { anterior, texto: textoCorreccion } : undefined
+
   let usedToday: number | null = null
   const usageField = () => ({ usage: { used_today: usedToday ?? undefined, daily_quota: learned ?? undefined } })
 
   try {
     const candidate = await callGeminiVision(
       apiKey,
-      buildPrompt(temas, clientNow),
+      buildPrompt({ temas, clientNow, comentario, correccion }),
       imagenBase64,
       mimeType,
     )
@@ -372,15 +419,26 @@ Deno.serve(async (req) => {
       .join('')
       .trim()
 
+    // El guard de arriba ("candidate sin parts") cubre el corte limpio: Gemini
+    // no llegó a emitir nada y `finishReason` explica por qué. Pero hay un corte
+    // sucio que se le escapaba: emitir parts con el JSON cortado a la mitad. Ahí
+    // `parts` no está vacío, el parseo falla, y el usuario recibía "no pude
+    // interpretar la foto — sacala con mejor luz", que lo manda a arreglar algo
+    // que no está roto. Si el motivo real es MAX_TOKENS, se lo decimos.
+    const truncado = candidate.finishReason === 'MAX_TOKENS'
+    const noSePudo = truncado ? messageForFinishReason('MAX_TOKENS') : NO_SE_PUDO_LEER
+
     const crudo = texto ? parseJsonLaxo(texto) : null
     if (!crudo) {
-      console.error(`[extract-from-photo] respuesta no parseable: ${texto.slice(0, 500)}`)
-      return jsonResponse({ respuesta_texto: NO_SE_PUDO_LEER, ...usageField() })
+      console.error(
+        `[extract-from-photo] respuesta no parseable (finishReason=${candidate.finishReason ?? 'null'}): ${texto.slice(0, 500)}`,
+      )
+      return jsonResponse({ respuesta_texto: noSePudo, ...usageField() })
     }
 
     const extraccion = normalizarExtraccion(crudo)
     if (!extraccion) {
-      return jsonResponse({ respuesta_texto: NO_SE_PUDO_LEER, ...usageField() })
+      return jsonResponse({ respuesta_texto: noSePudo, ...usageField() })
     }
 
     return jsonResponse({

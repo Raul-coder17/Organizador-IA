@@ -6,9 +6,9 @@ import { emitLocalChange, subscribeSyncSettled } from '../lib/sync'
 import { useSyncStatus } from '../lib/useSyncStatus'
 import { useAiEnabled } from '../lib/useAiEnabled'
 import { aplicarAccionCrear, borradorDeAccionCrear, type BorradorItem } from '../lib/accionesPropuestas'
-import { extraerDeFoto, prepararFoto } from '../lib/fotoItem'
+import { extraerDeFoto, prepararFoto, type FotoPreparada } from '../lib/fotoItem'
 import { ProposedActionCard, type EstadoAccion } from './ProposedActionCard'
-import type { AccionCrear, AssistantUsage } from '../types/assistant'
+import type { AccionCrear, AssistantUsage, PhotoExtractResponse } from '../types/assistant'
 import type { Item, Tema } from '../types/database'
 import { ItemForm } from './ItemForm'
 
@@ -84,11 +84,14 @@ function IconoChispa() {
 // el paso de "analizando" a "propuesta" es el punto donde la app promete que
 // nada se guardó todavía, y con banderas sueltas ese punto se difumina.
 //
-//   elegir     → esperando que se saque/elija la foto
-//   analizando → la foto está en camino a Gemini
-//   propuesta  → llegó la lectura, se muestra el preview para confirmar
-//   editando   → el usuario quiso corregirla antes de guardar (ItemForm)
-type FaseFoto = 'elegir' | 'analizando' | 'propuesta' | 'editando'
+//   elegir      → esperando que se saque/elija la foto
+//   listo       → la foto está elegida y todavía no se mandó: es la ventana para
+//                 escribirle un comentario antes de analizarla
+//   analizando  → la foto está en camino a Gemini
+//   propuesta   → llegó la lectura, se muestra el preview para confirmar
+//   corrigiendo → se mandó una corrección sobre esa misma propuesta
+//   editando    → el usuario quiso corregirla a mano antes de guardar (ItemForm)
+type FaseFoto = 'elegir' | 'listo' | 'analizando' | 'propuesta' | 'corrigiendo' | 'editando'
 
 export function NuevoItemSheet({
   open,
@@ -119,6 +122,22 @@ export function NuevoItemSheet({
   const [borrador, setBorrador] = useState<BorradorItem | null>(null)
   const [usoIA, setUsoIA] = useState<AssistantUsage | null>(null)
 
+  // La foto YA achicada se conserva mientras el sheet siga abierto, porque cada
+  // corrección la vuelve a mandar. Sigue sin persistirse en ningún lado: vive en
+  // este estado, no toca IndexedDB ni el outbox, y se va con el reset de abajo.
+  // Es lo que permite corregir sin pedirle al usuario que saque la foto de nuevo.
+  const [foto, setFoto] = useState<FotoPreparada | null>(null)
+  // Comentario opcional escrito ANTES de analizar. Se sigue mandando en las
+  // correcciones: "es un recibo, ignorá el total" tiene que seguir valiendo en
+  // la segunda vuelta.
+  const [comentario, setComentario] = useState('')
+  const [correccionTexto, setCorreccionTexto] = useState('')
+  const [mostrarCorreccion, setMostrarCorreccion] = useState(false)
+  // Cuántas correcciones se pidieron para esta foto. No hay tope —corregir dos
+  // veces es normal—, pero cada una gasta un mensaje de la cuota, así que el
+  // número se muestra en vez de dejar que se acumule invisible.
+  const [correcciones, setCorrecciones] = useState(0)
+
   // Reset del modo foto cuando el sheet se resuelve (guardar/cancelar) o cambia
   // de ítem: `formKey` es la misma señal que ya usa el `ItemForm` para volver a
   // arrancar limpio, así que la foto se cuelga de ella en vez de inventar otra.
@@ -130,6 +149,11 @@ export function NuevoItemSheet({
     setEstadoAccion('idle')
     setErrorFoto(null)
     setBorrador(null)
+    setFoto(null)
+    setComentario('')
+    setCorreccionTexto('')
+    setMostrarCorreccion(false)
+    setCorrecciones(0)
     if (fileRef.current) fileRef.current.value = ''
   }, [formKey])
 
@@ -201,50 +225,115 @@ export function NuevoItemSheet({
 
   // --- Modo foto: handlers -------------------------------------------------
 
-  // La foto elegida (o recién sacada). Se achica en memoria, se manda, y el
-  // `File` queda libre: no se guarda en ningún lado, ni acá ni en el server.
+  // La foto elegida (o recién sacada). Se achica en memoria y se muestra, pero
+  // NO se manda todavía: entre elegirla y analizarla está la ventana para
+  // escribirle un comentario ("es un recibo, ignorá el total"). El `File`
+  // original queda libre acá mismo; lo que sigue vivo es la versión achicada.
   async function handleFoto(file: File | undefined) {
     if (!file) return
 
+    setErrorFoto(null)
+    setPropuesta(null)
+    setResumen(null)
+    setEstadoAccion('idle')
+    setCorreccionTexto('')
+    setMostrarCorreccion(false)
+    setCorrecciones(0)
+    // Se sueltan antes de preparar la nueva: si esta falla, no queremos que
+    // quede en pantalla la miniatura de la foto anterior.
+    setFoto(null)
+    setMiniatura(null)
+
+    try {
+      const preparada = await prepararFoto(file)
+      setFoto(preparada)
+      setMiniatura(preparada.dataUrl)
+      setFase('listo')
+    } catch {
+      setErrorFoto('No se pudo abrir esa imagen. Probá con otra foto.')
+      setFase('elegir')
+    } finally {
+      // El input se limpia siempre: sin esto, volver a elegir el MISMO archivo
+      // no dispara `change` y la reintentada no haría nada.
+      if (fileRef.current) fileRef.current.value = ''
+    }
+  }
+
+  // Vuelta común de las dos llamadas (lectura inicial y corrección). Si no vino
+  // propuesta, el motivo ya viene explicado en español desde el server (imagen
+  // ilegible, cuota agotada, rate limit) y se vuelve a la fase que se le pasa —
+  // que no es la misma en los dos casos: fallar una corrección tiene que dejar
+  // en pantalla la propuesta anterior, no mandarte al principio.
+  function aplicarRespuesta(data: PhotoExtractResponse, faseSiFalla: FaseFoto): boolean {
+    if (data.usage) setUsoIA(data.usage)
+
+    if (!data.accion_propuesta) {
+      setErrorFoto(data.respuesta_texto)
+      setFase(faseSiFalla)
+      return false
+    }
+
+    setPropuesta(data.accion_propuesta)
+    setResumen(data.respuesta_texto)
+    setFase('propuesta')
+    return true
+  }
+
+  // Analizar: acá recién sale la foto para Gemini, con el comentario si lo hay.
+  async function analizarFoto() {
+    if (!foto) return
+
     // Red de seguridad: el botón ya está deshabilitado sin conexión, pero si la
-    // señal se cae entre que se abrió el modo foto y se eligió la imagen,
-    // cortamos acá en vez de mandar la llamada y mostrar un error de red.
+    // señal se cae entre que se eligió la imagen y se toca analizar, cortamos
+    // acá en vez de mandar la llamada y mostrar un error de red.
     if (!navigator.onLine) {
       setErrorFoto('No hay conexión — leer una foto no está disponible ahora mismo.')
       return
     }
 
     setErrorFoto(null)
-    setPropuesta(null)
-    setResumen(null)
-    setEstadoAccion('idle')
     setFase('analizando')
-
     try {
-      const foto = await prepararFoto(file)
-      setMiniatura(foto.dataUrl)
-      const data = await extraerDeFoto(foto, temas)
-
-      if (data.usage) setUsoIA(data.usage)
-
-      if (!data.accion_propuesta) {
-        // Gemini contestó pero no hay item: el motivo (imagen ilegible, cuota
-        // agotada, rate limit) ya viene explicado en español desde el server.
-        setErrorFoto(data.respuesta_texto)
-        setFase('elegir')
-        return
-      }
-
-      setPropuesta(data.accion_propuesta)
-      setResumen(data.respuesta_texto)
-      setFase('propuesta')
+      const data = await extraerDeFoto(foto, temas, {
+        comentario: comentario.trim() || undefined,
+      })
+      aplicarRespuesta(data, 'listo')
     } catch (err) {
       setErrorFoto(err instanceof Error ? err.message : 'No se pudo leer la foto. Intentá de nuevo.')
-      setFase('elegir')
-    } finally {
-      // El input se limpia siempre: sin esto, volver a elegir el MISMO archivo
-      // no dispara `change` y la reintentada no haría nada.
-      if (fileRef.current) fileRef.current.value = ''
+      setFase('listo')
+    }
+  }
+
+  // Corrección: se reenvía la MISMA foto que ya está en memoria + la propuesta
+  // que el usuario está viendo + lo que dice que está mal, para que Gemini
+  // ajuste esa propuesta en vez de empezar de cero. Se puede repetir: la
+  // propuesta corregida vuelve a la misma tarjeta y se puede volver a corregir.
+  async function enviarCorreccion() {
+    const texto = correccionTexto.trim()
+    if (!foto || !propuesta || !texto) return
+
+    if (!navigator.onLine) {
+      setErrorFoto('No hay conexión — corregir la lectura necesita internet.')
+      return
+    }
+
+    setErrorFoto(null)
+    setFase('corrigiendo')
+    try {
+      const data = await extraerDeFoto(foto, temas, {
+        // El comentario original sigue valiendo en las correcciones: si dijo
+        // "ignorá el total", no tiene que volver a decirlo en cada vuelta.
+        comentario: comentario.trim() || undefined,
+        correccion: { anterior: propuesta, texto },
+      })
+      if (aplicarRespuesta(data, 'propuesta')) {
+        setCorrecciones((n) => n + 1)
+        setCorreccionTexto('')
+        setMostrarCorreccion(false)
+      }
+    } catch (err) {
+      setErrorFoto(err instanceof Error ? err.message : 'No se pudo aplicar la corrección. Intentá de nuevo.')
+      setFase('propuesta')
     }
   }
 
@@ -281,6 +370,11 @@ export function NuevoItemSheet({
     setPropuesta(null)
     setResumen(null)
     setMiniatura(null)
+    setFoto(null)
+    setComentario('')
+    setCorreccionTexto('')
+    setMostrarCorreccion(false)
+    setCorrecciones(0)
     setEstadoAccion('idle')
     setErrorFoto(null)
     setFase('elegir')
@@ -404,7 +498,7 @@ export function NuevoItemSheet({
                     onClick={() => fileRef.current?.click()}
                     disabled={fotoDeshabilitada}
                   >
-                    {miniatura ? 'Probar con otra foto' : 'Sacar o elegir una foto'}
+                    Sacar o elegir una foto
                   </button>
                   {/* La foto no se guarda: se dice acá, donde se está por
                       sacarla, y no en un texto legal en otro lado. */}
@@ -414,8 +508,57 @@ export function NuevoItemSheet({
                 </>
               )}
 
-              {fase === 'analizando' && (
-                <p className="text-sm text-ink-soft">Leyendo la foto…</p>
+              {/* La foto ya está elegida pero todavía no salió. Es la ventana
+                  para decirle a Gemini algo que la imagen sola no dice: qué es,
+                  o qué NO mirar. Opcional a propósito — el flujo de sacar foto y
+                  analizar de una tiene que seguir siendo un solo toque más. */}
+              {fase === 'listo' && (
+                <>
+                  <div className="foto-comentario">
+                    <label className="label" htmlFor="foto-comentario">
+                      Comentario (opcional)
+                    </label>
+                    <textarea
+                      id="foto-comentario"
+                      value={comentario}
+                      onChange={(e) => setComentario(e.target.value)}
+                      rows={2}
+                      placeholder="Agregá contexto si querés — ej. “es un recibo, ignorá el total”"
+                      className="ctl w-full"
+                    />
+                    <p className="foto-nota">
+                      Sirve para lo que la foto no dice sola: qué es, qué parte te importa o qué
+                      ignorar.
+                    </p>
+                  </div>
+
+                  {errorFoto && <p className="text-sm text-rust">{errorFoto}</p>}
+
+                  <div className="foto-acciones">
+                    <button
+                      type="button"
+                      className="btn-moss"
+                      onClick={analizarFoto}
+                      disabled={fotoDeshabilitada}
+                    >
+                      Analizar imagen
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-ghost"
+                      onClick={() => fileRef.current?.click()}
+                      disabled={fotoDeshabilitada}
+                    >
+                      Probar con otra foto
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {fase === 'analizando' && <p className="text-sm text-ink-soft">Leyendo la foto…</p>}
+
+              {fase === 'corrigiendo' && (
+                <p className="text-sm text-ink-soft">Aplicando tu corrección…</p>
               )}
 
               {fase === 'propuesta' && propuesta && (
@@ -433,10 +576,75 @@ export function NuevoItemSheet({
                     onConfirm={confirmarPropuesta}
                     onCancel={descartarPropuesta}
                   />
-                  {estadoAccion === 'idle' && (
-                    <button type="button" className="link-underline text-sm" onClick={editarPropuesta}>
-                      Editar antes de guardar
-                    </button>
+
+                  {estadoAccion === 'idle' && !mostrarCorreccion && (
+                    <div className="foto-revisar">
+                      <button type="button" className="link-underline text-sm" onClick={editarPropuesta}>
+                        Editar antes de guardar
+                      </button>
+                      {/* Corregir ≠ editar. Editar abre el form y lo arregla a
+                          mano; corregir se lo devuelve a Gemini con la misma
+                          foto — sirve cuando falta algo que está en la imagen y
+                          escribirlo a mano sería transcribirlo uno mismo. */}
+                      <button
+                        type="button"
+                        className="link-underline text-sm"
+                        onClick={() => setMostrarCorreccion(true)}
+                      >
+                        Esto no está bien
+                      </button>
+                    </div>
+                  )}
+
+                  {estadoAccion === 'idle' && mostrarCorreccion && (
+                    <div className="foto-correccion">
+                      <label className="label" htmlFor="foto-correccion">
+                        ¿Qué está mal?
+                      </label>
+                      <textarea
+                        id="foto-correccion"
+                        value={correccionTexto}
+                        onChange={(e) => setCorreccionTexto(e.target.value)}
+                        rows={2}
+                        autoFocus
+                        placeholder="Ej. “te faltó la última fila” · “el tema no es ese” · “los precios están corridos una columna”"
+                        className="ctl w-full"
+                      />
+                      <div className="foto-acciones">
+                        <button
+                          type="button"
+                          className="btn-moss"
+                          onClick={enviarCorreccion}
+                          disabled={!correccionTexto.trim()}
+                        >
+                          Enviar corrección
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          onClick={() => {
+                            setMostrarCorreccion(false)
+                            setCorreccionTexto('')
+                          }}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                      {/* Sin cartel de advertencia: se dice el costo una vez, en
+                          el lugar donde se decide, y en el mismo tono que el
+                          contador de cuota de abajo. */}
+                      <p className="foto-nota">
+                        Vuelve a mirar la misma foto y ajusta lo que señalás. Usa un mensaje de IA.
+                      </p>
+                    </div>
+                  )}
+
+                  {correcciones > 0 && (
+                    <p className="foto-correcciones">
+                      {correcciones === 1
+                        ? 'Pediste 1 corrección para esta foto.'
+                        : `Pediste ${correcciones} correcciones para esta foto.`}
+                    </p>
                   )}
                 </>
               )}

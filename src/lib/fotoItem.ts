@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 import { isoToDatetimeLocal } from './recordatorios'
-import type { PhotoExtractResponse } from '../types/assistant'
+import type { AccionCrear, PhotoExtractResponse } from '../types/assistant'
 import type { Tema } from '../types/database'
 
 // Captura de item por foto (PLAN_REDISEÑO.md ítem 14), lado cliente.
@@ -72,15 +72,33 @@ function leerComoDataUrl(file: File): Promise<string> {
   })
 }
 
+/** Lo opcional que se le puede sumar a una lectura. */
+export interface ExtraerOpts {
+  /** Comentario escrito antes de analizar ("es un recibo, ignorá el total"). */
+  comentario?: string
+  /** Corrección posterior: qué propuso Gemini y qué dice el usuario que está
+   *  mal. Se manda con la MISMA foto, que el sheet conserva en memoria. */
+  correccion?: { anterior: AccionCrear; texto: string }
+}
+
 /**
  * Manda la foto a `extract-from-photo` y devuelve la propuesta.
+ *
+ * La misma llamada cubre los dos modos: la lectura inicial (con o sin
+ * comentario) y la corrección. Es un solo endpoint a propósito — comparten
+ * cuota, rate limit, saneado y mensajes, y una corrección no es más que otra
+ * lectura de la misma foto con más contexto.
  *
  * Los errores vuelven como `Error` con el mensaje YA en español: la Edge
  * Function traduce todo lo de Gemini (cuota, key inválida, servicio caído) y acá
  * sólo se rescata ese texto del body, igual que hace el asistente. No se
  * inventan mensajes nuevos para casos que el server ya sabe explicar.
  */
-export async function extraerDeFoto(foto: FotoPreparada, temas: Tema[]): Promise<PhotoExtractResponse> {
+export async function extraerDeFoto(
+  foto: FotoPreparada,
+  temas: Tema[],
+  opts: ExtraerOpts = {},
+): Promise<PhotoExtractResponse> {
   const { data, error } = await supabase.functions.invoke<PhotoExtractResponse>('extract-from-photo', {
     body: {
       imagen_base64: foto.base64,
@@ -90,6 +108,9 @@ export async function extraerDeFoto(foto: FotoPreparada, temas: Tema[]): Promise
       // colores a un modelo que sólo tiene que elegir una etiqueta.
       temas: temas.map((t) => t.nombre),
       client_now: isoToDatetimeLocal(new Date().toISOString()),
+      comentario: opts.comentario,
+      propuesta_anterior: opts.correccion?.anterior,
+      correccion: opts.correccion?.texto,
     },
   })
 

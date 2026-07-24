@@ -1451,8 +1451,8 @@ apagada desde el ítem 11. Ahora funciona.
   recibo o una lista a mano se siguen leyendo bien. Si el navegador no puede
   redimensionar, se manda el original: mejor una foto grande que una función que
   no anda.
-- Máquina de estados chica y explícita —`elegir → analizando → propuesta →
-  editando`— porque el paso de "analizando" a "propuesta" es justo donde la app
+- Máquina de estados chica y explícita —`elegir → listo → analizando → propuesta →
+  corrigiendo → editando`— porque el paso de "analizando" a "propuesta" es justo donde la app
   promete que todavía no guardó nada, y con banderas sueltas ese punto se difumina.
 - **Editar antes de guardar**: la propuesta se abre en el `ItemForm` de siempre
   con los campos ya cargados, vía un `borrador` que el form trata como creación
@@ -1461,6 +1461,70 @@ apagada desde el ítem 11. Ahora funciona.
   registra es de dónde salió el contenido, no quién lo tocó último.
 - **Cancelar vuelve a "elegir foto", no cierra el sheet**: lo más probable después
   de "no, esto no es lo que quería" es sacar otra foto, no empezar de cero.
+
+### Precisión: comentario antes, corrección después
+
+La primera versión leía la foto y no había más que hacer: si Gemini se saltaba un
+renglón o le erraba al tema, la única salida era corregirlo a mano en el form —o
+sea, transcribirlo uno mismo, que es justo lo que la función venía a evitar. Se
+sumaron dos vías, una a cada lado de la lectura, y un arreglo del prompt.
+
+**El prompt perdía datos en silencio.** La regla decía *"si algo está borroso o
+cortado, omitilo"*. La intención era no alucinar; el efecto era que lo dudoso
+desaparecía sin que el usuario se enterara. Ahora lo dudoso **se marca, no se
+borra**: se transcribe lo que se alcance a leer con un `[?]` al lado (o `[?]` sola
+si la celda no se lee, para no correr la fila), y si algo quedó ilegible o la foto
+parece cortada, tiene que decirlo en el `resumen`. El usuario puede corregir lo
+que ve; no lo que no está.
+
+**El razonamiento estaba apagado.** `thinkingBudget: 0` venía de que 2.5-flash
+puede gastar el presupuesto entero antes de emitir `parts`. Pero transcribir una
+tabla larga sin saltear renglones ni correr una columna es justamente donde el
+razonamiento sirve, así que ahora hay presupuesto **acotado** (2048, no `-1`
+dinámico) y `maxOutputTokens` sube a 8192 en consecuencia: en 2.5 los tokens de
+pensamiento salen del mismo tope que la salida, y dejarlo en 4096 habría dejado la
+transcripción con menos aire que antes.
+
+**Comentario antes de analizar.** Elegir la foto ya no dispara el análisis: cae en
+la fase `listo`, con la miniatura y un campo opcional ("es un recibo, ignorá el
+total"). Entra al prompt como bloque aparte, marcado como dicho por el usuario y
+con instrucción explícita de hacerle caso a él cuando contradice las reglas
+generales — si no, "transcribí todo lo que se lee" le gana a "ignorá el total".
+
+**Corrección después del resultado.** En la tarjeta de preview, al lado de "editar
+antes de guardar", hay un "esto no está bien" que abre un campo para explicar qué
+falta o qué está mal. Se reenvía la **misma foto** —que el sheet conserva en
+memoria, sin persistirla en ningún lado— junto con la propuesta anterior y el
+texto del usuario, y se le pide que **ajuste** esa propuesta, no que la rehaga:
+*"ajustá lo que el usuario señala; todo lo demás dejalo igual"*, que es lo que
+evita que una corrección chica vuelva con media tabla reordenada. La propuesta
+corregida cae en la misma tarjeta y **se puede corregir de nuevo**, sin tope.
+
+Corregir ≠ editar, y por eso conviven: editar abre el `ItemForm` y lo arregla a
+mano; corregir se lo devuelve a Gemini con la foto, que es lo que sirve cuando
+falta algo que **está en la imagen** y escribirlo a mano sería transcribirlo uno
+mismo.
+
+Cada corrección es una llamada más y gasta cuota. No se advierte con un cartel:
+se dice una vez donde se decide ("usa un mensaje de IA") y se muestra el contador
+de cuántas van, con el mismo tono y alineación que el contador de cuota que ya
+vivía al pie. Un número que se acumula invisible es peor que uno a la vista.
+
+Los dos textos son un solo endpoint y un solo modo de fallar: `extract-from-photo`
+recibe `comentario`, `propuesta_anterior` y `correccion` opcionales, y una
+corrección no es más que otra lectura de la misma foto con más contexto — misma
+cuota, mismo rate limit, mismo saneado, mismos mensajes en español. La propuesta
+anterior vuelve del cliente, así que **no se confía tal cual**: se pasa por el
+mismo `normalizarExtraccion` que sanea lo que devuelve Gemini antes de entrar al
+prompt. Si el texto de corrección llega sin propuesta reconocible, se degrada a
+una lectura inicial en vez de tirar un 400 con la foto ya subida.
+
+**Un hueco que se tapó de paso.** El guard de `candidate sin parts` cubría el
+corte limpio (Gemini no llegó a emitir nada, `finishReason` explica por qué), pero
+no el corte sucio: emitir `parts` con el JSON cortado a la mitad. Ahí el parseo
+falla y el usuario recibía *"no pude interpretar la foto — sacala con mejor luz"*,
+que lo manda a arreglar algo que no está roto. Ahora, si el motivo real es
+`MAX_TOKENS`, se lo dice.
 
 ### Offline y IA apagada
 

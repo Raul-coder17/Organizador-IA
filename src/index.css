@@ -742,6 +742,52 @@ body {
   max-width: 100%;
 }
 
+/* Comentario previo y corrección posterior. Los dos son lo mismo desde el
+   diseño —un texto libre del usuario que entra al prompt—, así que comparten
+   la fila de acciones y el tono de la nota; lo que los distingue es dónde
+   aparecen y que el segundo va sobre una superficie propia, porque cuelga de la
+   tarjeta de preview y necesita leerse como algo aparte de ella. */
+.foto-comentario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+/* Fila de acciones: los botones se achican a su contenido, igual que los
+   sueltos del modo foto, y bajan de línea en pantallas angostas en vez de
+   desbordar. */
+.foto-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+/* Las dos salidas de la propuesta: arreglarla a mano (form) o devolvérsela a
+   Gemini (corrección). Van juntas y al mismo peso — son alternativas, no una
+   principal y una secundaria. */
+.foto-revisar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.foto-correccion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--color-card-2);
+  border: 1px solid var(--color-line);
+  border-radius: 2px;
+}
+/* Cuántas correcciones se pidieron. Mismo tono y alineación que el contador de
+   cuota que ya vive al pie del modo foto: es del mismo orden de información —
+   cuánto llevás gastado—, no una advertencia. */
+.foto-correcciones {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-slate);
+  text-align: right;
+}
+
 /* Eliminar, sólo en modo edición: destructivo y separado del bloque
    Guardar/Cancelar del form. */
 .sheet-eliminar {
