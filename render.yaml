@@ -26,9 +26,6 @@ services:
       - path: /sw.js
         name: Cache-Control
         value: no-cache
-      - path: /registerSW.js
-        name: Cache-Control
-        value: no-cache
       - path: /manifest.json
         name: Cache-Control
         value: no-cache

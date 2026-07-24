@@ -624,11 +624,35 @@ Function bypassa RLS para leer/borrar suscripciones de cualquier usuario.
 - [`src/sw.ts`](src/sw.ts): `precacheAndRoute(self.__WB_MANIFEST)` +
   `activate` (clients.claim) + **`push`** (parsea `{title, body, url}` y hace
   `showNotification`) + **`notificationclick`** (enfoca una pestaña abierta
-  navegándola a `/reminders`, o abre una nueva). El registro del SW lo sigue
-  auto-inyectando el plugin (`registerSW.js`).
+  navegándola a `/reminders`, o abre una nueva) + **`message`** (`SKIP_WAITING`,
+  ver más abajo).
 - Tipado: `src/sw.ts` se excluye de `tsconfig.app.json` (lib DOM) y se compila
   con `tsconfig.worker.json` (lib WebWorker), referenciado desde
   `tsconfig.json`, así `tsc -b` valida el worker sin chocar con el DOM.
+
+### Actualización del SW con aviso (no en silencio)
+
+`registerType` pasó de **`autoUpdate`** a **`prompt`**: un SW nuevo instala y
+se queda **esperando** (nunca pisa el que está corriendo solo). El registro ya
+no lo auto-inyecta el plugin como script aparte (`registerSW.js` no existe
+más en `dist/`) — se hace a mano vía el hook `useRegisterSW` de
+`virtual:pwa-register/react`, tipado con `/// <reference types=
+"vite-plugin-pwa/react" />` en `vite-env.d.ts`.
+
+- [`src/components/UpdateBanner.tsx`](src/components/UpdateBanner.tsx): usa
+  `useRegisterSW()`; cuando hay un SW nuevo esperando (`needRefresh`), dibuja
+  una franja fija al pie ("Hay una versión nueva de Organizador" + Ahora no /
+  Actualizar) con los tokens del sistema (`--color-card`, `--color-moss`,
+  `shadow-float`). "Actualizar" llama `updateServiceWorker(true)`, que manda
+  el `postMessage({type:'SKIP_WAITING'})` que escucha `sw.ts` y, tras
+  `activate`, recarga solo — sin que el usuario tenga que cerrar la app.
+  "Ahora no" solo oculta el aviso (`setNeedRefresh(false)`); el SW sigue
+  esperando y se aplica en el próximo reload.
+- Montado en [`src/App.tsx`](src/App.tsx), **fuera** de `ProtectedRoute`: el
+  SW y su aviso no dependen de haber iniciado sesión (también corre en la
+  pantalla de login).
+- `render.yaml`: se sacó el header `no-cache` de `/registerSW.js` (ya no
+  existe ese archivo); `/sw.js` y `/manifest.json` siguen sin cachear.
 
 ### Frontend — Settings › Notificaciones
 
@@ -1356,6 +1380,21 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-24 — Service worker: actualización con aviso, no en silencio.
+  `registerType` de `autoUpdate` a **`prompt`**; `sw.ts` ganó un listener de
+  `message` para `SKIP_WAITING` (sin `skipWaiting()` automático en
+  `install`). Nuevo `UpdateBanner.tsx` (hook `useRegisterSW` de
+  `virtual:pwa-register/react`) muestra una franja fija al pie con
+  Actualizar/Ahora no cuando hay un SW nuevo esperando; montado en `App.tsx`
+  fuera de `ProtectedRoute` para que corra también en la pantalla de login.
+  `render.yaml` perdió el header de `/registerSW.js` (ese archivo ya no se
+  genera — el registro va empaquetado en el bundle, no como script aparte).
+  **Verificado en vivo:** build → cambio real → build de nuevo → mismo
+  `dist/` servido sin reiniciar el server ni cerrar la pestaña: al pedir
+  `registration.update()` aparece el SW nuevo en `waiting`, el banner se
+  dibuja (probado en modo oscuro, sobre la pantalla de login), y tocar
+  "Actualizar" deja el SW nuevo como `active`/`controller` con la página ya
+  recargada sola, sin `waiting` pendiente.
 - 2026-07-23 — Rediseño, **Fase 2** (ítem 6 de `PLAN_REDISEÑO.md`): **color
   propio por tema**, la única fase que toca el modelo de datos. Migración
   `temas.color` con paleta cerrada por `CHECK` (siete matices fríos en oklch,

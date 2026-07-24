@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { LocalReminderWatcher } from './components/LocalReminderWatcher'
 import { SyncEngine } from './components/SyncEngine'
 import { AppShell, AssistantRedirect } from './components/AppShell'
+import { UpdateBanner } from './components/UpdateBanner'
 import { HoyPage } from './pages/HoyPage'
 import { ItemsPage } from './pages/ItemsPage'
 import { SettingsPage } from './pages/SettingsPage'
@@ -12,6 +13,9 @@ import { RemindersPage } from './pages/RemindersPage'
 function App() {
   return (
     <AuthProvider>
+      {/* Fuera de ProtectedRoute a propósito: el SW y su aviso de actualización
+          no dependen de haber iniciado sesión (también aplica en /login). */}
+      <UpdateBanner />
       <ProtectedRoute>
         <SyncEngine />
         <LocalReminderWatcher />

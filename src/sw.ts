@@ -18,6 +18,15 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim())
 })
 
+// No hay skipWaiting() automático en 'install': con registerType 'prompt' el SW
+// nuevo se queda a propósito en estado "esperando" hasta que la UI (ver
+// UpdateBanner.tsx) avise al usuario y este confirme. Recién ahí
+// virtual:pwa-register/react manda este mensaje para pasar a 'activate' sin
+// tener que cerrar todas las pestañas.
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting()
+})
+
 interface PushPayload {
   title?: string
   body?: string

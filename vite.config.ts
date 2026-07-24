@@ -14,7 +14,9 @@ export default defineConfig({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.ts',
-      registerType: 'autoUpdate',
+      // 'prompt': el SW nuevo se instala y espera; UpdateBanner.tsx es quien
+      // decide cuándo avisar y disparar el update (nunca en silencio).
+      registerType: 'prompt',
       manifest: false,
       includeAssets: [
         'icon.svg',
