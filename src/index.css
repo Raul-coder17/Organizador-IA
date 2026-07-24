@@ -27,8 +27,8 @@
   --color-moss-ink: #eaf0ea;
   --color-moss-tint: #e3eae1;
   --color-rust: #9c3b22;
-  --color-gold: #b98530;
-  --color-slate: #7c8577;
+  --color-gold: #8c6424;
+  --color-slate: #666e62;
 
   /* Paleta de tema (Fase 2). Siete matices fríos en oklch, repartidos cada
      ~26° entre el verde-agua (168°) y el ciruela (325°) — el arco que queda
@@ -72,9 +72,9 @@
   --color-ink-mute: #71796f;
   --color-line: #2b322a;
   --color-line-soft: #222820;
-  --color-moss: #6f9873;
-  --color-moss-ink: #0e120c;
-  --color-moss-tint: #20291d;
+  --color-moss: #5b8aa6;
+  --color-moss-ink: #0c1518;
+  --color-moss-tint: #1c2624;
   --color-rust: #cc7458;
   --color-gold: #d3ab63;
   --color-slate: #939c90;

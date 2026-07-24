@@ -1632,6 +1632,30 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-24 — **D6** (`PLAN_REDISEÑO.md` §8): contraste AA en claro + nuevo
+  acento en oscuro. Dos cambios de color, ambos sólo en `src/index.css`:
+  - `gold` y `slate` en modo claro (`@theme`) bajaron de luminosidad en HSL
+    (mismo H/S) hasta pasar 4.5:1 contra `--color-paper`, el peor caso real
+    (más oscuro que `--color-card`, y donde vive `.sync-status`): `gold`
+    `#b98530→#8c6424` (2.83→**4.62**), `slate` `#7c8577→#666e62`
+    (3.34→**4.61**). Medido con un script Node reproducible (luminancia
+    relativa WCAG 2.1), no a ojo. Modo oscuro no se tocó en estos dos tokens.
+  - `moss` / `moss-tint` / `moss-ink` en `:root[data-theme="dark"]` pasaron de
+    verde a azul acero: `#5B8AA6` (antes `#6f9873`), texto `#0C1518` (antes
+    `#0e120c`), `moss-tint` `#1c2624` derivado mezclando ~14% del nuevo azul
+    con `--color-paper` — la misma proporción que ya daba el `moss-tint`
+    verde respecto a `moss` (verificado por regresión numérica contra el hex
+    viejo). Modo claro no se tocó: `moss` sigue verde ahí.
+  - Verificación visual: harness estático (`_accent-check.html`, servido
+    desde `public/` por el dev server y borrado después) que renderiza cada
+    uso real del token con las clases/CSS de producción — nav activo,
+    `side-nuevo`, `acceso--moss`, `btn-moss`, FAB de tab bar, checkbox
+    marcado, burbuja de chat del usuario (`bg-moss text-moss-ink`), focus
+    ring del swatch de tema, y `rem__notificado` — más el mismo harness en
+    claro como control de no-regresión. El azul lee bien en todos los casos;
+    el verde de claro queda idéntico al de antes.
+  - `npm run build` sin errores.
+
 - 2026-07-24 — Rediseño, **Fase 4** (ítem 14 de `PLAN_REDISEÑO.md`): **captura
   de item por foto** con Gemini Vision. Edge Function nueva
   `extract-from-photo` (mismo `gemini-2.5-flash` que el asistente —es

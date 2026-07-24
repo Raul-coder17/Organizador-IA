@@ -318,8 +318,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "package_devdependencies_eslint_js",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 52,
+      "community_name": "@eslint/js",
       "norm_label": "@eslint/js"
     },
     {
@@ -329,8 +329,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "eslint_js",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 52,
+      "community_name": "@eslint/js",
       "norm_label": "@eslint/js"
     },
     {
@@ -428,8 +428,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "package_devdependencies_eslint",
-      "community": 53,
-      "community_name": "eslint",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -439,8 +439,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "eslint",
-      "community": 53,
-      "community_name": "eslint",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -747,8 +747,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_app",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "app.tsx"
     },
     {
@@ -758,8 +758,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_app_app",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "app()"
     },
     {
@@ -791,8 +791,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_components_appshell_assistantredirect",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "assistantredirect()"
     },
     {
@@ -1011,8 +1011,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_itemform",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itemform.tsx"
     },
     {
@@ -1033,8 +1033,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_components_itemform_filaeditable",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "filaeditable"
     },
     {
@@ -1066,8 +1066,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_components_itemform_iconmas",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "iconmas()"
     },
     {
@@ -1077,8 +1077,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_components_itemform_tipos",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "tipos"
     },
     {
@@ -1088,8 +1088,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_components_itemform_prioridades",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "prioridades"
     },
     {
@@ -1110,8 +1110,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_itemlist",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemlist.tsx"
     },
     {
@@ -1121,8 +1121,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_components_itemlist_tipo_label",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "tipo_label"
     },
     {
@@ -1132,8 +1132,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_components_itemlist_prioridad_label",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "prioridad_label"
     },
     {
@@ -1154,8 +1154,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_components_itemlist_iconcampana",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "iconcampana()"
     },
     {
@@ -1165,8 +1165,8 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_components_itemlist_iconchevron",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "iconchevron()"
     },
     {
@@ -1176,8 +1176,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_components_itemlist_parselista",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "parselista()"
     },
     {
@@ -1187,8 +1187,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_components_itemlist_itemcontent",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemcontent()"
     },
     {
@@ -1198,8 +1198,8 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "src_components_itemlist_grupo",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "grupo"
     },
     {
@@ -1209,8 +1209,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "src_components_itemlist_armargrupos",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "armargrupos()"
     },
     {
@@ -1220,8 +1220,8 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "src_components_itemlist_itemlist",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "itemlist()"
     },
     {
@@ -1231,8 +1231,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "localreminderwatcher.tsx"
     },
     {
@@ -1242,8 +1242,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher_localreminderwatcher",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "localreminderwatcher()"
     },
     {
@@ -1429,8 +1429,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_protectedroute",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "protectedroute.tsx"
     },
     {
@@ -1440,8 +1440,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_protectedroute_protectedroute",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "protectedroute()"
     },
     {
@@ -1473,8 +1473,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_recordatoriorow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "recordatoriorow.tsx"
     },
     {
@@ -1484,8 +1484,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_components_recordatoriorow_recordatoriorow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "recordatoriorow()"
     },
     {
@@ -1517,8 +1517,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncsettings",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "syncsettings.tsx"
     },
     {
@@ -1528,8 +1528,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncsettings_syncsettings",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "syncsettings()"
     },
     {
@@ -1539,8 +1539,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "syncstatus.tsx"
     },
     {
@@ -1550,8 +1550,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncstatus_syncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "syncstatus()"
     },
     {
@@ -1561,8 +1561,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_updatebanner",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "updatebanner.tsx"
     },
     {
@@ -1572,8 +1572,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_components_updatebanner_updatebanner",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "updatebanner()"
     },
     {
@@ -1583,8 +1583,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_authcontext",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authcontext.tsx"
     },
     {
@@ -1594,8 +1594,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_authcontext_authcontextvalue",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authcontextvalue"
     },
     {
@@ -1616,8 +1616,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_authcontext_readcachedsession",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "readcachedsession()"
     },
     {
@@ -1627,8 +1627,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_lib_authcontext_leernombre",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "leernombre()"
     },
     {
@@ -1638,8 +1638,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_lib_authcontext_authprovider",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authprovider()"
     },
     {
@@ -1935,8 +1935,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_lib_buscar_itemcontema",
-      "community": 8,
-      "community_name": "Notificaciones push",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemcontema"
     },
     {
@@ -2056,8 +2056,8 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_lib_db_loadtemasfromcache",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "loadtemasfromcache()"
     },
     {
@@ -2067,8 +2067,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_db_loaditemsfromcache",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "loaditemsfromcache()"
     },
     {
@@ -2078,8 +2078,8 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_lib_db_loadrecordatoriosfromcache",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "loadrecordatoriosfromcache()"
     },
     {
@@ -2133,8 +2133,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_lib_db_putlocaltema",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocaltema()"
     },
     {
@@ -2155,8 +2155,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_lib_db_putlocalitem",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocalitem()"
     },
     {
@@ -2166,8 +2166,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatorio",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalrecordatorio()"
     },
     {
@@ -2177,8 +2177,8 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_db_putlocalrecordatorio",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocalrecordatorio()"
     },
     {
@@ -2188,8 +2188,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatoriosbyitem",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalrecordatoriosbyitem()"
     },
     {
@@ -2298,8 +2298,8 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "src_lib_db_ensurepersistentstorage",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "ensurepersistentstorage()"
     },
     {
@@ -2375,8 +2375,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_itemsheet",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemsheet.ts"
     },
     {
@@ -2386,8 +2386,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetapi",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemsheetapi"
     },
     {
@@ -2397,8 +2397,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetcontext",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemsheetcontext"
     },
     {
@@ -2408,8 +2408,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_itemsheet_useitemsheet",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "useitemsheet()"
     },
     {
@@ -2419,8 +2419,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_items",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "items.ts"
     },
     {
@@ -2551,8 +2551,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_recordatorios",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "recordatorios.ts"
     },
     {
@@ -2573,8 +2573,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_lib_recordatorios_joinrecordatoriosconitems",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "joinrecordatoriosconitems()"
     },
     {
@@ -2595,8 +2595,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estadorecordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -2606,8 +2606,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estado_label",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "estado_label"
     },
     {
@@ -2617,8 +2617,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_lib_recordatorios_tipo_label",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "tipo_label"
     },
     {
@@ -2628,8 +2628,8 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "src_lib_recordatorios_mismodia",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "mismodia()"
     },
     {
@@ -2639,8 +2639,8 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "src_lib_recordatorios_clasificar",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "clasificar()"
     },
     {
@@ -2672,8 +2672,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_lib_recordatorios_formatfechahora",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "formatfechahora()"
     },
     {
@@ -2683,8 +2683,8 @@
       "source_location": "L143",
       "_origin": "ast",
       "id": "src_lib_recordatorios_resumencontenido",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "resumencontenido()"
     },
     {
@@ -2892,8 +2892,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_repo",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "repo.ts"
     },
     {
@@ -2903,8 +2903,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_lib_repo_nowiso",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "nowiso()"
     },
     {
@@ -2914,8 +2914,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_lib_repo_enqueue",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "enqueue()"
     },
     {
@@ -2925,8 +2925,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_lib_repo_createtema",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "createtema()"
     },
     {
@@ -2936,8 +2936,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_lib_repo_updatetemacolor",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "updatetemacolor()"
     },
     {
@@ -2947,8 +2947,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_repo_item_editable",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "item_editable"
     },
     {
@@ -2958,8 +2958,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_repo_itempatch",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "itempatch()"
     },
     {
@@ -2969,8 +2969,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_lib_repo_createitem",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "createitem()"
     },
     {
@@ -2980,8 +2980,8 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_lib_repo_updateitem",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "updateitem()"
     },
     {
@@ -2991,8 +2991,8 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "src_lib_repo_deleteitem",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleteitem()"
     },
     {
@@ -3002,8 +3002,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_lib_repo_getrecordatorioforitem",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getrecordatorioforitem()"
     },
     {
@@ -3013,8 +3013,8 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "src_lib_repo_upsertrecordatorio",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "upsertrecordatorio()"
     },
     {
@@ -3024,8 +3024,8 @@
       "source_location": "L255",
       "_origin": "ast",
       "id": "src_lib_repo_deleterecordatoriosforitem",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleterecordatoriosforitem()"
     },
     {
@@ -3035,8 +3035,8 @@
       "source_location": "L269",
       "_origin": "ast",
       "id": "src_lib_repo_cambiarestado",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "cambiarestado()"
     },
     {
@@ -3046,8 +3046,8 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "marcarhecho()"
     },
     {
@@ -3057,8 +3057,8 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "src_lib_repo_marcarenviado",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "marcarenviado()"
     },
     {
@@ -3068,8 +3068,8 @@
       "source_location": "L313",
       "_origin": "ast",
       "id": "src_lib_repo_listrecordatoriosparadisparo",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "listrecordatoriosparadisparo()"
     },
     {
@@ -3090,8 +3090,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_supabase",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "supabase.ts"
     },
     {
@@ -3101,8 +3101,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_lib_supabase_supabase",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "supabase"
     },
     {
@@ -3178,8 +3178,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_lib_sync_hassyncsettled",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "hassyncsettled()"
     },
     {
@@ -3200,8 +3200,8 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "src_lib_sync_subscribelocalchange",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "subscribelocalchange()"
     },
     {
@@ -3211,8 +3211,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "src_lib_sync_emitlocalchange",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "emitlocalchange()"
     },
     {
@@ -3222,8 +3222,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_sync_syncstate",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "syncstate"
     },
     {
@@ -3266,8 +3266,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "src_lib_sync_getsyncstate",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "getsyncstate()"
     },
     {
@@ -3277,8 +3277,8 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesync",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "subscribesync()"
     },
     {
@@ -3431,8 +3431,8 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "src_lib_sync_forcesyncnow",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "forcesyncnow()"
     },
     {
@@ -3673,8 +3673,8 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_lib_synccore_formathacecuanto",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "formathacecuanto()"
     },
     {
@@ -3970,8 +3970,8 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_lib_temacolores_temacolorvar",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "temacolorvar()"
     },
     {
@@ -3981,8 +3981,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_temas",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "temas.ts"
     },
     {
@@ -4135,8 +4135,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_useaienabled",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "useaienabled.ts"
     },
     {
@@ -4146,8 +4146,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_useaienabled_readaienabledcache",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "readaienabledcache()"
     },
     {
@@ -4212,8 +4212,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "uselocalreminderwatcher.ts"
     },
     {
@@ -4223,8 +4223,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher_uselocalreminderwatcher",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "uselocalreminderwatcher()"
     },
     {
@@ -4256,8 +4256,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "usesyncstatus.ts"
     },
     {
@@ -4267,8 +4267,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus_usesyncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "usesyncstatus()"
     },
     {
@@ -4278,8 +4278,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "main.tsx"
     },
     {
@@ -4289,8 +4289,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_authpage",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authpage.tsx"
     },
     {
@@ -4300,8 +4300,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_pages_authpage_authpage",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authpage()"
     },
     {
@@ -4311,8 +4311,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_hoypage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "hoypage.tsx"
     },
     {
@@ -4322,8 +4322,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_hoypage_saludo",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "saludo()"
     },
     {
@@ -4333,8 +4333,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_pages_hoypage_fechalarga",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "fechalarga()"
     },
     {
@@ -4344,8 +4344,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_pages_hoypage_contarportema",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "contarportema()"
     },
     {
@@ -4355,8 +4355,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_pages_hoypage_hoypage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "hoypage()"
     },
     {
@@ -4366,8 +4366,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_itemspage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "itemspage.tsx"
     },
     {
@@ -4377,8 +4377,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtrotipo",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "filtrotipo"
     },
     {
@@ -4388,8 +4388,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtros_tipo",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "filtros_tipo"
     },
     {
@@ -4399,8 +4399,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_pages_itemspage_indexarrecordatorios",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "indexarrecordatorios()"
     },
     {
@@ -4410,8 +4410,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_pages_itemspage_itemspage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "itemspage()"
     },
     {
@@ -4421,8 +4421,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_reminderspage",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "reminderspage.tsx"
     },
     {
@@ -4432,8 +4432,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtro",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "filtro"
     },
     {
@@ -4443,8 +4443,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_pages_reminderspage_orden_grupos",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "orden_grupos"
     },
     {
@@ -4454,8 +4454,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_pages_reminderspage_titulo_grupo",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "titulo_grupo"
     },
     {
@@ -4465,8 +4465,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtros",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "filtros"
     },
     {
@@ -4476,8 +4476,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_pages_reminderspage_pasafiltro",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "pasafiltro()"
     },
     {
@@ -4487,8 +4487,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_pages_reminderspage_reminderspage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "reminderspage()"
     },
     {
@@ -4542,8 +4542,8 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "src_pages_settingspage_settingspage",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "settingspage()"
     },
     {
@@ -4817,8 +4817,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_types_database_recordatorioconitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "recordatorioconitem"
     },
     {
@@ -6665,8 +6665,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "diseno_brief",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "diseno_brief.md"
     },
     {
@@ -6786,8 +6786,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "mapa_proyecto",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "mapa_proyecto.md"
     },
     {
@@ -6797,8 +6797,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "mapa_proyecto_mapa_del_proyecto",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "mapa del proyecto"
     },
     {
@@ -6808,8 +6808,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "mapa_proyecto_qu\u00e9_es_el_proyecto",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "que es el proyecto"
     },
     {
@@ -6819,8 +6819,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "mapa_proyecto_estructura_de_carpetas_y_responsabilidad_de_cada_m\u00f3dulo",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "estructura de carpetas y responsabilidad de cada modulo"
     },
     {
@@ -6830,8 +6830,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "mapa_proyecto_src_lib_l\u00f3gica_de_dominio_y_offline",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "`src/lib/` \u2014 logica de dominio y offline"
     },
     {
@@ -6841,8 +6841,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "mapa_proyecto_src_components_y_src_pages",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "`src/components/` y `src/pages/`"
     },
     {
@@ -6852,8 +6852,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "mapa_proyecto_src_sw_ts",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "`src/sw.ts`"
     },
     {
@@ -6863,8 +6863,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "mapa_proyecto_supabase_functions_edge_functions_deno",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "`supabase/functions/` \u2014 edge functions (deno)"
     },
     {
@@ -6874,8 +6874,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "mapa_proyecto_supabase_migrations",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "`supabase/migrations/`"
     },
     {
@@ -6885,8 +6885,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "mapa_proyecto_diagramas",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 46,
+      "community_name": "6. \u00cdtems de trabajo, ordenados",
       "norm_label": "diagramas"
     },
     {
@@ -6896,8 +6896,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "mapa_proyecto_1_arquitectura_general",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 46,
+      "community_name": "6. \u00cdtems de trabajo, ordenados",
       "norm_label": "1. arquitectura general"
     },
     {
@@ -6907,8 +6907,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "mapa_proyecto_2_flujo_de_datos_offline",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 46,
+      "community_name": "6. \u00cdtems de trabajo, ordenados",
       "norm_label": "2. flujo de datos offline"
     },
     {
@@ -6918,8 +6918,8 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "mapa_proyecto_3_flujo_del_asistente_de_ia",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 46,
+      "community_name": "6. \u00cdtems de trabajo, ordenados",
       "norm_label": "3. flujo del asistente de ia"
     },
     {
@@ -6929,8 +6929,8 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "mapa_proyecto_4_flujo_de_notificaciones_local_vs_servidor_dedup",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 46,
+      "community_name": "6. \u00cdtems de trabajo, ordenados",
       "norm_label": "4. flujo de notificaciones (local vs. servidor + dedup)"
     },
     {
@@ -6940,8 +6940,8 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "mapa_proyecto_god_nodes_m\u00f3dulos_centrales_seg\u00fan_graphify",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "god nodes (modulos centrales segun graphify)"
     },
     {
@@ -6951,8 +6951,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "plan_redise\u00f1o",
-      "community": 30,
-      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "plan_rediseno.md"
     },
     {
@@ -7017,8 +7017,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_navegaci\u00f3n",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 48,
+      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
       "norm_label": "2. navegacion"
     },
     {
@@ -7028,8 +7028,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_1_qu\u00e9_cambia",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 48,
+      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
       "norm_label": "2.1 que cambia"
     },
     {
@@ -7039,8 +7039,8 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_2_el_punto_cr\u00edtico_el_prototipo_no_tiene_router",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 48,
+      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
       "norm_label": "2.2 el punto critico: el prototipo no tiene router"
     },
     {
@@ -7050,8 +7050,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_3_detalle_menor_a_reconciliar",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 48,
+      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
       "norm_label": "2.3 detalle menor a reconciliar"
     },
     {
@@ -7061,8 +7061,8 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 50,
+      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
       "norm_label": "3. sistema visual: \u00bfevoluciona o reemplaza?"
     },
     {
@@ -7072,8 +7072,8 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_1_evoluciona_continuidad_casi_total",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 50,
+      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
       "norm_label": "3.1 evoluciona. continuidad casi total."
     },
     {
@@ -7083,8 +7083,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_2_las_tres_desviaciones_reales_a_aprobar_6_d2",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 50,
+      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
       "norm_label": "3.2 las tres desviaciones reales (a aprobar, \u00a76-d2)"
     },
     {
@@ -7094,8 +7094,8 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_3_lo_que_el_sistema_visual_propuesto_no_cubre",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 50,
+      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
       "norm_label": "3.3 lo que el sistema visual propuesto no cubre"
     },
     {
@@ -7116,8 +7116,8 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 47,
+      "community_name": "Mapa del proyecto",
       "norm_label": "5. clasificacion: que se puede hacer ya, que no"
     },
     {
@@ -7127,8 +7127,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_1_implementable_directo_reorganizar_restylear_lo_que_ya_existe",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 47,
+      "community_name": "Mapa del proyecto",
       "norm_label": "5.1 implementable directo (reorganizar/restylear lo que ya existe)"
     },
     {
@@ -7138,8 +7138,8 @@
       "source_location": "L225",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_2_depende_de_features_que_todav\u00eda_no_existen",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 47,
+      "community_name": "Mapa del proyecto",
       "norm_label": "5.2 depende de features que todavia no existen"
     },
     {
@@ -7149,8 +7149,8 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_3_ambiguo_o_incompleto_en_la_propuesta",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 47,
+      "community_name": "Mapa del proyecto",
       "norm_label": "5.3 ambiguo o incompleto en la propuesta"
     },
     {
@@ -7160,8 +7160,8 @@
       "source_location": "L261",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_4_dos_detalles_t\u00e9cnicos_que_conviene_fijar_ahora",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 47,
+      "community_name": "Mapa del proyecto",
       "norm_label": "5.4 dos detalles tecnicos que conviene fijar ahora"
     },
     {
@@ -7171,8 +7171,8 @@
       "source_location": "L283",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "6. items de trabajo, ordenados"
     },
     {
@@ -7182,8 +7182,8 @@
       "source_location": "L288",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_0_base_nada_se_rompe_nada_cambia_de_lugar_hecha",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "fase 0 \u2014 base (nada se rompe, nada cambia de lugar) \u2014 \u2705 hecha"
     },
     {
@@ -7193,8 +7193,8 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_1_reestilado_y_reorganizaci\u00f3n_dentro_de_las_p\u00e1ginas_actuales_hecha",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "fase 1 \u2014 reestilado y reorganizacion dentro de las paginas actuales \u2014 \u2705 hecha"
     },
     {
@@ -7204,8 +7204,8 @@
       "source_location": "L355",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_2_modelo_de_datos_hecha",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "fase 2 \u2014 modelo de datos \u2014 \u2705 hecha"
     },
     {
@@ -7215,8 +7215,8 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_3_navegaci\u00f3n_el_bloque_riesgoso",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "fase 3 \u2014 navegacion (el bloque riesgoso)"
     },
     {
@@ -7226,8 +7226,8 @@
       "source_location": "L694",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_4_funciones_pendientes",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "fase 4 \u2014 funciones pendientes"
     },
     {
@@ -7237,8 +7237,8 @@
       "source_location": "L734",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_resumen_de_orden",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "resumen de orden"
     },
     {
@@ -7270,8 +7270,8 @@
       "source_location": "L789",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 51,
+      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
       "norm_label": "8. auditoria de contraste (item 2)"
     },
     {
@@ -7281,8 +7281,8 @@
       "source_location": "L795",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_el_resultado_inesperado_la_paleta_oscura_contrasta_mejor_que_la_clara",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 51,
+      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
       "norm_label": "el resultado inesperado: la paleta oscura contrasta mejor que la clara"
     },
     {
@@ -7292,9 +7292,20 @@
       "source_location": "L806",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_lo_que_esto_significa",
-      "community": 17,
-      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
+      "community": 51,
+      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
       "norm_label": "lo que esto significa"
+    },
+    {
+      "label": "D6 resuelta (2026-07-24)",
+      "file_type": "document",
+      "source_file": "PLAN_REDISE\u00d1O.md",
+      "source_location": "L837",
+      "_origin": "ast",
+      "id": "plan_redise\u00f1o_d6_resuelta_2026_07_24",
+      "community": 51,
+      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
+      "norm_label": "d6 resuelta (2026-07-24)"
     },
     {
       "label": "README.md",
@@ -7545,9 +7556,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 2,
       "norm_label": "organizador catalog-style mockup (html)",
-      "community_name": "Mapa del proyecto",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "dise_o_mockup_organizador_mockup"
     },
     {
@@ -7559,9 +7570,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 2,
       "norm_label": "app html shell (vite entry)",
-      "community_name": "Mapa del proyecto",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "index_page"
     },
     {
@@ -7573,9 +7584,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 2,
       "norm_label": "render static site blueprint (organizador-ia)",
-      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "render_service"
     },
     {
@@ -7657,9 +7668,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 37,
       "norm_label": "web locks api single-flight sync",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "@tailwindcss/vite",
       "id": "plan_offline_web_locks_singleflight"
     },
     {
@@ -7685,9 +7696,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 37,
       "norm_label": "sync trigger events (online/focus/visibility/interval/post-mutation)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "@tailwindcss/vite",
       "id": "plan_offline_sync_triggers"
     },
     {
@@ -7867,9 +7878,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 2,
       "norm_label": "catalog card visual design system",
-      "community_name": "Mapa del proyecto",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "plan_organizador_visual_redesign"
     },
     {
@@ -7881,9 +7892,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 2,
       "norm_label": "adoption of react-router-dom for /settings route",
-      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "plan_organizador_react_router_adoption"
     },
     {
@@ -7909,9 +7920,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 2,
       "norm_label": "render static site deployment",
-      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "plan_organizador_render_deploy"
     },
     {
@@ -8007,9 +8018,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 2,
       "norm_label": "marcarhecho",
-      "community_name": "ItemsPage.tsx",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "src_lib_recordatorios_marcarhecho"
     },
     {
@@ -8035,9 +8046,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 5,
       "norm_label": "listrecordatoriosparadisparo",
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community_name": "Recordatorios y watcher local",
       "id": "src_lib_recordatorios_listrecordatoriosparadisparo"
     },
     {
@@ -8077,9 +8088,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 37,
       "norm_label": "sync.ts (sync engine)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "@tailwindcss/vite",
       "id": "src_lib_sync_sync"
     },
     {
@@ -24873,6 +24884,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
+      "source_location": "L837",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
+      "target": "plan_redise\u00f1o_d6_resuelta_2026_07_24",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PLAN_REDISE\u00d1O.md",
       "source_location": "L795",
       "weight": 1.0,
       "_origin": "ast",
@@ -25572,5 +25594,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "fcef30824316bebd062ebf059d0bfddc84897d5b"
+  "built_at_commit": "bb1a0d010d36a6607d407b213cba85eb7c855d11"
 }

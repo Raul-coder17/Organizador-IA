@@ -833,3 +833,28 @@ si querés que quede versionado, decilo y lo muevo a `scripts/`.
 cambio chico de hex con impacto visual real en toda la app (prioridad media,
 prioridad baja, estado hecho y próximo). En oscuro ya pasan bien y no habría que
 tocarlos.
+
+### D6 resuelta (2026-07-24)
+
+El peor caso real no es `card`, es `paper` (más oscuro que `card` en claro, y es
+donde vive `.sync-status`): los valores candidatos de la tabla de arriba
+(`#946a26` / `#6c7468`) dan 4.21:1 sobre `paper`, por debajo de 4.5. Se
+recalculó oscureciendo cada token en HSL (mismo H y S, sólo baja la L) hasta
+pasar 4.5:1 contra `paper` con margen:
+
+| Token | Antes | Después | Contraste vs `paper` | Contraste vs `card` |
+|---|---|---|---|---|
+| `gold` | `#b98530` (2.83) | `#8c6424` | **4.62** | 4.85 |
+| `slate` | `#7c8577` (3.34) | `#666e62` | **4.61** | 4.87 |
+
+Medido con el mismo método del §8 (luminancia relativa WCAG 2.1 sobre sRGB).
+Sólo se tocó `@theme` (modo claro); `:root[data-theme="dark"]` no cambió en
+estos dos tokens.
+
+De paso, y como pieza separada de este mismo ítem: el acento verde (`moss` /
+`moss-tint` / `moss-ink`) se reemplazó por un azul acero **sólo en oscuro**
+(`#5B8AA6` / texto `#0C1518` / tint derivado con la misma proporción ~14% que
+ya usaba `moss-tint` respecto a `moss` sobre `paper`). En claro el verde queda
+intacto. Verificado con un harness estático que renderiza cada uso real del
+token (nav activo, botones sólidos, checkbox, burbuja de chat del usuario,
+focus ring, tab bar) — ver changelog en `PLAN_ORGANIZADOR.md`.
