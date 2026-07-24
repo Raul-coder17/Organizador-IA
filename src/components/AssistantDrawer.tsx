@@ -7,17 +7,18 @@ import { supabase } from '../lib/supabase'
 // que el CRUD manual): si la conexión se corta entre proponer y confirmar, el
 // cambio no se pierde, queda encolado.
 import {
-  createItem,
   createTema,
   deleteItem,
   deleteRecordatoriosForItem,
   updateItem,
   upsertRecordatorio,
 } from '../lib/repo'
+import { aplicarAccionCrear } from '../lib/accionesPropuestas'
 import { loadItemsFromCache, loadTemasFromCache } from '../lib/db'
 import { requestSync } from '../lib/sync'
 import { useSyncStatus } from '../lib/useSyncStatus'
-import { datetimeLocalToIso, formatFechaHora, isoToDatetimeLocal } from '../lib/recordatorios'
+import { datetimeLocalToIso, isoToDatetimeLocal } from '../lib/recordatorios'
+import { ProposedActionCard, type EstadoAccion, type PendingAction } from './ProposedActionCard'
 import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
 import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
 
@@ -38,17 +39,10 @@ import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } 
 // las propuestas y el cooldown. Antes, al ser una ruta, navegar afuera lo
 // desmontaba y se perdía todo.
 
-function contenidoTexto(item: Item): string {
-  return typeof item.contenido?.texto === 'string' ? item.contenido.texto : JSON.stringify(item.contenido)
-}
-
-// Estado de cada acción propuesta en el preview (una tarjeta por acción).
-type EstadoAccion = 'idle' | 'applying' | 'done' | 'cancelled' | 'error'
-interface PendingAction {
-  accion: AccionPropuesta
-  estado: EstadoAccion
-  error?: string
-}
+// `ProposedActionCard` (la tarjeta de preview) y los tipos del estado de cada
+// acción viven ahora en su propio archivo: la captura por foto (ítem 14) usa la
+// misma tarjeta, y el principio de "la IA nunca escribe sin confirmación" se
+// sostiene mejor con un solo preview compartido que con dos copias.
 
 function IconoChispa({ size = 18 }: { size?: number }) {
   return (
@@ -241,35 +235,22 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
     const existing = temas.find((t) => t.nombre.toLowerCase() === nombre.toLowerCase())
     if (existing) return existing.id
     const tema = await createTema(user!.id, nombre)
-    setTemas((prev) => [...prev, tema].sort((a, b) => a.nombre.localeCompare(b.nombre)))
+    sumarTema(tema)
     return tema.id
+  }
+
+  function sumarTema(tema: Tema) {
+    setTemas((prev) => [...prev, tema].sort((a, b) => a.nombre.localeCompare(b.nombre)))
   }
 
   // Aplica una acción propuesta contra Supabase (reusa el mismo CRUD manual, así
   // que respeta RLS). Soporta listas (líneas) y recordatorios.
   async function applyAction(accion: AccionPropuesta): Promise<void> {
     if (accion.tipo_accion === 'create') {
-      const tema_id = await resolveTemaId(accion.tema)
-      let contenido: Record<string, unknown>
-      if (accion.tipo === 'lista' && accion.lineas && accion.lineas.length > 0) {
-        contenido = {
-          items: accion.lineas.map((t) => ({ id: crypto.randomUUID(), texto: t, hecho: false })),
-        }
-      } else {
-        contenido = { texto: accion.contenido ?? '' }
-      }
-      const payload: ItemInsert = {
-        user_id: user!.id,
-        tema_id,
-        tipo: accion.tipo,
-        prioridad: accion.prioridad,
-        contenido,
-        origen: 'texto',
-      }
-      const created = await createItem(payload)
-      if (accion.recordatorio_fecha_hora) {
-        await upsertRecordatorio(created.id, datetimeLocalToIso(accion.recordatorio_fecha_hora))
-      }
+      // El "cómo se guarda un create propuesto" es compartido con la captura por
+      // foto: vive en lib/accionesPropuestas.ts. `origen: 'texto'` es lo que
+      // distingue en la base este camino del de la foto.
+      await aplicarAccionCrear(accion, user!.id, temas, 'texto', sumarTema)
       return
     }
 
@@ -523,161 +504,5 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
         <div className="asistente-drawer__body">{cuerpo}</div>
       </aside>
     </>
-  )
-}
-
-function EstadoBadge({ estado, errorMsg }: { estado: EstadoAccion; errorMsg?: string }) {
-  if (estado === 'done') return <p className="text-sm text-moss mt-3 font-mono">✓ Aplicado</p>
-  if (estado === 'cancelled') return <p className="text-sm text-slate mt-3 font-mono">Cancelado</p>
-  if (estado === 'error')
-    return <p className="text-sm text-rust mt-3">{errorMsg ?? 'No se pudo aplicar.'}</p>
-  return null
-}
-
-function ProposedActionCard({
-  accion,
-  estado,
-  errorMsg,
-  items,
-  onConfirm,
-  onCancel,
-}: {
-  accion: AccionPropuesta
-  estado: EstadoAccion
-  errorMsg?: string
-  items: Item[]
-  onConfirm: () => void
-  onCancel: () => void
-}) {
-  const target = 'item_id' in accion ? items.find((it) => it.id === accion.item_id) : undefined
-  const resuelto = estado === 'done' || estado === 'cancelled'
-
-  return (
-    <div className="bg-card border border-line border-l-4 border-l-moss rounded-[2px] p-4 text-left">
-      {accion.tipo_accion === 'create' && (
-        <>
-          <p className="text-sm font-medium text-ink mb-2">Vas a crear este item:</p>
-          <ul className="text-sm text-ink space-y-0.5">
-            <li>
-              <span className="text-ink-soft">Tipo:</span> {accion.tipo}
-            </li>
-            <li>
-              <span className="text-ink-soft">Tema:</span> {accion.tema ?? 'sin tema'}
-            </li>
-            <li>
-              <span className="text-ink-soft">Prioridad:</span> {accion.prioridad ?? 'sin prioridad'}
-            </li>
-            {accion.tipo === 'lista' && accion.lineas ? (
-              <li>
-                <span className="text-ink-soft">Líneas:</span>
-                <ul className="list-disc ml-5 mt-1">
-                  {accion.lineas.map((l, i) => (
-                    <li key={i}>{l}</li>
-                  ))}
-                </ul>
-              </li>
-            ) : (
-              <li className="whitespace-pre-wrap">
-                <span className="text-ink-soft">Contenido:</span> {accion.contenido}
-              </li>
-            )}
-            {accion.recordatorio_fecha_hora && (
-              <li>
-                <span className="text-ink-soft">Recordatorio:</span>{' '}
-                {formatFechaHora(accion.recordatorio_fecha_hora)}
-              </li>
-            )}
-          </ul>
-        </>
-      )}
-
-      {accion.tipo_accion === 'update' && (
-        <>
-          <p className="text-sm font-medium text-ink mb-2">Vas a editar este item:</p>
-          {target && (
-            <p className="text-sm text-ink-soft mb-2 whitespace-pre-wrap">Actual: {contenidoTexto(target)}</p>
-          )}
-          <ul className="text-sm text-ink space-y-0.5">
-            {accion.cambios.tipo && (
-              <li>
-                <span className="text-ink-soft">Nuevo tipo:</span> {accion.cambios.tipo}
-              </li>
-            )}
-            {'tema' in accion.cambios && (
-              <li>
-                <span className="text-ink-soft">Nuevo tema:</span> {accion.cambios.tema ?? 'sin tema'}
-              </li>
-            )}
-            {accion.cambios.prioridad && (
-              <li>
-                <span className="text-ink-soft">Nueva prioridad:</span> {accion.cambios.prioridad}
-              </li>
-            )}
-            {accion.cambios.contenido && (
-              <li className="whitespace-pre-wrap">
-                <span className="text-ink-soft">Nuevo contenido:</span> {accion.cambios.contenido}
-              </li>
-            )}
-            {accion.cambios.lineas_agregar && (
-              <li>
-                <span className="text-ink-soft">Agregar líneas:</span>{' '}
-                {accion.cambios.lineas_agregar.join(', ')}
-              </li>
-            )}
-            {accion.cambios.lineas_quitar && (
-              <li>
-                <span className="text-ink-soft">Quitar líneas:</span>{' '}
-                {accion.cambios.lineas_quitar.join(', ')}
-              </li>
-            )}
-            {accion.cambios.lineas_marcar_hechas && (
-              <li>
-                <span className="text-ink-soft">Marcar hechas:</span>{' '}
-                {accion.cambios.lineas_marcar_hechas.join(', ')}
-              </li>
-            )}
-            {accion.cambios.lineas_desmarcar && (
-              <li>
-                <span className="text-ink-soft">Desmarcar:</span>{' '}
-                {accion.cambios.lineas_desmarcar.join(', ')}
-              </li>
-            )}
-            {accion.cambios.recordatorio_fecha_hora && (
-              <li>
-                <span className="text-ink-soft">Recordatorio:</span>{' '}
-                {formatFechaHora(accion.cambios.recordatorio_fecha_hora)}
-              </li>
-            )}
-            {accion.cambios.quitar_recordatorio && (
-              <li>
-                <span className="text-ink-soft">Recordatorio:</span> quitar
-              </li>
-            )}
-          </ul>
-        </>
-      )}
-
-      {accion.tipo_accion === 'delete' && (
-        <>
-          <p className="text-sm font-medium text-ink mb-2">Vas a borrar este item:</p>
-          <p className="text-sm text-ink whitespace-pre-wrap">
-            {target ? contenidoTexto(target) : `Item ${accion.item_id}`}
-          </p>
-        </>
-      )}
-
-      {resuelto || estado === 'error' ? (
-        <EstadoBadge estado={estado} errorMsg={errorMsg} />
-      ) : (
-        <div className="flex items-center gap-4 mt-4">
-          <button onClick={onConfirm} disabled={estado === 'applying'} className="btn-moss">
-            {estado === 'applying' ? 'Aplicando…' : 'Confirmar'}
-          </button>
-          <button onClick={onCancel} disabled={estado === 'applying'} className="btn-ghost">
-            Cancelar
-          </button>
-        </div>
-      )}
-    </div>
   )
 }

@@ -692,6 +692,56 @@ body {
   color: var(--color-slate);
 }
 
+/* Modo foto del sheet (ítem 14). Una columna: miniatura, ayuda, acción.
+   Sin superficie propia — el sheet ya la aporta, igual que el ItemForm. */
+.foto-modo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Los hijos estiran (default): la tarjeta de preview y la miniatura tienen que
+     ocupar el ancho del sheet. Sólo los botones se achican a su contenido —
+     estirados a 540px se leerían como una barra, no como una acción. */
+}
+.foto-modo > button {
+  align-self: flex-start;
+  max-width: 100%;
+}
+/* La miniatura confirma QUÉ foto se está leyendo. Alto acotado y `contain`:
+   un recibo vertical y una tabla apaisada tienen que entrar los dos sin que el
+   sheet salte de altura, y recortar justo el renglón que importa sería peor
+   que dejar aire a los costados. */
+.foto-miniatura {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background: var(--color-card-2);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+}
+.foto-miniatura img {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 2px;
+}
+.foto-ayuda {
+  font-size: 13px;
+  color: var(--color-ink-soft);
+}
+/* "La foto no se guarda" es el compromiso de la función, no letra chica: va en
+   mono como el resto de los metadatos del sistema, y en ink-soft y no slate
+   porque slate a este tamaño no llega a AA en claro (§8). */
+.foto-nota {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+.foto-modo .item-table-wrap {
+  max-width: 100%;
+}
+
 /* Eliminar, sólo en modo edición: destructivo y separado del bloque
    Guardar/Cancelar del form. */
 .sheet-eliminar {

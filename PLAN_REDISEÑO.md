@@ -696,9 +696,13 @@ compatibilidad hacia atrás para las tablas guardadas como texto con pipes (§5.
 Persistencia de conversaciones (tabla + RLS + IndexedDB + outbox si va offline-first), títulos,
 borrado, "nueva conversación". Depende del ítem 10.
 
-**14. Captura por foto.** `[D]` · riesgo alto — *cierra una de las 4 pendientes*
-Gemini Vision + upload + preview de extracción con confirmación. Depende del ítem 11. El más
-grande de todos: es la única de las 4 pendientes que necesita backend nuevo de punta a punta.
+**14. Captura por foto.** `[D]` ✅ — *cierra una de las 4 pendientes*
+Gemini Vision + preview de extracción con confirmación. Edge Function `extract-from-photo`
+(mismo modelo y misma cuota que el asistente) + modo foto en el sheet del ítem 11.
+Sin upload: **la imagen no se guarda** — se achica, se reenvía a Gemini y se descarta; lo único
+que persiste es el item confirmado, con `origen = 'foto'`. La propuesta usa la misma forma que
+`proposeCreateItem` y por eso reusa la tarjeta de preview, que se extrajo a
+`ProposedActionCard.tsx`. Detalle completo en `PLAN_ORGANIZADOR.md` § *Fase 4*.
 
 ### Resumen de orden
 
@@ -707,7 +711,7 @@ Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
 Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] ✅ · 10 [N] ✅ · 11 [N] ✅  ← COMPLETA (D1 tomada)
-Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
+Fase 4:  14 [D] ✅ · 12 [D] · 13 [D]        → quedan 2 pendientes
 ```
 
 Un corte natural para evaluar: **después de la Fase 1** ya se ve gran parte del rediseño y está

@@ -1326,6 +1326,185 @@ del asistente** tampoco salen iguales.
   columna todavía sin crear, el insert de un tema nuevo falla en el servidor con
   error permanente y la op se queda trabada en el outbox.
 
+## Rediseño — Fase 4: captura de item por foto (ítem 14)
+
+Cierra una de las cuatro funciones pendientes del brief de diseño: sacarle una
+foto a algo del mundo real —una lista escrita a mano, un recibo, una tabla, un
+cartel— y que la app proponga un item ya estructurado.
+
+Es la única de las cuatro que necesitaba **backend nuevo de punta a punta**.
+
+### La foto no se guarda en ningún lado
+
+La decisión de fondo, y la que ordena todo el resto: **la imagen es un medio, no
+un dato**. No pasa por Supabase Storage, no se escribe en IndexedDB, no entra al
+outbox y no queda en un log. Se lee del `<input type="file">`, se achica en
+memoria, se manda a la Edge Function, se reenvía a Gemini y se descarta al
+terminar el request.
+
+Lo único que persiste es el item que el usuario confirmó — exactamente el mismo
+que si lo hubiera escrito a mano, con `items.origen = 'foto'` como única marca de
+por dónde entró. La columna existe desde el schema inicial justamente para esto.
+
+Consecuencia práctica: la función no agrega superficie de datos nueva. No hay
+cuota de storage que administrar, ni borrado de binarios, ni sincronización de
+archivos en una app que hoy sincroniza sólo texto.
+
+Y se lo dice en la pantalla donde se está por sacar la foto, no en letra chica en
+otro lado: *"La imagen se usa sólo para leerla y se descarta — no se guarda en tu
+cuenta."*
+
+### Edge Function `extract-from-photo`
+
+Mismo patrón de seguridad y de errores que `ai-assistant`:
+
+- JWT de usuario válido + `ai_enabled` con key guardada, o no hace nada.
+- La key se descifra en la función (AES-256-GCM, mismo mecanismo), nunca se
+  persiste ni vuelve al cliente. Se descifra **después** de validar el body: si
+  la imagen viene mal, ni se toca.
+- **No escribe nada.** Sólo propone. El item lo crea el frontend por `repo.ts`
+  cuando el usuario confirma, así que la escritura es offline-first como el resto.
+
+**Modelo: `gemini-2.5-flash`, el mismo que el asistente.** No hace falta un modelo
+aparte para visión — 2.5-flash es nativamente multimodal y acepta texto e imagen
+en el mismo `contents`; lo único que cambia es una part `inlineData` extra. Que
+sea el mismo importa: una sola cuota, un solo modelo que actualizar el día que
+Google retire este (ya pasó con `gemini-2.0-flash`).
+
+**La foto consume la misma cuota diaria que el chat.** Comparte el pre-flight de
+cuota aprendida (si ya sabemos que hoy se agotó, se corta sin mandar la imagen a
+ningún lado), el manejo adaptativo del 429 con `quotaValue`/`retryDelay` reales, y
+los mensajes en español ya existentes de `translateGeminiError`. No se inventó
+ningún texto nuevo para casos que el server ya sabía explicar.
+
+Diferencias con el asistente, y por qué:
+
+| | `ai-assistant` | `extract-from-photo` |
+|---|---|---|
+| Turnos | hasta 5 (function-calling) | **1** — la imagen entra, sale una propuesta |
+| Tools | 5 declaradas | ninguna |
+| Salida | texto + `functionCall` | JSON con `responseSchema` |
+| `maxOutputTokens` | 2048 | **4096** — transcribir una tabla entera es largo |
+| Acciones | N, de los 3 tipos | **1**, siempre `create` |
+
+`thinkingBudget: 0` en las dos, por el mismo motivo de siempre.
+
+### La propuesta tiene la misma forma que la del asistente
+
+`extract-from-photo` devuelve una `AccionCrear` idéntica a la que emite
+`proposeCreateItem`. No es cosmético: es lo que permite reusar **la misma tarjeta
+de preview**, que se mudó de adentro de `AssistantDrawer` a
+`src/components/ProposedActionCard.tsx`.
+
+El principio de "la IA nunca escribe sin confirmación" se sostiene mejor con un
+solo preview que los dos caminos comparten que con dos tarjetas parecidas que se
+van separando con el tiempo. Lo mismo con el guardado: el "cómo se convierte una
+acción propuesta en un item" vive ahora en `src/lib/accionesPropuestas.ts`, y el
+drawer pasó a llamarlo en vez de tener su copia.
+
+Único agregado al tipo: `columnas` / `filas` opcionales para el tipo `tabla`. La
+foto es el primer camino que puede detectar una tabla de verdad, y mostrarla
+**como tabla** en el preview es lo que hace que confirmar signifique algo — con el
+texto con pipes suelto no se ve si las columnas quedaron alineadas. El preview usa
+las mismas clases (`.item-table-wrap` / `.item-table`) con que `ItemList` dibuja
+una tabla guardada, así que se ve igual antes y después de guardar.
+
+### Estructurado en el preview, pipes al guardar
+
+Decisión que vale explicitar porque parece una inconsistencia y no lo es: la tabla
+se **propone** como `{columnas, filas}` pero se **guarda** como texto con pipes.
+
+`ItemList` sabe renderizar las dos formas, así que guardarla estructurada sería
+tentador. El problema es `ItemForm`: el editor de grilla es el **ítem 12** y
+todavía no existe. Una tabla guardada como jsonb abriría el textarea con el JSON
+crudo adentro y guardarla desde ahí la destrozaría. Con pipes, una tabla que salió
+de una foto se edita después igual que cualquier otra.
+
+Cuando llegue el ítem 12, `tablaATexto` en `accionesPropuestas.ts` es el único
+punto que hay que cambiar.
+
+### Cuando el modelo se contradice, mandan los datos
+
+`normalizarExtraccion` no confía en la etiqueta que eligió Gemini: si dice
+"tabla" pero no mandó filas, y sí mandó líneas, es una lista; si dijo "nota" pero
+mandó filas, es una tabla. Es preferible guardar bien lo que se leyó que respetar
+un tipo que quedó huérfano de contenido.
+
+Si no queda **nada** aprovechable (ni texto, ni líneas, ni filas) devuelve `null`,
+y eso es lo que dispara el mensaje de "no pude interpretar la foto" en vez de
+proponer un item vacío.
+
+Detalle chico que importa en un recibo: una celda vacía se conserva (perderla
+desalinearía la fila entera); lo que se descarta es la fila entera vacía.
+
+### Frontend: el modo foto del sheet
+
+"Desde una foto" era la opción 2 del menú de `NuevoItemSheet`, visible pero
+apagada desde el ítem 11. Ahora funciona.
+
+- `<input type="file" accept="image/*" capture="environment">` — en el teléfono
+  abre la cámara trasera; en desktop el atributo se ignora y queda el selector de
+  archivos. El input no se ve nunca: lo dispara el botón.
+- **La foto se achica antes de mandarla**: lado mayor a 1600px, JPEG q0.82, con un
+  canvas. Importa por tres motivos a la vez — el body de una Edge Function tiene
+  tope, base64 infla un 33%, y Gemini cobra la imagen por tokens. A 1600px un
+  recibo o una lista a mano se siguen leyendo bien. Si el navegador no puede
+  redimensionar, se manda el original: mejor una foto grande que una función que
+  no anda.
+- Máquina de estados chica y explícita —`elegir → analizando → propuesta →
+  editando`— porque el paso de "analizando" a "propuesta" es justo donde la app
+  promete que todavía no guardó nada, y con banderas sueltas ese punto se difumina.
+- **Editar antes de guardar**: la propuesta se abre en el `ItemForm` de siempre
+  con los campos ya cargados, vía un `borrador` que el form trata como creación
+  (no tiene id, no existe en ningún lado). Cancelar desde ahí no deja rastro. El
+  `origen` sigue siendo `'foto'` aunque el usuario corrija todo: lo que la columna
+  registra es de dónde salió el contenido, no quién lo tocó último.
+- **Cancelar vuelve a "elegir foto", no cierra el sheet**: lo más probable después
+  de "no, esto no es lo que quería" es sacar otra foto, no empezar de cero.
+
+### Offline y IA apagada
+
+La opción queda deshabilitada cuando `!online || aiEnabled === false`, y —mismo
+criterio de siempre— **dice por qué**, en el `title` y en la propia descripción de
+la opción, en vez de esconderla o dejarla muerta:
+
+- sin red → *"No hay conexión — leer una foto no está disponible ahora mismo."*
+- IA apagada → *"Activá la IA en Ajustes para leer items desde una foto"*
+
+Con red de seguridad en `handleFoto`: si la señal se cae entre que se abrió el
+modo foto y se eligió la imagen, se corta ahí en vez de mandar la llamada y
+mostrar un error de red genérico. Es el mismo patrón que `handleSend` del
+asistente.
+
+Una asimetría deliberada: la **lectura** necesita red (es Gemini), pero la
+**escritura** al confirmar no — pasa por `repo.ts`, así que si la conexión se cae
+entre la propuesta y el confirmar, el item se guarda local y sube después.
+
+### Verificación
+
+- `npm run build` sin errores. `npm run lint` con **0 errores** (los 2 warnings
+  son previos, de `PushSettings.tsx` y `AuthContext.tsx`, que esta fase no tocó).
+- `npx deno test supabase/functions/` → **30 tests OK**, 22 nuevos para la lógica
+  pura de la extracción: parseo del JSON (pelado, en bloque markdown, embebido
+  entre texto, basura), las cinco reglas de coherencia tipo↔datos, celdas vacías
+  que no desalinean, tipo y prioridad inválidos, y el caso "no se pudo leer" que
+  devuelve `null`.
+- **Visual, con el harness de CSS compilado** (no puedo autenticarme): las siete
+  pantallas del flujo —menú con la foto activa, menú sin conexión, elegir foto,
+  error de lectura, propuesta de tabla, propuesta de lista, analizando— en
+  **desktop y 375px, claro y oscuro**. Sin desborde horizontal a 375px
+  (`scrollWidth === innerWidth`) y la tabla del preview entra sin necesitar su
+  scroll propio. Sin errores de consola; la app real carga limpia hasta `AuthPage`.
+- Ajuste hecho **a partir de mirarlo**: `.foto-modo` arrancó con
+  `align-items: flex-start` y eso encogía la tarjeta de preview al ancho de su
+  contenido. Ahora estiran todos los hijos y sólo los botones se achican — un
+  botón estirado a 540px se lee como una barra, no como una acción.
+- **Pendiente de tu prueba en vivo** (requiere tu sesión, tu key de Gemini y la
+  función desplegada): sacar/subir una foto real de un recibo, una lista escrita a
+  mano y una tabla, y confirmar que la extracción y el preview funcionan.
+- **⚠️ Orden de despliegue:** la Edge Function va **antes** que el frontend. Con
+  la función sin desplegar, "Desde una foto" se ve habilitada y falla al invocar.
+
 ## Deploy
 
 ### GitHub
@@ -1379,6 +1558,22 @@ desactivarla desde ahí.) El resto —recordatorios, cron, envío— ya está de
 del servidor y no depende del dominio del frontend.
 
 ## Changelog
+
+- 2026-07-24 — Rediseño, **Fase 4** (ítem 14 de `PLAN_REDISEÑO.md`): **captura
+  de item por foto** con Gemini Vision. Edge Function nueva
+  `extract-from-photo` (mismo `gemini-2.5-flash` que el asistente —es
+  multimodal, no hace falta otro modelo—, misma cuota diaria, mismo pre-flight,
+  mismo manejo del 429 y los mismos mensajes en español), salida estructurada
+  con `responseSchema` y normalización defensiva que hace mandar a los datos
+  sobre la etiqueta del tipo. **La imagen no se guarda en ningún lado**: se
+  achica en el cliente (1600px / JPEG 0.82), se reenvía y se descarta; lo único
+  que persiste es el item confirmado, con `origen = 'foto'`. La propuesta viaja
+  con la MISMA forma que `proposeCreateItem`, así que reusa la tarjeta de
+  preview —extraída a `ProposedActionCard.tsx`— y el guardado compartido
+  (`lib/accionesPropuestas.ts`). "Desde una foto" deshabilitada sin red o con la
+  IA apagada, diciendo cuál de las dos. 22 tests nuevos (30 en total en
+  `supabase/functions/`). Verificado en claro/oscuro × desktop/375px con el
+  harness. Falta la prueba en vivo con fotos reales.
 
 - 2026-07-24 — Service worker: actualización con aviso, no en silencio.
   `registerType` de `autoUpdate` a **`prompt`**; `sw.ts` ganó un listener de

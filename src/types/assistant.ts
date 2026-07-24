@@ -12,6 +12,13 @@ export interface AccionCrear {
   contenido?: string
   // Para tipo 'lista': cada string es una línea marcable.
   lineas?: string[]
+  // Para tipo 'tabla': encabezados y filas ya separados en celdas. Los emite hoy
+  // sólo la extracción por foto (ítem 14) — el asistente sigue proponiendo las
+  // tablas como texto con pipes en `contenido`, y las dos formas conviven porque
+  // `ItemList` ya sabe leer las dos. Son opcionales: nada que consuma una
+  // AccionCrear se rompe si no vienen.
+  columnas?: string[]
+  filas?: string[][]
   // Fecha/hora local ingenua ("YYYY-MM-DDTHH:mm"); se convierte a ISO/UTC con la
   // zona del navegador al confirmar (igual que el form manual).
   recordatorio_fecha_hora?: string
@@ -65,6 +72,21 @@ export interface AssistantResponse {
   respuesta_texto: string
   // El asistente puede proponer varias acciones en un mismo turno.
   acciones_propuestas?: AccionPropuesta[]
+  rate_limit?: RateLimit
+  usage?: AssistantUsage
+}
+
+// Respuesta de la Edge Function `extract-from-photo` (ítem 14). Misma familia
+// que `AssistantResponse` —comparte cuota, rate limit y mensajes en español—,
+// pero una foto propone UNA acción y siempre de tipo `create`, así que el campo
+// es singular y con el tipo estrecho: la tarjeta de preview es la misma, el
+// resto del flujo no tiene por qué contemplar updates ni deletes que no existen.
+//
+// `accion_propuesta` ausente = la foto no se pudo interpretar (o se agotó la
+// cuota): en ese caso `respuesta_texto` trae el motivo, ya en español.
+export interface PhotoExtractResponse {
+  respuesta_texto: string
+  accion_propuesta?: AccionCrear
   rate_limit?: RateLimit
   usage?: AssistantUsage
 }

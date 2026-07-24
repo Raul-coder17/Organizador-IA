@@ -1,8 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { deleteItem } from '../lib/repo'
 import { loadTemasFromCache } from '../lib/db'
 import { emitLocalChange, subscribeSyncSettled } from '../lib/sync'
+import { useSyncStatus } from '../lib/useSyncStatus'
+import { useAiEnabled } from '../lib/useAiEnabled'
+import { aplicarAccionCrear, borradorDeAccionCrear, type BorradorItem } from '../lib/accionesPropuestas'
+import { extraerDeFoto, prepararFoto } from '../lib/fotoItem'
+import { ProposedActionCard, type EstadoAccion } from './ProposedActionCard'
+import type { AccionCrear, AssistantUsage } from '../types/assistant'
 import type { Item, Tema } from '../types/database'
 import { ItemForm } from './ItemForm'
 
@@ -21,7 +27,7 @@ import { ItemForm } from './ItemForm'
 // al instante — offline incluido, sin esperar a que un ciclo de sync settle. Es
 // lo que antes hacía el `onSaved` directo del form inline en la Biblioteca.
 
-type Vista = 'menu' | 'form'
+type Vista = 'menu' | 'form' | 'foto'
 
 interface NuevoItemSheetProps {
   open: boolean
@@ -31,6 +37,7 @@ interface NuevoItemSheetProps {
    *  cambiar de ítem a editar). */
   formKey: number
   onElegirEscribir: () => void
+  onElegirFoto: () => void
   onPedirIA: () => void
   /** Escape, click en el telón o la X: cierra pero NO resetea (preserva el
    *  borrador, igual que el drawer). */
@@ -73,20 +80,58 @@ function IconoChispa() {
   )
 }
 
+// Fases del modo foto. Es una máquina de estados chica y explícita a propósito:
+// el paso de "analizando" a "propuesta" es el punto donde la app promete que
+// nada se guardó todavía, y con banderas sueltas ese punto se difumina.
+//
+//   elegir     → esperando que se saque/elija la foto
+//   analizando → la foto está en camino a Gemini
+//   propuesta  → llegó la lectura, se muestra el preview para confirmar
+//   editando   → el usuario quiso corregirla antes de guardar (ItemForm)
+type FaseFoto = 'elegir' | 'analizando' | 'propuesta' | 'editando'
+
 export function NuevoItemSheet({
   open,
   vista,
   editingItem,
   formKey,
   onElegirEscribir,
+  onElegirFoto,
   onPedirIA,
   onCerrarSuave,
   onResuelto,
 }: NuevoItemSheetProps) {
   const { user } = useAuth()
+  const { online } = useSyncStatus()
+  const aiEnabled = useAiEnabled()
   const [temas, setTemas] = useState<Tema[]>([])
   const [eliminando, setEliminando] = useState(false)
   const [errorEliminar, setErrorEliminar] = useState<string | null>(null)
+
+  // --- Modo foto (ítem 14) -------------------------------------------------
+  const fileRef = useRef<HTMLInputElement>(null)
+  const [fase, setFase] = useState<FaseFoto>('elegir')
+  const [miniatura, setMiniatura] = useState<string | null>(null)
+  const [propuesta, setPropuesta] = useState<AccionCrear | null>(null)
+  const [resumen, setResumen] = useState<string | null>(null)
+  const [estadoAccion, setEstadoAccion] = useState<EstadoAccion>('idle')
+  const [errorFoto, setErrorFoto] = useState<string | null>(null)
+  const [borrador, setBorrador] = useState<BorradorItem | null>(null)
+  const [usoIA, setUsoIA] = useState<AssistantUsage | null>(null)
+
+  // Reset del modo foto cuando el sheet se resuelve (guardar/cancelar) o cambia
+  // de ítem: `formKey` es la misma señal que ya usa el `ItemForm` para volver a
+  // arrancar limpio, así que la foto se cuelga de ella en vez de inventar otra.
+  useEffect(() => {
+    setFase('elegir')
+    setMiniatura(null)
+    setPropuesta(null)
+    setResumen(null)
+    setEstadoAccion('idle')
+    setErrorFoto(null)
+    setBorrador(null)
+    if (fileRef.current) fileRef.current.value = ''
+  }, [formKey])
 
   // Los temas salen del espejo local (como el resto de la app) y se refrescan
   // cuando el sync avisa. Los cambios propios del form (tema creado / recoloreado)
@@ -154,7 +199,108 @@ export function NuevoItemSheet({
     }
   }
 
-  const titulo = editingItem ? 'Editar ítem' : 'Nuevo ítem'
+  // --- Modo foto: handlers -------------------------------------------------
+
+  // La foto elegida (o recién sacada). Se achica en memoria, se manda, y el
+  // `File` queda libre: no se guarda en ningún lado, ni acá ni en el server.
+  async function handleFoto(file: File | undefined) {
+    if (!file) return
+
+    // Red de seguridad: el botón ya está deshabilitado sin conexión, pero si la
+    // señal se cae entre que se abrió el modo foto y se eligió la imagen,
+    // cortamos acá en vez de mandar la llamada y mostrar un error de red.
+    if (!navigator.onLine) {
+      setErrorFoto('No hay conexión — leer una foto no está disponible ahora mismo.')
+      return
+    }
+
+    setErrorFoto(null)
+    setPropuesta(null)
+    setResumen(null)
+    setEstadoAccion('idle')
+    setFase('analizando')
+
+    try {
+      const foto = await prepararFoto(file)
+      setMiniatura(foto.dataUrl)
+      const data = await extraerDeFoto(foto, temas)
+
+      if (data.usage) setUsoIA(data.usage)
+
+      if (!data.accion_propuesta) {
+        // Gemini contestó pero no hay item: el motivo (imagen ilegible, cuota
+        // agotada, rate limit) ya viene explicado en español desde el server.
+        setErrorFoto(data.respuesta_texto)
+        setFase('elegir')
+        return
+      }
+
+      setPropuesta(data.accion_propuesta)
+      setResumen(data.respuesta_texto)
+      setFase('propuesta')
+    } catch (err) {
+      setErrorFoto(err instanceof Error ? err.message : 'No se pudo leer la foto. Intentá de nuevo.')
+      setFase('elegir')
+    } finally {
+      // El input se limpia siempre: sin esto, volver a elegir el MISMO archivo
+      // no dispara `change` y la reintentada no haría nada.
+      if (fileRef.current) fileRef.current.value = ''
+    }
+  }
+
+  // Confirmar: recién acá se escribe algo. Pasa por `repo.ts` como todo el resto,
+  // así que es offline-first — si la conexión se cortó entre la lectura y el
+  // confirmar, el item se guarda local y sube después.
+  async function confirmarPropuesta() {
+    if (!propuesta || !user) return
+    setEstadoAccion('applying')
+    try {
+      await aplicarAccionCrear(propuesta, user.id, temas, 'foto', handleTemaCreated)
+      setEstadoAccion('done')
+      emitLocalChange()
+      onResuelto()
+    } catch (err) {
+      setErrorFoto(err instanceof Error ? err.message : 'No se pudo guardar el item.')
+      setEstadoAccion('error')
+    }
+  }
+
+  // Editar antes de guardar: la propuesta se abre en el `ItemForm` de siempre
+  // como una creación con los campos ya cargados. Sigue sin haberse guardado
+  // nada — cancelar desde el form no deja rastro.
+  function editarPropuesta() {
+    if (!propuesta) return
+    setBorrador(borradorDeAccionCrear(propuesta, 'foto'))
+    setFase('editando')
+  }
+
+  // Descartar la lectura y volver a la pantalla de elegir foto, sin cerrar el
+  // sheet: lo más probable después de un "no, esto no es lo que quería" es sacar
+  // otra foto, no empezar todo de nuevo.
+  function descartarPropuesta() {
+    setPropuesta(null)
+    setResumen(null)
+    setMiniatura(null)
+    setEstadoAccion('idle')
+    setErrorFoto(null)
+    setFase('elegir')
+  }
+
+  const titulo = editingItem
+    ? 'Editar ítem'
+    : vista === 'foto'
+      ? fase === 'editando'
+        ? 'Revisar antes de guardar'
+        : 'Desde una foto'
+      : 'Nuevo ítem'
+
+  // La foto necesita red sí o sí (la lectura la hace Gemini) y la IA activada.
+  // Mismo criterio que el asistente: se dice POR QUÉ no se puede, en vez de
+  // esconder la opción o dejarla muerta sin explicación.
+  const fotoDeshabilitada = !online || aiEnabled === false
+  const motivoFotoOff = !online
+    ? 'No hay conexión — leer una foto no está disponible ahora mismo.'
+    : 'Activá la IA en Ajustes para leer items desde una foto'
 
   return (
     <>
@@ -190,22 +336,27 @@ export function NuevoItemSheet({
                 </span>
               </button>
 
-              {/* Visible pero apagada: la captura por foto es el ítem 14 y no
-                  existe. Mismo criterio que el buscador (ítem 7) y el FOTO de Hoy
-                  (ítem 8): se muestra el lugar de la función y se dice por qué no
-                  se puede tocar todavía, en vez de esconderla. */}
+              {/* La captura por foto (ítem 14). Sigue el mismo criterio de
+                  siempre cuando no se puede usar: se muestra el lugar de la
+                  función y se dice POR QUÉ está apagada —sin red o sin IA—, en
+                  vez de esconderla o dejarla muerta sin explicación. */}
               <button
                 type="button"
-                className="sheet-opcion sheet-opcion--off"
-                disabled
-                title="La captura por foto todavía no está construida"
+                className={`sheet-opcion${fotoDeshabilitada ? ' sheet-opcion--off' : ''}`}
+                onClick={onElegirFoto}
+                disabled={fotoDeshabilitada}
+                title={fotoDeshabilitada ? motivoFotoOff : undefined}
               >
                 <span className="sheet-opcion__icon">
                   <IconoFoto />
                 </span>
                 <span className="sheet-opcion__texto">
                   <span className="sheet-opcion__label">Desde una foto</span>
-                  <span className="sheet-opcion__desc">Todavía no está construida — llega más adelante.</span>
+                  <span className="sheet-opcion__desc">
+                    {fotoDeshabilitada
+                      ? motivoFotoOff
+                      : 'Sacale una foto y te propone el ítem para revisar.'}
+                  </span>
                 </span>
               </button>
 
@@ -219,6 +370,83 @@ export function NuevoItemSheet({
                 </span>
               </button>
             </div>
+          ) : vista === 'foto' && fase !== 'editando' ? (
+            <div className="foto-modo">
+              {/* El input real no se ve nunca: lo dispara el botón de abajo.
+                  `capture="environment"` hace que en el teléfono se abra
+                  directo la cámara trasera; en desktop el atributo se ignora y
+                  queda el selector de archivos de siempre. */}
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="sr-only"
+                onChange={(e) => handleFoto(e.target.files?.[0])}
+              />
+
+              {miniatura && (
+                <div className="foto-miniatura">
+                  <img src={miniatura} alt="La foto que se está leyendo" />
+                </div>
+              )}
+
+              {fase === 'elegir' && (
+                <>
+                  <p className="foto-ayuda">
+                    Sacale una foto a una lista escrita a mano, un recibo, una tabla o un cartel.
+                    Te propone un ítem y lo revisás antes de guardar.
+                  </p>
+                  {errorFoto && <p className="text-sm text-rust">{errorFoto}</p>}
+                  <button
+                    type="button"
+                    className="btn-moss"
+                    onClick={() => fileRef.current?.click()}
+                    disabled={fotoDeshabilitada}
+                  >
+                    {miniatura ? 'Probar con otra foto' : 'Sacar o elegir una foto'}
+                  </button>
+                  {/* La foto no se guarda: se dice acá, donde se está por
+                      sacarla, y no en un texto legal en otro lado. */}
+                  <p className="foto-nota">
+                    La imagen se usa sólo para leerla y se descarta — no se guarda en tu cuenta.
+                  </p>
+                </>
+              )}
+
+              {fase === 'analizando' && (
+                <p className="text-sm text-ink-soft">Leyendo la foto…</p>
+              )}
+
+              {fase === 'propuesta' && propuesta && (
+                <>
+                  {resumen && <p className="text-sm text-ink">{resumen}</p>}
+                  {errorFoto && <p className="text-sm text-rust">{errorFoto}</p>}
+                  {/* Misma tarjeta de preview que el asistente: nada se guarda
+                      hasta que se confirma acá. */}
+                  <ProposedActionCard
+                    accion={propuesta}
+                    estado={estadoAccion}
+                    errorMsg={errorFoto ?? undefined}
+                    items={[]}
+                    confirmLabel="Guardar item"
+                    onConfirm={confirmarPropuesta}
+                    onCancel={descartarPropuesta}
+                  />
+                  {estadoAccion === 'idle' && (
+                    <button type="button" className="link-underline text-sm" onClick={editarPropuesta}>
+                      Editar antes de guardar
+                    </button>
+                  )}
+                </>
+              )}
+
+              {usoIA?.daily_quota != null && (
+                <p className="text-xs text-slate text-right font-mono">
+                  {usoIA.used_today ?? 0} de {usoIA.daily_quota} mensajes de IA usados hoy
+                </p>
+              )}
+            </div>
           ) : (
             <>
               <ItemForm
@@ -226,6 +454,7 @@ export function NuevoItemSheet({
                 userId={user.id}
                 temas={temas}
                 editingItem={editingItem}
+                borrador={borrador}
                 onSaved={handleSaved}
                 onCancel={onResuelto}
                 onTemaCreated={handleTemaCreated}

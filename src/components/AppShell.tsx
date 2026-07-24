@@ -268,7 +268,7 @@ export function AppShell() {
   // nuevo cuando toca resetear o al cambiar de ítem a editar.
   const [sheetMontado, setSheetMontado] = useState(false)
   const [sheetAbierto, setSheetAbierto] = useState(false)
-  const [sheetVista, setSheetVista] = useState<'menu' | 'form'>('menu')
+  const [sheetVista, setSheetVista] = useState<'menu' | 'form' | 'foto'>('menu')
   const [sheetEditando, setSheetEditando] = useState<Item | null>(null)
   const [sheetFormKey, setSheetFormKey] = useState(0)
 
@@ -302,6 +302,7 @@ export function AppShell() {
   }, [])
 
   const elegirEscribir = useCallback(() => setSheetVista('form'), [])
+  const elegirFoto = useCallback(() => setSheetVista('foto'), [])
   const cerrarSheetSuave = useCallback(() => setSheetAbierto(false), [])
 
   // Cancelar explícito o guardar/borrar con éxito: cerrar Y limpiar.
@@ -510,6 +511,7 @@ export function AppShell() {
           editingItem={sheetEditando}
           formKey={sheetFormKey}
           onElegirEscribir={elegirEscribir}
+          onElegirFoto={elegirFoto}
           onPedirIA={pedirIA}
           onCerrarSuave={cerrarSheetSuave}
           onResuelto={resolverSheet}
