@@ -197,20 +197,25 @@ body {
   background: var(--color-moss-tint);
   color: var(--color-ink);
 }
+/* <button> desde el ítem 11 (abre el sheet): de ahí el ancho, el borde y el
+   cursor que un <a> no necesitaba. */
 .side-nuevo {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  width: 100%;
   padding: 11px;
   background: var(--color-moss);
   color: var(--color-moss-ink);
+  border: none;
   border-radius: 3px;
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-decoration: none;
+  cursor: pointer;
 }
 .side-nuevo:hover {
   filter: brightness(1.08);
@@ -412,6 +417,7 @@ body {
   width: 52px;
   height: 52px;
   margin-top: -22px;
+  padding: 0;
   border-radius: 50%;
   background: var(--color-moss);
   color: var(--color-moss-ink);
@@ -420,6 +426,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .fab-asistente {
   position: fixed;
@@ -552,6 +559,163 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .drawer-overlay,
   .asistente-drawer {
+    transition: none;
+  }
+}
+
+/* --- Sheet "+ Nuevo ítem": modal (≥900px) / bottom-sheet (<900px) (ítem 11) - */
+/* Reusa el telón `.drawer-overlay` del ítem 10 y el mismo criterio de montaje.
+   Ancho: modal centrado (~540px). Angosto: sube desde abajo. */
+.nuevo-sheet {
+  position: fixed;
+  z-index: 31;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-paper);
+  box-shadow: var(--shadow-float);
+  top: 50%;
+  left: 50%;
+  width: min(540px, calc(100% - 32px));
+  max-height: min(88dvh, 760px);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  transform: translate(-50%, -50%) scale(0.98);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0s linear 0.18s;
+}
+.nuevo-sheet--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+@media (max-width: 899px) {
+  /* Angosto: bottom-sheet que sube desde abajo, borde superior redondeado.
+     Se anima con translate, no con opacidad. Se re-afirma `--open` acá adentro
+     por la misma razón de especificidad que el drawer del asistente. */
+  .nuevo-sheet {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 92dvh;
+    border: none;
+    border-top: 1px solid var(--color-line);
+    border-radius: 14px 14px 0 0;
+    opacity: 1;
+    transform: translateY(100%);
+    transition:
+      transform 0.24s ease,
+      visibility 0s linear 0.24s;
+  }
+  .nuevo-sheet--open {
+    transform: none;
+    transition: transform 0.24s ease;
+  }
+}
+.nuevo-sheet__head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 15px 16px 15px 20px;
+  border-bottom: 1px solid var(--color-line);
+}
+.nuevo-sheet__title {
+  font-family: var(--font-fraunces);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--color-ink);
+}
+.nuevo-sheet__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Menú inicial de 3 opciones */
+.sheet-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sheet-opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  color: var(--color-ink);
+  font: inherit;
+  cursor: pointer;
+}
+.sheet-opcion:hover:not(:disabled) {
+  border-color: var(--color-moss);
+}
+.sheet-opcion__icon {
+  flex: none;
+  display: flex;
+  margin-top: 1px;
+  color: var(--color-moss);
+}
+.sheet-opcion__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sheet-opcion__label {
+  font-weight: 600;
+  font-size: 14px;
+}
+.sheet-opcion__desc {
+  font-size: 12.5px;
+  color: var(--color-ink-soft);
+}
+.sheet-opcion--off {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.sheet-opcion--off .sheet-opcion__icon {
+  color: var(--color-slate);
+}
+
+/* Eliminar, sólo en modo edición: destructivo y separado del bloque
+   Guardar/Cancelar del form. */
+.sheet-eliminar {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-line-soft);
+}
+.btn-eliminar {
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--color-rust);
+  cursor: pointer;
+}
+.btn-eliminar:hover:not(:disabled) {
+  text-decoration: underline;
+}
+.btn-eliminar:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nuevo-sheet {
     transition: none;
   }
 }

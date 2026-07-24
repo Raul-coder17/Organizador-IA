@@ -1,16 +1,16 @@
 # Graph Report - Organizador  (2026-07-23)
 
 ## Corpus Check
-- 75 files · ~150,480 words
+- 77 files · ~152,554 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 651 nodes · 1256 edges · 44 communities (28 shown, 16 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 34 edges (avg confidence: 0.75)
+- 665 nodes · 1304 edges · 44 communities (28 shown, 16 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 35 edges (avg confidence: 0.75)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0398caaf`
+- Built from commit: `6da0e4d0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,24 +57,24 @@
 - Outbox Pattern for Offline Mutations
 
 ## God Nodes (most connected - your core abstractions)
-1. `useAuth()` - 26 edges
+1. `useAuth()` - 28 edges
 2. `getDB()` - 23 edges
-3. `compilerOptions` - 17 edges
-4. `HoyPage()` - 16 edges
-5. `Item` - 16 edges
-6. `ItemsPage()` - 15 edges
-7. `Tema` - 15 edges
+3. `Item` - 21 edges
+4. `HoyPage()` - 18 edges
+5. `ItemsPage()` - 17 edges
+6. `compilerOptions` - 17 edges
+7. `Tema` - 16 edges
 8. `flushOutbox()` - 14 edges
 9. `compilerOptions` - 14 edges
 10. `RemindersPage()` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `SyncEngine()` --shares_data_with--> `sync.ts (sync engine)`  [INFERRED]
-  src/components/SyncEngine.tsx → PLAN_OFFLINE.md
 - `useLocalReminderWatcher()` --shares_data_with--> `listRecordatoriosParaDisparo`  [INFERRED]
   src/lib/useLocalReminderWatcher.ts → PLAN_OFFLINE.md
 - `marcarHecho` --shares_data_with--> `RemindersPage()`  [INFERRED]
   PLAN_ORGANIZADOR.md → src/pages/RemindersPage.tsx
+- `SyncEngine()` --shares_data_with--> `sync.ts (sync engine)`  [INFERRED]
+  src/components/SyncEngine.tsx → PLAN_OFFLINE.md
 - `SyncSettings()` --shares_data_with--> `sync.ts (sync engine)`  [INFERRED]
   src/components/SyncSettings.tsx → PLAN_OFFLINE.md
 - `SyncStatus()` --shares_data_with--> `sync.ts (sync engine)`  [INFERRED]
@@ -92,15 +92,15 @@
 
 ### Community 0 - "Motor de sincronizacion offline (db/outbox/sync)"
 Cohesion: 0.06
-Nodes (77): Hard Delete + Full Re-fetch Reconciliation (vs Soft-Delete), Last-Write-Wins via updated_at + Conditional Update, Sync Trigger Events (online/focus/visibility/interval/post-mutation), Trigger Adjustment to Respect Client-Sent updated_at, Web Locks API Single-Flight Sync, RLS Design: Join-Based Policies for recordatorios, Database Schema (temas/items/recordatorios), SyncSettings() (+69 more)
+Nodes (64): Hard Delete + Full Re-fetch Reconciliation (vs Soft-Delete), Last-Write-Wins via updated_at + Conditional Update, Sync Trigger Events (online/focus/visibility/interval/post-mutation), Trigger Adjustment to Respect Client-Sent updated_at, Web Locks API Single-Flight Sync, RLS Design: Join-Based Policies for recordatorios, Database Schema (temas/items/recordatorios), SyncEngine() (+56 more)
 
 ### Community 1 - "Gestion de items (ItemForm/ItemList)"
-Cohesion: 0.06
-Nodes (66): Adoption of react-router-dom for /settings Route, Render Static Site Deployment, Render Static Site Blueprint (organizador-ia), ItemForm(), ItemFormProps, nuevaLinea(), PRIORIDADES, TIPOS (+58 more)
+Cohesion: 0.13
+Nodes (22): ItemForm(), nuevaLinea(), armarGrupos(), cell(), Grupo, ItemContent(), ItemList(), parseLista() (+14 more)
 
 ### Community 2 - "Layout, ruteo y estado de sync de la app"
 Cohesion: 0.06
-Nodes (40): AbrirAsistenteContext, AppShell(), AssistantRedirect(), Destino, DESTINOS, NUEVO_ITEM, TRAZO, AssistantDrawer() (+32 more)
+Nodes (41): AbrirAsistenteContext, AppShell(), AssistantRedirect(), Destino, DESTINOS, TRAZO, AssistantDrawer(), NuevoItemSheet() (+33 more)
 
 ### Community 3 - "Asistente IA - acciones propuestas"
 Cohesion: 0.07
@@ -111,8 +111,8 @@ Cohesion: 0.15
 Nodes (13): eslint, eslint-plugin-react-refresh, globals, devDependencies, eslint, eslint-plugin-react-refresh, globals, supabase (+5 more)
 
 ### Community 5 - "Recordatorios y watcher local"
-Cohesion: 0.09
-Nodes (24): Catch-up Notification for Stale Reminders, Notification Tag Dedup between Local Watcher and Cron Push, Two-Way Reminder Notifications (Local + Cron), LocalReminderWatcher(), listRecordatoriosParaDisparo, marcarEnviado, ArmedTimer, ArmInstruction (+16 more)
+Cohesion: 0.08
+Nodes (38): Catch-up Notification for Stale Reminders, Notification Tag Dedup between Local Watcher and Cron Push, Decision: No Runtime Caching of Supabase Data in Service Worker, Two-Way Reminder Notifications (Local + Cron), Web Push via VAPID Keys + pg_cron, LocalReminderWatcher(), PushSettings(), getPushStatus() (+30 more)
 
 ### Community 6 - "Config TypeScript (app)"
 Cohesion: 0.08
@@ -123,8 +123,8 @@ Cohesion: 0.18
 Nodes (11): idb, dependencies, idb, react, react-dom, react-router-dom, @supabase/supabase-js, react (+3 more)
 
 ### Community 8 - "Notificaciones push"
-Cohesion: 0.26
-Nodes (14): Decision: No Runtime Caching of Supabase Data in Service Worker, Web Push via VAPID Keys + pg_cron, PushSettings(), getPushStatus(), isPushSupported(), keyToBase64(), PushStatus, subscribeToPush() (+6 more)
+Cohesion: 0.17
+Nodes (17): CLAVES_NO_BUSCABLES, esObjeto(), filtrarItems(), filtrarTemas(), indiceDe(), ItemConTema, juntarStrings(), normalizar() (+9 more)
 
 ### Community 9 - "Config TypeScript (node)"
 Cohesion: 0.11
@@ -143,8 +143,8 @@ Cohesion: 0.22
 Nodes (8): background_color, description, display, icons, name, short_name, start_url, theme_color
 
 ### Community 13 - "Documentacion raiz / planes / auth context"
-Cohesion: 0.10
-Nodes (35): contenidoTexto(), EstadoAccion, PendingAction, ProposedActionCard(), enqueueOp(), getLocalItem(), getLocalRecordatorio(), getLocalTema() (+27 more)
+Cohesion: 0.06
+Nodes (80): contenidoTexto(), EstadoAccion, PendingAction, ProposedActionCard(), ItemFormProps, PRIORIDADES, TIPOS, ItemListProps (+72 more)
 
 ### Community 14 - "Edge Function manage-ai-key"
 Cohesion: 0.40
@@ -163,8 +163,8 @@ Cohesion: 1.00
 Nodes (3): App icon mockup: notebook with checklist and notification bell, Checklist/notebook motif (ring-bound notepad, green checkmarks, pencil, table grid), Notification bell badge element (top-right circular badge with bell icon and green dot)
 
 ### Community 29 - "ItemsPage.tsx"
-Cohesion: 0.14
-Nodes (30): Organizador Catalog-Style Mockup (HTML), App HTML Shell (Vite entry), Catalog Card Visual Design System, RecordatorioRow(), loadItemsFromCache(), loadRecordatoriosFromCache(), clasificar(), ESTADO_LABEL (+22 more)
+Cohesion: 0.11
+Nodes (32): Organizador Catalog-Style Mockup (HTML), App HTML Shell (Vite entry), Adoption of react-router-dom for /settings Route, Render Static Site Deployment, Catalog Card Visual Design System, Render Static Site Blueprint (organizador-ia), loadItemsFromCache(), loadRecordatoriosFromCache() (+24 more)
 
 ### Community 30 - "Brief de diseño — Organizador Personal IA"
 Cohesion: 0.08
@@ -191,7 +191,7 @@ Nodes (7): Graphify Project Rules, Outbox Pattern for Offline Mutations, Offline
   CLAUDE.md · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **253 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+248 more)
+- **254 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+249 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -200,15 +200,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Graphify Project Rules` and `Organizador Personal IA - Master Plan`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `useAuth()` connect `Layout, ruteo y estado de sync de la app` to `Gestion de items (ItemForm/ItemList)`, `Recordatorios y watcher local`, `Notificaciones push`, `Documentacion raiz / planes / auth context`, `ItemsPage.tsx`?**
+- **Why does `useAuth()` connect `Layout, ruteo y estado de sync de la app` to `Motor de sincronizacion offline (db/outbox/sync)`, `Recordatorios y watcher local`, `ItemsPage.tsx`, `Documentacion raiz / planes / auth context`?**
   _High betweenness centrality (0.030) - this node is a cross-community bridge._
-- **Why does `ItemsPage()` connect `Gestion de items (ItemForm/ItemList)` to `Layout, ruteo y estado de sync de la app`, `ItemsPage.tsx`?**
+- **Why does `Item` connect `Documentacion raiz / planes / auth context` to `Notificaciones push`, `Gestion de items (ItemForm/ItemList)`, `Layout, ruteo y estado de sync de la app`, `ItemsPage.tsx`?**
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
+- **Why does `ItemsPage()` connect `ItemsPage.tsx` to `Notificaciones push`, `Gestion de items (ItemForm/ItemList)`, `Layout, ruteo y estado de sync de la app`, `Documentacion raiz / planes / auth context`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
-- **Why does `Item` connect `Gestion de items (ItemForm/ItemList)` to `Motor de sincronizacion offline (db/outbox/sync)`, `Layout, ruteo y estado de sync de la app`, `ItemsPage.tsx`, `Documentacion raiz / planes / auth context`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `name`, `private`, `version` to the rest of the system?**
-  _253 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _254 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Motor de sincronizacion offline (db/outbox/sync)` be split into smaller, more focused modules?**
-  _Cohesion score 0.05622489959839357 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05955734406438632 - nodes in this community are weakly interconnected._
 - **Should `Gestion de items (ItemForm/ItemList)` be split into smaller, more focused modules?**
-  _Cohesion score 0.05582603050957481 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.13227513227513227 - nodes in this community are weakly interconnected._

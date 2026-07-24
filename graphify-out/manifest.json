@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
-    "mtime": 1784847892.711063,
-    "ast_hash": "3d0ab304865771a059d72f8fa33752c2",
+    "mtime": 1784868607.5712798,
+    "ast_hash": "3b5ada63f70a15591dc8f8733973f430",
     "semantic_hash": ""
   },
   "src/components/ItemList.tsx": {
@@ -120,8 +120,8 @@
     "semantic_hash": "4759d8c06d6dc7bf46edb59481225fce"
   },
   "src/lib/sync.ts": {
-    "mtime": 1784847812.4753196,
-    "ast_hash": "713cd0fa5ef16a893f09146457be6e7f",
+    "mtime": 1784868598.6367805,
+    "ast_hash": "e241ab56fb6eabbb9184a1ea568fb39b",
     "semantic_hash": ""
   },
   "src/lib/syncCore.test.ts": {
@@ -140,8 +140,8 @@
     "semantic_hash": "ba0067a924aa865c6138963bf36a4ad4"
   },
   "src/lib/useAiEnabled.ts": {
-    "mtime": 1784852494.0995717,
-    "ast_hash": "d65e54ddc45ba39ac4b0a6a39454f6c8",
+    "mtime": 1784867591.3179705,
+    "ast_hash": "86cfc91fcf804e33266d238597d1818e",
     "semantic_hash": ""
   },
   "src/lib/useLocalReminderWatcher.ts": {
@@ -170,8 +170,8 @@
     "semantic_hash": "e0fc5bbf480b3c5fc2a0dcaf1a25d7af"
   },
   "src/pages/ItemsPage.tsx": {
-    "mtime": 1784865548.931942,
-    "ast_hash": "d8042d21719edabb31b004e96be90c91",
+    "mtime": 1784868868.3878567,
+    "ast_hash": "600f89cf584e6e539fe8b944804440a3",
     "semantic_hash": ""
   },
   "src/pages/RemindersPage.tsx": {
@@ -365,8 +365,8 @@
     "semantic_hash": ""
   },
   "PLAN_REDISE\u00d1O.md": {
-    "mtime": 1784867567.1474073,
-    "ast_hash": "c04ce759f721f0b70f2c4957229b9f75",
+    "mtime": 1784869190.0545402,
+    "ast_hash": "9625a22dd83b2e075ec9fb45c3c795ed",
     "semantic_hash": ""
   },
   "design_handoff_organizador_ia/Organizador.dc.html": {
@@ -465,8 +465,8 @@
     "semantic_hash": ""
   },
   "src/components/AppShell.tsx": {
-    "mtime": 1784867236.9140358,
-    "ast_hash": "cc962f4738cf1ac2ab734f498da23a16",
+    "mtime": 1784868797.401392,
+    "ast_hash": "ff311b0305ad84cf330d5e68986d2add",
     "semantic_hash": ""
   },
   "src/lib/useIsWide.ts": {
@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "src/pages/HoyPage.tsx": {
-    "mtime": 1784852494.100569,
-    "ast_hash": "e4810aeef382fa10bcbcd4911396f0fb",
+    "mtime": 1784868894.3047547,
+    "ast_hash": "e2902e0b57a91b43d125a354b488308f",
     "semantic_hash": ""
   },
   "src/lib/buscar.test.ts": {
@@ -497,6 +497,16 @@
   "src/components/AssistantDrawer.tsx": {
     "mtime": 1784867322.4511898,
     "ast_hash": "318197af0acc743d2635d17775e68e76",
+    "semantic_hash": ""
+  },
+  "src/components/NuevoItemSheet.tsx": {
+    "mtime": 1784868673.5505524,
+    "ast_hash": "f918c413c6243627d1baad7478fdd709",
+    "semantic_hash": ""
+  },
+  "src/lib/itemSheet.ts": {
+    "mtime": 1784868587.4292755,
+    "ast_hash": "538ad1ab65e8a78ca6b0f514a2d8e0e1",
     "semantic_hash": ""
   }
 }

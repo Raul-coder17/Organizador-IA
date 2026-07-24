@@ -96,6 +96,33 @@ export function hasSyncSettled(): boolean {
   return settledOnce
 }
 
+// Aviso de "el espejo local acaba de cambiar por una escritura de esta sesión".
+// Lo emite la UI (hoy: el sheet de nuevo/editar ítem) tras guardar o borrar,
+// para que las pantallas recarguen desde IndexedDB al instante, sin esperar a
+// que un ciclo de sync settle. Es el complemento offline de
+// `subscribeSyncSettled`: mismo efecto —releer el espejo—, distinto disparador
+// (una mutación local vs. el fin de un ciclo de red). Antes esto lo resolvía el
+// `onSaved` directo del form inline; al mudarse el form a un overlay del shell,
+// el aviso tiene que viajar por acá.
+const localChangeListeners = new Set<Listener>()
+
+export function subscribeLocalChange(cb: Listener): () => void {
+  localChangeListeners.add(cb)
+  return () => {
+    localChangeListeners.delete(cb)
+  }
+}
+
+export function emitLocalChange(): void {
+  for (const cb of localChangeListeners) {
+    try {
+      cb()
+    } catch {
+      /* un suscriptor roto no puede tumbar al resto */
+    }
+  }
+}
+
 // ============================================================
 // Estado observable (PLAN_OFFLINE.md ítem 7 / §5)
 // ============================================================

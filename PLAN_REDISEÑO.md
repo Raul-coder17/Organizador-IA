@@ -243,9 +243,10 @@ Todo esto usa datos y lógica que ya están en la app:
 3. **Los ítems sin tema desaparecen.** `tema_id` es nullable y `ItemsPage` hoy tiene filtro
    "Sin tema". La Biblioteca del prototipo agrupa **solo** por los temas existentes: un ítem con
    `tema_id: null` no aparecería en ninguna sección. Hace falta un grupo "Sin tema".
-4. **El sheet no tiene modo edición.** `onEdit` abre el sheet en modo form
-   (`Organizador.dc.html:698`) pero el título sigue siendo "Nuevo ítem" y el botón "GUARDAR"
-   (no "Guardar cambios"). Falta definir el modo edición completo, incluido el "ELIMINAR".
+4. ~~**El sheet no tiene modo edición.**~~ ✅ **resuelto (ítem 11).** El sheet abre en modo
+   edición con título "Editar ítem", botón "Guardar cambios" y una acción "Eliminar ítem" (con la
+   misma confirmación que la ficha). El `ItemForm` ya distinguía crear/editar; lo que faltaba —
+   título, y el borrado dentro del overlay— vive ahora en el `NuevoItemSheet`.
 5. **¿El drawer del asistente preserva el chat al cerrarse?** Es media la razón de sacarlo de
    una ruta. El prototipo no lo dice; su estado vive en el componente raíz, así que
    implícitamente sí. Vale definirlo explícito.
@@ -646,10 +647,44 @@ Redirigir `/assistant` a la vista actual con el drawer abierto, para no romper l
 > para una entrada en frío es Hoy: no hay otra pantalla debajo del asistente de
 > la que se pueda venir.
 
-**11. Sheet "+ Nuevo ítem".** `[N]` · riesgo medio
+**11. Sheet "+ Nuevo ítem".** `[N]` · riesgo medio — ✅ **implementado** (rama `rediseno-fase-3`)
 Mover `ItemForm` a modal/bottom-sheet + menú de 3 opciones. **Incluye definir el modo edición**
 (§5.3-4). La opción "Desde una foto" queda visible pero deshabilitada hasta el ítem 14 — o se
 oculta; a decidir.
+
+> **El form se movió sin tocar su lógica.** Todo `ItemForm` —tipo, tema con "+ crear tema nuevo",
+> selector de color, prioridad, editor de líneas, toggle de recordatorio con `datetime-local`—
+> pasó tal cual a un overlay ([`NuevoItemSheet`](src/components/NuevoItemSheet.tsx)). Lo único que
+> cambió en el propio form es que dejó de dibujar su card: el único contenedor ahora es el sheet,
+> que ya aporta superficie y padding. Mismo criterio que el ítem 10 con el asistente.
+>
+> **Modal (≥900px) / bottom-sheet (<900px)**, mismo breakpoint 900 y mismo montaje que el drawer:
+> se monta al primer uso y no se desmonta. El telón `.drawer-overlay` se reusa del ítem 10.
+>
+> **Menú de 3 opciones al abrir "Nuevo":** *Escribir* → el `ItemForm`; *Desde una foto* →
+> **visible pero deshabilitada** con su explicación (la captura es el ítem 14, mismo criterio que
+> el FOTO de Hoy); *Pedirle a la IA* → cierra el sheet y **abre el drawer del asistente** (ítem 10)
+> en vez de duplicar esa lógica.
+>
+> **Modo edición (cerraba §5.3-4).** Al editar, el sheet salta el menú, titula "Editar ítem", el
+> botón dice "Guardar cambios" (ya lo hacía el form) y aparece "Eliminar ítem" con la misma
+> confirmación que la ficha. `onEdit` de la Biblioteca ahora abre este sheet en vez del form
+> inline.
+>
+> **Cierre (task 5).** Escape, click en el telón y la X cierran **preservando** el borrador (el
+> sheet queda montado, oculto); sólo *Cancelar* explícito o *guardar/borrar con éxito* lo dejan
+> limpio para la próxima. Es el criterio simple que pedía la tarea: nadie pierde lo tipeado por un
+> cierre accidental, sin un diálogo de "¿descartar?".
+>
+> **Sigue offline-first (task 4).** El form escribe por `repo.ts` sin cambios. El sheet vive en el
+> shell, fuera de las páginas, así que el refresco inmediato que antes daba el `onSaved` del form
+> inline ahora viaja por un aviso nuevo, `emitLocalChange`/`subscribeLocalChange`
+> ([`lib/sync.ts`](src/lib/sync.ts)): tras guardar/borrar, la Biblioteca y Hoy relean el espejo
+> local al instante, con o sin red. Los disparadores del sheet (botón de la Biblioteca, "Nuevo" de
+> Hoy, sidebar, FAB, "Editar" de cada ficha) llegan por un contexto
+> ([`lib/itemSheet.ts`](src/lib/itemSheet.ts)) en vez de navegar con estado.
+>
+> **Con esto la Fase 3 queda completa.**
 
 ### Fase 4 — Funciones pendientes
 
@@ -671,7 +706,7 @@ grande de todos: es la única de las 4 pendientes que necesita backend nuevo de 
 Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
-Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] ✅ · 10 [N] ✅ · 11 [N]  ← el bloque riesgoso (D1 tomada)
+Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] ✅ · 10 [N] ✅ · 11 [N] ✅  ← COMPLETA (D1 tomada)
 Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
 ```
 

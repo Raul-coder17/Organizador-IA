@@ -5,7 +5,8 @@ import { useAiEnabled } from '../lib/useAiEnabled'
 import { clasificar, joinRecordatoriosConItems } from '../lib/recordatorios'
 import { marcarHecho } from '../lib/repo'
 import { loadItemsFromCache, loadRecordatoriosFromCache, loadTemasFromCache } from '../lib/db'
-import { hasSyncSettled, subscribeSyncSettled } from '../lib/sync'
+import { hasSyncSettled, subscribeLocalChange, subscribeSyncSettled } from '../lib/sync'
+import { useItemSheet } from '../lib/itemSheet'
 import { colorDeTema, temaColorVar } from '../lib/temaColores'
 import { RecordatorioRow } from '../components/RecordatorioRow'
 import type { Item, RecordatorioConItem, Tema } from '../types/database'
@@ -63,6 +64,7 @@ export function HoyPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [marcando, setMarcando] = useState<string | null>(null)
+  const itemSheet = useItemSheet()
 
   const load = useCallback(async () => {
     if (!user) return
@@ -90,6 +92,9 @@ export function HoyPage() {
   }, [load])
 
   useEffect(() => subscribeSyncSettled(load), [load])
+  // Un alta/edición/borrado del sheet del shell (ítem 11) avisa por acá para
+  // recalcular las cifras y el grid de temas al instante, sin esperar al sync.
+  useEffect(() => subscribeLocalChange(load), [load])
 
   async function handleMarcarHecho(id: string) {
     setMarcando(id)
@@ -148,9 +153,9 @@ export function HoyPage() {
       </div>
 
       <div className="hoy__acciones hscroll">
-        <Link to="/biblioteca" state={{ nuevoItem: true }} className="acceso acceso--moss">
+        <button type="button" onClick={itemSheet.nuevo} className="acceso acceso--moss">
           Nuevo
-        </Link>
+        </button>
         {/* La captura por foto no existe todavía (ítem 14). Mismo criterio que
             el buscador en el ítem 7: se dibuja apagada en vez de prometer algo
             que no va a pasar al tocarla. */}

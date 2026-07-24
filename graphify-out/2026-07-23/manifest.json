@@ -30,8 +30,8 @@
     "semantic_hash": "69bca754ecf9af5644a761221ec24732"
   },
   "src/App.tsx": {
-    "mtime": 1784852494.0950558,
-    "ast_hash": "25b14ba2cb5cc23fd80840145509c392",
+    "mtime": 1784867251.2321968,
+    "ast_hash": "961570b7c55fd1aac4188fb52a3091cd",
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
@@ -163,11 +163,6 @@
     "mtime": 1784606697.5598288,
     "ast_hash": "787e5a07efeb2bf6209d5937195f2f68",
     "semantic_hash": "787e5a07efeb2bf6209d5937195f2f68"
-  },
-  "src/pages/AssistantPage.tsx": {
-    "mtime": 1784852494.100569,
-    "ast_hash": "503736845cc26a224d9980a5317f5064",
-    "semantic_hash": ""
   },
   "src/pages/AuthPage.tsx": {
     "mtime": 1784653095.7185388,
@@ -370,8 +365,8 @@
     "semantic_hash": ""
   },
   "PLAN_REDISE\u00d1O.md": {
-    "mtime": 1784865671.7429035,
-    "ast_hash": "95a52f90541de496ea7640d8a6fa2542",
+    "mtime": 1784867567.1474073,
+    "ast_hash": "c04ce759f721f0b70f2c4957229b9f75",
     "semantic_hash": ""
   },
   "design_handoff_organizador_ia/Organizador.dc.html": {
@@ -470,8 +465,8 @@
     "semantic_hash": ""
   },
   "src/components/AppShell.tsx": {
-    "mtime": 1784865468.0100212,
-    "ast_hash": "5e1b83793bec7c3cb68e013bcd9ab747",
+    "mtime": 1784867236.9140358,
+    "ast_hash": "cc962f4738cf1ac2ab734f498da23a16",
     "semantic_hash": ""
   },
   "src/lib/useIsWide.ts": {
@@ -497,6 +492,11 @@
   "src/lib/buscar.ts": {
     "mtime": 1784865364.498131,
     "ast_hash": "6923dfe74ee6cecb0b39cd6375f7c034",
+    "semantic_hash": ""
+  },
+  "src/components/AssistantDrawer.tsx": {
+    "mtime": 1784867322.4511898,
+    "ast_hash": "318197af0acc743d2635d17775e68e76",
     "semantic_hash": ""
   }
 }

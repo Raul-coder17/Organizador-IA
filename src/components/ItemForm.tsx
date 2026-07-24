@@ -235,7 +235,10 @@ export function ItemForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-card border border-line rounded-[2px] p-5 space-y-4">
+    // Sin card propia: desde el ítem 11 el único contenedor de este form es el
+    // sheet, que ya aporta la superficie y el padding. El form sólo espacia sus
+    // campos.
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="label" htmlFor="tipo">

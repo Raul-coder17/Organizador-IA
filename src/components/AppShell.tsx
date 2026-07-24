@@ -3,6 +3,8 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
   type ReactElement,
 } from 'react'
@@ -13,8 +15,11 @@ import { useRecordatoriosBadge } from '../lib/useRecordatoriosBadge'
 import { useIsWide } from '../lib/useIsWide'
 import { setTheme, useTheme } from '../lib/theme'
 import { supabase } from '../lib/supabase'
+import { ItemSheetContext } from '../lib/itemSheet'
+import type { Item } from '../types/database'
 import { SyncStatus } from './SyncStatus'
 import { AssistantDrawer } from './AssistantDrawer'
+import { NuevoItemSheet } from './NuevoItemSheet'
 
 // Chasis de la app (PLAN_REDISEÑO.md ítem 7). Reemplaza a AppNav.
 //
@@ -166,11 +171,6 @@ const DESTINOS: Destino[] = [
   { to: '/settings', label: 'Ajustes', corto: 'Ajustes', Icono: IconoAjustes },
 ]
 
-// El destino del "+": hasta el ítem 11 el formulario sigue siendo el de la
-// Biblioteca, así que lo abrimos desde acá con estado de navegación en vez de
-// dejar el botón principal del shell sin hacer nada.
-const NUEVO_ITEM = { to: '/biblioteca', state: { nuevoItem: true } }
-
 // Buscador global (ítem 9). Vive en el shell, pero no dibuja resultados: al
 // escribir navega a la Biblioteca con la consulta en la URL (`/biblioteca?q=…`)
 // y es ItemsPage la que filtra y agrupa. Así se reusa tal cual el layout de
@@ -261,6 +261,67 @@ export function AppShell() {
     setAbierto((v) => !v)
   }, [])
 
+  // Sheet de "+ Nuevo ítem" (ítem 11). Mismo patrón de montaje que el drawer:
+  // se monta al primer uso y no se desmonta. Cerrar en suave (Escape / telón /
+  // X) sólo lo oculta y preserva el borrador; sólo cancelar explícito o guardar
+  // con éxito lo dejan limpio para la próxima. El `formKey` fuerza un ItemForm
+  // nuevo cuando toca resetear o al cambiar de ítem a editar.
+  const [sheetMontado, setSheetMontado] = useState(false)
+  const [sheetAbierto, setSheetAbierto] = useState(false)
+  const [sheetVista, setSheetVista] = useState<'menu' | 'form'>('menu')
+  const [sheetEditando, setSheetEditando] = useState<Item | null>(null)
+  const [sheetFormKey, setSheetFormKey] = useState(0)
+
+  // Espejo en ref para poder decidir en `abrirNuevo` si veníamos de una edición
+  // sin volver el callback dependiente del estado (así queda estable en el
+  // contexto).
+  const sheetEditandoRef = useRef<Item | null>(null)
+  useEffect(() => {
+    sheetEditandoRef.current = sheetEditando
+  }, [sheetEditando])
+
+  const abrirNuevo = useCallback(() => {
+    setSheetMontado(true)
+    setSheetAbierto(true)
+    // Si el sheet venía de una edición, "+ Nuevo" no puede resumir ese borrador:
+    // arranca limpio en el menú. Si venía de un borrador nuevo (o nada), lo
+    // resume tal cual — cerrar en suave no lo tiró.
+    if (sheetEditandoRef.current !== null) {
+      setSheetEditando(null)
+      setSheetVista('menu')
+      setSheetFormKey((k) => k + 1)
+    }
+  }, [])
+
+  const abrirEdicion = useCallback((item: Item) => {
+    setSheetMontado(true)
+    setSheetAbierto(true)
+    setSheetEditando(item)
+    setSheetVista('form')
+    setSheetFormKey((k) => k + 1) // form fresco cargado con este ítem
+  }, [])
+
+  const elegirEscribir = useCallback(() => setSheetVista('form'), [])
+  const cerrarSheetSuave = useCallback(() => setSheetAbierto(false), [])
+
+  // Cancelar explícito o guardar/borrar con éxito: cerrar Y limpiar.
+  const resolverSheet = useCallback(() => {
+    setSheetAbierto(false)
+    setSheetEditando(null)
+    setSheetVista('menu')
+    setSheetFormKey((k) => k + 1)
+  }, [])
+
+  const pedirIA = useCallback(() => {
+    resolverSheet()
+    abrirAsistente()
+  }, [resolverSheet, abrirAsistente])
+
+  const itemSheetApi = useMemo(
+    () => ({ nuevo: abrirNuevo, editar: abrirEdicion }),
+    [abrirNuevo, abrirEdicion],
+  )
+
   // Mismo criterio que la nav vieja: mientras `useAiEnabled` carga (null) el
   // asistente se muestra apagado, y apagado significa "te llevo a Ajustes",
   // no "no hago nada". Con la IA activa, el botón abre/cierra el drawer en vez
@@ -315,10 +376,10 @@ export function AppShell() {
             ))}
           </nav>
 
-          <Link to={NUEVO_ITEM.to} state={NUEVO_ITEM.state} className="side-nuevo">
+          <button type="button" onClick={abrirNuevo} className="side-nuevo">
             <IconoMas />
             NUEVO ITEM
-          </Link>
+          </button>
 
           <div className="side-foot">
             {asistenteActivo ? (
@@ -384,7 +445,9 @@ export function AppShell() {
         )}
 
         <AbrirAsistenteContext.Provider value={abrirAsistente}>
-          <Outlet />
+          <ItemSheetContext.Provider value={itemSheetApi}>
+            <Outlet />
+          </ItemSheetContext.Provider>
         </AbrirAsistenteContext.Provider>
 
         {!wide && (
@@ -393,14 +456,14 @@ export function AppShell() {
                 dos últimos. */}
             <nav className="tabbar" aria-label="Navegación principal">
               {DESTINOS.slice(0, 2).map(celda)}
-              <Link
-                to={NUEVO_ITEM.to}
-                state={NUEVO_ITEM.state}
+              <button
+                type="button"
+                onClick={abrirNuevo}
                 className="tabbar__fab"
                 aria-label="Nuevo item"
               >
                 <IconoMas size={24} />
-              </Link>
+              </button>
               {DESTINOS.slice(2).map(celda)}
             </nav>
 
@@ -437,6 +500,21 @@ export function AppShell() {
           `position: fixed`, así que da igual dónde cuelgue del árbol; va al
           final del shell para quedar por encima de todo. */}
       {montado && <AssistantDrawer open={abierto} onClose={cerrarAsistente} />}
+
+      {/* El sheet de "+ Nuevo ítem" (ítem 11). Mismo criterio de montaje que el
+          drawer. También `position: fixed`. */}
+      {sheetMontado && (
+        <NuevoItemSheet
+          open={sheetAbierto}
+          vista={sheetVista}
+          editingItem={sheetEditando}
+          formKey={sheetFormKey}
+          onElegirEscribir={elegirEscribir}
+          onPedirIA={pedirIA}
+          onCerrarSuave={cerrarSheetSuave}
+          onResuelto={resolverSheet}
+        />
+      )}
     </div>
   )
 }

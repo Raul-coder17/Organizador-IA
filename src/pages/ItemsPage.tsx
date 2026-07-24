@@ -3,9 +3,9 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { deleteItem, updateItem } from '../lib/repo'
 import { loadItemsFromCache, loadRecordatoriosFromCache, loadTemasFromCache } from '../lib/db'
-import { hasSyncSettled, subscribeSyncSettled } from '../lib/sync'
+import { hasSyncSettled, subscribeLocalChange, subscribeSyncSettled } from '../lib/sync'
+import { useItemSheet } from '../lib/itemSheet'
 import type { Item, LineaLista, Recordatorio, Tema, TipoItem } from '../types/database'
-import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
 import { colorDeTema, temaColorVar } from '../lib/temaColores'
 import { filtrarItems } from '../lib/buscar'
@@ -63,11 +63,14 @@ export function ItemsPage() {
   const [recordatorios, setRecordatorios] = useState<Map<string, Recordatorio>>(new Map())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [editingItem, setEditingItem] = useState<Item | null>(null)
   const [filterTemaId, setFilterTemaId] = useState('todos')
   const [filterTipo, setFilterTipo] = useState<FiltroTipo>('todos')
-  const [showForm, setShowForm] = useState(false)
   const location = useLocation()
+
+  // El alta y la edición de ítems ya no viven en esta página: las maneja el
+  // sheet del shell (ítem 11). Acá sólo se lo dispara y se relee el espejo local
+  // cuando ese sheet (u otra escritura de la sesión) avisa que algo cambió.
+  const itemSheet = useItemSheet()
 
   // La consulta del buscador global viaja en la URL (`?q=…`, ítem 9). Vive ahí
   // y no en un estado compartido porque el input está en el shell y los
@@ -106,27 +109,20 @@ export function ItemsPage() {
   }, [load])
 
   useEffect(() => subscribeSyncSettled(load), [load])
+  // Además del sync, un guardado/borrado del sheet avisa por acá para releer al
+  // instante (offline incluido), como hacía el `onSaved` del form inline.
+  useEffect(() => subscribeLocalChange(load), [load])
 
-  // Peticiones que llegan por navegación, de dos lugares distintos:
-  //   · `nuevoItem` — el "+" del shell, que no tiene sheet propio hasta el
-  //     ítem 11 y abre este formulario (ítem 7).
-  //   · `temaId` — una tarjeta de tema de la vista Hoy, que llega pidiendo la
-  //     Biblioteca ya filtrada por ese tema (ítem 8). `null` significa "los que
-  //     no tienen tema": cómo se llama ese filtro es asunto de esta página.
+  // Petición que llega por navegación desde una tarjeta de tema de la vista Hoy:
+  // pide la Biblioteca ya filtrada por ese tema (ítem 8). `null` significa "los
+  // que no tienen tema": cómo se llama ese filtro es asunto de esta página.
   // `location.key` cambia en cada navegación, así que pedir lo mismo dos veces
   // seguidas vuelve a aplicarlo.
   useEffect(() => {
-    const nav = location.state as { nuevoItem?: boolean; temaId?: string | null } | null
-    if (!nav) return
-
-    if (nav.nuevoItem) {
-      setEditingItem(null)
-      setShowForm(true)
-    }
-    if ('temaId' in nav) {
-      setFilterTemaId(nav.temaId === null ? FILTRO_SIN_TEMA : nav.temaId!)
-      setFilterTipo('todos')
-    }
+    const nav = location.state as { temaId?: string | null } | null
+    if (!nav || !('temaId' in nav)) return
+    setFilterTemaId(nav.temaId === null ? FILTRO_SIN_TEMA : nav.temaId!)
+    setFilterTipo('todos')
   }, [location.key, location.state])
 
   // Una búsqueda global tiene que ser global: llega con los filtros de tipo y
@@ -146,17 +142,8 @@ export function ItemsPage() {
     setSearchParams(params, { replace: true })
   }
 
-  function handleSaved() {
-    setShowForm(false)
-    setEditingItem(null)
-    load()
-  }
-
-  function handleEdit(item: Item) {
-    setEditingItem(item)
-    setShowForm(true)
-  }
-
+  // Editar abre el mismo sheet del shell que usa "+ Nuevo", cargado con el ítem
+  // (ítem 11). Borrar desde la ficha sigue viviendo acá.
   async function handleDelete(id: string) {
     if (!confirm('¿Eliminar este item?')) return
     try {
@@ -165,17 +152,6 @@ export function ItemsPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error eliminando item')
     }
-  }
-
-  function handleTemaCreated(tema: Tema) {
-    setTemas((prev) => [...prev, tema].sort((a, b) => a.nombre.localeCompare(b.nombre)))
-  }
-
-  // El color de un tema ya se guardó cuando llega acá (repo.updateTemaColor);
-  // esto es solo para que el punto cambie en los chips y en los encabezados sin
-  // esperar al próximo ciclo de sync.
-  function handleTemaUpdated(tema: Tema) {
-    setTemas((prev) => prev.map((t) => (t.id === tema.id ? tema : t)))
   }
 
   // Marca/desmarca una línea de una lista: UI optimista + persistencia; si el
@@ -240,14 +216,8 @@ export function ItemsPage() {
           </button>
         )}
 
-        <button
-          onClick={() => {
-            setEditingItem(null)
-            setShowForm((v) => !v)
-          }}
-          className="btn-moss"
-        >
-          {showForm ? 'Cancelar' : '+ Nuevo item'}
+        <button onClick={itemSheet.nuevo} className="btn-moss">
+          + Nuevo item
         </button>
       </div>
 
@@ -304,21 +274,6 @@ export function ItemsPage() {
         </div>
       </div>
 
-      {showForm && (
-        <ItemForm
-          userId={user.id}
-          temas={temas}
-          editingItem={editingItem}
-          onSaved={handleSaved}
-          onCancel={() => {
-            setShowForm(false)
-            setEditingItem(null)
-          }}
-          onTemaCreated={handleTemaCreated}
-          onTemaUpdated={handleTemaUpdated}
-        />
-      )}
-
       {error && <p className="text-sm text-rust">{error}</p>}
 
       {loading ? (
@@ -342,7 +297,7 @@ export function ItemsPage() {
           items={filteredItems}
           temas={temas}
           recordatorios={recordatorios}
-          onEdit={handleEdit}
+          onEdit={itemSheet.editar}
           onDelete={handleDelete}
           onToggleLinea={handleToggleLinea}
         />
