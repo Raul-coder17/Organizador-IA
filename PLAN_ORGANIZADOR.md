@@ -1499,11 +1499,20 @@ entre la propuesta y el confirmar, el item se guarda local y sube después.
   `align-items: flex-start` y eso encogía la tarjeta de preview al ancho de su
   contenido. Ahora estiran todos los hijos y sólo los botones se achican — un
   botón estirado a 540px se lee como una barra, no como una acción.
-- **Pendiente de tu prueba en vivo** (requiere tu sesión, tu key de Gemini y la
-  función desplegada): sacar/subir una foto real de un recibo, una lista escrita a
-  mano y una tabla, y confirmar que la extracción y el preview funcionan.
+- **Desplegada al proyecto real** (`extract-from-photo`, versión 1, `ACTIVE`,
+  `verify_jwt: true`). No hizo falta ningún secret nuevo: reusa
+  `AI_KEY_ENCRYPTION_SECRET`, `SUPABASE_URL` y `SUPABASE_ANON_KEY`, que ya
+  estaban para `ai-assistant`. Smoke test contra la función viva, sin gastar
+  cuota de Gemini: sin header → `401 UNAUTHORIZED_NO_AUTH_HEADER` (gate de
+  plataforma); `OPTIONS` → `200 ok` (el preflight de CORS propio); con la anon
+  key → `401 {"error":"Sesión inválida o expirada."}`, que es el handler propio
+  corriendo y rechazando un JWT que no es de usuario.
+- **Pendiente de tu prueba en vivo** (requiere tu sesión y tu key de Gemini, que
+  la función descifra): sacar/subir una foto real de un recibo, una lista escrita
+  a mano y una tabla, y confirmar que la extracción y el preview funcionan.
 - **⚠️ Orden de despliegue:** la Edge Function va **antes** que el frontend. Con
   la función sin desplegar, "Desde una foto" se ve habilitada y falla al invocar.
+  Se respetó: la función quedó `ACTIVE` antes de integrar el frontend a `master`.
 
 ## Deploy
 
