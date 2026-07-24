@@ -221,17 +221,23 @@ body {
   flex-direction: column;
   gap: 12px;
 }
+/* Sirve para <a> (IA apagada → Ajustes) y para <button> (IA activa → abre el
+   drawer): de ahí los resets de botón (font, cursor, ancho, alineación). */
 .side-asistente {
   display: flex;
   align-items: center;
   gap: 9px;
+  width: 100%;
   padding: 10px 12px;
   background: var(--color-moss-tint);
   border: 1px solid var(--color-line);
   border-radius: 3px;
   color: var(--color-ink);
+  font-family: inherit;
   font-size: 13px;
+  text-align: left;
   text-decoration: none;
+  cursor: pointer;
 }
 .side-asistente svg {
   color: var(--color-moss);
@@ -422,6 +428,7 @@ body {
   z-index: 19;
   width: 50px;
   height: 50px;
+  padding: 0;
   border-radius: 50%;
   background: var(--color-card);
   border: 1px solid var(--color-line);
@@ -430,9 +437,123 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--color-moss);
+  cursor: pointer;
 }
 .fab-asistente--off {
   color: var(--color-slate);
+}
+
+/* --- Asistente: drawer (≥900px) / bottom-sheet (<900px) (ítem 10) ---- */
+/* Mismo motor que la vieja página `/assistant`; sólo cambia el contenedor. El
+   panel vive montado en el shell (no se desmonta al cerrar), así que el chat
+   sobrevive a cerrar y reabrir. Ancho: drawer lateral que entra desde la
+   derecha; angosto: bottom-sheet que entra desde abajo. El breakpoint (900)
+   es el mismo que resuelve `useIsWide`. */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0s linear 0.2s;
+}
+.drawer-overlay--open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease;
+}
+.asistente-drawer {
+  position: fixed;
+  z-index: 31;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-paper);
+  box-shadow: var(--shadow-float);
+  /* Ancho: drawer lateral, alto completo, entra desde el borde derecho. */
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(440px, 100%);
+  border-left: 1px solid var(--color-line);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition:
+    transform 0.24s ease,
+    visibility 0s linear 0.24s;
+}
+.asistente-drawer--open {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.24s ease;
+}
+@media (max-width: 899px) {
+  /* Angosto: bottom-sheet que entra desde abajo, con el borde superior
+     redondeado y sin ocupar toda la altura (se ve la app detrás). */
+  .asistente-drawer {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: min(86dvh, 620px);
+    border-left: none;
+    border-top: 1px solid var(--color-line);
+    border-radius: 14px 14px 0 0;
+    transform: translateY(100%);
+  }
+  /* Re-afirma el estado abierto DENTRO del media query: la regla de arriba
+     comparte especificidad con `.asistente-drawer--open` y, al venir después en
+     el archivo, le ganaría y dejaría el sheet fuera de pantalla en angosto. */
+  .asistente-drawer--open {
+    transform: none;
+  }
+}
+.asistente-drawer__head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 15px 16px 15px 18px;
+  border-bottom: 1px solid var(--color-line);
+}
+.asistente-drawer__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-fraunces);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-ink);
+}
+.asistente-drawer__title svg {
+  color: var(--color-moss);
+}
+.asistente-drawer__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px calc(16px + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+}
+/* El chat reparte el alto del cuerpo: el historial crece y hace scroll, el
+   formulario queda pegado abajo. */
+.asistente-chat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .drawer-overlay,
+  .asistente-drawer {
+    transition: none;
+  }
 }
 
 /* --- Badges de recordatorios pendientes ----------------------------- */

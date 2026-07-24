@@ -3,11 +3,10 @@ import { AuthProvider } from './lib/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { LocalReminderWatcher } from './components/LocalReminderWatcher'
 import { SyncEngine } from './components/SyncEngine'
-import { AppShell } from './components/AppShell'
+import { AppShell, AssistantRedirect } from './components/AppShell'
 import { HoyPage } from './pages/HoyPage'
 import { ItemsPage } from './pages/ItemsPage'
 import { SettingsPage } from './pages/SettingsPage'
-import { AssistantPage } from './pages/AssistantPage'
 import { RemindersPage } from './pages/RemindersPage'
 
 function App() {
@@ -28,7 +27,10 @@ function App() {
               <Route path="/" element={<HoyPage />} />
               <Route path="/biblioteca" element={<ItemsPage />} />
               <Route path="/reminders" element={<RemindersPage />} />
-              <Route path="/assistant" element={<AssistantPage />} />
+              {/* El asistente dejó de ser una ruta (ítem 10): ahora es un drawer
+                  del shell. `/assistant` se conserva sólo por compatibilidad —
+                  redirige a la vista de inicio y abre el drawer. */}
+              <Route path="/assistant" element={<AssistantRedirect />} />
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Routes>

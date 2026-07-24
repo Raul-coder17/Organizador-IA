@@ -1,5 +1,12 @@
-import { useEffect, useState, type ReactElement } from 'react'
-import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactElement,
+} from 'react'
+import { Link, Navigate, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { useAiEnabled } from '../lib/useAiEnabled'
 import { useRecordatoriosBadge } from '../lib/useRecordatoriosBadge'
@@ -7,6 +14,7 @@ import { useIsWide } from '../lib/useIsWide'
 import { setTheme, useTheme } from '../lib/theme'
 import { supabase } from '../lib/supabase'
 import { SyncStatus } from './SyncStatus'
+import { AssistantDrawer } from './AssistantDrawer'
 
 // Chasis de la app (PLAN_REDISEÑO.md ítem 7). Reemplaza a AppNav.
 //
@@ -28,6 +36,25 @@ import { SyncStatus } from './SyncStatus'
 // buscarlo. La barra superior es sticky, así que ahora se ve *más* que antes
 // (la nav vieja se iba con el scroll). Y como SyncStatus no dibuja nada cuando
 // todo está al día, en el caso normal no ocupa lugar en ninguno de los dos.
+
+// Puente para que la compatibilidad hacia atrás de `/assistant` (ítem 10, tarea
+// 4) pueda abrir el drawer sin que ese estado tenga que vivir en la URL: lo
+// provee AppShell alrededor del <Outlet>, y lo consume `AssistantRedirect`, que
+// es una ruta. Privado al módulo — sólo se exportan componentes, así que no hay
+// warning de fast-refresh.
+const AbrirAsistenteContext = createContext<() => void>(() => {})
+
+// Ruta de compatibilidad: un link/favorito viejo a `/assistant` ya no tiene
+// página. En vez de un 404, abre el drawer y manda a la vista de inicio. "La
+// vista actual" para una entrada en frío es la landing (Hoy); no había otra
+// pantalla debajo del asistente de la que venir.
+export function AssistantRedirect() {
+  const abrir = useContext(AbrirAsistenteContext)
+  useEffect(() => {
+    abrir()
+  }, [abrir])
+  return <Navigate to="/" replace />
+}
 
 const TRAZO = {
   fill: 'none',
@@ -214,11 +241,31 @@ export function AppShell() {
 
   const esActivo = (to: string) => location.pathname === to
 
+  // El asistente ya no es una ruta sino un panel montado en el shell (ítem 10).
+  //
+  //   · `montado`  — se monta la PRIMERA vez que se abre y no se desmonta más.
+  //     Mientras siga montado, cerrar sólo baja una clase de CSS: por eso el
+  //     chat sobrevive a cerrar y reabrir. Lazy a propósito: quien nunca abre el
+  //     asistente no paga su `loadData`/sync al arrancar la app.
+  //   · `abierto`  — si el panel está a la vista.
+  const [montado, setMontado] = useState(false)
+  const [abierto, setAbierto] = useState(false)
+
+  const abrirAsistente = useCallback(() => {
+    setMontado(true)
+    setAbierto(true)
+  }, [])
+  const cerrarAsistente = useCallback(() => setAbierto(false), [])
+  const toggleAsistente = useCallback(() => {
+    setMontado(true)
+    setAbierto((v) => !v)
+  }, [])
+
   // Mismo criterio que la nav vieja: mientras `useAiEnabled` carga (null) el
   // asistente se muestra apagado, y apagado significa "te llevo a Ajustes",
-  // no "no hago nada".
+  // no "no hago nada". Con la IA activa, el botón abre/cierra el drawer en vez
+  // de navegar.
   const asistenteActivo = aiEnabled === true
-  const asistenteTo = asistenteActivo ? '/assistant' : '/settings'
   const asistenteTitulo = asistenteActivo
     ? 'Asistente IA'
     : 'Activá la IA en Ajustes para usar el asistente'
@@ -274,15 +321,28 @@ export function AppShell() {
           </Link>
 
           <div className="side-foot">
-            <Link
-              to={asistenteTo}
-              title={asistenteTitulo}
-              aria-disabled={!asistenteActivo}
-              className={`side-asistente${asistenteActivo ? '' : ' side-asistente--off'}`}
-            >
-              <IconoChispa />
-              <span>Asistente IA</span>
-            </Link>
+            {asistenteActivo ? (
+              <button
+                type="button"
+                onClick={toggleAsistente}
+                title={asistenteTitulo}
+                aria-expanded={abierto}
+                className="side-asistente"
+              >
+                <IconoChispa />
+                <span>Asistente IA</span>
+              </button>
+            ) : (
+              <Link
+                to="/settings"
+                title={asistenteTitulo}
+                aria-disabled="true"
+                className="side-asistente side-asistente--off"
+              >
+                <IconoChispa />
+                <span>Asistente IA</span>
+              </Link>
+            )}
 
             <div className="side-cuenta">
               <span className="side-cuenta__avatar" aria-hidden="true">
@@ -323,7 +383,9 @@ export function AppShell() {
           </header>
         )}
 
-        <Outlet />
+        <AbrirAsistenteContext.Provider value={abrirAsistente}>
+          <Outlet />
+        </AbrirAsistenteContext.Provider>
 
         {!wide && (
           <>
@@ -342,22 +404,39 @@ export function AppShell() {
               {DESTINOS.slice(2).map(celda)}
             </nav>
 
-            {/* Sobre la propia página del asistente el FAB no tiene a dónde
-                llevar, así que no se dibuja. */}
-            {location.pathname !== '/assistant' && (
-              <Link
-                to={asistenteTo}
-                title={asistenteTitulo}
-                aria-label={asistenteTitulo}
-                aria-disabled={!asistenteActivo}
-                className={`fab-asistente${asistenteActivo ? '' : ' fab-asistente--off'}`}
-              >
-                <IconoChispa size={24} />
-              </Link>
-            )}
+            {/* Con el drawer abierto el sheet cubre el FAB, así que lo ocultamos
+                para no encimarlos: el propio sheet ya trae su botón de cerrar. */}
+            {!abierto &&
+              (asistenteActivo ? (
+                <button
+                  type="button"
+                  onClick={toggleAsistente}
+                  title={asistenteTitulo}
+                  aria-label={asistenteTitulo}
+                  className="fab-asistente"
+                >
+                  <IconoChispa size={24} />
+                </button>
+              ) : (
+                <Link
+                  to="/settings"
+                  title={asistenteTitulo}
+                  aria-label={asistenteTitulo}
+                  aria-disabled="true"
+                  className="fab-asistente fab-asistente--off"
+                >
+                  <IconoChispa size={24} />
+                </Link>
+              ))}
           </>
         )}
       </div>
+
+      {/* El panel del asistente (ítem 10). Montado una vez abierto y ya no se
+          desmonta, para que el chat sobreviva a cerrar/reabrir. Es
+          `position: fixed`, así que da igual dónde cuelgue del árbol; va al
+          final del shell para quedar por encima de todo. */}
+      {montado && <AssistantDrawer open={abierto} onClose={cerrarAsistente} />}
     </div>
   )
 }

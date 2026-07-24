@@ -12,9 +12,9 @@ import { supabase } from './supabase'
 //
 // Ahora cada lectura exitosa se guarda, y sin red se usa ese último valor
 // conocido. El botón refleja entonces el estado real más reciente. Que además
-// el asistente no pueda responder sin conexión es otra cosa, y la dice la
-// propia pantalla del asistente con un banner cuando se lo intenta usar
-// (AssistantPage): el estado de la IA y el estado de la red son dos hechos
+// el asistente no pueda responder sin conexión es otra cosa, y la dice el
+// propio panel del asistente con un banner cuando se lo intenta usar
+// (AssistantDrawer): el estado de la IA y el estado de la red son dos hechos
 // distintos y se cuentan por separado.
 //
 // localStorage y no el store `meta` de IndexedDB a propósito: es síncrono, así

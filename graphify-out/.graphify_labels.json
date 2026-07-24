@@ -41,5 +41,6 @@
   "39": "@types/react-dom",
   "40": "vite",
   "41": "vite-plugin-pwa",
-  "42": "@vitejs/plugin-react"
+  "42": "@vitejs/plugin-react",
+  "43": "Outbox Pattern for Offline Mutations"
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { useAiEnabled } from '../lib/useAiEnabled'
@@ -21,6 +21,23 @@ import { datetimeLocalToIso, formatFechaHora, isoToDatetimeLocal } from '../lib/
 import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
 import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
 
+// Asistente como drawer (PLAN_REDISEÑO.md ítem 10). Antes era la página
+// `/assistant`; ahora el MOTOR es el mismo —chat, envío, propuestas,
+// confirmar-una/confirmar-todas, cooldown, usage, banner de sin conexión— y lo
+// único que cambió es el contenedor: en vez de una ruta que se monta y desmonta
+// al navegar, es un panel que vive montado en el shell.
+//
+//   ≥900px  drawer a la derecha, alto completo, entra desde el borde.
+//   <900px  bottom-sheet, entra desde abajo, con esquinas redondeadas arriba.
+// Mismo breakpoint (900) que `useIsWide`; acá lo resuelven las media queries de
+// index.css, porque el chrome es idéntico y sólo cambia de dónde entra.
+//
+// PRESERVACIÓN DE ESTADO (tarea 3 del ítem): el chat vive en el `useState` de
+// este componente, y AppShell lo mantiene montado una vez abierto — cerrar sólo
+// baja una clase de CSS, no desmonta. Por eso reabrir conserva la conversación,
+// las propuestas y el cooldown. Antes, al ser una ruta, navegar afuera lo
+// desmontaba y se perdía todo.
+
 function contenidoTexto(item: Item): string {
   return typeof item.contenido?.texto === 'string' ? item.contenido.texto : JSON.stringify(item.contenido)
 }
@@ -33,19 +50,43 @@ interface PendingAction {
   error?: string
 }
 
+function IconoChispa({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      aria-hidden="true"
+    >
+      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10z" />
+    </svg>
+  )
+}
+
+function IconoCerrar() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  )
+}
+
 // El aviso de "sin conexión" del asistente.
 //
-// Es el contrapeso de la mejora en `useAiEnabled`: el botón que trae hasta acá
+// Es el contrapeso de la mejora en `useAiEnabled`: el botón que abre el panel
 // ahora se dibuja habilitado sin red (refleja el último estado conocido de la
 // IA, no un apagón inventado), así que la explicación de por qué el asistente
-// no responde tiene que estar en esta pantalla, arriba de todo y con todas las
-// letras. Un banner y no un error de red genérico ni un rebote a Ajustes: el
-// problema no es la configuración de la IA, es que no hay internet, y son dos
-// arreglos distintos.
+// no responde tiene que estar acá, arriba de todo y con todas las letras. Un
+// banner y no un error de red genérico ni un rebote a Ajustes: el problema no es
+// la configuración de la IA, es que no hay internet, y son dos arreglos
+// distintos.
 //
-// Va en las DOS salidas de la página (IA apagada y chat normal), porque sin
-// señal el estado de la IA que estamos mostrando es el último conocido y el
-// hecho que manda es la falta de red.
+// Va en las DOS salidas del panel (IA apagada y chat normal), porque sin señal
+// el estado de la IA que estamos mostrando es el último conocido y el hecho que
+// manda es la falta de red.
 function AvisoSinConexion() {
   return (
     <div className="bg-card border border-line border-l-4 border-l-rust rounded-[2px] p-4">
@@ -65,7 +106,7 @@ function AvisoSinConexion() {
   )
 }
 
-export function AssistantPage() {
+export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { user } = useAuth()
   const aiEnabled = useAiEnabled()
   const { online } = useSyncStatus()
@@ -112,21 +153,16 @@ export function AssistantPage() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
   }, [messages, pending])
 
-  if (!user) return null
-
-  if (aiEnabled === false) {
-    return (
-      <main className="shell-main space-y-4">
-        {!online && <AvisoSinConexion />}
-        <div className="bg-card border border-line rounded-[4px] p-6 text-center">
-          <p className="text-sm text-ink-soft mb-3">La IA no está activada.</p>
-          <Link to="/settings" className="link-underline text-sm">
-            Activá la IA en Ajustes para usar el asistente
-          </Link>
-        </div>
-      </main>
-    )
-  }
+  // Escape cierra el panel, como se espera de cualquier diálogo modal. Sólo
+  // mientras está abierto, para no comerse la tecla en el resto de la app.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, onClose])
 
   async function handleSend(e: FormEvent) {
     e.preventDefault()
@@ -334,7 +370,6 @@ export function AssistantPage() {
     // Aplica secuencialmente todas las que sigan pendientes (idle).
     for (let i = 0; i < pending.length; i++) {
       if (pending[i]?.estado === 'idle') {
-        // eslint-disable-next-line no-await-in-loop
         await confirmOne(i)
       }
     }
@@ -343,100 +378,151 @@ export function AssistantPage() {
   const anyApplying = pending.some((p) => p.estado === 'applying')
   const idleCount = pending.filter((p) => p.estado === 'idle').length
 
-  return (
-    <main className="shell-main shell-main--alto flex flex-col gap-4 max-w-[720px]">
-      {!online && <AvisoSinConexion />}
+  // El cuerpo del panel: la IA apagada muestra el rebote a Ajustes; encendida,
+  // el chat. El chrome (overlay + panel + cabecera) es el mismo en los dos
+  // casos, así que el "no está activada" también se ve dentro del drawer y no
+  // como página suelta.
+  let cuerpo: ReactNode
+  if (!user) {
+    cuerpo = null
+  } else if (aiEnabled === false) {
+    cuerpo = (
+      <div className="asistente-chat">
+        {!online && <AvisoSinConexion />}
+        <div className="bg-card border border-line rounded-[4px] p-6 text-center">
+          <p className="text-sm text-ink-soft mb-3">La IA no está activada.</p>
+          <Link to="/settings" onClick={onClose} className="link-underline text-sm">
+            Activá la IA en Ajustes para usar el asistente
+          </Link>
+        </div>
+      </div>
+    )
+  } else {
+    cuerpo = (
+      <div className="asistente-chat">
+        {!online && <AvisoSinConexion />}
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 min-h-[300px]">
-        {messages.length === 0 && (
-          <p className="text-sm text-ink-soft">
-            Preguntale al asistente por tus items, o pedile que cree/edite/borre uno. Cualquier cambio
-            te lo va a mostrar para confirmar antes de aplicarlo.
+        <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 min-h-[120px]">
+          {messages.length === 0 && (
+            <p className="text-sm text-ink-soft">
+              Preguntale al asistente por tus items, o pedile que cree/edite/borre uno. Cualquier
+              cambio te lo va a mostrar para confirmar antes de aplicarlo.
+            </p>
+          )}
+
+          {messages.map((m, i) => (
+            <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
+              <span
+                className={`inline-block rounded-[2px] px-3 py-2 text-sm whitespace-pre-wrap ${
+                  m.role === 'user'
+                    ? 'bg-moss text-moss-ink'
+                    : 'bg-card border border-line text-ink'
+                }`}
+              >
+                {m.text}
+              </span>
+            </div>
+          ))}
+
+          {sending && <p className="text-sm text-ink-soft">Pensando…</p>}
+
+          {pending.length > 0 && (
+            <div className="space-y-2">
+              {pending.length > 1 && idleCount > 0 && (
+                <div className="flex items-center gap-3">
+                  <button onClick={confirmAll} disabled={anyApplying} className="btn-moss">
+                    {anyApplying ? 'Aplicando…' : `Confirmar todas (${idleCount})`}
+                  </button>
+                  <span className="text-xs text-slate font-mono">
+                    o confirmá/cancelá una por una abajo
+                  </span>
+                </div>
+              )}
+
+              {pending.map((p, i) => (
+                <ProposedActionCard
+                  key={i}
+                  accion={p.accion}
+                  estado={p.estado}
+                  errorMsg={p.error}
+                  items={items}
+                  onConfirm={() => confirmOne(i)}
+                  onCancel={() => cancelOne(i)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {error && <p className="text-sm text-rust">{error}</p>}
+
+        {cooldown > 0 && (
+          <p className="text-sm text-gold">
+            Esperá {cooldown} segundo{cooldown === 1 ? '' : 's'} antes de enviar otro mensaje.
           </p>
         )}
 
-        {messages.map((m, i) => (
-          <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
-            <span
-              className={`inline-block rounded-[2px] px-3 py-2 text-sm whitespace-pre-wrap ${
-                m.role === 'user'
-                  ? 'bg-moss text-moss-ink'
-                  : 'bg-card border border-line text-ink'
-              }`}
-            >
-              {m.text}
-            </span>
-          </div>
-        ))}
+        <form onSubmit={handleSend} className="flex items-center gap-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={
+              !online
+                ? 'Sin conexión — el asistente no está disponible'
+                : cooldown > 0
+                  ? `Esperá ${cooldown}s…`
+                  : 'Escribí un mensaje…'
+            }
+            disabled={!online || sending || cooldown > 0}
+            className="ctl flex-1 disabled:opacity-60"
+          />
+          <button
+            type="submit"
+            disabled={!online || sending || cooldown > 0 || !input.trim()}
+            className="btn-moss"
+          >
+            Enviar
+          </button>
+        </form>
 
-        {sending && <p className="text-sm text-ink-soft">Pensando…</p>}
-
-        {pending.length > 0 && (
-          <div className="space-y-2">
-            {pending.length > 1 && idleCount > 0 && (
-              <div className="flex items-center gap-3">
-                <button onClick={confirmAll} disabled={anyApplying} className="btn-moss">
-                  {anyApplying ? 'Aplicando…' : `Confirmar todas (${idleCount})`}
-                </button>
-                <span className="text-xs text-slate font-mono">
-                  o confirmá/cancelá una por una abajo
-                </span>
-              </div>
-            )}
-
-            {pending.map((p, i) => (
-              <ProposedActionCard
-                key={i}
-                accion={p.accion}
-                estado={p.estado}
-                errorMsg={p.error}
-                items={items}
-                onConfirm={() => confirmOne(i)}
-                onCancel={() => cancelOne(i)}
-              />
-            ))}
-          </div>
+        {usage?.daily_quota != null && (
+          <p className="text-xs text-slate text-right font-mono">
+            {usage.used_today ?? 0} de {usage.daily_quota} mensajes de IA usados hoy
+          </p>
         )}
       </div>
+    )
+  }
 
-      {error && <p className="text-sm text-rust">{error}</p>}
-
-      {cooldown > 0 && (
-        <p className="text-sm text-gold">
-          Esperá {cooldown} segundo{cooldown === 1 ? '' : 's'} antes de enviar otro mensaje.
-        </p>
-      )}
-
-      <form onSubmit={handleSend} className="flex items-center gap-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={
-            !online
-              ? 'Sin conexión — el asistente no está disponible'
-              : cooldown > 0
-                ? `Esperá ${cooldown}s…`
-                : 'Escribí un mensaje…'
-          }
-          disabled={!online || sending || cooldown > 0}
-          className="ctl flex-1 disabled:opacity-60"
-        />
-        <button
-          type="submit"
-          disabled={!online || sending || cooldown > 0 || !input.trim()}
-          className="btn-moss"
-        >
-          Enviar
-        </button>
-      </form>
-
-      {usage?.daily_quota != null && (
-        <p className="text-xs text-slate text-right font-mono">
-          {usage.used_today ?? 0} de {usage.daily_quota} mensajes de IA usados hoy
-        </p>
-      )}
-    </main>
+  return (
+    <>
+      {/* El telón: click afuera cierra. Se desvanece con el panel y, cerrado,
+          queda fuera del árbol accesible. */}
+      <div
+        className={`drawer-overlay${open ? ' drawer-overlay--open' : ''}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <aside
+        className={`asistente-drawer${open ? ' asistente-drawer--open' : ''}`}
+        role="dialog"
+        aria-modal={open || undefined}
+        aria-label="Asistente IA"
+        aria-hidden={!open}
+      >
+        <header className="asistente-drawer__head">
+          <span className="asistente-drawer__title">
+            <IconoChispa />
+            Asistente IA
+          </span>
+          <button type="button" className="icon-btn" onClick={onClose} aria-label="Cerrar asistente">
+            <IconoCerrar />
+          </button>
+        </header>
+        <div className="asistente-drawer__body">{cuerpo}</div>
+      </aside>
+    </>
   )
 }
 

@@ -602,10 +602,49 @@ recordatorios o solo ítems (§5.2).
 > el mismo componente en sidebar (desktop) y barra superior (mobile), así que
 > funciona igual en los dos layouts.
 
-**10. Asistente como drawer.** `[N]` · riesgo medio-alto
+**10. Asistente como drawer.** `[N]` · riesgo medio-alto — ✅ **implementado** (rama `rediseno-fase-3`)
 Sacar `/assistant` de las rutas, montar el panel en el shell. **La lógica de chat y propuestas se
 mueve sin tocarse.** Definir preservación del chat al cerrar y el estado "IA desactivada".
 Redirigir `/assistant` a la vista actual con el drawer abierto, para no romper links viejos.
+
+> **El motor se movió sin tocarse.** Todo `AssistantPage` —chat, envío,
+> `confirmOne`/`confirmAll`/`cancelOne`, `applyAction`, cooldown, usage,
+> `AvisoSinConexion`, `ProposedActionCard`— pasó tal cual a
+> [`AssistantDrawer`](src/components/AssistantDrawer.tsx). Lo único que cambió es
+> el contenedor: las tres salidas que devolvían un `<main class="shell-main">`
+> ahora son el cuerpo de un panel con cabecera (título + cerrar). Ni una línea de
+> la lógica de IA se reescribió. `AssistantPage.tsx` se borró.
+>
+> **Drawer / bottom-sheet, mismo breakpoint que el resto.** ≥900px entra desde
+> la derecha a alto completo; <900px es un bottom-sheet que sube desde abajo con
+> el borde superior redondeado. Como el chrome es idéntico, la diferencia la
+> resuelven las media queries de `index.css` (el mismo 900 de `useIsWide`), sin
+> ramas en JS. El banner de "sin conexión" quedó adentro del panel, no como
+> página suelta (tarea 5). *Una trampa que saltó verificando:* la media query
+> del sheet comparte especificidad con `.asistente-drawer--open` y, al venir
+> después, dejaba el sheet fuera de pantalla en móvil; se arregló re-afirmando
+> `transform: none` dentro del media query.
+>
+> **Preservación del chat (tarea 3).** El estado vive en el `useState` del
+> `AssistantDrawer`, y AppShell lo **monta una sola vez** (lazy: recién al primer
+> abrir) y ya no lo desmonta — cerrar sólo baja una clase de CSS. Por eso reabrir
+> conserva la conversación, las propuestas pendientes y el cooldown. Antes, al
+> ser una ruta, navegar afuera lo desmontaba y se perdía todo. El montaje lazy
+> además evita que quien nunca abre el asistente pague su `loadData`/sync al
+> arrancar.
+>
+> **Los botones abren, ya no navegan.** El "Asistente IA" del sidebar y el FAB
+> móvil ahora hacen toggle del panel (mismo criterio de `useAiEnabled`, con el
+> fix de caché offline del ítem 8.1: con la IA apagada o cargando siguen siendo
+> un link a Ajustes con su explicación). El FAB se oculta con el sheet abierto,
+> que ya trae su botón de cerrar. `Escape` y click en el telón también cierran.
+>
+> **Compatibilidad (tarea 4).** `/assistant` sigue siendo una ruta, pero ahora
+> es [`AssistantRedirect`](src/components/AppShell.tsx): abre el drawer (vía un
+> contexto que el shell provee alrededor del `<Outlet>`) y hace `Navigate` a la
+> landing. Un favorito viejo no da 404 ni pantalla en blanco. "La vista actual"
+> para una entrada en frío es Hoy: no hay otra pantalla debajo del asistente de
+> la que se pueda venir.
 
 **11. Sheet "+ Nuevo ítem".** `[N]` · riesgo medio
 Mover `ItemForm` a modal/bottom-sheet + menú de 3 opciones. **Incluye definir el modo edición**
@@ -632,7 +671,7 @@ grande de todos: es la única de las 4 pendientes que necesita backend nuevo de 
 Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
-Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] ✅ · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
+Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] ✅ · 10 [N] ✅ · 11 [N]  ← el bloque riesgoso (D1 tomada)
 Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
 ```
 
