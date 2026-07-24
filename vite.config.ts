@@ -16,7 +16,14 @@ export default defineConfig({
       filename: 'sw.ts',
       registerType: 'autoUpdate',
       manifest: false,
-      includeAssets: ['icon.svg'],
+      includeAssets: [
+        'icon.svg',
+        'favicon.ico',
+        'apple-touch-icon.png',
+        'pwa-192x192.png',
+        'pwa-512x512.png',
+        'pwa-maskable-512x512.png',
+      ],
       injectManifest: {
         globPatterns: ['**/*.{js,css,html,svg}'],
       },
