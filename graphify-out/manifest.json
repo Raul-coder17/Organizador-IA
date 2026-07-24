@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1784886160.3167686,
-    "ast_hash": "ed6632bdd72b106ea6c46fd22cef0abc",
+    "mtime": 1784889308.8807087,
+    "ast_hash": "1384e0c1c5562416f4193261f762206b",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -500,8 +500,8 @@
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
-    "mtime": 1784886160.3187735,
-    "ast_hash": "87e929c2a1181626252dec37c3aebafe",
+    "mtime": 1784888956.6681592,
+    "ast_hash": "ac37769fe062036bafce2510c51897ae",
     "semantic_hash": ""
   },
   "src/lib/itemSheet.ts": {
@@ -525,23 +525,23 @@
     "semantic_hash": ""
   },
   "src/lib/fotoItem.ts": {
-    "mtime": 1784886160.3207772,
-    "ast_hash": "83fa46af4f96ade41e4a8987482e3ab7",
+    "mtime": 1784888827.851247,
+    "ast_hash": "42a97378bad78a2731c03880fd016f99",
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/extract.test.ts": {
-    "mtime": 1784886160.3217747,
-    "ast_hash": "49979acc9461f25297fd7290ed04fc9f",
+    "mtime": 1784889035.0358312,
+    "ast_hash": "21b8a8b2fe5376185b0bed112219b0fe",
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/extract.ts": {
-    "mtime": 1784886160.3217747,
-    "ast_hash": "32395647678a9a9aa4f7b4e2f8154ecc",
+    "mtime": 1784889060.2001922,
+    "ast_hash": "1e42c4609287aa71d0d24c25043ceb3b",
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/index.ts": {
-    "mtime": 1784886160.3217747,
-    "ast_hash": "95719f5faabd2b4bcaec71e4e4b6e585",
+    "mtime": 1784888806.2240613,
+    "ast_hash": "5b69416af785856df8fb9c6b57319b9d",
     "semantic_hash": ""
   },
   "public/apple-touch-icon.png": {
