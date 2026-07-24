@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
-    "mtime": 1784885290.6378207,
-    "ast_hash": "1ef764fbf7a6fa48c08a7bc1319a3880",
+    "mtime": 1784887665.9634285,
+    "ast_hash": "1aec05f008cd0f27c74f1bbf41a6bcc8",
     "semantic_hash": ""
   },
   "src/components/ItemList.tsx": {
-    "mtime": 1784847927.1934721,
-    "ast_hash": "fc2c4540c3375baaabac2b83a50edc50",
+    "mtime": 1784887292.7661579,
+    "ast_hash": "49e7bbddc5edf94e678f7bd36102c603",
     "semantic_hash": ""
   },
   "src/components/LocalReminderWatcher.tsx": {
@@ -95,8 +95,8 @@
     "semantic_hash": "8763514b217538d49952f0c7bd056d2f"
   },
   "src/lib/recordatorios.ts": {
-    "mtime": 1784852494.0985677,
-    "ast_hash": "ba4c2b9cd08266b095100b5a909e2c96",
+    "mtime": 1784887482.7157266,
+    "ast_hash": "ca785f0e7d7a0e9c34678a04ae2e4a0b",
     "semantic_hash": ""
   },
   "src/lib/reminderScheduling.test.ts": {
@@ -190,8 +190,8 @@
     "semantic_hash": ""
   },
   "src/types/assistant.ts": {
-    "mtime": 1784885049.0691297,
-    "ast_hash": "4c2e3a68ca6166348444937c71455723",
+    "mtime": 1784886160.3207772,
+    "ast_hash": "8fa35d480e9f3c221dae1a4c9a415283",
     "semantic_hash": ""
   },
   "src/types/database.ts": {
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1784885853.3008845,
-    "ast_hash": "0d3df959d82324f03559674a28b46d36",
+    "mtime": 1784886160.3167686,
+    "ast_hash": "ed6632bdd72b106ea6c46fd22cef0abc",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -365,8 +365,8 @@
     "semantic_hash": ""
   },
   "PLAN_REDISE\u00d1O.md": {
-    "mtime": 1784885867.31939,
-    "ast_hash": "a2746eab283a2279b7ae2052da287ead",
+    "mtime": 1784887763.4131618,
+    "ast_hash": "8bca086864e603bd06f896c28e275c00",
     "semantic_hash": ""
   },
   "design_handoff_organizador_ia/Organizador.dc.html": {
@@ -465,7 +465,7 @@
     "semantic_hash": ""
   },
   "src/components/AppShell.tsx": {
-    "mtime": 1784885386.5188372,
+    "mtime": 1784886160.3177736,
     "ast_hash": "4cc379cac743e3dee75fe10e1e32271b",
     "semantic_hash": ""
   },
@@ -495,12 +495,12 @@
     "semantic_hash": ""
   },
   "src/components/AssistantDrawer.tsx": {
-    "mtime": 1784885182.245764,
+    "mtime": 1784886160.3177736,
     "ast_hash": "7741ed174333b8b16c54b00f00664ec0",
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
-    "mtime": 1784885376.4558372,
+    "mtime": 1784886160.3187735,
     "ast_hash": "87e929c2a1181626252dec37c3aebafe",
     "semantic_hash": ""
   },
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "src/components/ProposedActionCard.tsx": {
-    "mtime": 1784885134.9045234,
-    "ast_hash": "aac56526be9bdc0ea91975e7ed2b0699",
+    "mtime": 1784886160.3187735,
+    "ast_hash": "4668b0caa382cce64170466a8d2469d3",
     "semantic_hash": ""
   },
   "src/components/UpdateBanner.tsx": {
@@ -520,28 +520,28 @@
     "semantic_hash": ""
   },
   "src/lib/accionesPropuestas.ts": {
-    "mtime": 1784885244.246681,
-    "ast_hash": "821e405952dd9e1caaa97e1a1e2ce155",
+    "mtime": 1784886160.3197756,
+    "ast_hash": "108fe2bf4cce80719786d9c27eafbf5f",
     "semantic_hash": ""
   },
   "src/lib/fotoItem.ts": {
-    "mtime": 1784885210.5259006,
-    "ast_hash": "ee23fb024ed2a58fbe7936d681b26cb3",
+    "mtime": 1784886160.3207772,
+    "ast_hash": "83fa46af4f96ade41e4a8987482e3ab7",
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/extract.test.ts": {
-    "mtime": 1784885018.5790024,
-    "ast_hash": "e6962c3c9d48d2ca8f9eff53d6214b73",
+    "mtime": 1784886160.3217747,
+    "ast_hash": "49979acc9461f25297fd7290ed04fc9f",
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/extract.ts": {
-    "mtime": 1784884910.209932,
-    "ast_hash": "7d9bdb9ae115c044ea8304fce6df49f3",
+    "mtime": 1784886160.3217747,
+    "ast_hash": "32395647678a9a9aa4f7b4e2f8154ecc",
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/index.ts": {
-    "mtime": 1784884982.6816127,
-    "ast_hash": "7e0a3486389270a1f6c70e3388ea8d9f",
+    "mtime": 1784886160.3217747,
+    "ast_hash": "95719f5faabd2b4bcaec71e4e4b6e585",
     "semantic_hash": ""
   },
   "public/apple-touch-icon.png": {
@@ -562,6 +562,16 @@
   "public/pwa-maskable-512x512.png": {
     "mtime": 1784870273.772,
     "ast_hash": "17e108e1c221652ec57df3c3a87352cc",
+    "semantic_hash": ""
+  },
+  "src/lib/tabla.test.ts": {
+    "mtime": 1784887262.1484146,
+    "ast_hash": "86a425aa5000df26fb78b28c58f20409",
+    "semantic_hash": ""
+  },
+  "src/lib/tabla.ts": {
+    "mtime": 1784887240.4788828,
+    "ast_hash": "bd7d067f154759a8d51cf6c783fa197d",
     "semantic_hash": ""
   }
 }
