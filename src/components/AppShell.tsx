@@ -1,5 +1,5 @@
-import type { ReactElement } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useEffect, useState, type ReactElement } from 'react'
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { useAiEnabled } from '../lib/useAiEnabled'
 import { useRecordatoriosBadge } from '../lib/useRecordatoriosBadge'
@@ -144,24 +144,60 @@ const DESTINOS: Destino[] = [
 // dejar el botón principal del shell sin hacer nada.
 const NUEVO_ITEM = { to: '/biblioteca', state: { nuevoItem: true } }
 
+// Buscador global (ítem 9). Vive en el shell, pero no dibuja resultados: al
+// escribir navega a la Biblioteca con la consulta en la URL (`/biblioteca?q=…`)
+// y es ItemsPage la que filtra y agrupa. Así se reusa tal cual el layout de
+// grupos por tema y el estado vacío, en vez de inventar una pantalla de
+// resultados nueva (§ítem 9, decisión de presentación).
+//
+// El input es la fuente de verdad de lo que se ve tipeado; la URL se actualiza
+// con un respiro (debounce) para no navegar en cada tecla. `replace: true`
+// mantiene el historial limpio: tipear no deja un rastro de estados intermedios
+// para el botón "atrás".
+const DEBOUNCE_MS = 250
+
 function Buscador({ id }: { id: string }) {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const location = useLocation()
+  const enBiblioteca = location.pathname === '/biblioteca'
+  const qUrl = enBiblioteca ? (searchParams.get('q') ?? '') : ''
+
+  const [valor, setValor] = useState(qUrl)
+
+  // Si la URL cambia por fuera del input (navegación, limpiar el filtro, o
+  // llegar directo a un link con ?q=…), el input se pone al día. No pisa lo que
+  // el usuario está tipeando: tras el debounce `valor` y `qUrl` coinciden, así
+  // que este efecto sólo actúa ante un cambio externo real.
+  useEffect(() => {
+    setValor(qUrl)
+  }, [qUrl])
+
+  // Debounce: al frenar de tipear, se refleja en la URL. Ir a la Biblioteca con
+  // consulta vacía = mostrarla sin filtro de texto (los demás filtros siguen).
+  useEffect(() => {
+    if (valor === qUrl) return
+    const t = setTimeout(() => {
+      const destino = valor.trim() ? `/biblioteca?q=${encodeURIComponent(valor.trim())}` : '/biblioteca'
+      navigate(destino, { replace: enBiblioteca })
+    }, DEBOUNCE_MS)
+    return () => clearTimeout(t)
+  }, [valor, qUrl, enBiblioteca, navigate])
+
   return (
     <div className="shell-search">
       <span className="shell-search__icon">
         <IconoBuscar />
       </span>
       <label className="sr-only" htmlFor={id}>
-        Buscar
+        Buscar en la biblioteca
       </label>
-      {/* Sin funcionalidad todavía: el buscador global es el ítem 9. Va
-          deshabilitado a propósito — un input que acepta texto y no busca
-          miente más que uno que se declara apagado. */}
       <input
         id={id}
         type="search"
-        disabled
+        value={valor}
+        onChange={(e) => setValor(e.target.value)}
         placeholder="Buscar en todo…"
-        title="El buscador llega en el próximo paso del rediseño"
         className="shell-search__input"
       />
     </div>

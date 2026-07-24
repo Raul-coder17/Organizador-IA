@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { deleteItem, updateItem } from '../lib/repo'
 import { loadItemsFromCache, loadRecordatoriosFromCache, loadTemasFromCache } from '../lib/db'
@@ -8,6 +8,7 @@ import type { Item, LineaLista, Recordatorio, Tema, TipoItem } from '../types/da
 import { ItemForm } from '../components/ItemForm'
 import { ItemList } from '../components/ItemList'
 import { colorDeTema, temaColorVar } from '../lib/temaColores'
+import { filtrarItems } from '../lib/buscar'
 
 // Filtro por tipo. 'todos' es el estado neutro; el resto son los cuatro tipos
 // reales de item — incluido 'recordatorio', que existe en el modelo y hasta
@@ -68,6 +69,13 @@ export function ItemsPage() {
   const [showForm, setShowForm] = useState(false)
   const location = useLocation()
 
+  // La consulta del buscador global viaja en la URL (`?q=…`, ítem 9). Vive ahí
+  // y no en un estado compartido porque el input está en el shell y los
+  // resultados acá: la URL es el único lugar que los dos ya miran. De paso, un
+  // resultado de búsqueda queda enlazable y sobrevive a un F5.
+  const [searchParams, setSearchParams] = useSearchParams()
+  const q = searchParams.get('q') ?? ''
+
   // La pantalla lee SIEMPRE del espejo local (instantáneo, igual con o sin
   // red). Quien lo pone al día contra el servidor es el motor de sync, que al
   // terminar cada ciclo avisa y volvemos a leer.
@@ -120,6 +128,23 @@ export function ItemsPage() {
       setFilterTipo('todos')
     }
   }, [location.key, location.state])
+
+  // Una búsqueda global tiene que ser global: llega con los filtros de tipo y
+  // tema en neutro. Si no, el resultado dependería de en qué estado quedó la
+  // Biblioteca la última vez —"no aparece" cuando en realidad estaba tapado por
+  // un chip de tema puesto hace diez minutos— y "Buscar en todo" sería mentira.
+  // Los filtros siguen visibles y se pueden volver a aplicar para acotar.
+  useEffect(() => {
+    if (!q) return
+    setFilterTipo('todos')
+    setFilterTemaId('todos')
+  }, [q])
+
+  function limpiarBusqueda() {
+    const params = new URLSearchParams(searchParams)
+    params.delete('q')
+    setSearchParams(params, { replace: true })
+  }
 
   function handleSaved() {
     setShowForm(false)
@@ -179,19 +204,41 @@ export function ItemsPage() {
     (filterTemaId === FILTRO_SIN_TEMA ? item.tema_id === null : item.tema_id === filterTemaId)
   const coincideTipo = (item: Item) => filterTipo === 'todos' || item.tipo === filterTipo
 
-  const filteredItems = items.filter((item) => coincideTema(item) && coincideTipo(item))
+  // El texto primero (busca sobre TODOS los items, incluido el nombre del tema
+  // de cada uno) y después los filtros de la página, que acotan el resultado.
+  const filteredItems = filtrarItems(items, temas, q).filter(
+    (item) => coincideTema(item) && coincideTipo(item),
+  )
   const hayFiltroActivo = filterTemaId !== 'todos' || filterTipo !== 'todos'
+  const buscando = q.length > 0
 
   return (
     <main className="shell-main space-y-6">
       <div className="flex items-center justify-between gap-4 flex-wrap">
+        {/* Buscando, el encabezado dice qué se está mirando: si no, la página
+            sigue diciendo "Biblioteca · 47 items" mientras muestra 2, y el
+            número de arriba contradice a la lista de abajo. */}
         <div className="tema-head grow">
-          <h2>Biblioteca</h2>
+          <h2>{buscando ? 'Resultados' : 'Biblioteca'}</h2>
           <span className="count">
-            {items.length} item{items.length === 1 ? '' : 's'} · {temas.length} tema
-            {temas.length === 1 ? '' : 's'}
+            {buscando ? (
+              <>
+                {filteredItems.length} resultado{filteredItems.length === 1 ? '' : 's'} para «{q}»
+              </>
+            ) : (
+              <>
+                {items.length} item{items.length === 1 ? '' : 's'} · {temas.length} tema
+                {temas.length === 1 ? '' : 's'}
+              </>
+            )}
           </span>
         </div>
+
+        {buscando && (
+          <button type="button" onClick={limpiarBusqueda} className="link-underline">
+            Limpiar búsqueda
+          </button>
+        )}
 
         <button
           onClick={() => {
@@ -278,11 +325,17 @@ export function ItemsPage() {
         <p className="text-sm text-ink-soft">Cargando…</p>
       ) : filteredItems.length === 0 ? (
         <p className="text-sm text-ink-soft">
-          {items.length === 0
-            ? 'Todavía no tenés items. Creá el primero con el botón de arriba.'
-            : hayFiltroActivo
-              ? 'No hay items con este filtro.'
-              : 'No hay items para mostrar.'}
+          {buscando
+            ? hayFiltroActivo
+              ? // Con un chip puesto encima de la búsqueda, "probá otras palabras" manda
+                // al lado equivocado: lo que sobra puede ser el filtro, no la consulta.
+                `Sin resultados para «${q}» con los filtros de arriba aplicados.`
+              : `Sin resultados para «${q}». Probá con otras palabras.`
+            : items.length === 0
+              ? 'Todavía no tenés items. Creá el primero con el botón de arriba.'
+              : hayFiltroActivo
+                ? 'No hay items con este filtro.'
+                : 'No hay items para mostrar.'}
         </p>
       ) : (
         <ItemList

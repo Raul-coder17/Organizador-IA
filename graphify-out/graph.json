@@ -76,8 +76,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "package",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "package.json"
     },
     {
@@ -87,8 +87,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "package_name",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "name"
     },
     {
@@ -98,8 +98,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "package_private",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "private"
     },
     {
@@ -109,8 +109,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "package_version",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "version"
     },
     {
@@ -120,8 +120,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "package_type",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "type"
     },
     {
@@ -131,8 +131,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "package_scripts",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "scripts"
     },
     {
@@ -142,8 +142,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "package_scripts_dev",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "dev"
     },
     {
@@ -153,8 +153,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "package_scripts_build",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "build"
     },
     {
@@ -164,8 +164,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "package_scripts_lint",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "lint"
     },
     {
@@ -175,8 +175,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "package_scripts_preview",
-      "community": 7,
-      "community_name": "package.json - dependencias",
+      "community": 33,
+      "community_name": "Adoption of react-router-dom for /settings Route",
       "norm_label": "preview"
     },
     {
@@ -318,8 +318,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "package_devdependencies_eslint_js",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "@eslint/js"
     },
     {
@@ -329,8 +329,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "eslint_js",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 34,
+      "community_name": "@eslint/js",
       "norm_label": "@eslint/js"
     },
     {
@@ -340,8 +340,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss_vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "@tailwindcss/vite"
     },
     {
@@ -351,8 +351,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "tailwindcss_vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 37,
+      "community_name": "@tailwindcss/vite",
       "norm_label": "@tailwindcss/vite"
     },
     {
@@ -362,8 +362,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "package_devdependencies_types_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "@types/react"
     },
     {
@@ -373,8 +373,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "types_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "@types/react"
     },
     {
@@ -384,8 +384,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "package_devdependencies_types_react_dom",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 39,
+      "community_name": "@types/react-dom",
       "norm_label": "@types/react-dom"
     },
     {
@@ -395,8 +395,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "types_react_dom",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 39,
+      "community_name": "@types/react-dom",
       "norm_label": "@types/react-dom"
     },
     {
@@ -406,8 +406,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "package_devdependencies_vitejs_plugin_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 42,
+      "community_name": "@vitejs/plugin-react",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -417,8 +417,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "vitejs_plugin_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 42,
+      "community_name": "@vitejs/plugin-react",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -450,8 +450,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "package_devdependencies_eslint_plugin_react_hooks",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "eslint-plugin-react-hooks"
     },
     {
@@ -461,8 +461,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "eslint_plugin_react_hooks",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "eslint-plugin-react-hooks"
     },
     {
@@ -538,8 +538,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 36,
+      "community_name": "tailwindcss",
       "norm_label": "tailwindcss"
     },
     {
@@ -549,8 +549,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "tailwindcss",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 36,
+      "community_name": "tailwindcss",
       "norm_label": "tailwindcss"
     },
     {
@@ -604,8 +604,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "package_devdependencies_vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 40,
+      "community_name": "vite",
       "norm_label": "vite"
     },
     {
@@ -615,8 +615,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "vite",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 40,
+      "community_name": "vite",
       "norm_label": "vite"
     },
     {
@@ -626,8 +626,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "package_devdependencies_vite_plugin_pwa",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 41,
+      "community_name": "vite-plugin-pwa",
       "norm_label": "vite-plugin-pwa"
     },
     {
@@ -637,8 +637,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "vite_plugin_pwa",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 41,
+      "community_name": "vite-plugin-pwa",
       "norm_label": "vite-plugin-pwa"
     },
     {
@@ -747,8 +747,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_app",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "app.tsx"
     },
     {
@@ -758,8 +758,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_app_app",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "app()"
     },
     {
@@ -920,7 +920,7 @@
       "label": "Buscador()",
       "file_type": "code",
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L147",
+      "source_location": "L159",
       "_origin": "ast",
       "id": "src_components_appshell_buscador",
       "community": 2,
@@ -931,11 +931,11 @@
       "label": "AppShell()",
       "file_type": "code",
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L171",
+      "source_location": "L207",
       "_origin": "ast",
       "id": "src_components_appshell_appshell",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "appshell()"
     },
     {
@@ -967,8 +967,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_components_itemform_itemformprops",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itemformprops"
     },
     {
@@ -1011,8 +1011,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_itemlist",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itemlist.tsx"
     },
     {
@@ -1022,8 +1022,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_itemlist_tipo_label",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "tipo_label"
     },
     {
@@ -1033,8 +1033,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_components_itemlist_prioridad_label",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "prioridad_label"
     },
     {
@@ -1044,8 +1044,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_components_itemlist_itemlistprops",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itemlistprops"
     },
     {
@@ -1055,8 +1055,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_components_itemlist_iconcampana",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "iconcampana()"
     },
     {
@@ -1066,8 +1066,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_components_itemlist_iconchevron",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "iconchevron()"
     },
     {
@@ -1077,8 +1077,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_components_itemlist_parselista",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "parselista()"
     },
     {
@@ -1088,8 +1088,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_components_itemlist_cell",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "cell()"
     },
     {
@@ -1099,8 +1099,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_components_itemlist_parsetabla",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "parsetabla()"
     },
     {
@@ -1110,8 +1110,8 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "src_components_itemlist_parsetexttable",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "parsetexttable()"
     },
     {
@@ -1121,8 +1121,8 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "src_components_itemlist_itemcontent",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itemcontent()"
     },
     {
@@ -1132,8 +1132,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_components_itemlist_grupo",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "grupo"
     },
     {
@@ -1143,8 +1143,8 @@
       "source_location": "L220",
       "_origin": "ast",
       "id": "src_components_itemlist_armargrupos",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "armargrupos()"
     },
     {
@@ -1187,8 +1187,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_protectedroute",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "protectedroute.tsx"
     },
     {
@@ -1198,8 +1198,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_protectedroute_protectedroute",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "protectedroute()"
     },
     {
@@ -1231,8 +1231,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_recordatoriorow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "recordatoriorow.tsx"
     },
     {
@@ -1242,8 +1242,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_components_recordatoriorow_recordatoriorow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "recordatoriorow()"
     },
     {
@@ -1253,8 +1253,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncengine",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "syncengine.tsx"
     },
     {
@@ -1264,8 +1264,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncengine_syncengine",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "syncengine()"
     },
     {
@@ -1319,8 +1319,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_authcontext",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authcontext.tsx"
     },
     {
@@ -1330,8 +1330,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_authcontext_authcontextvalue",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authcontextvalue"
     },
     {
@@ -1341,8 +1341,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_lib_authcontext_authcontext",
-      "community": 33,
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authcontext"
     },
     {
@@ -1352,8 +1352,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_authcontext_readcachedsession",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "readcachedsession()"
     },
     {
@@ -1363,8 +1363,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_lib_authcontext_leernombre",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "leernombre()"
     },
     {
@@ -1374,8 +1374,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_lib_authcontext_authprovider",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authprovider()"
     },
     {
@@ -1385,9 +1385,251 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_lib_authcontext_useauth",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
+      "norm_label": "useauth()"
+    },
+    {
+      "label": "buscar.test.ts",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "buscar.test.ts"
+    },
+    {
+      "label": "item()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_item",
       "community": 29,
       "community_name": "ItemsPage.tsx",
-      "norm_label": "useauth()"
+      "norm_label": "item()"
+    },
+    {
+      "label": "tema()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_tema",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "tema()"
+    },
+    {
+      "label": "NOTA",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_nota",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "nota"
+    },
+    {
+      "label": "LISTA",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_lista",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "lista"
+    },
+    {
+      "label": "TABLA",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_tabla",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "tabla"
+    },
+    {
+      "label": "TABLA_VIEJA",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_tabla_vieja",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "tabla_vieja"
+    },
+    {
+      "label": "RECORDATORIO",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_recordatorio",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "recordatorio"
+    },
+    {
+      "label": "TODOS",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_todos",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "todos"
+    },
+    {
+      "label": "TEMAS",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_temas",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "temas"
+    },
+    {
+      "label": "ids()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "src_lib_buscar_test_ids",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "ids()"
+    },
+    {
+      "label": "buscar.ts",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_buscar",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "buscar.ts"
+    },
+    {
+      "label": "normalizar()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "src_lib_buscar_normalizar",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "normalizar()"
+    },
+    {
+      "label": "tokens()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "src_lib_buscar_tokens",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "tokens()"
+    },
+    {
+      "label": "esObjeto()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "src_lib_buscar_esobjeto",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "esobjeto()"
+    },
+    {
+      "label": "CLAVES_NO_BUSCABLES",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_lib_buscar_claves_no_buscables",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "claves_no_buscables"
+    },
+    {
+      "label": "juntarStrings()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "src_lib_buscar_juntarstrings",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "juntarstrings()"
+    },
+    {
+      "label": "textoBuscableDeItem()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "src_lib_buscar_textobuscabledeitem",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "textobuscabledeitem()"
+    },
+    {
+      "label": "ItemConTema",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "src_lib_buscar_itemcontema",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "itemcontema"
+    },
+    {
+      "label": "indiceDe()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "src_lib_buscar_indicede",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "indicede()"
+    },
+    {
+      "label": "filtrarItems()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "src_lib_buscar_filtraritems",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
+      "norm_label": "filtraritems()"
+    },
+    {
+      "label": "filtrarTemas()",
+      "file_type": "code",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "src_lib_buscar_filtrartemas",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "filtrartemas()"
     },
     {
       "label": "db.ts",
@@ -1396,8 +1638,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_db",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "db.ts"
     },
     {
@@ -1418,8 +1660,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_db_newoutboxop",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "newoutboxop"
     },
     {
@@ -1429,8 +1671,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_db_table_store",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "table_store"
     },
     {
@@ -1440,8 +1682,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_lib_db_metarow",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "metarow"
     },
     {
@@ -1451,8 +1693,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_lib_db_organizadordb",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "organizadordb"
     },
     {
@@ -1462,8 +1704,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_lib_db_getdb",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getdb()"
     },
     {
@@ -1506,8 +1748,8 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "src_lib_db_savetemastocache",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "savetemastocache()"
     },
     {
@@ -1517,8 +1759,8 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "src_lib_db_saveitemstocache",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "saveitemstocache()"
     },
     {
@@ -1528,8 +1770,8 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "src_lib_db_saverecordatoriostocache",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "saverecordatoriostocache()"
     },
     {
@@ -1539,8 +1781,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_lib_db_getlocaltema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocaltema()"
     },
     {
@@ -1550,8 +1792,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_lib_db_putlocaltema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocaltema()"
     },
     {
@@ -1561,8 +1803,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_db_getlocalitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalitem()"
     },
     {
@@ -1572,8 +1814,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_lib_db_putlocalitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocalitem()"
     },
     {
@@ -1583,8 +1825,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalrecordatorio()"
     },
     {
@@ -1594,8 +1836,8 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_db_putlocalrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocalrecordatorio()"
     },
     {
@@ -1605,8 +1847,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatoriosbyitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalrecordatoriosbyitem()"
     },
     {
@@ -1616,8 +1858,8 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "src_lib_db_deletelocalrow",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deletelocalrow()"
     },
     {
@@ -1627,8 +1869,8 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "src_lib_db_enqueueop",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "enqueueop()"
     },
     {
@@ -1638,8 +1880,8 @@
       "source_location": "L231",
       "_origin": "ast",
       "id": "src_lib_db_getoutbox",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getoutbox()"
     },
     {
@@ -1649,8 +1891,8 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "src_lib_db_countoutbox",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "countoutbox()"
     },
     {
@@ -1660,8 +1902,8 @@
       "source_location": "L241",
       "_origin": "ast",
       "id": "src_lib_db_deleteops",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleteops()"
     },
     {
@@ -1671,8 +1913,8 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "src_lib_db_markopsfailed",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "markopsfailed()"
     },
     {
@@ -1682,8 +1924,8 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "src_lib_db_deleteopsforentity",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleteopsforentity()"
     },
     {
@@ -1693,8 +1935,8 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "src_lib_db_getmeta",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getmeta()"
     },
     {
@@ -1704,8 +1946,8 @@
       "source_location": "L287",
       "_origin": "ast",
       "id": "src_lib_db_setmeta",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "setmeta()"
     },
     {
@@ -1715,8 +1957,8 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "src_lib_db_ensurepersistentstorage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "ensurepersistentstorage()"
     },
     {
@@ -1726,8 +1968,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_items",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "items.ts"
     },
     {
@@ -1858,8 +2100,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_recordatorios",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "recordatorios.ts"
     },
     {
@@ -1902,8 +2144,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estadorecordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -1913,8 +2155,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estado_label",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "estado_label"
     },
     {
@@ -1924,8 +2166,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_lib_recordatorios_tipo_label",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "tipo_label"
     },
     {
@@ -1935,8 +2177,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_lib_recordatorios_mismodia",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "mismodia()"
     },
     {
@@ -1979,8 +2221,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_recordatorios_formatfechahora",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "formatfechahora()"
     },
     {
@@ -1990,8 +2232,8 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "src_lib_recordatorios_resumencontenido",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "resumencontenido()"
     },
     {
@@ -2199,8 +2441,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_repo",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "repo.ts"
     },
     {
@@ -2210,8 +2452,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_lib_repo_nowiso",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "nowiso()"
     },
     {
@@ -2221,8 +2463,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_lib_repo_enqueue",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "enqueue()"
     },
     {
@@ -2232,8 +2474,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_lib_repo_createtema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "createtema()"
     },
     {
@@ -2243,8 +2485,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_lib_repo_updatetemacolor",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "updatetemacolor()"
     },
     {
@@ -2254,8 +2496,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_repo_item_editable",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "item_editable"
     },
     {
@@ -2265,8 +2507,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_repo_itempatch",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itempatch()"
     },
     {
@@ -2276,8 +2518,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_lib_repo_createitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "createitem()"
     },
     {
@@ -2287,8 +2529,8 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_lib_repo_updateitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "updateitem()"
     },
     {
@@ -2298,8 +2540,8 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "src_lib_repo_deleteitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleteitem()"
     },
     {
@@ -2309,8 +2551,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_lib_repo_getrecordatorioforitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getrecordatorioforitem()"
     },
     {
@@ -2320,8 +2562,8 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "src_lib_repo_upsertrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "upsertrecordatorio()"
     },
     {
@@ -2331,8 +2573,8 @@
       "source_location": "L255",
       "_origin": "ast",
       "id": "src_lib_repo_deleterecordatoriosforitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleterecordatoriosforitem()"
     },
     {
@@ -2342,8 +2584,8 @@
       "source_location": "L269",
       "_origin": "ast",
       "id": "src_lib_repo_cambiarestado",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "cambiarestado()"
     },
     {
@@ -2353,8 +2595,8 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "marcarhecho()"
     },
     {
@@ -2364,8 +2606,8 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "src_lib_repo_marcarenviado",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "marcarenviado()"
     },
     {
@@ -2386,8 +2628,8 @@
       "source_location": "L323",
       "_origin": "ast",
       "id": "src_lib_repo_countrecordatoriospendienteshoy",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "countrecordatoriospendienteshoy()"
     },
     {
@@ -2397,8 +2639,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_supabase",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "supabase.ts"
     },
     {
@@ -2408,8 +2650,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_lib_supabase_supabase",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "supabase"
     },
     {
@@ -2639,8 +2881,8 @@
       "source_location": "L257",
       "_origin": "ast",
       "id": "src_lib_sync_flushoutbox",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "flushoutbox()"
     },
     {
@@ -2650,8 +2892,8 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "src_lib_sync_reconcile",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "reconcile()"
     },
     {
@@ -2694,8 +2936,8 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "src_lib_sync_requestsync",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "requestsync()"
     },
     {
@@ -2969,8 +3211,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_temacolores_test_tema",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "tema()"
     },
     {
@@ -3090,8 +3332,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_temas",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "temas.ts"
     },
     {
@@ -3244,8 +3486,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_useaienabled",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "useaienabled.ts"
     },
     {
@@ -3255,8 +3497,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_useaienabled_readaienabledcache",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "readaienabledcache()"
     },
     {
@@ -3277,8 +3519,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_lib_useaienabled_useaienabled",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "useaienabled()"
     },
     {
@@ -3321,8 +3563,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "uselocalreminderwatcher.ts"
     },
     {
@@ -3343,8 +3585,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_userecordatoriosbadge",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "userecordatoriosbadge.ts"
     },
     {
@@ -3354,8 +3596,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_lib_userecordatoriosbadge_userecordatoriosbadge",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "userecordatoriosbadge()"
     },
     {
@@ -3387,8 +3629,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "main.tsx"
     },
     {
@@ -3453,8 +3695,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_pages_assistantpage_assistantpage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "assistantpage()"
     },
     {
@@ -3486,8 +3728,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_authpage",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authpage.tsx"
     },
     {
@@ -3497,8 +3739,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_pages_authpage_authpage",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "authpage()"
     },
     {
@@ -3571,7 +3813,7 @@
       "label": "FiltroTipo",
       "file_type": "code",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtrotipo",
       "community": 29,
@@ -3582,7 +3824,7 @@
       "label": "FILTROS_TIPO",
       "file_type": "code",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L17",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtros_tipo",
       "community": 29,
@@ -3593,7 +3835,7 @@
       "label": "indexarRecordatorios()",
       "file_type": "code",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L32",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "src_pages_itemspage_indexarrecordatorios",
       "community": 29,
@@ -3604,7 +3846,7 @@
       "label": "ItemsPage()",
       "file_type": "code",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L58",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "src_pages_itemspage_itemspage",
       "community": 29,
@@ -3739,8 +3981,8 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "src_pages_settingspage_settingspage",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "settingspage()"
     },
     {
@@ -3871,8 +4113,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_types_database",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "database.ts"
     },
     {
@@ -3904,8 +4146,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_types_database_origenitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "origenitem"
     },
     {
@@ -3915,8 +4157,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_types_database_estadorecordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -3926,8 +4168,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_types_database_tema",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "tema"
     },
     {
@@ -3937,8 +4179,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_types_database_temainsert",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "temainsert"
     },
     {
@@ -3948,8 +4190,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_types_database_linealista",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "linealista"
     },
     {
@@ -3959,8 +4201,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_types_database_item",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "item"
     },
     {
@@ -3981,8 +4223,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_types_database_recordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "recordatorio"
     },
     {
@@ -3992,8 +4234,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_types_database_recordatorioinsert",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "recordatorioinsert"
     },
     {
@@ -4003,8 +4245,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_types_database_recordatorioconitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 29,
+      "community_name": "ItemsPage.tsx",
       "norm_label": "recordatorioconitem"
     },
     {
@@ -4014,8 +4256,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_types_database_pushsubscriptionrow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "pushsubscriptionrow"
     },
     {
@@ -4025,8 +4267,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_types_database_useraisettings",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "useraisettings"
     },
     {
@@ -4036,8 +4278,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_types_database_aiusage",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "aiusage"
     },
     {
@@ -6013,7 +6255,7 @@
       "label": "Fase 4 \u2014 Funciones pendientes",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L579",
+      "source_location": "L615",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_4_funciones_pendientes",
       "community": 17,
@@ -6024,7 +6266,7 @@
       "label": "Resumen de orden",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L593",
+      "source_location": "L629",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_resumen_de_orden",
       "community": 17,
@@ -6035,7 +6277,7 @@
       "label": "7. Decisiones que necesito de vos antes de empezar",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L609",
+      "source_location": "L645",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_7_decisiones_que_necesito_de_vos_antes_de_empezar",
       "community": 17,
@@ -6046,7 +6288,7 @@
       "label": "Dos cosas que quiero dejar dichas, no preguntadas",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L638",
+      "source_location": "L674",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_dos_cosas_que_quiero_dejar_dichas_no_preguntadas",
       "community": 17,
@@ -6057,7 +6299,7 @@
       "label": "8. Auditor\u00eda de contraste (\u00edtem 2)",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L648",
+      "source_location": "L684",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
       "community": 17,
@@ -6068,7 +6310,7 @@
       "label": "El resultado inesperado: la paleta oscura contrasta mejor que la clara",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L654",
+      "source_location": "L690",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_el_resultado_inesperado_la_paleta_oscura_contrasta_mejor_que_la_clara",
       "community": 17,
@@ -6079,7 +6321,7 @@
       "label": "Lo que esto significa",
       "file_type": "document",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L665",
+      "source_location": "L701",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_lo_que_esto_significa",
       "community": 17,
@@ -6293,9 +6535,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 2,
       "norm_label": "graphify project rules",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "claude_graphify"
     },
     {
@@ -6307,9 +6549,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 2,
       "norm_label": "offline support architecture plan",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "plan_offline_plan"
     },
     {
@@ -6321,9 +6563,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 2,
       "norm_label": "organizador personal ia - master plan",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "plan_organizador_plan"
     },
     {
@@ -6377,9 +6619,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 2,
       "norm_label": "outbox pattern for offline mutations",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "plan_offline_outbox_pattern"
     },
     {
@@ -6839,9 +7081,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 2,
       "norm_label": "db.ts (indexeddb store layer)",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "src_lib_db_db"
     },
     {
@@ -6853,9 +7095,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 2,
       "norm_label": "repo.ts (local mutation repository)",
-      "community_name": "Adoption of react-router-dom for /settings Route",
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "id": "src_lib_repo_repo"
     },
     {
@@ -8034,7 +8276,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L171",
+      "source_location": "L207",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell",
@@ -8045,7 +8287,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L147",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell",
@@ -8385,7 +8627,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L297",
+      "source_location": "L333",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell_appshell",
@@ -8397,7 +8639,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L172",
+      "source_location": "L208",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell_appshell",
@@ -8409,7 +8651,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L278",
+      "source_location": "L314",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell_appshell",
@@ -8421,7 +8663,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L177",
+      "source_location": "L213",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell_appshell",
@@ -8433,7 +8675,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L173",
+      "source_location": "L209",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell_appshell",
@@ -8445,7 +8687,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L176",
+      "source_location": "L212",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell_appshell",
@@ -8457,7 +8699,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppShell.tsx",
-      "source_location": "L174",
+      "source_location": "L210",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_appshell_appshell",
@@ -9310,18 +9552,6 @@
       "target": "src_lib_temacolores_colordetema"
     },
     {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/components/ItemList.tsx",
-      "source_location": "L226",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_components_itemlist_armargrupos",
-      "target": "src_lib_temacolores_test_tema"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -9332,6 +9562,18 @@
       "source": "src_components_itemlist_itemlist",
       "target": "src_components_itemlist_armargrupos",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/components/ItemList.tsx",
+      "source_location": "L316",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_itemlist_itemlist",
+      "target": "src_lib_buscar_test_item"
     },
     {
       "relation": "calls",
@@ -10574,7 +10816,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L59",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -10639,6 +10881,562 @@
       "_origin": "ast",
       "source": "src_pages_settingspage_settingspage",
       "target": "src_lib_authcontext_useauth"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_filtraritems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_filtrartemas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_normalizar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_ids",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_lista",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_nota",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_recordatorio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_tabla",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_tabla_vieja",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_tema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_temas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_test_todos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_textobuscabledeitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_lib_buscar_tokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_types_database",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_types_database_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_test",
+      "target": "src_types_database_tema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L102",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_filtraritems",
+      "target": "src_lib_buscar_test_item"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/pages/ItemsPage.tsx",
+      "source_location": "L210",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_itemspage_itemspage",
+      "target": "src_lib_buscar_test_item"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_claves_no_buscables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_esobjeto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_filtraritems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_filtrartemas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_indicede",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_itemcontema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_juntarstrings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_normalizar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_textobuscabledeitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_lib_buscar_tokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_types_database",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_types_database_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar",
+      "target": "src_types_database_tema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/ItemsPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_itemspage",
+      "target": "src_lib_buscar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L114",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_filtrartemas",
+      "target": "src_lib_buscar_normalizar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_indicede",
+      "target": "src_lib_buscar_normalizar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_tokens",
+      "target": "src_lib_buscar_normalizar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_filtraritems",
+      "target": "src_lib_buscar_tokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_filtrartemas",
+      "target": "src_lib_buscar_tokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_juntarstrings",
+      "target": "src_lib_buscar_esobjeto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_juntarstrings",
+      "target": "src_lib_buscar_claves_no_buscables"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_textobuscabledeitem",
+      "target": "src_lib_buscar_juntarstrings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_indicede",
+      "target": "src_lib_buscar_textobuscabledeitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_itemcontema",
+      "target": "src_types_database_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/buscar.ts",
+      "source_location": "L102",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_buscar_filtraritems",
+      "target": "src_lib_buscar_indicede",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/ItemsPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_itemspage",
+      "target": "src_lib_buscar_filtraritems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/ItemsPage.tsx",
+      "source_location": "L209",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_itemspage_itemspage",
+      "target": "src_lib_buscar_filtraritems"
     },
     {
       "relation": "contains",
@@ -11517,7 +12315,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L80",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -11601,7 +12399,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L79",
+      "source_location": "L87",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -11709,7 +12507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L81",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -15048,7 +15846,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L100",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -15132,7 +15930,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L89",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -16085,30 +16883,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/pages/HoyPage.tsx",
-      "source_location": "L244",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_hoypage_hoypage",
-      "target": "src_lib_temacolores_test_tema"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L243",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_pages_itemspage_itemspage",
-      "target": "src_lib_temacolores_test_tema"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/temaColores.ts",
@@ -16357,7 +17131,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L243",
+      "source_location": "L290",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -16405,7 +17179,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L243",
+      "source_location": "L290",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -17485,7 +18259,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -17496,7 +18270,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -17507,7 +18281,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -17518,7 +18292,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L58",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage",
@@ -17602,7 +18376,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/ItemsPage.tsx",
-      "source_location": "L85",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
@@ -20091,7 +20865,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L609",
+      "source_location": "L645",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -20102,7 +20876,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L648",
+      "source_location": "L684",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_plan_de_redise\u00f1o_an\u00e1lisis_de_la_propuesta_de_claude_design",
@@ -20289,7 +21063,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L579",
+      "source_location": "L615",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -20300,7 +21074,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L593",
+      "source_location": "L629",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
@@ -20311,7 +21085,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L638",
+      "source_location": "L674",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_7_decisiones_que_necesito_de_vos_antes_de_empezar",
@@ -20322,7 +21096,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L654",
+      "source_location": "L690",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
@@ -20333,7 +21107,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "PLAN_REDISE\u00d1O.md",
-      "source_location": "L665",
+      "source_location": "L701",
       "weight": 1.0,
       "_origin": "ast",
       "source": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
@@ -21021,5 +21795,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "b19bf39e9d830e8573354f40f943ff2f8407b66f"
+  "built_at_commit": "3f77e3542984ce4cff157365b2f5916f8e039959"
 }

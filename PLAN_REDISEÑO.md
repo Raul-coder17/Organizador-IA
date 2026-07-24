@@ -231,7 +231,7 @@ Todo esto usa datos y lógica que ya están en la app:
 | Existe editor de tabla | El form guarda tablas como `{texto}` con pipes (`ItemForm.tsx:294`) mientras `ItemList` **ya sabe leer** `{columnas, filas}` (`ItemList.tsx:46-60`) | El editor debe escribir la forma estructurada; hay que decidir compatibilidad con los ítems tabla ya guardados como texto |
 | Existe captura por foto | No existe nada | Gemini Vision (Edge Function nueva o extensión de `ai-assistant`), upload/manejo de imagen, cuota, comportamiento offline |
 | Existe historial de conversaciones | El chat vive en `useState` y se pierde al navegar | Persistencia nueva de punta a punta. Si tiene que ser offline-first como el resto, pasa por `repo.ts` + outbox + tabla nueva + RLS |
-| El buscador encuentra "ítems, temas, recordatorios" (placeholder mobile) | El prototipo **solo busca ítems** (`Organizador.dc.html:748`) | Decidir si el buscador cubre recordatorios o si se corrige el placeholder |
+| ~~El buscador encuentra "ítems, temas, recordatorios"~~ ✅ **resuelto (ítem 9)** | El prototipo **solo busca ítems** (`Organizador.dc.html:748`) | Resuelto: el buscador cubre **ítems + nombre de tema**, no la tabla `recordatorios` (un recordatorio no tiene texto propio; su texto es el del ítem, buscarlo aparte lo duplicaría). Los ítems de tipo `recordatorio` sí se buscan, porque son ítems. Ver ítem 9 |
 
 ### 5.3 Ambiguo o incompleto en la propuesta
 
@@ -562,9 +562,45 @@ por el usuario, y el estado de la IA deja de apagarse solo cuando no hay red.
 > leyendo como secundaria. Se toleraba como meta decorativa; no como la
 > explicación de por qué el asistente no contesta.
 
-**9. Buscador global.** `[N]` · riesgo medio
+**9. Buscador global.** `[N]` · riesgo medio — ✅ **implementado** (rama `rediseno-fase-3`)
 Input en sidebar/header; al escribir reemplaza el contenido de la vista. Definir si cubre
 recordatorios o solo ítems (§5.2).
+
+> **La presentación: se reusa la Biblioteca, no se inventa una pantalla.** El
+> input del shell no dibuja resultados: al escribir navega a
+> `/biblioteca?q=…` y es [`ItemsPage`](src/pages/ItemsPage.tsx) la que filtra y
+> agrupa. Se reusa tal cual el layout de grupos por tema, el estado vacío y los
+> chips de filtro, que era lo que el ítem pedía priorizar. La consulta viaja en
+> la URL (no en un estado compartido) porque el input está en el shell y los
+> resultados en la página: la URL es el único lugar que los dos ya miran, y de
+> paso un resultado queda enlazable y sobrevive a un F5.
+>
+> **Qué cubre (la pregunta abierta de §5.2).** Ítems y **nombre de tema** —
+> buscar "finanzas" trae los ítems de ese tema aunque ninguno diga la palabra.
+> No la tabla `recordatorios`: un recordatorio no tiene texto propio, su texto
+> es el del ítem al que cuelga, así que buscarlo aparte devolvería el mismo ítem
+> dos veces. Los ítems de tipo `recordatorio` sí se buscan, porque son ítems. El
+> placeholder ("Buscar en todo…") no promete de más.
+>
+> **El motor es un módulo puro.** Toda la lógica —qué texto de cada tipo de ítem
+> es buscable (nota→texto, lista→líneas, tabla→encabezados y celdas, incluida la
+> tabla vieja con pipes), normalización sin tildes ni mayúsculas, varias
+> palabras en AND— vive en [`lib/buscar.ts`](src/lib/buscar.ts), sin IndexedDB
+> ni DOM, con 14 tests (`buscar.test.ts`) al estilo de `temaColores.ts`. La
+> página sólo le pasa lo que ya tenía en memoria: **cero backend, offline por
+> construcción** (lee del mismo espejo de IndexedDB que la Biblioteca; nunca
+> toca Supabase).
+>
+> **Un detalle de comportamiento.** Una búsqueda global llega con los filtros de
+> tipo y tema en neutro, para que "Buscar en todo" no dependa de en qué estado
+> quedó la Biblioteca la última vez. Los chips siguen visibles y se pueden
+> volver a aplicar para acotar; el estado vacío distingue "sin resultados" de
+> "sin resultados con los filtros puestos".
+>
+> **Debounce** de 250 ms y navegación con `replace` mientras se tipea en la
+> Biblioteca, para no llenar el historial de estados intermedios. El input es
+> el mismo componente en sidebar (desktop) y barra superior (mobile), así que
+> funciona igual en los dos layouts.
 
 **10. Asistente como drawer.** `[N]` · riesgo medio-alto
 Sacar `/assistant` de las rutas, montar el panel en el shell. **La lógica de chat y propuestas se
@@ -596,7 +632,7 @@ grande de todos: es la única de las 4 pendientes que necesita backend nuevo de 
 Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
-Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
+Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] ✅ · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
 Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
 ```
 

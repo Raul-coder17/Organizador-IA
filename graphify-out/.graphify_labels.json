@@ -32,5 +32,14 @@
   "30": "Brief de diseño — Organizador Personal IA",
   "31": "Handoff: Rediseño de arquitectura de información — Organizador Personal IA",
   "32": "Brief de diseño — Organizador Personal IA",
-  "33": "Adoption of react-router-dom for /settings Route"
+  "33": "Adoption of react-router-dom for /settings Route",
+  "34": "@eslint/js",
+  "35": "eslint-plugin-react-hooks",
+  "36": "tailwindcss",
+  "37": "@tailwindcss/vite",
+  "38": "@types/react",
+  "39": "@types/react-dom",
+  "40": "vite",
+  "41": "vite-plugin-pwa",
+  "42": "@vitejs/plugin-react"
 }
