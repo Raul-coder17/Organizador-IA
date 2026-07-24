@@ -5,6 +5,8 @@ import { supabase } from './supabase'
 interface AuthContextValue {
   session: Session | null
   user: User | null
+  /** Nombre de perfil, o `null` si el usuario todavía no configuró ninguno. */
+  nombre: string | null
   loading: boolean
 }
 
@@ -43,6 +45,23 @@ function readCachedSession(): Session | null {
   }
 }
 
+// El nombre de perfil vive en los metadatos del usuario de Supabase Auth
+// (`user_metadata.nombre`), no en una tabla propia. Además de ahorrarse tabla,
+// RLS y sync para un dato de una línea, la razón de fondo es offline: los
+// metadatos viajan DENTRO de la sesión, así que la sesión cacheada que
+// `readCachedSession` levanta de storage para arrancar sin red ya trae el
+// nombre. El saludo de Hoy funciona sin conexión sin ningún trabajo extra.
+//
+// Se normaliza acá y no en cada pantalla: un nombre en blanco (el usuario
+// borró el campo y guardó) tiene que valer lo mismo que no haber configurado
+// ninguno, o el saludo saldría con una coma colgando.
+function leerNombre(user: User | null): string | null {
+  const raw = user?.user_metadata?.nombre
+  if (typeof raw !== 'string') return null
+  const nombre = raw.trim()
+  return nombre.length > 0 ? nombre : null
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
@@ -72,8 +91,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => listener.subscription.unsubscribe()
   }, [])
 
+  // `supabase.auth.updateUser` emite USER_UPDATED, que el listener de arriba ya
+  // recibe: cuando Ajustes guarda el nombre, la sesión se reemplaza y el saludo
+  // de Hoy se actualiza solo, sin recargar ni volver a pedir nada.
+  const user = session?.user ?? null
+
   return (
-    <AuthContext.Provider value={{ session, user: session?.user ?? null, loading }}>
+    <AuthContext.Provider value={{ session, user, nombre: leerNombre(user), loading }}>
       {children}
     </AuthContext.Provider>
   )

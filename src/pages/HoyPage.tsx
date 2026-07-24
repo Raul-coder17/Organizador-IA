@@ -21,11 +21,15 @@ import type { Item, RecordatorioConItem, Tema } from '../types/database'
 // `clasificar` que usa /reminders (lib/recordatorios). Si divergieran, esta
 // pantalla y esa se contradirían con el usuario mirando las dos.
 
-function saludo(hora: number): string {
-  if (hora < 6) return 'Buenas noches'
-  if (hora < 13) return 'Buenos días'
-  if (hora < 20) return 'Buenas tardes'
-  return 'Buenas noches'
+// El saludo combina la hora con el nombre de perfil. Sin nombre configurado
+// queda sólo la franja horaria: no se deriva nada del email (recortar
+// "raul.ramiros07@" para fabricar un "Raul" acierta poco y cuando falla el
+// saludo se vuelve incómodo). El nombre se configura en Ajustes → Cuenta y
+// viaja en la sesión, así que también aparece sin conexión.
+function saludo(hora: number, nombre: string | null): string {
+  const franja =
+    hora < 6 ? 'Buenas noches' : hora < 13 ? 'Buenos días' : hora < 20 ? 'Buenas tardes' : 'Buenas noches'
+  return nombre ? `${franja}, ${nombre}` : franja
 }
 
 function fechaLarga(ahora: Date): string {
@@ -51,7 +55,7 @@ function contarPorTema(items: Item[]): { porTema: Map<string, number>; sinTema: 
 }
 
 export function HoyPage() {
-  const { user } = useAuth()
+  const { user, nombre } = useAuth()
   const aiEnabled = useAiEnabled()
   const [items, setItems] = useState<Item[]>([])
   const [temas, setTemas] = useState<Tema[]>([])
@@ -111,14 +115,21 @@ export function HoyPage() {
   const { porTema, sinTema } = contarPorTema(items)
 
   // El asistente sigue el mismo criterio que el shell: con la IA apagada (o
-  // mientras carga) lleva a Ajustes en vez de a una pantalla que no puede usar.
+  // mientras carga, sin ningún valor conocido) lleva a Ajustes en vez de a una
+  // pantalla que no puede usar.
+  //
+  // Sin conexión PREGUNTAR se ve habilitado igual, porque `useAiEnabled` ahora
+  // devuelve el último estado conocido en vez de degradar a `false`. El botón
+  // dice la verdad sobre la IA; que la red esté caída lo explica el banner de
+  // la pantalla del asistente al llegar. Antes pasaba lo contrario: sin señal
+  // el botón mandaba a Ajustes a activar una IA que ya estaba activa.
   const asistenteActivo = aiEnabled === true
 
   return (
     <main className="shell-main hoy">
       <header className="hoy__head">
         <p className="hoy__fecha">{fechaLarga(ahora)}</p>
-        <h1 className="hoy__saludo">{saludo(ahora.getHours())}</h1>
+        <h1 className="hoy__saludo">{saludo(ahora.getHours(), nombre)}</h1>
       </header>
 
       <div className="hoy__stats">

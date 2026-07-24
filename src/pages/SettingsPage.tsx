@@ -3,6 +3,8 @@ import { useAuth } from '../lib/AuthContext'
 import { supabase } from '../lib/supabase'
 import { PushSettings } from '../components/PushSettings'
 import { SyncSettings } from '../components/SyncSettings'
+import { readAiEnabledCache, writeAiEnabledCache } from '../lib/useAiEnabled'
+import { useSyncStatus } from '../lib/useSyncStatus'
 import { setTheme, useTheme, type Theme } from '../lib/theme'
 
 const TEMAS_UI: { value: Theme; label: string }[] = [
@@ -44,9 +46,99 @@ function Apariencia() {
   )
 }
 
+// Nombre de perfil.
+//
+// Se guarda en `user_metadata` de Supabase Auth (ver `leerNombre` en
+// AuthContext), no en una tabla propia: para un dato de una línea no vale la
+// pena tabla + RLS + sync, y como viaja dentro de la sesión, la sesión cacheada
+// que la app levanta para arrancar sin red ya lo trae. Lo usa el saludo de Hoy.
+//
+// Guardar SÍ necesita conexión — es una escritura contra Auth, no pasa por el
+// outbox como los ítems. Así que el botón se apaga sin señal y se dice por qué,
+// en vez de dejar que `updateUser` falle con un error de red genérico.
+function NombrePerfil() {
+  const { user, nombre } = useAuth()
+  const { online } = useSyncStatus()
+  const [valor, setValor] = useState(nombre ?? '')
+  const [guardando, setGuardando] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [info, setInfo] = useState<string | null>(null)
+
+  // `updateUser` emite USER_UPDATED y el AuthContext reemplaza la sesión: el
+  // nombre del contexto vuelve acá y sincroniza el input. También cubre el caso
+  // de que la sesión llegue después del primer render (arranque offline).
+  useEffect(() => {
+    setValor(nombre ?? '')
+  }, [nombre])
+
+  const limpio = valor.trim()
+  const sinCambios = limpio === (nombre ?? '')
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!user || sinCambios) return
+
+    setGuardando(true)
+    setError(null)
+    setInfo(null)
+
+    // Guardamos el nombre YA recortado: lo que se persiste es lo que se muestra.
+    const { error } = await supabase.auth.updateUser({ data: { nombre: limpio } })
+
+    setGuardando(false)
+
+    if (error) {
+      setError(error.message ?? 'No se pudo guardar el nombre.')
+      return
+    }
+    setInfo(limpio ? 'Nombre guardado.' : 'Nombre borrado.')
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div>
+        <label className="label" htmlFor="nombrePerfil">
+          Nombre
+        </label>
+        <input
+          id="nombrePerfil"
+          type="text"
+          autoComplete="given-name"
+          maxLength={40}
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+          placeholder="Cómo querés que te salude"
+          className="ctl w-full"
+        />
+        <p className="text-xs text-ink-soft mt-1.5">
+          Aparece en el saludo de Hoy. Si lo dejás vacío, el saludo va sin nombre.
+        </p>
+      </div>
+
+      <button type="submit" disabled={guardando || sinCambios || !online} className="btn-moss">
+        {guardando ? 'Guardando…' : 'Guardar nombre'}
+      </button>
+
+      {!online && (
+        // ink-soft y no slate, por lo mismo que el banner del asistente: es una
+        // explicación de por qué el botón está apagado, no un adorno.
+        <p className="text-xs text-ink-soft">
+          Sin conexión — el nombre se guarda en tu cuenta, así que hace falta señal.
+        </p>
+      )}
+      {error && <p className="text-sm text-rust">{error}</p>}
+      {info && <p className="text-sm text-moss">{info}</p>}
+    </form>
+  )
+}
+
 export function SettingsPage() {
   const { user } = useAuth()
   const [aiEnabled, setAiEnabled] = useState(false)
+  // El estado de IA que estamos mostrando salió de la caché local porque la
+  // consulta falló (típicamente: sin red). Cambia lo que se dibuja: es el
+  // último valor conocido, no uno fresco, y desde acá no se puede tocar.
+  const [estadoCacheado, setEstadoCacheado] = useState(false)
   const [apiKey, setApiKey] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -65,8 +157,22 @@ export function SettingsPage() {
         .maybeSingle()
 
       if (cancelled) return
-      if (error) setError(error.message)
-      setAiEnabled(data?.ai_enabled ?? false)
+
+      if (error) {
+        // Mismo criterio que `useAiEnabled`: la consulta que falla no es un
+        // "el usuario apagó la IA". Mostramos el último estado conocido y lo
+        // decimos, en vez de dibujar "Inactiva" y ofrecer cargar una key que
+        // tampoco se podría validar sin red.
+        setAiEnabled(readAiEnabledCache(user!.id) ?? false)
+        setEstadoCacheado(true)
+        setLoading(false)
+        return
+      }
+
+      const value = data?.ai_enabled ?? false
+      writeAiEnabledCache(user!.id, value)
+      setAiEnabled(value)
+      setEstadoCacheado(false)
       setLoading(false)
     }
 
@@ -95,7 +201,12 @@ export function SettingsPage() {
       return
     }
 
-    setAiEnabled(Boolean(data?.ai_enabled))
+    // La caché se actualiza en el mismo movimiento que el estado local: es la
+    // que van a leer el shell y Hoy la próxima vez que arranquen sin red.
+    const activada = Boolean(data?.ai_enabled)
+    if (user) writeAiEnabledCache(user.id, activada)
+    setAiEnabled(activada)
+    setEstadoCacheado(false)
     setApiKey('')
     setInfo('IA activada correctamente.')
   }
@@ -116,7 +227,10 @@ export function SettingsPage() {
       return
     }
 
-    setAiEnabled(Boolean(data?.ai_enabled))
+    const activada = Boolean(data?.ai_enabled)
+    if (user) writeAiEnabledCache(user.id, activada)
+    setAiEnabled(activada)
+    setEstadoCacheado(false)
     setInfo('IA desactivada.')
   }
 
@@ -145,7 +259,12 @@ export function SettingsPage() {
             )}
           </p>
 
-          {!aiEnabled ? (
+          {estadoCacheado ? (
+            <p className="text-sm text-ink-soft">
+              Sin conexión — este es el último estado que conocemos. Para activarla o desactivarla
+              hace falta señal.
+            </p>
+          ) : !aiEnabled ? (
             <form onSubmit={handleSave} className="space-y-3">
               <div>
                 <label className="label" htmlFor="apiKey">
@@ -195,14 +314,20 @@ export function SettingsPage() {
           se quedaba sin forma de salir de la sesión. */}
       <h2 className="font-fraunces text-[19px] font-medium text-ink">Cuenta</h2>
 
-      <div className="bg-card border border-line rounded-[4px] p-5 flex items-center justify-between gap-4 flex-wrap">
-        <div className="min-w-0">
-          <p className="text-sm text-ink break-words">{user.email}</p>
-          <p className="text-xs text-ink-soft mt-1">Sesión iniciada en este dispositivo.</p>
+      <div className="bg-card border border-line rounded-[4px] p-5 space-y-5">
+        <NombrePerfil />
+
+        <hr className="border-line" />
+
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div className="min-w-0">
+            <p className="text-sm text-ink break-words">{user.email}</p>
+            <p className="text-xs text-ink-soft mt-1">Sesión iniciada en este dispositivo.</p>
+          </div>
+          <button onClick={() => supabase.auth.signOut()} className="btn-outline">
+            Cerrar sesión
+          </button>
         </div>
-        <button onClick={() => supabase.auth.signOut()} className="btn-outline">
-          Cerrar sesión
-        </button>
       </div>
     </main>
   )

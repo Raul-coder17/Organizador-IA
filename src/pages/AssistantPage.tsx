@@ -33,6 +33,38 @@ interface PendingAction {
   error?: string
 }
 
+// El aviso de "sin conexión" del asistente.
+//
+// Es el contrapeso de la mejora en `useAiEnabled`: el botón que trae hasta acá
+// ahora se dibuja habilitado sin red (refleja el último estado conocido de la
+// IA, no un apagón inventado), así que la explicación de por qué el asistente
+// no responde tiene que estar en esta pantalla, arriba de todo y con todas las
+// letras. Un banner y no un error de red genérico ni un rebote a Ajustes: el
+// problema no es la configuración de la IA, es que no hay internet, y son dos
+// arreglos distintos.
+//
+// Va en las DOS salidas de la página (IA apagada y chat normal), porque sin
+// señal el estado de la IA que estamos mostrando es el último conocido y el
+// hecho que manda es la falta de red.
+function AvisoSinConexion() {
+  return (
+    <div className="bg-card border border-line border-l-4 border-l-rust rounded-[2px] p-4">
+      <p className="text-sm text-ink">
+        No hay conexión — el asistente no está disponible ahora mismo.
+      </p>
+      {/* `text-ink-soft` y no el `text-slate` que traía el banner viejo: medido
+          sobre la tarjeta en claro, slate a 12px da 3.6:1 — abajo del 4.5:1 de
+          AA. Se lo podía tolerar como meta decorativa; no acá, que es la
+          explicación de por qué el asistente no responde. ink-soft mide 7.1:1
+          en claro y 7.7:1 en oscuro, y sigue leyéndose como secundario. */}
+      <p className="text-xs text-ink-soft mt-1.5">
+        Necesita internet para responder. Tus items siguen acá: podés crear, editar y borrar sin
+        señal, y se sincroniza solo cuando vuelva.
+      </p>
+    </div>
+  )
+}
+
 export function AssistantPage() {
   const { user } = useAuth()
   const aiEnabled = useAiEnabled()
@@ -84,7 +116,8 @@ export function AssistantPage() {
 
   if (aiEnabled === false) {
     return (
-      <main className="shell-main">
+      <main className="shell-main space-y-4">
+        {!online && <AvisoSinConexion />}
         <div className="bg-card border border-line rounded-[4px] p-6 text-center">
           <p className="text-sm text-ink-soft mb-3">La IA no está activada.</p>
           <Link to="/settings" className="link-underline text-sm">
@@ -104,7 +137,7 @@ export function AssistantPage() {
     // señal se cae entre que se escribió y se envió, cortamos acá en vez de
     // mandar la llamada y mostrar un error de red genérico.
     if (!navigator.onLine) {
-      setError('El asistente necesita conexión a internet. Probá de nuevo cuando vuelva la señal.')
+      setError('No hay conexión — el asistente no está disponible ahora mismo.')
       return
     }
 
@@ -312,15 +345,7 @@ export function AssistantPage() {
 
   return (
     <main className="shell-main shell-main--alto flex flex-col gap-4 max-w-[720px]">
-      {!online && (
-        <div className="bg-card border border-line border-l-4 border-l-rust rounded-[2px] p-4">
-          <p className="text-sm text-ink">El asistente necesita conexión a internet.</p>
-          <p className="text-xs text-slate mt-1.5">
-            Tus items siguen acá: podés crear, editar y borrar sin señal, y se sincroniza solo
-            cuando vuelva.
-          </p>
-        </div>
-      )}
+      {!online && <AvisoSinConexion />}
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 min-h-[300px]">
         {messages.length === 0 && (

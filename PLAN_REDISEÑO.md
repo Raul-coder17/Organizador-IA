@@ -1,12 +1,13 @@
 # Plan de rediseño — análisis de la propuesta de Claude Design
 
 > **Estado: Fases 0-2 implementadas** (ítems 1-6) **y Fase 3 en curso**
-> (ítems 7-8 hechos), 2026-07-23. Decisiones
+> (ítems 7, 8 y 8.1 hechos), 2026-07-23. Decisiones
 > tomadas: **D2** radius 2→3-4px y chips en píldora aceptados, sombra sólo en lo
 > que flota; **D3** "recordatorio" se agrega al segmented de tipo; **D4** color de
 > tema automático al crear con opción de cambiarlo, ya implementado.
 > **D1 resuelta: se conserva `react-router`.** La Fase 3 va en la rama
-> `rediseno-fase-3`: ítems 7 (chasis) y 8 (vista Hoy) implementados ahí.
+> `rediseno-fase-3`: ítems 7 (chasis), 8 (vista Hoy) y 8.1 (nombre de perfil +
+> asistente sin conexión) implementados ahí.
 > Detalle de lo implementado en [PLAN_ORGANIZADOR.md](PLAN_ORGANIZADOR.md).
 
 > Documento de análisis y planificación. **No se tocó código para producirlo.**
@@ -488,9 +489,78 @@ la puerta de entrada deja de ser la lista completa.
 > apagado en vez de oculto — el lugar de la función ya está decidido y
 > esconderlo lo volvería a poner en discusión.
 >
-> **El saludo no usa nombre.** Sale de la hora (buenos días / buenas tardes /
+> **El saludo no usa nombre.** ~~Sale de la hora (buenos días / buenas tardes /
 > buenas noches). Lo único que tenemos del usuario es el email, y recortarlo
-> para fabricar un nombre acierta poco.
+> para fabricar un nombre acierta poco.~~ — **revisado, ver 8.1.** La conclusión
+> de que el email no sirve sigue en pie; lo que cambió es que ahora hay un
+> nombre de verdad, puesto por el usuario.
+
+**8.1. Nombre de perfil + asistente sin conexión.** `[N]` · riesgo bajo — ✅ **implementado**
+(rama `rediseno-fase-3`)
+Dos ajustes sobre el ítem 8, antes del buscador: el saludo de Hoy pasa a usar un nombre elegido
+por el usuario, y el estado de la IA deja de apagarse solo cuando no hay red.
+
+> **A — Nombre de perfil.** Campo "Nombre" en Ajustes → Cuenta
+> ([`NombrePerfil`](src/pages/SettingsPage.tsx)), guardado con
+> `supabase.auth.updateUser({ data: { nombre } })`.
+>
+> **Sin tabla nueva, a propósito.** Va en `user_metadata` de Supabase Auth. No
+> es sólo ahorrarse tabla + RLS + outbox para un dato de una línea: los
+> metadatos **viajan dentro de la sesión**, y la sesión cacheada que
+> `readCachedSession` levanta de localStorage para arrancar sin red ya los trae.
+> El saludo funciona offline sin una línea de código extra. Una tabla propia
+> habría necesitado su espejo en IndexedDB y su lugar en el sync para llegar al
+> mismo lado.
+>
+> El nombre se normaliza una sola vez, en `leerNombre` de
+> [`AuthContext`](src/lib/AuthContext.tsx), que lo expone como `nombre: string | null`:
+> un campo en blanco vale lo mismo que no haber configurado nada, o el saludo
+> saldría con una coma colgando. `updateUser` emite USER_UPDATED, que el
+> listener del contexto ya escuchaba, así que al guardar el saludo se actualiza
+> solo, sin recargar.
+>
+> **Qué dice el saludo.** Se mantiene la franja horaria y se le suma el nombre:
+> "Buenas tardes, Raúl". Sin nombre configurado queda "Buenas tardes" a secas.
+> Del email no se deriva nada, que es lo que el ítem 8 ya había decidido y sigue
+> valiendo. Guardar el nombre **sí necesita conexión** (es una escritura contra
+> Auth, no pasa por el outbox como los ítems): sin señal el botón se apaga y lo
+> dice, en vez de dejar fallar `updateUser` con un error de red genérico.
+>
+> **B — El estado de la IA se recuerda.** El bug: `useAiEnabled` leía
+> `user_ai_settings` y, ante la consulta fallada, hacía `data?.ai_enabled ?? false`.
+> Sin red eso **apagaba el asistente** aunque el usuario lo tuviera activo — el
+> botón llevaba a Ajustes a activar una IA que ya estaba activa. Ahora cada
+> lectura exitosa se guarda en localStorage por usuario
+> (`organizador:aiEnabled:<id>`) y sin red se usa ese último valor conocido.
+> Sólo se cachea el dato bueno: `error` presente = nos quedamos con el viejo;
+> `error` ausente y sin fila = `false` legítimo (nunca la activó) y se cachea.
+>
+> localStorage y no el store `meta` de IndexedDB **porque es síncrono**: el
+> primer render ya sale con el valor cacheado. Con una lectura asíncrona habría
+> un parpadeo de "apagado" en cada arranque, que es justo lo que se venía a
+> arreglar. Mismo criterio que [`lib/theme.ts`](src/lib/theme.ts). La clave
+> lleva el id de usuario para que dos cuentas en el mismo navegador no se
+> hereden el estado.
+>
+> Ajustes escribe la caché al activar/desactivar, y también la lee: sin red
+> muestra el último estado conocido con una nota que lo aclara, en vez de decir
+> "Inactiva" y ofrecer cargar una key que tampoco podría validar.
+>
+> **C — Y por eso el asistente ahora avisa.** Es la contracara obligatoria de B:
+> si el botón se dibuja habilitado sin red, la pantalla del asistente tiene que
+> explicar por qué no responde. `AvisoSinConexion` es un banner arriba de todo —
+> **"No hay conexión — el asistente no está disponible ahora mismo"** — y no un
+> error genérico ni un rebote a Ajustes: el problema no es la configuración de
+> la IA, es que no hay internet, y son dos arreglos distintos. Va en las **dos**
+> salidas de la página (IA apagada y chat normal), porque sin señal el estado de
+> IA que mostramos es el último conocido y el hecho que manda es la falta de red.
+>
+> **Un arreglo de contraste que salió de verificar esto.** La bajada del banner
+> venía con `text-slate` a 12px: medido sobre la tarjeta en claro da **3.6:1**,
+> abajo del 4.5:1 de AA (§8 ya había avisado que la paleta clara es la que
+> sufre). Pasa a `text-ink-soft` — 7.1:1 en claro, 7.7:1 en oscuro — y se sigue
+> leyendo como secundaria. Se toleraba como meta decorativa; no como la
+> explicación de por qué el asistente no contesta.
 
 **9. Buscador global.** `[N]` · riesgo medio
 Input en sidebar/header; al escribir reemplaza el contenido de la vista. Definir si cubre
@@ -526,7 +596,7 @@ grande de todos: es la única de las 4 pendientes que necesita backend nuevo de 
 Fase 0:  1 [V] ✅ · 2 [V] ✅                 → base + dark mode
 Fase 1:  3 [V] ✅ · 4 [V] ✅ · 5 [V] ✅       → resuelve el desorden, sin tocar rutas
 Fase 2:  6 [D] ✅                          → color por tema
-Fase 3:  7 [N] ✅ · 8 [N] ✅ · 9 [N] · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
+Fase 3:  7 [N] ✅ · 8 [N] ✅ · 8.1 [N] ✅ · 9 [N] · 10 [N] · 11 [N]  ← el bloque riesgoso (D1 tomada)
 Fase 4:  12 [D] · 13 [D] · 14 [D]         → las 3 pendientes restantes
 ```
 

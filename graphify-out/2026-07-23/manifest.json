@@ -30,8 +30,8 @@
     "semantic_hash": "69bca754ecf9af5644a761221ec24732"
   },
   "src/App.tsx": {
-    "mtime": 1784849827.592903,
-    "ast_hash": "f2859204d0c78affad90d824e825ca9c",
+    "mtime": 1784850468.1528282,
+    "ast_hash": "6e66049a1305ff34ca64768c0a952f65",
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
@@ -95,9 +95,9 @@
     "semantic_hash": "8763514b217538d49952f0c7bd056d2f"
   },
   "src/lib/recordatorios.ts": {
-    "mtime": 1784773137.643328,
-    "ast_hash": "8caddd276640233caf94a0ba4c8bc0b8",
-    "semantic_hash": "8caddd276640233caf94a0ba4c8bc0b8"
+    "mtime": 1784850346.8497486,
+    "ast_hash": "df4986c57f3d8f65b3176dc4e3800c2a",
+    "semantic_hash": ""
   },
   "src/lib/reminderScheduling.test.ts": {
     "mtime": 1784773222.4675941,
@@ -175,13 +175,13 @@
     "semantic_hash": "e0fc5bbf480b3c5fc2a0dcaf1a25d7af"
   },
   "src/pages/ItemsPage.tsx": {
-    "mtime": 1784849848.9657328,
-    "ast_hash": "b517ba461e898589e4020760d859647f",
+    "mtime": 1784850459.7953126,
+    "ast_hash": "9d4b01254c0159cb351ad487edee5f7a",
     "semantic_hash": ""
   },
   "src/pages/RemindersPage.tsx": {
-    "mtime": 1784849848.9702575,
-    "ast_hash": "f95f37f967fbd76f2e4df98520724877",
+    "mtime": 1784850388.06713,
+    "ast_hash": "ef9e9f2bcd30f431fb23718c0a07f399",
     "semantic_hash": ""
   },
   "src/pages/SettingsPage.tsx": {
@@ -370,8 +370,8 @@
     "semantic_hash": ""
   },
   "PLAN_REDISE\u00d1O.md": {
-    "mtime": 1784849918.9867795,
-    "ast_hash": "8956a124c47dd7033ded9bd1044e5520",
+    "mtime": 1784850802.1797886,
+    "ast_hash": "a0b41035c4faddb8a46584e98ae3bb00",
     "semantic_hash": ""
   },
   "design_handoff_organizador_ia/Organizador.dc.html": {
@@ -477,6 +477,16 @@
   "src/lib/useIsWide.ts": {
     "mtime": 1784849351.4168217,
     "ast_hash": "74b77bd5498a1e88fd210b278d55beb5",
+    "semantic_hash": ""
+  },
+  "src/components/RecordatorioRow.tsx": {
+    "mtime": 1784850356.2669773,
+    "ast_hash": "81464fab347ea50f8623cd54e0d206e2",
+    "semantic_hash": ""
+  },
+  "src/pages/HoyPage.tsx": {
+    "mtime": 1784850446.6744473,
+    "ast_hash": "896820925cc1989dad7ca4be4b9c410a",
     "semantic_hash": ""
   }
 }
