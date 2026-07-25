@@ -20,9 +20,22 @@ import {
   fallbackTextForActions,
   partitionCalls,
 } from './actions.ts'
+import { decideRpmSlot } from './rpm.ts'
 
-const GEMINI_MODEL = 'gemini-2.5-flash'
+// gemini-3.1-flash-lite (no "-preview": esa variante quedó dada de baja).
+// Confirmado contra la doc oficial (ai.google.dev/gemini-api/docs/models/
+// gemini-3.1-flash-lite) que soporta function calling e imagen. OJO con el
+// thinking: este modelo usa `thinkingLevel` (enum), NO el `thinkingBudget`
+// (número de tokens) de la serie 2.5 — mandar los dos juntos da 400. Ver
+// generationConfig más abajo.
+const GEMINI_MODEL = 'gemini-3.1-flash-lite'
 const MAX_TURNS = 5
+// RPM real de este modelo para este proyecto (AI Studio, no la guía genérica
+// de 1500/15). Es fijo, a diferencia de daily_quota_learned: no hay 429 del
+// que "aprenderlo" de forma confiable con esta granularidad, así que se
+// hardcodea como los límites conocidos del modelo/cuenta.
+const GEMINI_RPM = 15
+const RPM_WINDOW_MS = 60_000
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -283,6 +296,46 @@ function mensajeCuotaCorta(segundos?: number): string {
   return 'Alcanzaste el límite de mensajes por minuto. Esperá un momento y volvé a intentar.'
 }
 
+// Mensaje del freno PROACTIVO (nunca llegamos a llamar a Gemini): distinto del
+// 429 real de arriba porque acá no hay retryDelay que Gemini nos haya dado, lo
+// calculamos nosotros mismos a partir de nuestras propias marcas.
+function mensajeRpmProactivo(segundos: number): string {
+  return `Vas rápido con la IA: llegaste al máximo de ${GEMINI_RPM} mensajes por minuto. Esperá ${segundos} segundo${segundos === 1 ? '' : 's'} y volvé a intentar.`
+}
+
+// Antes de CADA llamada real a Gemini (acá o en extract-from-photo: comparten
+// modelo y cuenta), chequea cuántas hubo en los últimos RPM_WINDOW_MS y decide
+// si hay lugar. Poda sus propias marcas viejas de paso, así ai_call_log no
+// crece sin límite con el uso normal.
+//
+// No es perfectamente atómico (leer + insertar son dos round-trips), igual
+// que el pre-flight de daily_quota_learned de más abajo — aceptable acá: es
+// una app de un solo usuario, no un sistema con contención real.
+async function reserveRpmSlot(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<{ allowed: boolean; retryAfterSeconds: number }> {
+  const nowMs = Date.now()
+  const desdeIso = new Date(nowMs - RPM_WINDOW_MS).toISOString()
+
+  await supabase.from('ai_call_log').delete().eq('user_id', userId).lt('called_at', desdeIso)
+
+  const { data } = await supabase
+    .from('ai_call_log')
+    .select('called_at')
+    .eq('user_id', userId)
+    .gte('called_at', desdeIso)
+
+  const timestamps = (data ?? []).map((r) => new Date(r.called_at as string).getTime())
+  const decision = decideRpmSlot(timestamps, GEMINI_RPM, RPM_WINDOW_MS, nowMs)
+
+  if (decision.allowed) {
+    await supabase.from('ai_call_log').insert({ user_id: userId, called_at: new Date(nowMs).toISOString() })
+  }
+
+  return decision
+}
+
 // Clasifica un no-2xx de Gemini a un mensaje claro en español. El body crudo
 // se loguea aparte (console.error) para diagnóstico; nunca se muestra al user.
 function translateGeminiError(status: number, rawBody: string): string {
@@ -326,13 +379,16 @@ async function callGemini(
         systemInstruction: { parts: [{ text: systemInstruction }] },
         contents,
         tools: [{ functionDeclarations: FUNCTION_DECLARATIONS }],
-        // gemini-2.5-flash es un modelo "thinking": por defecto gasta parte del
-        // budget de salida razonando, y con function-calling puede consumirlo
-        // entero antes de emitir parts -> candidate sin parts + MAX_TOKENS.
-        // Desactivamos el thinking (budget 0) y dejamos margen de salida.
+        // Modelo "thinking": por defecto gasta parte del budget de salida
+        // razonando, y con function-calling puede consumirlo entero antes de
+        // emitir parts -> candidate sin parts + MAX_TOKENS. En la serie 2.5 esto
+        // se apagaba con `thinkingBudget: 0`; en 3.1 ese campo es legacy y
+        // mezclarlo con `thinkingLevel` da 400, así que el equivalente es el
+        // nivel más bajo: MINIMAL (que además ya es el default del modelo, pero
+        // se deja explícito por si ese default cambia).
         generationConfig: {
           maxOutputTokens: 2048,
-          thinkingConfig: { thinkingBudget: 0 },
+          thinkingConfig: { thinkingLevel: 'MINIMAL' },
         },
       }),
     },
@@ -541,6 +597,18 @@ Deno.serve(async (req) => {
 
   try {
     for (let turn = 0; turn < MAX_TURNS; turn++) {
+      // Freno proactivo: chequeamos ANTES de gastar la llamada, no después de
+      // que Gemini nos devuelva un 429. Un solo turno de usuario puede pasar
+      // por acá varias veces (un turno con lecturas + propuesta ya son 2).
+      const rpm = await reserveRpmSlot(supabase, user.id)
+      if (!rpm.allowed) {
+        return jsonResponse({
+          respuesta_texto: mensajeRpmProactivo(rpm.retryAfterSeconds),
+          rate_limit: { kind: 'short', retry_after_seconds: rpm.retryAfterSeconds },
+          ...usageField(),
+        })
+      }
+
       const candidate = await callGemini(apiKey, contents, systemInstruction)
 
       // Llamada exitosa: incrementamos el contador diario (atómico, respeta RLS).

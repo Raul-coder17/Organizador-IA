@@ -1110,8 +1110,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_itemlist",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itemlist.tsx"
     },
     {
@@ -1121,8 +1121,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_components_itemlist_tipo_label",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "tipo_label"
     },
     {
@@ -1132,8 +1132,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_components_itemlist_prioridad_label",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "prioridad_label"
     },
     {
@@ -1154,8 +1154,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_components_itemlist_iconcampana",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "iconcampana()"
     },
     {
@@ -1165,8 +1165,8 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_components_itemlist_iconchevron",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "iconchevron()"
     },
     {
@@ -1176,8 +1176,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_components_itemlist_parselista",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "parselista()"
     },
     {
@@ -1187,8 +1187,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_components_itemlist_itemcontent",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itemcontent()"
     },
     {
@@ -1198,8 +1198,8 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "src_components_itemlist_grupo",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "grupo"
     },
     {
@@ -1209,8 +1209,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "src_components_itemlist_armargrupos",
-      "community": 44,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "armargrupos()"
     },
     {
@@ -1272,7 +1272,7 @@
       "label": "NuevoItemSheetProps",
       "file_type": "code",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L32",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_nuevoitemsheetprops",
       "community": 44,
@@ -1283,7 +1283,7 @@
       "label": "IconoCerrar()",
       "file_type": "code",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L49",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_iconocerrar",
       "community": 44,
@@ -1294,7 +1294,7 @@
       "label": "IconoEscribir()",
       "file_type": "code",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L57",
+      "source_location": "L65",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_iconoescribir",
       "community": 44,
@@ -1305,7 +1305,7 @@
       "label": "IconoFoto()",
       "file_type": "code",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L66",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_iconofoto",
       "community": 44,
@@ -1316,7 +1316,7 @@
       "label": "IconoChispa()",
       "file_type": "code",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L75",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_iconochispa",
       "community": 44,
@@ -1327,7 +1327,7 @@
       "label": "FaseFoto",
       "file_type": "code",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L94",
+      "source_location": "L102",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_fasefoto",
       "community": 44,
@@ -1338,7 +1338,7 @@
       "label": "NuevoItemSheet()",
       "file_type": "code",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L96",
+      "source_location": "L104",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_nuevoitemsheet",
       "community": 2,
@@ -1495,8 +1495,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncengine",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "syncengine.tsx"
     },
     {
@@ -1506,8 +1506,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncengine_syncengine",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "syncengine()"
     },
     {
@@ -1517,8 +1517,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncsettings",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncsettings.tsx"
     },
     {
@@ -1528,8 +1528,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncsettings_syncsettings",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncsettings()"
     },
     {
@@ -1539,8 +1539,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncstatus",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncstatus.tsx"
     },
     {
@@ -1550,8 +1550,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncstatus_syncstatus",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncstatus()"
     },
     {
@@ -2001,8 +2001,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_db_newoutboxop",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "newoutboxop"
     },
     {
@@ -2122,8 +2122,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_lib_db_getlocaltema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocaltema()"
     },
     {
@@ -2133,8 +2133,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_lib_db_putlocaltema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocaltema()"
     },
     {
@@ -2144,8 +2144,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_db_getlocalitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalitem()"
     },
     {
@@ -2155,8 +2155,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_lib_db_putlocalitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocalitem()"
     },
     {
@@ -2166,8 +2166,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatorio",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalrecordatorio()"
     },
     {
@@ -2177,8 +2177,8 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_db_putlocalrecordatorio",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "putlocalrecordatorio()"
     },
     {
@@ -2188,8 +2188,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatoriosbyitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getlocalrecordatoriosbyitem()"
     },
     {
@@ -2210,8 +2210,8 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "src_lib_db_enqueueop",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "enqueueop()"
     },
     {
@@ -2265,8 +2265,8 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "src_lib_db_deleteopsforentity",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleteopsforentity()"
     },
     {
@@ -2419,8 +2419,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_items",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "items.ts"
     },
     {
@@ -2892,8 +2892,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_repo",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "repo.ts"
     },
     {
@@ -2903,8 +2903,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_lib_repo_nowiso",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "nowiso()"
     },
     {
@@ -2914,8 +2914,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_lib_repo_enqueue",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "enqueue()"
     },
     {
@@ -2925,8 +2925,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_lib_repo_createtema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "createtema()"
     },
     {
@@ -2936,8 +2936,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_lib_repo_updatetemacolor",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "updatetemacolor()"
     },
     {
@@ -2947,8 +2947,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_repo_item_editable",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "item_editable"
     },
     {
@@ -2958,8 +2958,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_repo_itempatch",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itempatch()"
     },
     {
@@ -2969,8 +2969,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_lib_repo_createitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "createitem()"
     },
     {
@@ -2980,8 +2980,8 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_lib_repo_updateitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "updateitem()"
     },
     {
@@ -2991,8 +2991,8 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "src_lib_repo_deleteitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleteitem()"
     },
     {
@@ -3002,8 +3002,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_lib_repo_getrecordatorioforitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "getrecordatorioforitem()"
     },
     {
@@ -3013,8 +3013,8 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "src_lib_repo_upsertrecordatorio",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "upsertrecordatorio()"
     },
     {
@@ -3024,8 +3024,8 @@
       "source_location": "L255",
       "_origin": "ast",
       "id": "src_lib_repo_deleterecordatoriosforitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "deleterecordatoriosforitem()"
     },
     {
@@ -3035,8 +3035,8 @@
       "source_location": "L269",
       "_origin": "ast",
       "id": "src_lib_repo_cambiarestado",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "cambiarestado()"
     },
     {
@@ -3046,8 +3046,8 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 2,
-      "community_name": "Layout, ruteo y estado de sync de la app",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "marcarhecho()"
     },
     {
@@ -3057,8 +3057,8 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "src_lib_repo_marcarenviado",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "marcarenviado()"
     },
     {
@@ -3090,8 +3090,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_supabase",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "supabase.ts"
     },
     {
@@ -3101,8 +3101,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_lib_supabase_supabase",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "supabase"
     },
     {
@@ -3222,8 +3222,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_sync_syncstate",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncstate"
     },
     {
@@ -3266,8 +3266,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "src_lib_sync_getsyncstate",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getsyncstate()"
     },
     {
@@ -3277,8 +3277,8 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesync",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "subscribesync()"
     },
     {
@@ -3431,8 +3431,8 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "src_lib_sync_forcesyncnow",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "forcesyncnow()"
     },
     {
@@ -3673,8 +3673,8 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_lib_synccore_formathacecuanto",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "formathacecuanto()"
     },
     {
@@ -3981,8 +3981,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_temas",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "temas.ts"
     },
     {
@@ -4135,8 +4135,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_useaienabled",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "useaienabled.ts"
     },
     {
@@ -4146,8 +4146,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_useaienabled_readaienabledcache",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 2,
+      "community_name": "Layout, ruteo y estado de sync de la app",
       "norm_label": "readaienabledcache()"
     },
     {
@@ -4212,8 +4212,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 44,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "uselocalreminderwatcher.ts"
     },
     {
@@ -4256,8 +4256,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "usesyncstatus.ts"
     },
     {
@@ -4267,8 +4267,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus_usesyncstatus",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "usesyncstatus()"
     },
     {
@@ -4531,8 +4531,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_pages_settingspage_nombreperfil",
-      "community": 37,
-      "community_name": "@tailwindcss/vite",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "nombreperfil()"
     },
     {
@@ -5067,7 +5067,7 @@
       "label": "CORS_HEADERS",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L27",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_cors_headers",
       "community": 3,
@@ -5078,7 +5078,7 @@
       "label": "jsonResponse()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L33",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_jsonresponse",
       "community": 3,
@@ -5089,7 +5089,7 @@
       "label": "decryptApiKey()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L40",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_decryptapikey",
       "community": 3,
@@ -5100,7 +5100,7 @@
       "label": "TIPO_ENUM",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L55",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_tipo_enum",
       "community": 3,
@@ -5111,7 +5111,7 @@
       "label": "PRIORIDAD_ENUM",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L56",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_prioridad_enum",
       "community": 3,
@@ -5122,7 +5122,7 @@
       "label": "FUNCTION_DECLARATIONS",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L58",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_function_declarations",
       "community": 3,
@@ -5133,7 +5133,7 @@
       "label": "buildSystemInstruction()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L179",
+      "source_location": "L192",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_buildsysteminstruction",
       "community": 3,
@@ -5144,7 +5144,7 @@
       "label": "GeminiPart",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L197",
+      "source_location": "L210",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_geminipart",
       "community": 3,
@@ -5155,7 +5155,7 @@
       "label": "GeminiContent",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L202",
+      "source_location": "L215",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_geminicontent",
       "community": 3,
@@ -5166,7 +5166,7 @@
       "label": "GeminiCandidate",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L206",
+      "source_location": "L219",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_geminicandidate",
       "community": 3,
@@ -5177,7 +5177,7 @@
       "label": "RateLimitInfo",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L213",
+      "source_location": "L226",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_ratelimitinfo",
       "community": 3,
@@ -5188,7 +5188,7 @@
       "label": "GeminiError",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L223",
+      "source_location": "L236",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_geminierror",
       "community": 3,
@@ -5199,7 +5199,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L224",
+      "source_location": "L237",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_geminierror_constructor",
       "community": 3,
@@ -5210,7 +5210,7 @@
       "label": "parseRateLimit()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L235",
+      "source_location": "L248",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_parseratelimit",
       "community": 3,
@@ -5221,7 +5221,7 @@
       "label": "mensajeCuotaDiaria()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L274",
+      "source_location": "L287",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_mensajecuotadiaria",
       "community": 3,
@@ -5232,7 +5232,7 @@
       "label": "mensajeCuotaCorta()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L279",
+      "source_location": "L292",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_mensajecuotacorta",
       "community": 3,
@@ -5240,10 +5240,32 @@
       "norm_label": "mensajecuotacorta()"
     },
     {
+      "label": "mensajeRpmProactivo()",
+      "file_type": "code",
+      "source_file": "supabase/functions/ai-assistant/index.ts",
+      "source_location": "L302",
+      "_origin": "ast",
+      "id": "supabase_functions_ai_assistant_index_mensajerpmproactivo",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
+      "norm_label": "mensajerpmproactivo()"
+    },
+    {
+      "label": "reserveRpmSlot()",
+      "file_type": "code",
+      "source_file": "supabase/functions/ai-assistant/index.ts",
+      "source_location": "L314",
+      "_origin": "ast",
+      "id": "supabase_functions_ai_assistant_index_reserverpmslot",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
+      "norm_label": "reserverpmslot()"
+    },
+    {
       "label": "translateGeminiError()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L288",
+      "source_location": "L341",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_translategeminierror",
       "community": 3,
@@ -5254,7 +5276,7 @@
       "label": "callGemini()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L315",
+      "source_location": "L368",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_callgemini",
       "community": 3,
@@ -5265,7 +5287,7 @@
       "label": "messageForFinishReason()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L361",
+      "source_location": "L417",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_messageforfinishreason",
       "community": 3,
@@ -5276,7 +5298,7 @@
       "label": "textFromParts()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L374",
+      "source_location": "L430",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_textfromparts",
       "community": 3,
@@ -5287,7 +5309,7 @@
       "label": "execListItems()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L382",
+      "source_location": "L438",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_execlistitems",
       "community": 3,
@@ -5298,12 +5320,56 @@
       "label": "execListRecordatorios()",
       "file_type": "code",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L418",
+      "source_location": "L474",
       "_origin": "ast",
       "id": "supabase_functions_ai_assistant_index_execlistrecordatorios",
       "community": 3,
       "community_name": "Asistente IA - acciones propuestas",
       "norm_label": "execlistrecordatorios()"
+    },
+    {
+      "label": "ai-assistant/rpm.test.ts",
+      "file_type": "code",
+      "source_file": "supabase/functions/ai-assistant/rpm.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "supabase_functions_ai_assistant_rpm_test",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
+      "norm_label": "ai-assistant/rpm.test.ts"
+    },
+    {
+      "label": "ai-assistant/rpm.ts",
+      "file_type": "code",
+      "source_file": "supabase/functions/ai-assistant/rpm.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "supabase_functions_ai_assistant_rpm",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
+      "norm_label": "ai-assistant/rpm.ts"
+    },
+    {
+      "label": "RpmDecision",
+      "file_type": "code",
+      "source_file": "supabase/functions/ai-assistant/rpm.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "supabase_functions_ai_assistant_rpm_rpmdecision",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
+      "norm_label": "rpmdecision"
+    },
+    {
+      "label": "decideRpmSlot()",
+      "file_type": "code",
+      "source_file": "supabase/functions/ai-assistant/rpm.ts",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "supabase_functions_ai_assistant_rpm_deciderpmslot",
+      "community": 3,
+      "community_name": "Asistente IA - acciones propuestas",
+      "norm_label": "deciderpmslot()"
     },
     {
       "label": "extract.test.ts",
@@ -5540,7 +5606,7 @@
       "label": "MIMES_PERMITIDOS",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L40",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_mimes_permitidos",
       "community": 45,
@@ -5551,7 +5617,7 @@
       "label": "CORS_HEADERS",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L48",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_cors_headers",
       "community": 45,
@@ -5562,7 +5628,7 @@
       "label": "jsonResponse()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L54",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_jsonresponse",
       "community": 45,
@@ -5573,7 +5639,7 @@
       "label": "decryptApiKey()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L61",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_decryptapikey",
       "community": 45,
@@ -5584,7 +5650,7 @@
       "label": "GeminiPart",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L80",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_geminipart",
       "community": 45,
@@ -5595,7 +5661,7 @@
       "label": "GeminiCandidate",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L84",
+      "source_location": "L97",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_geminicandidate",
       "community": 45,
@@ -5606,7 +5672,7 @@
       "label": "RateLimitInfo",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L89",
+      "source_location": "L102",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_ratelimitinfo",
       "community": 45,
@@ -5617,7 +5683,7 @@
       "label": "GeminiError",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L96",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_geminierror",
       "community": 45,
@@ -5628,7 +5694,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L97",
+      "source_location": "L110",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_geminierror_constructor",
       "community": 45,
@@ -5639,7 +5705,7 @@
       "label": "parseRateLimit()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L106",
+      "source_location": "L119",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_parseratelimit",
       "community": 45,
@@ -5650,7 +5716,7 @@
       "label": "mensajeCuotaDiaria()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L143",
+      "source_location": "L156",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_mensajecuotadiaria",
       "community": 45,
@@ -5661,7 +5727,7 @@
       "label": "mensajeCuotaCorta()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L148",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_mensajecuotacorta",
       "community": 45,
@@ -5669,10 +5735,32 @@
       "norm_label": "mensajecuotacorta()"
     },
     {
+      "label": "mensajeRpmProactivo()",
+      "file_type": "code",
+      "source_file": "supabase/functions/extract-from-photo/index.ts",
+      "source_location": "L172",
+      "_origin": "ast",
+      "id": "supabase_functions_extract_from_photo_index_mensajerpmproactivo",
+      "community": 45,
+      "community_name": "extract-from-photo/index.ts",
+      "norm_label": "mensajerpmproactivo()"
+    },
+    {
+      "label": "reserveRpmSlot()",
+      "file_type": "code",
+      "source_file": "supabase/functions/extract-from-photo/index.ts",
+      "source_location": "L176",
+      "_origin": "ast",
+      "id": "supabase_functions_extract_from_photo_index_reserverpmslot",
+      "community": 45,
+      "community_name": "extract-from-photo/index.ts",
+      "norm_label": "reserverpmslot()"
+    },
+    {
       "label": "translateGeminiError()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L155",
+      "source_location": "L201",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_translategeminierror",
       "community": 45,
@@ -5683,7 +5771,7 @@
       "label": "callGeminiVision()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L184",
+      "source_location": "L230",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_callgeminivision",
       "community": 45,
@@ -5694,12 +5782,56 @@
       "label": "messageForFinishReason()",
       "file_type": "code",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L245",
+      "source_location": "L290",
       "_origin": "ast",
       "id": "supabase_functions_extract_from_photo_index_messageforfinishreason",
       "community": 45,
       "community_name": "extract-from-photo/index.ts",
       "norm_label": "messageforfinishreason()"
+    },
+    {
+      "label": "extract-from-photo/rpm.test.ts",
+      "file_type": "code",
+      "source_file": "supabase/functions/extract-from-photo/rpm.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "supabase_functions_extract_from_photo_rpm_test",
+      "community": 45,
+      "community_name": "extract-from-photo/index.ts",
+      "norm_label": "extract-from-photo/rpm.test.ts"
+    },
+    {
+      "label": "extract-from-photo/rpm.ts",
+      "file_type": "code",
+      "source_file": "supabase/functions/extract-from-photo/rpm.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "supabase_functions_extract_from_photo_rpm",
+      "community": 45,
+      "community_name": "extract-from-photo/index.ts",
+      "norm_label": "extract-from-photo/rpm.ts"
+    },
+    {
+      "label": "RpmDecision",
+      "file_type": "code",
+      "source_file": "supabase/functions/extract-from-photo/rpm.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "supabase_functions_extract_from_photo_rpm_rpmdecision",
+      "community": 45,
+      "community_name": "extract-from-photo/index.ts",
+      "norm_label": "rpmdecision"
+    },
+    {
+      "label": "decideRpmSlot()",
+      "file_type": "code",
+      "source_file": "supabase/functions/extract-from-photo/rpm.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "supabase_functions_extract_from_photo_rpm_deciderpmslot",
+      "community": 45,
+      "community_name": "extract-from-photo/index.ts",
+      "norm_label": "deciderpmslot()"
     },
     {
       "label": "manage-ai-key/index.ts",
@@ -6665,8 +6797,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "diseno_brief",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "diseno_brief.md"
     },
     {
@@ -6786,8 +6918,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "mapa_proyecto",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "mapa_proyecto.md"
     },
     {
@@ -6797,8 +6929,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "mapa_proyecto_mapa_del_proyecto",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "mapa del proyecto"
     },
     {
@@ -6808,8 +6940,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "mapa_proyecto_qu\u00e9_es_el_proyecto",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "que es el proyecto"
     },
     {
@@ -6819,8 +6951,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "mapa_proyecto_estructura_de_carpetas_y_responsabilidad_de_cada_m\u00f3dulo",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "estructura de carpetas y responsabilidad de cada modulo"
     },
     {
@@ -6830,8 +6962,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "mapa_proyecto_src_lib_l\u00f3gica_de_dominio_y_offline",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "`src/lib/` \u2014 logica de dominio y offline"
     },
     {
@@ -6841,8 +6973,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "mapa_proyecto_src_components_y_src_pages",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "`src/components/` y `src/pages/`"
     },
     {
@@ -6852,8 +6984,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "mapa_proyecto_src_sw_ts",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "`src/sw.ts`"
     },
     {
@@ -6863,8 +6995,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "mapa_proyecto_supabase_functions_edge_functions_deno",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "`supabase/functions/` \u2014 edge functions (deno)"
     },
     {
@@ -6874,8 +7006,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "mapa_proyecto_supabase_migrations",
-      "community": 34,
-      "community_name": "@eslint/js",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "`supabase/migrations/`"
     },
     {
@@ -6885,8 +7017,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "mapa_proyecto_diagramas",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "diagramas"
     },
     {
@@ -6896,8 +7028,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "mapa_proyecto_1_arquitectura_general",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "1. arquitectura general"
     },
     {
@@ -6907,8 +7039,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "mapa_proyecto_2_flujo_de_datos_offline",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "2. flujo de datos offline"
     },
     {
@@ -6918,8 +7050,8 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "mapa_proyecto_3_flujo_del_asistente_de_ia",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "3. flujo del asistente de ia"
     },
     {
@@ -6929,8 +7061,8 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "mapa_proyecto_4_flujo_de_notificaciones_local_vs_servidor_dedup",
-      "community": 46,
-      "community_name": "6. \u00cdtems de trabajo, ordenados",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "4. flujo de notificaciones (local vs. servidor + dedup)"
     },
     {
@@ -6940,8 +7072,8 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "mapa_proyecto_god_nodes_m\u00f3dulos_centrales_seg\u00fan_graphify",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "god nodes (modulos centrales segun graphify)"
     },
     {
@@ -6951,8 +7083,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "plan_redise\u00f1o",
-      "community": 29,
-      "community_name": "ItemsPage.tsx",
+      "community": 30,
+      "community_name": "Brief de dise\u00f1o \u2014 Organizador Personal IA",
       "norm_label": "plan_rediseno.md"
     },
     {
@@ -7017,8 +7149,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_navegaci\u00f3n",
-      "community": 48,
-      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "2. navegacion"
     },
     {
@@ -7028,8 +7160,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_1_qu\u00e9_cambia",
-      "community": 48,
-      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "2.1 que cambia"
     },
     {
@@ -7039,8 +7171,8 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_2_el_punto_cr\u00edtico_el_prototipo_no_tiene_router",
-      "community": 48,
-      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "2.2 el punto critico: el prototipo no tiene router"
     },
     {
@@ -7050,8 +7182,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_2_3_detalle_menor_a_reconciliar",
-      "community": 48,
-      "community_name": "Estructura de carpetas y responsabilidad de cada m\u00f3dulo",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "2.3 detalle menor a reconciliar"
     },
     {
@@ -7061,8 +7193,8 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_sistema_visual_evoluciona_o_reemplaza",
-      "community": 50,
-      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "3. sistema visual: \u00bfevoluciona o reemplaza?"
     },
     {
@@ -7072,8 +7204,8 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_1_evoluciona_continuidad_casi_total",
-      "community": 50,
-      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "3.1 evoluciona. continuidad casi total."
     },
     {
@@ -7083,8 +7215,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_2_las_tres_desviaciones_reales_a_aprobar_6_d2",
-      "community": 50,
-      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "3.2 las tres desviaciones reales (a aprobar, \u00a76-d2)"
     },
     {
@@ -7094,8 +7226,8 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_3_3_lo_que_el_sistema_visual_propuesto_no_cubre",
-      "community": 50,
-      "community_name": "3. Sistema visual: \u00bfevoluciona o reemplaza?",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "3.3 lo que el sistema visual propuesto no cubre"
     },
     {
@@ -7116,8 +7248,8 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_clasificaci\u00f3n_qu\u00e9_se_puede_hacer_ya_qu\u00e9_no",
-      "community": 47,
-      "community_name": "Mapa del proyecto",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "5. clasificacion: que se puede hacer ya, que no"
     },
     {
@@ -7127,8 +7259,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_1_implementable_directo_reorganizar_restylear_lo_que_ya_existe",
-      "community": 47,
-      "community_name": "Mapa del proyecto",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "5.1 implementable directo (reorganizar/restylear lo que ya existe)"
     },
     {
@@ -7138,8 +7270,8 @@
       "source_location": "L225",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_2_depende_de_features_que_todav\u00eda_no_existen",
-      "community": 47,
-      "community_name": "Mapa del proyecto",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "5.2 depende de features que todavia no existen"
     },
     {
@@ -7149,8 +7281,8 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_3_ambiguo_o_incompleto_en_la_propuesta",
-      "community": 47,
-      "community_name": "Mapa del proyecto",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "5.3 ambiguo o incompleto en la propuesta"
     },
     {
@@ -7160,8 +7292,8 @@
       "source_location": "L261",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_5_4_dos_detalles_t\u00e9cnicos_que_conviene_fijar_ahora",
-      "community": 47,
-      "community_name": "Mapa del proyecto",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "5.4 dos detalles tecnicos que conviene fijar ahora"
     },
     {
@@ -7171,8 +7303,8 @@
       "source_location": "L283",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_6_\u00edtems_de_trabajo_ordenados",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "6. items de trabajo, ordenados"
     },
     {
@@ -7182,8 +7314,8 @@
       "source_location": "L288",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_0_base_nada_se_rompe_nada_cambia_de_lugar_hecha",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "fase 0 \u2014 base (nada se rompe, nada cambia de lugar) \u2014 \u2705 hecha"
     },
     {
@@ -7193,8 +7325,8 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_1_reestilado_y_reorganizaci\u00f3n_dentro_de_las_p\u00e1ginas_actuales_hecha",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "fase 1 \u2014 reestilado y reorganizacion dentro de las paginas actuales \u2014 \u2705 hecha"
     },
     {
@@ -7204,8 +7336,8 @@
       "source_location": "L355",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_2_modelo_de_datos_hecha",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "fase 2 \u2014 modelo de datos \u2014 \u2705 hecha"
     },
     {
@@ -7215,8 +7347,8 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_3_navegaci\u00f3n_el_bloque_riesgoso",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "fase 3 \u2014 navegacion (el bloque riesgoso)"
     },
     {
@@ -7226,8 +7358,8 @@
       "source_location": "L694",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_fase_4_funciones_pendientes",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "fase 4 \u2014 funciones pendientes"
     },
     {
@@ -7237,8 +7369,8 @@
       "source_location": "L734",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_resumen_de_orden",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "resumen de orden"
     },
     {
@@ -7270,8 +7402,8 @@
       "source_location": "L789",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_8_auditor\u00eda_de_contraste_\u00edtem_2",
-      "community": 51,
-      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "8. auditoria de contraste (item 2)"
     },
     {
@@ -7281,8 +7413,8 @@
       "source_location": "L795",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_el_resultado_inesperado_la_paleta_oscura_contrasta_mejor_que_la_clara",
-      "community": 51,
-      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "el resultado inesperado: la paleta oscura contrasta mejor que la clara"
     },
     {
@@ -7292,8 +7424,8 @@
       "source_location": "L806",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_lo_que_esto_significa",
-      "community": 51,
-      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "lo que esto significa"
     },
     {
@@ -7303,8 +7435,8 @@
       "source_location": "L837",
       "_origin": "ast",
       "id": "plan_redise\u00f1o_d6_resuelta_2026_07_24",
-      "community": 51,
-      "community_name": "8. Auditor\u00eda de contraste (\u00edtem 2)",
+      "community": 17,
+      "community_name": "Decisiones offline (LWW, hard-delete, RLS)",
       "norm_label": "d6 resuelta (2026-07-24)"
     },
     {
@@ -7668,9 +7800,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 37,
+      "community": 0,
       "norm_label": "web locks api single-flight sync",
-      "community_name": "@tailwindcss/vite",
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "id": "plan_offline_web_locks_singleflight"
     },
     {
@@ -7696,9 +7828,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 37,
+      "community": 0,
       "norm_label": "sync trigger events (online/focus/visibility/interval/post-mutation)",
-      "community_name": "@tailwindcss/vite",
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "id": "plan_offline_sync_triggers"
     },
     {
@@ -7738,9 +7870,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 37,
       "norm_label": "decision: no runtime caching of supabase data in service worker",
-      "community_name": "Recordatorios y watcher local",
+      "community_name": "@tailwindcss/vite",
       "id": "plan_offline_sw_no_data_cache"
     },
     {
@@ -7934,9 +8066,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 37,
       "norm_label": "web push via vapid keys + pg_cron",
-      "community_name": "Recordatorios y watcher local",
+      "community_name": "@tailwindcss/vite",
       "id": "plan_organizador_vapid_push"
     },
     {
@@ -8088,9 +8220,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 37,
+      "community": 0,
       "norm_label": "sync.ts (sync engine)",
-      "community_name": "@tailwindcss/vite",
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "id": "src_lib_sync_sync"
     },
     {
@@ -8102,9 +8234,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 37,
       "norm_label": "sw.ts (service worker)",
-      "community_name": "Recordatorios y watcher local",
+      "community_name": "@tailwindcss/vite",
       "id": "src_sw_sw"
     },
     {
@@ -8172,9 +8304,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 37,
       "norm_label": "push_subscriptions migration",
-      "community_name": "Recordatorios y watcher local",
+      "community_name": "@tailwindcss/vite",
       "id": "supabase_migrations_20260721181500_push_subscriptions_pushsubscriptions"
     },
     {
@@ -11500,7 +11632,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L94",
+      "source_location": "L102",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet",
@@ -11511,7 +11643,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L49",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet",
@@ -11522,7 +11654,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L75",
+      "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet",
@@ -11533,7 +11665,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L57",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet",
@@ -11544,7 +11676,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L66",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet",
@@ -11555,7 +11687,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L96",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet",
@@ -11566,7 +11698,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L32",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet",
@@ -11961,7 +12093,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L35",
+      "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet_nuevoitemsheetprops",
@@ -11974,7 +12106,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L107",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet_nuevoitemsheet",
@@ -11986,7 +12118,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L166",
+      "source_location": "L174",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet_nuevoitemsheet",
@@ -11998,7 +12130,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L174",
+      "source_location": "L182",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet_nuevoitemsheet",
@@ -12010,7 +12142,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L109",
+      "source_location": "L117",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet_nuevoitemsheet",
@@ -12022,7 +12154,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/NuevoItemSheet.tsx",
-      "source_location": "L108",
+      "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_nuevoitemsheet_nuevoitemsheet",
@@ -22495,7 +22627,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L179",
+      "source_location": "L192",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22506,7 +22638,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L315",
+      "source_location": "L368",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22517,7 +22649,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L27",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22528,7 +22660,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L40",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22539,7 +22671,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L382",
+      "source_location": "L438",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22550,7 +22682,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L418",
+      "source_location": "L474",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22561,7 +22693,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L58",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22572,7 +22704,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L206",
+      "source_location": "L219",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22583,7 +22715,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L202",
+      "source_location": "L215",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22594,7 +22726,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L223",
+      "source_location": "L236",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22605,7 +22737,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L197",
+      "source_location": "L210",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22616,7 +22748,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L33",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22627,7 +22759,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L279",
+      "source_location": "L292",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22638,7 +22770,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L274",
+      "source_location": "L287",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22649,7 +22781,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L361",
+      "source_location": "L302",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_index",
+      "target": "supabase_functions_ai_assistant_index_mensajerpmproactivo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/index.ts",
+      "source_location": "L417",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22660,7 +22803,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L235",
+      "source_location": "L248",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22671,7 +22814,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L56",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22682,7 +22825,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L213",
+      "source_location": "L226",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22693,7 +22836,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L374",
+      "source_location": "L314",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_index",
+      "target": "supabase_functions_ai_assistant_index_reserverpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/index.ts",
+      "source_location": "L430",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22704,7 +22858,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L55",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22715,7 +22869,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L288",
+      "source_location": "L341",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index",
@@ -22723,10 +22877,34 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/index.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_index",
+      "target": "supabase_functions_ai_assistant_rpm",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/index.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_index",
+      "target": "supabase_functions_ai_assistant_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L224",
+      "source_location": "L237",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index_geminierror",
@@ -22738,7 +22916,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L345",
+      "source_location": "L401",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index_callgemini",
@@ -22750,7 +22928,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L346",
+      "source_location": "L402",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index_callgemini",
@@ -22762,7 +22940,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L346",
+      "source_location": "L402",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index_callgemini",
@@ -22774,11 +22952,69 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/ai-assistant/index.ts",
-      "source_location": "L349",
+      "source_location": "L330",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_index_reserverpmslot",
+      "target": "supabase_functions_ai_assistant_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/index.ts",
+      "source_location": "L405",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_index_callgemini",
       "target": "supabase_functions_ai_assistant_index_translategeminierror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/rpm.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_rpm_test",
+      "target": "supabase_functions_ai_assistant_rpm",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/rpm.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_rpm_test",
+      "target": "supabase_functions_ai_assistant_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/rpm.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_rpm",
+      "target": "supabase_functions_ai_assistant_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/ai-assistant/rpm.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_ai_assistant_rpm",
+      "target": "supabase_functions_ai_assistant_rpm_rpmdecision",
       "confidence_score": 1.0
     },
     {
@@ -23163,7 +23399,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L184",
+      "source_location": "L230",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23174,7 +23410,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L48",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23185,7 +23421,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L61",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23196,7 +23432,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L84",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23207,7 +23443,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L96",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23218,7 +23454,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L80",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23229,7 +23465,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L54",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23240,7 +23476,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L148",
+      "source_location": "L161",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23251,7 +23487,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L143",
+      "source_location": "L156",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23262,7 +23498,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L245",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_index",
+      "target": "supabase_functions_extract_from_photo_index_mensajerpmproactivo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/index.ts",
+      "source_location": "L290",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23273,7 +23520,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L40",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23284,7 +23531,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L106",
+      "source_location": "L119",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23295,7 +23542,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L89",
+      "source_location": "L102",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23306,7 +23553,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L155",
+      "source_location": "L176",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_index",
+      "target": "supabase_functions_extract_from_photo_index_reserverpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/index.ts",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index",
@@ -23314,10 +23572,34 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/index.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_index",
+      "target": "supabase_functions_extract_from_photo_rpm",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/index.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_index",
+      "target": "supabase_functions_extract_from_photo_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L97",
+      "source_location": "L110",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index_geminierror",
@@ -23329,7 +23611,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L229",
+      "source_location": "L274",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index_callgeminivision",
@@ -23341,7 +23623,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L230",
+      "source_location": "L275",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index_callgeminivision",
@@ -23353,7 +23635,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L230",
+      "source_location": "L275",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index_callgeminivision",
@@ -23365,11 +23647,69 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "supabase/functions/extract-from-photo/index.ts",
-      "source_location": "L233",
+      "source_location": "L192",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_index_reserverpmslot",
+      "target": "supabase_functions_extract_from_photo_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/index.ts",
+      "source_location": "L278",
       "weight": 1.0,
       "_origin": "ast",
       "source": "supabase_functions_extract_from_photo_index_callgeminivision",
       "target": "supabase_functions_extract_from_photo_index_translategeminierror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/rpm.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_rpm_test",
+      "target": "supabase_functions_extract_from_photo_rpm",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/rpm.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_rpm_test",
+      "target": "supabase_functions_extract_from_photo_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/rpm.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_rpm",
+      "target": "supabase_functions_extract_from_photo_rpm_deciderpmslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/extract-from-photo/rpm.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_extract_from_photo_rpm",
+      "target": "supabase_functions_extract_from_photo_rpm_rpmdecision",
       "confidence_score": 1.0
     },
     {
@@ -25594,5 +25934,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "bb1a0d010d36a6607d407b213cba85eb7c855d11"
+  "built_at_commit": "6fd0af7df646eded14b153b46da1a905eef76602"
 }

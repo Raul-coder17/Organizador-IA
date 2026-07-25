@@ -1632,6 +1632,59 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-24 — Modelo `gemini-3.1-flash-lite` + freno proactivo de RPM + tope
+  de correcciones en foto. Los tres juntos porque salieron de la misma
+  auditoría (límites reales de la cuenta: RPM=15, RPD=20, no 1500/15 de la
+  guía genérica).
+  - **Modelo:** `ai-assistant` y `extract-from-photo` pasan de
+    `gemini-2.5-flash` a `gemini-3.1-flash-lite` (no `-preview`: esa variante
+    está dada de baja). Confirmado contra la doc oficial de Google
+    (`ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite`) que soporta
+    function calling e imagen como input. **Cambio no trivial encontrado en el
+    camino:** este modelo (serie Gemini 3) reemplaza el `thinkingConfig.
+    thinkingBudget` (número de tokens, serie 2.5) por `thinkingConfig.
+    thinkingLevel` (enum `MINIMAL`/`LOW`/`MEDIUM`/`HIGH`) — mandar los dos
+    juntos da 400. Si sólo se hubiera cambiado el string del modelo sin tocar
+    esto, las dos Edge Functions habrían roto en el primer mensaje/foto.
+    `ai-assistant` queda en `MINIMAL` (mismo espíritu que el `thinkingBudget:
+    0` de antes); `extract-from-photo` en `LOW` (antes tenía budget 2048 de
+    8192 para dejarle algo de razonamiento a la transcripción de tablas
+    largas). Verificado contra documentación oficial (dos páginas
+    independientes confirman el model id, y la página del modelo + búsquedas
+    sobre `thinkingLevel` confirman el schema); **no se hizo una llamada real
+    a Gemini** — no hay key de test disponible sin gastar cuota real de la
+    cuenta del usuario, así que queda pendiente un smoke test en vivo (1
+    mensaje de chat + 1 foto) después de desplegar.
+  - **Freno proactivo de RPM (mejora A):** antes sólo se aprendía el límite
+    DIARIO (`daily_quota_learned`); nada protegía contra RPM. Tabla nueva
+    `ai_call_log` (migración `20260724190000_ai_rpm_throttle.sql`, una marca
+    de tiempo por llamada real, RLS por usuario) + módulo puro `rpm.ts`
+    (`decideRpmSlot`, ventana deslizante de 60s) duplicado en ambas Edge
+    Functions —mismo motivo que `GeminiError`/`parseRateLimit`: deploys
+    independientes—, con `GEMINI_RPM = 15` hardcodeado (a diferencia del RPD,
+    no se "aprende": no hay un 429 del que derivarlo con esta granularidad).
+    Se chequea ANTES de cada llamada real a Gemini (en el loop de
+    `ai-assistant`, que puede llamar varias veces por turno) y devuelve el
+    mismo shape que un 429 real de minuto (`rate_limit.kind: 'short'`), así
+    que el frontend no cambió nada — el cooldown de `AssistantDrawer` ya
+    sabía manejarlo. **16 tests unitarios** (`npx deno test
+    supabase/functions/`, 53/53 OK incluyendo los 37 previos) simulan marcas
+    de tiempo para probar la ventana (la llamada 16 dentro de 60s se bloquea,
+    fuera de la ventana no cuenta, vuelve a permitir pasado el tiempo
+    indicado) sin gastar una sola llamada real.
+  - **Tope de correcciones en foto (mejora B):** `NuevoItemSheet.tsx` limita a
+    `MAX_CORRECCIONES = 3` (antes no había tope). Contador visible reusando
+    `.foto-correcciones` ("N de 3 correcciones usadas", mismo tono que el
+    contador de cuota diaria que ya vivía ahí). Al llegar al tope, el botón
+    "Esto no está bien" queda `disabled` (con `title` explicando por qué) y
+    aparece una nota sugiriendo sacar la foto de nuevo. Verificado visualmente
+    con un harness estático (CSS de producción, 4 estados: 0/2/3-de-3/con
+    formulario abierto) en claro/oscuro × desktop/375px.
+  - `npx deno test supabase/functions/` → 53/53. `npm run build` sin errores.
+  - **Pendiente para el usuario:** aplicar la migración nueva (`npx supabase
+    db push` o pegarla en el SQL Editor, como las anteriores) y hacer un
+    smoke test real (1 mensaje + 1 foto) para confirmar el modelo en vivo.
+
 - 2026-07-24 — **D6** (`PLAN_REDISEÑO.md` §8): contraste AA en claro + nuevo
   acento en oscuro. Dos cambios de color, ambos sólo en `src/index.css`:
   - `gold` y `slate` en modo claro (`@theme`) bajaron de luminosidad en HSL

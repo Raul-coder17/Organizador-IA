@@ -215,9 +215,9 @@
     "semantic_hash": "14ab95ee17986248f9b0b2c34e4c1b78"
   },
   "supabase/functions/ai-assistant/index.ts": {
-    "mtime": 1784698213.8432596,
-    "ast_hash": "29e56c969e00e863b1e3aebc5de59236",
-    "semantic_hash": "29e56c969e00e863b1e3aebc5de59236"
+    "mtime": 1784949686.985093,
+    "ast_hash": "a88b999c9e74de9ae40fd1205ef7064d",
+    "semantic_hash": ""
   },
   "supabase/functions/manage-ai-key/index.ts": {
     "mtime": 1784611449.3323002,
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1784925847.432448,
-    "ast_hash": "c05275f8ac10123f14b04885545ecc34",
+    "mtime": 1784949937.4853573,
+    "ast_hash": "3520f2cd6a2cb220b203d6c0733965e8",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -500,8 +500,8 @@
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
-    "mtime": 1784888956.6681592,
-    "ast_hash": "ac37769fe062036bafce2510c51897ae",
+    "mtime": 1784949794.5458877,
+    "ast_hash": "6486146f82a61a8c6daef2b258cb3d2c",
     "semantic_hash": ""
   },
   "src/lib/itemSheet.ts": {
@@ -540,8 +540,8 @@
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/index.ts": {
-    "mtime": 1784888806.2240613,
-    "ast_hash": "5b69416af785856df8fb9c6b57319b9d",
+    "mtime": 1784949723.746632,
+    "ast_hash": "bc439dc12688a550e9b364d1a508ada6",
     "semantic_hash": ""
   },
   "public/apple-touch-icon.png": {
@@ -572,6 +572,31 @@
   "src/lib/tabla.ts": {
     "mtime": 1784887240.4788828,
     "ast_hash": "bd7d067f154759a8d51cf6c783fa197d",
+    "semantic_hash": ""
+  },
+  "supabase/functions/ai-assistant/rpm.test.ts": {
+    "mtime": 1784949591.3449233,
+    "ast_hash": "20d181711bf5220649fac907af13bc3c",
+    "semantic_hash": ""
+  },
+  "supabase/functions/ai-assistant/rpm.ts": {
+    "mtime": 1784949576.3047938,
+    "ast_hash": "09bb835b42e1610d8603a271690c6cbe",
+    "semantic_hash": ""
+  },
+  "supabase/functions/extract-from-photo/rpm.test.ts": {
+    "mtime": 1784949612.3547764,
+    "ast_hash": "07d064d321e924ee23b5528e9420e04b",
+    "semantic_hash": ""
+  },
+  "supabase/functions/extract-from-photo/rpm.ts": {
+    "mtime": 1784949621.7850013,
+    "ast_hash": "d7ceb37c1df954df61ee971f4327d9ff",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260724190000_ai_rpm_throttle.sql": {
+    "mtime": 1784949646.1916084,
+    "ast_hash": "25c2daec4ba17ce1bea503b7654b92e2",
     "semantic_hash": ""
   }
 }

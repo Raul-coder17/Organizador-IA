@@ -21,15 +21,28 @@
 // = un request contra `ai_usage`), así que comparte el pre-flight de cuota
 // aprendida, el manejo adaptativo del 429 y los mensajes en español.
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient, type SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { RESPONSE_SCHEMA, buildPrompt, normalizarExtraccion, parseJsonLaxo } from './extract.ts'
+import { decideRpmSlot } from './rpm.ts'
 
-// gemini-2.5-flash es nativamente multimodal (texto + imagen en el mismo
-// `contents`), así que NO hace falta un modelo aparte para visión: es el mismo
-// que ya usa `ai-assistant`, con una `inlineData` extra en las parts. Mantenerlo
-// idéntico importa: una sola cuota, un solo modelo que actualizar el día que
-// Google retire este (ya pasó una vez con gemini-2.0-flash).
-const GEMINI_MODEL = 'gemini-2.5-flash'
+// Nativamente multimodal (texto + imagen en el mismo `contents`), así que NO
+// hace falta un modelo aparte para visión: es el mismo que ya usa
+// `ai-assistant`, con una `inlineData` extra en las parts. Mantenerlo idéntico
+// importa: una sola cuota, un solo modelo que actualizar el día que Google
+// retire este (ya pasó con gemini-2.0-flash y con gemini-2.5-flash).
+//
+// gemini-3.1-flash-lite (no "-preview": esa variante quedó dada de baja).
+// Confirmado contra la doc oficial que soporta function calling e imagen como
+// input — acá no se usa function calling, pero si sigue habiendo `responseMimeType
+// + responseSchema` (salida estructurada) es lo que importa, y también está
+// confirmado. Mismo cuidado que en ai-assistant con el thinking: acá usa
+// `thinkingLevel`, no `thinkingBudget` (ver generationConfig más abajo).
+const GEMINI_MODEL = 'gemini-3.1-flash-lite'
+// RPM real de este modelo para este proyecto (AI Studio). Se comparte con
+// ai-assistant porque es el mismo modelo/cuenta — de ahí que la tabla
+// ai_call_log (ver rpm.ts) no distinga de qué función vino cada llamada.
+const GEMINI_RPM = 15
+const RPM_WINDOW_MS = 60_000
 
 // Tope de la imagen ya codificada en base64. El frontend achica y recomprime
 // antes de mandar (ver src/lib/fotoItem.ts), así que en la práctica llega muy
@@ -152,6 +165,39 @@ function mensajeCuotaCorta(segundos?: number): string {
   return 'Alcanzaste el límite de mensajes por minuto. Esperá un momento y volvé a intentar.'
 }
 
+// Mismo freno proactivo que ai-assistant (ver el comentario largo allá):
+// chequea la ventana de RPM ANTES de gastar la llamada, en vez de enterarse
+// con un 429 real. Comparten la misma tabla ai_call_log porque comparten
+// modelo y cuenta.
+function mensajeRpmProactivo(segundos: number): string {
+  return `Vas rápido con la IA: llegaste al máximo de ${GEMINI_RPM} mensajes por minuto. Esperá ${segundos} segundo${segundos === 1 ? '' : 's'} y volvé a intentar.`
+}
+
+async function reserveRpmSlot(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<{ allowed: boolean; retryAfterSeconds: number }> {
+  const nowMs = Date.now()
+  const desdeIso = new Date(nowMs - RPM_WINDOW_MS).toISOString()
+
+  await supabase.from('ai_call_log').delete().eq('user_id', userId).lt('called_at', desdeIso)
+
+  const { data } = await supabase
+    .from('ai_call_log')
+    .select('called_at')
+    .eq('user_id', userId)
+    .gte('called_at', desdeIso)
+
+  const timestamps = (data ?? []).map((r) => new Date(r.called_at as string).getTime())
+  const decision = decideRpmSlot(timestamps, GEMINI_RPM, RPM_WINDOW_MS, nowMs)
+
+  if (decision.allowed) {
+    await supabase.from('ai_call_log').insert({ user_id: userId, called_at: new Date(nowMs).toISOString() })
+  }
+
+  return decision
+}
+
 function translateGeminiError(status: number, rawBody: string): string {
   let apiStatus = ''
   let reason = ''
@@ -199,22 +245,21 @@ async function callGeminiVision(
             parts: [{ text: prompt }, { inlineData: { mimeType, data: imagenBase64 } }],
           },
         ],
-        // 2.5-flash es un modelo "thinking". Con el budget por defecto puede
-        // gastarlo entero antes de emitir parts (candidate sin parts +
-        // MAX_TOKENS), y por eso al principio se apagó del todo
-        // (`thinkingBudget: 0`). Pero leer una foto no es lo mismo que
-        // contestar un chat: transcribir una tabla larga sin saltearse
-        // renglones ni correr una columna es justamente donde el razonamiento
-        // ayuda, y apagarlo era una de las causas de que se perdieran datos.
+        // Modelo "thinking". Con el nivel por defecto (MINIMAL) puede gastar
+        // poco razonamiento antes de emitir parts; pero leer una foto no es lo
+        // mismo que contestar un chat: transcribir una tabla larga sin
+        // saltearse renglones ni correr una columna es justamente donde el
+        // razonamiento ayuda, así que acá se sube un escalón por encima del
+        // mínimo (LOW), a diferencia de ai-assistant que se queda en MINIMAL.
         //
-        // Así que ahora hay presupuesto, pero ACOTADO —no `-1` (dinámico, sin
-        // techo)—, y `maxOutputTokens` sube en consecuencia: en 2.5 los tokens
-        // de pensamiento salen del mismo tope que la salida, así que dejarlo en
-        // 4096 con budget 2048 habría dejado la transcripción con menos aire
-        // que antes. 8192 - 2048 = ~6k para el item, más que los 4096 previos.
+        // En la serie 2.5 esto se controlaba con un budget numérico de tokens
+        // (2048 de 8192, dejando ~6k para el item); en 3.1 el control pasó a
+        // ser por nivel (`thinkingLevel`), sin un número de tokens exacto que
+        // reservar — por eso `maxOutputTokens` se deja igual de generoso
+        // (8192) en vez de restarle el budget de pensamiento como antes.
         generationConfig: {
           maxOutputTokens: 8192,
-          thinkingConfig: { thinkingBudget: 2048 },
+          thinkingConfig: { thinkingLevel: 'LOW' },
           responseMimeType: 'application/json',
           responseSchema: RESPONSE_SCHEMA,
         },
@@ -394,6 +439,17 @@ Deno.serve(async (req) => {
   const usageField = () => ({ usage: { used_today: usedToday ?? undefined, daily_quota: learned ?? undefined } })
 
   try {
+    // Freno proactivo: chequeamos ANTES de gastar la llamada (compartida con
+    // ai-assistant vía la misma tabla ai_call_log).
+    const rpm = await reserveRpmSlot(supabase, user.id)
+    if (!rpm.allowed) {
+      return jsonResponse({
+        respuesta_texto: mensajeRpmProactivo(rpm.retryAfterSeconds),
+        rate_limit: { kind: 'short', retry_after_seconds: rpm.retryAfterSeconds },
+        ...usageField(),
+      })
+    }
+
     const candidate = await callGeminiVision(
       apiKey,
       buildPrompt({ temas, clientNow, comentario, correccion }),

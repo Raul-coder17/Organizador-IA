@@ -29,6 +29,14 @@ import { ItemForm } from './ItemForm'
 
 type Vista = 'menu' | 'form' | 'foto'
 
+// Tope de correcciones por foto (mejora B, D6-bis): cada corrección gasta un
+// mensaje de la misma cuota diaria de IA que el chat (RPD=20 real, ver
+// PLAN_ORGANIZADOR.md), así que "sin tope" podía comerse buena parte del día
+// en una sola foto difícil. 3 alcanza para lo normal (falta un dato, quedó
+// corrida una columna, el tema no es ese) sin dejar que una foto mal sacada
+// vacíe la cuota — si hace falta más, conviene sacarla de nuevo.
+const MAX_CORRECCIONES = 3
+
 interface NuevoItemSheetProps {
   open: boolean
   vista: Vista
@@ -588,12 +596,25 @@ export function NuevoItemSheet({
                           escribirlo a mano sería transcribirlo uno mismo. */}
                       <button
                         type="button"
-                        className="link-underline text-sm"
+                        className="link-underline text-sm disabled:opacity-60 disabled:cursor-not-allowed disabled:no-underline"
                         onClick={() => setMostrarCorreccion(true)}
+                        disabled={correcciones >= MAX_CORRECCIONES}
+                        title={
+                          correcciones >= MAX_CORRECCIONES
+                            ? `Ya usaste las ${MAX_CORRECCIONES} correcciones de esta foto.`
+                            : undefined
+                        }
                       >
                         Esto no está bien
                       </button>
                     </div>
+                  )}
+
+                  {estadoAccion === 'idle' && !mostrarCorreccion && correcciones >= MAX_CORRECCIONES && (
+                    <p className="foto-nota">
+                      Ya usaste las {MAX_CORRECCIONES} correcciones de esta foto. Si necesitás ajustar algo
+                      más, sacá la foto de nuevo.
+                    </p>
                   )}
 
                   {estadoAccion === 'idle' && mostrarCorreccion && (
@@ -641,9 +662,7 @@ export function NuevoItemSheet({
 
                   {correcciones > 0 && (
                     <p className="foto-correcciones">
-                      {correcciones === 1
-                        ? 'Pediste 1 corrección para esta foto.'
-                        : `Pediste ${correcciones} correcciones para esta foto.`}
+                      {correcciones} de {MAX_CORRECCIONES} correcciones usadas
                     </p>
                   )}
                 </>
