@@ -22,7 +22,12 @@
 | `AuthContext.tsx`, `useAiEnabled.ts`, `useSyncStatus.ts`, `useRecordatoriosBadge.ts` | Contexto/hooks transversales usados por varias páginas. |
 
 ### `src/components/` y `src/pages/`
-UI reutilizable (`ItemForm`, `ItemList`, `SyncStatus`, `SyncSettings`, `SyncEngine`, `PushSettings`, `AppNav`, `ProtectedRoute`) y vistas ruteadas (`ItemsPage`, `RemindersPage`, `AssistantPage`, `SettingsPage`, `AuthPage`).
+UI reutilizable (`ItemForm`, `ItemList`, `SyncStatus`, `SyncSettings`, `SyncEngine`, `PushSettings`, `AppShell`, `AuthCard`, `ProtectedRoute`) y vistas ruteadas (`HoyPage`, `ItemsPage`, `RemindersPage`, `SettingsPage`, `AuthPage`, `ResetPasswordPage`).
+
+Sobre el ruteo: `App.tsx` tiene el `BrowserRouter` arriba de todo y la sesión se
+exige en un layout route (`RutasPrivadas` = `ProtectedRoute` + `SyncEngine` +
+`LocalReminderWatcher`). `/reset-password` queda **fuera** de esa puerta a
+propósito: la abre quien no puede iniciar sesión.
 
 ### `src/sw.ts`
 Service Worker: maneja el payload de push y muestra la notificación. Sin cache runtime de datos de Supabase (decisión explícita, ver PLAN_OFFLINE.md).

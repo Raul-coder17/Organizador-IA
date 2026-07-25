@@ -1578,6 +1578,187 @@ entre la propuesta y el confirmar, el item se guarda local y sube después.
   la función sin desplegar, "Desde una foto" se ve habilitada y falla al invocar.
   Se respetó: la función quedó `ACTIVE` antes de integrar el frontend a `master`.
 
+## Recuperar contraseña por correo
+
+Hasta acá, olvidarse la contraseña era una puerta cerrada: la única salida era
+crear otra cuenta. Supabase Auth ya trae las dos mitades del flujo
+(`resetPasswordForEmail` manda el correo, `updateUser` guarda la contraseña
+nueva), así que esto es frontend y configuración — sin tabla, sin migración y
+sin Edge Function.
+
+### El router tuvo que darse vuelta
+
+El cambio menos visible y el que más importa. `ProtectedRoute` envolvía al
+`BrowserRouter` entero, así que **sin sesión no había router**: cualquier URL
+mostraba el login. Eso alcanzaba mientras todas las pantallas fueran privadas,
+pero `/reset-password` es justo la que abre alguien que **no puede** iniciar
+sesión — es la razón por la que está pidiendo el link.
+
+Ahora el router es lo de afuera y la puerta bajó un nivel, a un layout route
+(`RutasPrivadas`) que envuelve al resto:
+
+```
+BrowserRouter
+├── /reset-password        ← pública
+└── RutasPrivadas          ← ProtectedRoute + SyncEngine + LocalReminderWatcher
+    ├── AppShell
+    │   ├── / (Hoy), /biblioteca, /reminders, /assistant, /settings
+    └── *  → redirige a /
+```
+
+El motor de sync y el watcher quedaron en ese layout y no en el shell: sólo
+tienen sentido con sesión, y como los layout routes no se desmontan al navegar,
+se siguen montando una sola vez (que era la razón de estar donde estaban).
+
+El comodín `*` es nuevo y tapa un agujero previo: antes una URL desconocida
+mostraba el login (sin sesión) o una pantalla en blanco (con sesión), porque el
+`<Routes>` no matcheaba nada. Ahora cae en Hoy.
+
+### Pedir el link — no se dice si el correo existe
+
+El link "¿Olvidaste tu contraseña?" no abre otra pantalla: agrega un tercer modo
+(`recuperar`) al formulario que ya tenía login y alta. Los tres piden email y
+sólo dos piden contraseña; separarlos habría duplicado el campo, su validación
+y el manejo de error/info.
+
+La respuesta es **siempre la misma**, exista o no la cuenta:
+
+> Si el correo existe, te enviamos un link para restablecer tu contraseña.
+> Revisá tu bandeja de entrada y la carpeta de spam.
+
+Es deliberado: si el mensaje cambiara según el caso, la pantalla serviría para
+averiguar **quién tiene cuenta acá** sin necesidad de ninguna contraseña. El
+único error que sí se muestra es el **429** (límite de envíos), que no dice nada
+de la cuenta y explica por qué no llegó el correo.
+
+`redirectTo` se arma como `` `${window.location.origin}/reset-password` ``, no
+como una URL fija: el mismo build corre en `localhost`, en Render y en la PWA
+instalada. Quien decide qué orígenes son aceptables es Supabase, con su lista de
+Redirect URLs (ver abajo).
+
+### `/reset-password` — esperar la sesión, no asumirla
+
+El link del correo cae en la ruta con el token en la URL y **supabase-js lo
+canjea solo** (`detectSessionInUrl`, activo por defecto). Eso es asincrónico: en
+el primer render puede no haber sesión todavía. La pantalla tiene cuatro
+estados y arranca en el de espera:
+
+| Estado | Cuándo | Qué se ve |
+| --- | --- | --- |
+| `verificando` | al entrar | "Validando el link…" |
+| `listo` | apareció la sesión de recuperación | las dos contraseñas |
+| `invalido` | error en la URL, o 5 s sin sesión | por qué falló + volver al inicio |
+| `guardado` | `updateUser` OK | confirmación y salto a Hoy |
+
+La sesión se espera por **dos caminos a la vez** —`getSession()` y el evento de
+`onAuthStateChange`— porque cuál gana depende de si supabase-js ya terminó de
+leer la URL o no. El timeout de 5 s es el que decide que el link no servía: sin
+él, un link vencido dejaba la pantalla en "Validando…" para siempre (el mismo
+patrón de `await` colgado que ya nos mordió con `getSession` en `AuthContext` y
+con `serviceWorker.ready` en `push.ts`).
+
+Los rechazos del link **no vuelven como error de una llamada**: Supabase los
+manda en la propia URL, en el hash (flujo implícito) o en la query (PKCE). Por
+eso se leen los dos. `otp_expired` tiene mensaje propio —el caso corriente— y
+menciona que los links son de un solo uso, porque "ya lo usé" y "se venció"
+terminan en el mismo lugar y el usuario tiene que saber que la salida es pedir
+otro.
+
+Las dos validaciones locales (largo y coincidencia) van **antes** de la llamada:
+no tiene sentido gastar un viaje al servidor para que rebote algo que ya se ve
+acá. Los mensajes de Supabase que sí pueden aparecer se traducen (contraseña
+corta, contraseña igual a la anterior, sesión vencida, 429); el resto cae a un
+genérico que **muestra el texto original detrás**, para no esconder un problema
+real.
+
+Al guardar, el usuario ya tiene sesión (el link se la dio), así que va a **Hoy**
+y no al login, con `replace` para que "atrás" no vuelva a la URL con el token.
+
+### Diseño
+
+Las tres pantallas de sesión comparten `AuthCard` (`src/components/AuthCard.tsx`):
+misma tarjeta centrada, marca en Fraunces, rótulos en Plex Mono, campos `.ctl` y
+botón `.btn-moss`. Está factorizado y no copiado porque son **la misma pantalla
+con distinto contenido**: si el chasis se duplicara, la de restablecer —que se ve
+una vez cada tanto, y por eso nadie mira— sería la primera en quedar desalineada
+del login. Los mensajes usan el código de color de siempre: rust lo que falló,
+moss lo que salió bien.
+
+En login las salidas son dos (crear cuenta, recuperar) y van **apiladas**: en
+una fila competirían por el mismo lugar; en columna se leen como dos caminos
+distintos.
+
+### Verificación
+
+- `npm run build` sin errores. `npm run lint` con **0 errores** (siguen los 2
+  warnings previos de `PushSettings.tsx` y `AuthContext.tsx`).
+- **En el navegador, contra el dev server, sin tocar la sesión real:** el truco
+  fue usar `http://[::1]:5173` como segundo origen — Vite escucha ahí igual, y
+  para el navegador es **otro origen**, así que tiene su propio `localStorage` y
+  entra sin sesión. Así se pudo ver el login sin desloguear la sesión de
+  `localhost`.
+- Pantallas verificadas en **claro y oscuro, desktop y 375 px**, sin desborde
+  horizontal (`scrollWidth === innerWidth`) y sin errores de consola: login con
+  las dos salidas, modo recuperar, confirmación de envío, formulario de
+  contraseña nueva, "las contraseñas no coinciden", link vencido
+  (`#error_code=otp_expired`) y el timeout de validación.
+- **El pedido de link salió de verdad:** la llamada fue a
+  `/auth/v1/recover?redirect_to=…%2Freset-password`, con el origen correcto.
+  Se probó con una dirección `@example.com` **que no es usuario** — Supabase no
+  manda correo en ese caso, así que no se gastó cuota del SMTP integrado, y la
+  UI igual respondió con el mensaje que no revela nada.
+- **La contraseña de la cuenta real nunca se tocó:** el error de coincidencia se
+  probó sobre la sesión viva y se confirmó por `performance.getEntriesByType`
+  que **no hubo ninguna llamada a Supabase** — las validaciones locales cortan
+  antes de `updateUser`.
+- **Sin regresión en lo privado:** Hoy, Biblioteca y Ajustes siguen andando con
+  el shell montado, y `/ruta-que-no-existe` ahora redirige a `/`.
+- **Pendiente de tu prueba en vivo** (requiere tu casilla): pedir el link a tu
+  correo real, abrirlo y cambiar la contraseña de punta a punta. Esa parte no la
+  puedo hacer yo — ver abajo.
+
+### Lo que tenés que hacer vos en Supabase (no lo puedo hacer yo)
+
+Todo esto es en <https://supabase.com/dashboard> → tu proyecto →
+**Authentication**. Sin el punto 1, el link del correo **no va a funcionar**:
+Supabase se niega a redirigir a un origen que no esté en su lista.
+
+1. **Authentication → URL Configuration:**
+   - **Site URL:** `https://organizador-ia.onrender.com` (tu dominio de Render;
+     si le pusiste otro nombre, ese). Es el destino por defecto cuando un link
+     no trae `redirect_to` válido.
+   - **Redirect URLs:** agregá estas dos entradas —
+     - `https://organizador-ia.onrender.com/reset-password`
+     - `http://localhost:5173/reset-password` (para probar en tu máquina; podés
+       borrarla después)
+
+     También sirve `https://organizador-ia.onrender.com/**` si preferís habilitar
+     todas las rutas del dominio de una. Guardá con **Save**.
+2. **Correo: el SMTP integrado alcanza para que lo pruebes VOS, y para nadie
+   más.** El servicio gratis que trae Supabase tiene dos límites duros, los dos
+   documentados por ellos: **~2 mensajes por hora**, y **sólo entrega a
+   direcciones que sean miembros del equipo/organización del proyecto** —
+   cualquier otra la rechaza. Como el proyecto es tuyo, a tu casilla te va a
+   llegar; a la de un tercero **no**. Supabase dice explícito que el SMTP por
+   defecto es para explorar y probar plantillas, no para producción.
+
+   Conclusión: si la app va a ser sólo tuya, **no tenés que configurar nada
+   más**. En cuanto haya un segundo usuario, "recuperar contraseña" no le va a
+   funcionar hasta que pongas **SMTP propio** en **Authentication → Emails →
+   SMTP Settings** (Resend, Brevo, SendGrid, Mailgun o similar: creás la cuenta,
+   verificás el dominio y pegás host, puerto, usuario y contraseña). Eso no lo
+   puedo hacer yo: requiere tu cuenta en el proveedor.
+3. **Opcional — el texto del correo:** **Authentication → Emails → Templates →
+   Reset Password**. Llega en inglés por defecto; si querés, traducilo. Lo único
+   que **no** hay que tocar es la variable `{{ .ConfirmationURL }}`, que es el
+   link.
+4. **Probalo de punta a punta:** entrá al login, "¿Olvidaste tu contraseña?",
+   poné tu correo, abrí el link que te llega y cambiá la contraseña. Ojo con dos
+   cosas: el link **se usa una sola vez** y **vence** (el plazo se ve y se
+   cambia en **Authentication → Sign In / Providers → Email → Email OTP
+   expiration**; los proyectos nuevos vienen en 1 hora), y conviene abrirlo
+   **en el mismo navegador** desde donde lo pediste.
+
 ## Deploy
 
 ### GitHub
@@ -1631,6 +1812,23 @@ desactivarla desde ahí.) El resto —recordatorios, cron, envío— ya está de
 del servidor y no depende del dominio del frontend.
 
 ## Changelog
+
+- 2026-07-25 — Recuperar contraseña por correo. Olvidarse la contraseña dejó de
+  ser una puerta cerrada. Detalle completo en la sección
+  ["Recuperar contraseña por correo"](#recuperar-contraseña-por-correo).
+  - **Frontend:** link "¿Olvidaste tu contraseña?" en el login (tercer modo del
+    mismo formulario) que llama a `resetPasswordForEmail`, y ruta nueva
+    `/reset-password` con las dos contraseñas y `updateUser`. Tarjeta común
+    `AuthCard` para las tres pantallas de sesión.
+  - **Cambio estructural:** el `BrowserRouter` salió de adentro de
+    `ProtectedRoute` y la puerta pasó a ser un layout route. Sin eso no había
+    forma de tener una ruta pública, y `/reset-password` la abre justamente
+    quien no puede iniciar sesión. De paso, una URL desconocida ahora redirige
+    a Hoy en vez de dejar la pantalla en blanco.
+  - **Decisión:** el mensaje al pedir el link es el mismo exista o no la cuenta.
+    Si cambiara, la pantalla serviría para averiguar quién tiene cuenta acá.
+  - **Requiere configuración tuya en Supabase** (Redirect URLs; y SMTP propio
+    el día que haya un segundo usuario): ver la sección.
 
 - 2026-07-25 — Fix: los colores de tema salían transparentes en modo claro.
   Cierra el bug pre-existente anotado en la entrada de "borrar temas".

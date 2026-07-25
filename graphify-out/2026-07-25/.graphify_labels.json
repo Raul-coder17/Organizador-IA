@@ -28,12 +28,10 @@
   "26": "Decision: storage.persist()",
   "27": "vite-env.d.ts",
   "28": "vite.config.ts",
-  "29": "HoyPage.tsx",
   "30": "Brief de diseño — Organizador Personal IA",
   "31": "Handoff: Rediseño de arquitectura de información — Organizador Personal IA",
   "32": "Brief de diseño — Organizador Personal IA",
   "33": "Adoption of react-router-dom for /settings Route",
-  "34": "buscar.test.ts",
   "35": "eslint-plugin-react-hooks",
   "36": "tailwindcss",
   "37": "@tailwindcss/vite",
@@ -45,14 +43,6 @@
   "43": "Outbox Pattern for Offline Mutations",
   "44": "AssistantDrawer.tsx",
   "45": "extract-from-photo/index.ts",
-  "46": "recordatorios.ts",
-  "47": "App.tsx",
-  "48": "SettingsPage.tsx",
   "49": "Diagramas",
-  "50": "assistant.ts",
-  "51": "accionesPropuestas.ts",
-  "52": "@eslint/js",
-  "53": "Catalog Card Visual Design System",
-  "54": "Adoption of react-router-dom for /settings Route",
-  "55": "eslint"
+  "52": "@eslint/js"
 }

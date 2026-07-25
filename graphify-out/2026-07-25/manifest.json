@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1784968556.1963007,
-    "ast_hash": "e0b8dfc752d23ed6193ab5b517f11ca1",
+    "mtime": 1784884071.9739347,
+    "ast_hash": "18de75bb14e928c3cf3c7fb5f1aa5a6b",
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
@@ -165,9 +165,9 @@
     "semantic_hash": "787e5a07efeb2bf6209d5937195f2f68"
   },
   "src/pages/AuthPage.tsx": {
-    "mtime": 1784968488.0270474,
-    "ast_hash": "8e6220257a038525740a621e68aced7f",
-    "semantic_hash": ""
+    "mtime": 1784884243.9594681,
+    "ast_hash": "e0fc5bbf480b3c5fc2a0dcaf1a25d7af",
+    "semantic_hash": "e0fc5bbf480b3c5fc2a0dcaf1a25d7af"
   },
   "src/pages/ItemsPage.tsx": {
     "mtime": 1784869541.7727568,
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1784969044.4509077,
-    "ast_hash": "bf0776b24f7daf511b302b84f706a6d8",
+    "mtime": 1784962670.6289456,
+    "ast_hash": "7d5cdf667edea4ebaad276f74a3f5d5a",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -360,8 +360,8 @@
     "semantic_hash": ""
   },
   "MAPA_PROYECTO.md": {
-    "mtime": 1784969058.5419705,
-    "ast_hash": "02d78e74af26b9a30161c9ac4dc1f62b",
+    "mtime": 1784788891.86377,
+    "ast_hash": "a1fb05d860549334c2b8f30d28998394",
     "semantic_hash": ""
   },
   "PLAN_REDISE\u00d1O.md": {
@@ -602,16 +602,6 @@
   "supabase/migrations/20260725050000_quota_learned_por_modelo.sql": {
     "mtime": 1784952678.1548567,
     "ast_hash": "6f3f9d05c93abf721f468ea13ef17194",
-    "semantic_hash": ""
-  },
-  "src/components/AuthCard.tsx": {
-    "mtime": 1784968462.291982,
-    "ast_hash": "f56a509399b7b736b6e810a388e07cb6",
-    "semantic_hash": ""
-  },
-  "src/pages/ResetPasswordPage.tsx": {
-    "mtime": 1784968526.691528,
-    "ast_hash": "7575f9f586e9c0744860c658c4d49227",
     "semantic_hash": ""
   }
 }
