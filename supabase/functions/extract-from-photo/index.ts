@@ -340,7 +340,7 @@ Deno.serve(async (req) => {
 
   const { data: settings } = await supabase
     .from('user_ai_settings')
-    .select('ai_enabled, gemini_api_key_encrypted, daily_quota_learned')
+    .select('ai_enabled, gemini_api_key_encrypted, daily_quota_learned, daily_quota_learned_model')
     .eq('user_id', user.id)
     .maybeSingle()
 
@@ -348,7 +348,11 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'Activá la IA en Settings primero.' }, 400)
   }
 
-  const learned: number | null = settings.daily_quota_learned ?? null
+  // Misma regla que en ai-assistant: la cuota aprendida vale sólo para el
+  // modelo bajo el que se aprendió. Comparten tabla y modelo, así que
+  // comparten también el reaprendizaje al cambiarlo.
+  const learned: number | null =
+    settings.daily_quota_learned_model === GEMINI_MODEL ? (settings.daily_quota_learned ?? null) : null
 
   // Mismo pre-flight que el asistente: si ya sabemos la cuota diaria y hoy se
   // agotó, cortamos acá sin gastar una llamada que igual daría 429 — y sin
@@ -508,8 +512,12 @@ Deno.serve(async (req) => {
     if (err instanceof GeminiError && err.rateLimit) {
       const rl = err.rateLimit
       if (rl.kind === 'day') {
+        // Etiquetada con el modelo, igual que en ai-assistant.
         if (rl.quotaValue != null) {
-          await supabase.from('user_ai_settings').update({ daily_quota_learned: rl.quotaValue }).eq('user_id', user.id)
+          await supabase
+            .from('user_ai_settings')
+            .update({ daily_quota_learned: rl.quotaValue, daily_quota_learned_model: GEMINI_MODEL })
+            .eq('user_id', user.id)
         }
         return jsonResponse({
           respuesta_texto: err.userMessage,

@@ -1632,6 +1632,36 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-25 — Fix: la cuota diaria aprendida queda atada al modelo + hallazgo
+  de deploy. Salió de diagnosticar "el asistente me corta en 20 aunque
+  cambiamos de modelo".
+  - **Hallazgo principal (no era el bug que parecía):** el cambio de modelo
+    **nunca había llegado a producción**. Dos deploys distintos que no son uno:
+    Render publica sólo el frontend estático desde GitHub (`render.yaml`), y el
+    commit `6b7413e` estaba sin pushear (`ahead 1`) — de ahí que no apareciera
+    el aviso de actualización del PWA. Pero además las Edge Functions **no las
+    despliega Render**: van por `npx supabase functions deploy <slug>`, y la
+    última vez que se desplegaron fue antes del cambio de modelo
+    (`ai-assistant` v8 del 2026-07-22, `extract-from-photo` v2 del 2026-07-24
+    10:38 UTC, contra el commit del modelo del 2026-07-25 03:26 UTC). O sea:
+    producción seguía corriendo `gemini-2.5-flash`, y el `20` aprendido era
+    correcto para lo que estaba efectivamente corriendo. Confirmado también por
+    `ai_call_log` vacía: el freno de RPM nunca se había ejecutado.
+  - **El fix igual hace falta**, porque al desplegar el modelo nuevo el `20`
+    sí pasaba a ser un límite fantasma. `daily_quota_learned` ahora se guarda
+    junto con `daily_quota_learned_model` (migración
+    `20260725050000_quota_learned_por_modelo.sql`): el pre-flight sólo usa el
+    valor si el modelo coincide con la constante `GEMINI_MODEL` de la Edge
+    Function, y si no, lo ignora y lo reaprende del primer 429 real. Elegido
+    por sobre el reset a mano porque **se auto-corrige en el próximo cambio de
+    modelo** en vez de depender de acordarse. El valor actual además se
+    reseteó a null en la misma migración (verificado en la base real).
+  - **`ai_usage` no se tocó** (verificado): el contador de requests del día
+    sigue igual (18 el 2026-07-24, 20 el 2026-07-23). Lo que se resetea es el
+    LÍMITE aprendido, no el uso — son dos cosas distintas y el bug era sólo del
+    primero.
+  - `npx deno test supabase/functions/` → 53/53. `npm run build` sin errores.
+
 - 2026-07-24 — Modelo `gemini-3.1-flash-lite` + freno proactivo de RPM + tope
   de correcciones en foto. Los tres juntos porque salieron de la misma
   auditoría (límites reales de la cuenta: RPM=15, RPD=20, no 1500/15 de la

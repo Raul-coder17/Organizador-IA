@@ -536,7 +536,7 @@ Deno.serve(async (req) => {
   // Estado de IA + key cifrada + cuota diaria aprendida (respeta RLS con su JWT).
   const { data: settings } = await supabase
     .from('user_ai_settings')
-    .select('ai_enabled, gemini_api_key_encrypted, daily_quota_learned')
+    .select('ai_enabled, gemini_api_key_encrypted, daily_quota_learned, daily_quota_learned_model')
     .eq('user_id', user.id)
     .maybeSingle()
 
@@ -544,7 +544,13 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'Activá la IA en Settings primero.' }, 400)
   }
 
-  const learned: number | null = settings.daily_quota_learned ?? null
+  // La cuota aprendida vale SÓLO para el modelo bajo el que se aprendió: cada
+  // modelo tiene su propio RPD. Si no coincide con el que estamos usando ahora
+  // (cambio de modelo desde el último 429), se ignora y se reaprende del
+  // próximo 429 real. Sin esto, el RPD viejo seguiría cortando al usuario
+  // contra un límite que ya no existe.
+  const learned: number | null =
+    settings.daily_quota_learned_model === GEMINI_MODEL ? (settings.daily_quota_learned ?? null) : null
 
   // Pre-flight: si ya aprendimos la cuota diaria y hoy la alcanzamos,
   // respondemos al instante sin gastar una llamada a Gemini que igual daría 429.
@@ -673,9 +679,14 @@ Deno.serve(async (req) => {
     if (err instanceof GeminiError && err.rateLimit) {
       const rl = err.rateLimit
       if (rl.kind === 'day') {
-        // Aprendemos la cuota diaria real para bloquear en el pre-flight futuro.
+        // Aprendemos la cuota diaria real para bloquear en el pre-flight futuro,
+        // etiquetada con el modelo: si mañana cambiamos de modelo, este valor
+        // deja de aplicar solo (ver el cálculo de `learned` más arriba).
         if (rl.quotaValue != null) {
-          await supabase.from('user_ai_settings').update({ daily_quota_learned: rl.quotaValue }).eq('user_id', user.id)
+          await supabase
+            .from('user_ai_settings')
+            .update({ daily_quota_learned: rl.quotaValue, daily_quota_learned_model: GEMINI_MODEL })
+            .eq('user_id', user.id)
         }
         return jsonResponse({
           respuesta_texto: err.userMessage,

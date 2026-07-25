@@ -215,8 +215,8 @@
     "semantic_hash": "14ab95ee17986248f9b0b2c34e4c1b78"
   },
   "supabase/functions/ai-assistant/index.ts": {
-    "mtime": 1784949686.985093,
-    "ast_hash": "a88b999c9e74de9ae40fd1205ef7064d",
+    "mtime": 1784952693.6247406,
+    "ast_hash": "ddb5cfda661c466c48894d5334c1b2ed",
     "semantic_hash": ""
   },
   "supabase/functions/manage-ai-key/index.ts": {
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1784949937.4853573,
-    "ast_hash": "3520f2cd6a2cb220b203d6c0733965e8",
+    "mtime": 1784952770.7709248,
+    "ast_hash": "40b4f78df75bf7d2b0a83ebf532b9a2d",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -540,8 +540,8 @@
     "semantic_hash": ""
   },
   "supabase/functions/extract-from-photo/index.ts": {
-    "mtime": 1784949723.746632,
-    "ast_hash": "bc439dc12688a550e9b364d1a508ada6",
+    "mtime": 1784952707.0280662,
+    "ast_hash": "0fdaa9f2740b7c6248294e8639ecaad9",
     "semantic_hash": ""
   },
   "public/apple-touch-icon.png": {
@@ -597,6 +597,11 @@
   "supabase/migrations/20260724190000_ai_rpm_throttle.sql": {
     "mtime": 1784949646.1916084,
     "ast_hash": "25c2daec4ba17ce1bea503b7654b92e2",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260725050000_quota_learned_por_modelo.sql": {
+    "mtime": 1784952678.1548567,
+    "ast_hash": "6f3f9d05c93abf721f468ea13ef17194",
     "semantic_hash": ""
   }
 }
