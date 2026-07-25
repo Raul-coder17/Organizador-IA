@@ -1632,6 +1632,51 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-25 — Fix: los colores de tema salían transparentes en modo claro.
+  Cierra el bug pre-existente anotado en la entrada de "borrar temas".
+  - **Síntoma:** en claro, los puntos de tema (Biblioteca y chips) y las siete
+    muestras del selector de color del `ItemForm` no se pintaban. En oscuro
+    andaban bien. De los siete `--color-tema-*`, en el `:root` de claro sólo
+    salía `celeste`.
+  - **Causa:** Tailwind v4 emite de `@theme` **sólo** las variables que ve
+    usadas. Estos siete tokens no los consume ninguna utilidad: el color entra
+    por `style` desde JS, armado en `temaColorVar()` como
+    `` `var(--color-tema-${color})` ``. El escáner no ve el slug interpolado,
+    así que los podaba. `celeste` sobrevivía **de casualidad**: el literal
+    completo `var(--color-tema-celeste)` aparece en `temaColores.test.ts:92`,
+    y el escáner de Tailwind lee también los archivos de test. Oscuro no se
+    veía afectado porque `:root[data-theme="dark"]` es CSS común, no `@theme`,
+    y ahí no hay poda — de ahí que el bug fuera sólo de un modo.
+  - **Fix** (sólo `src/index.css`): los siete colores se mudaron a un bloque
+    `@theme static` propio. `static` fuerza a emitir las variables aunque no
+    se las vea usadas. Se eligió sobre la alternativa de bajarlos a un `:root`
+    común porque los deja siendo tokens de tema de verdad (siguen habilitando
+    utilidades tipo `bg-tema-azul` si algún día hacen falta) en vez de
+    volverlos CSS suelto; y sobre marcar `static` el `@theme` grande, porque
+    el problema es de estos siete y no de los tokens que sí usan utilidades.
+  - **Verificación** (el harness de siempre: componentes reales sin pasar por
+    el login). En el navegador, contra el CSS de producción de `dist/`, se
+    montaron los tres usos reales —`.tema-dot` en `.grupo-head`, `.tema-dot`
+    dentro de `.chip` y `.chip--active`, y `.swatch`/`.swatch--activa`— con
+    los mismos nombres de clase y el mismo `style` inline que producen
+    `ItemsPage`, `HoyPage` e `ItemForm`. 28 nodos, `getComputedStyle` de cada
+    uno: **0 transparentes y 7 colores distintos**, en claro y en oscuro.
+  - Control de que el fix es el que cambia algo: se rebuildeó el CSS desde
+    `HEAD` limpio y se comparó. El `:root` de claro pasa de **33 a 39
+    propiedades**; el diff son exactamente las 6 declaraciones recuperadas
+    (`verde-agua`, `turquesa`, `azul`, `indigo`, `violeta`, `ciruela`) y nada
+    más. Ninguna otra variable se perdió ni se agregó (+238 bytes de CSS).
+  - Oscuro sin regresión: los siete tokens siguen resolviendo a los mismos
+    `oklch(0.72 …)` de antes. El bloque `:root[data-theme="dark"]` es CSS sin
+    capa y sigue ganándole al `@layer theme` donde Tailwind emite los de
+    claro, así que el override no se tocó.
+  - `npm run build` sin errores, `npm run lint` 0 errores (2 warnings de
+    `react-refresh` pre-existentes, ajenos). Sin errores de consola.
+  - **Pendiente para el usuario:** confirmarlo en vivo con datos reales —
+    varios temas de colores distintos en Biblioteca, y el selector de color
+    del `ItemForm`. El harness prueba el CSS, no que cada tema tenga bien
+    asignado su slug en la base.
+
 - 2026-07-25 — Borrar temas + fecha obligatoria para el tipo "recordatorio".
   - **Parte A — borrar temas.** No existía la acción (quedó pendiente después
     de la Fase 3). Hallazgo de la investigación previa: la FK ya era
@@ -1691,6 +1736,7 @@ del servidor y no depende del dominio del frontend.
     colores se consumen con `var(--color-tema-X)` desde estilos inline en JS.
     Confirmado que es anterior a este trabajo reproduciéndolo desde HEAD
     limpio con los cambios en stash.
+    → **Resuelto** en la entrada del 2026-07-25 (`@theme static`), más abajo.
 
 - 2026-07-25 — Fix: la cuota diaria aprendida queda atada al modelo + hallazgo
   de deploy. Salió de diagnosticar "el asistente me corta en 20 aunque

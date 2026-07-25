@@ -30,20 +30,6 @@
   --color-gold: #8c6424;
   --color-slate: #666e62;
 
-  /* Paleta de tema (Fase 2). Siete matices fríos en oklch, repartidos cada
-     ~26° entre el verde-agua (168°) y el ciruela (325°) — el arco que queda
-     LEJOS del rust (~40°) y el gold (~75°) de prioridad, y arrancando después
-     del moss de la marca (~150°) para que un punto no se lea como marca.
-     Misma L y C en todos: ningún tema pesa más que otro en la página.
-     El dato guardado es el slug; el color sale de acá. */
-  --color-tema-verde-agua: oklch(0.56 0.09 168);
-  --color-tema-turquesa: oklch(0.56 0.1 196);
-  --color-tema-celeste: oklch(0.56 0.1 222);
-  --color-tema-azul: oklch(0.55 0.11 250);
-  --color-tema-indigo: oklch(0.54 0.11 275);
-  --color-tema-violeta: oklch(0.55 0.11 300);
-  --color-tema-ciruela: oklch(0.55 0.1 325);
-
   /* Elevación. Por decisión de diseño (D2) sólo la usa lo que flota de
      verdad: chip activo del segmented y, en la Fase 3, drawer/sheet/FAB.
      Las fichas de ítem quedan planas, con su borde de 1px, como hasta hoy. */
@@ -53,6 +39,34 @@
   --font-fraunces: "Fraunces", serif;
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/* Paleta de tema (Fase 2). Siete matices fríos en oklch, repartidos cada      */
+/* ~26° entre el verde-agua (168°) y el ciruela (325°) — el arco que queda     */
+/* LEJOS del rust (~40°) y el gold (~75°) de prioridad, y arrancando después   */
+/* del moss de la marca (~150°) para que un punto no se lea como marca.        */
+/* Misma L y C en todos: ningún tema pesa más que otro en la página.           */
+/* El dato guardado es el slug; el color sale de acá.                          */
+/*                                                                            */
+/* Va en un @theme APARTE y con `static` a propósito. Tailwind v4 sólo emite   */
+/* las variables de @theme que ve usadas, y estos siete tokens no los consume  */
+/* ninguna utilidad: el color entra por `style` desde JS, armado como          */
+/* `var(--color-tema-${slug})` en temaColorVar(). El escáner de Tailwind no ve */
+/* el slug interpolado, así que en modo claro podaba seis de los siete (sólo   */
+/* sobrevivía `celeste`, y de casualidad: el literal completo aparece en       */
+/* temaColores.test.ts) y los puntos/chips salían transparentes. En oscuro no  */
+/* se notaba porque el bloque `:root[data-theme="dark"]` es CSS común, no      */
+/* @theme, y ahí nada se poda. `static` fuerza a emitir los siete siempre.     */
+/* ------------------------------------------------------------------ */
+@theme static {
+  --color-tema-verde-agua: oklch(0.56 0.09 168);
+  --color-tema-turquesa: oklch(0.56 0.1 196);
+  --color-tema-celeste: oklch(0.56 0.1 222);
+  --color-tema-azul: oklch(0.55 0.11 250);
+  --color-tema-indigo: oklch(0.54 0.11 275);
+  --color-tema-violeta: oklch(0.55 0.11 300);
+  --color-tema-ciruela: oklch(0.55 0.1 325);
 }
 
 /* ------------------------------------------------------------------ */
