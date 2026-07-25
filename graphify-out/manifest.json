@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
-    "mtime": 1784887665.9634285,
-    "ast_hash": "1aec05f008cd0f27c74f1bbf41a6bcc8",
+    "mtime": 1784954530.513923,
+    "ast_hash": "ba68e8f3e114fa44c5d5620bbb438710",
     "semantic_hash": ""
   },
   "src/components/ItemList.tsx": {
@@ -110,8 +110,8 @@
     "semantic_hash": "b77b4f5bfabbceaa140b9382d0d7f94f"
   },
   "src/lib/repo.ts": {
-    "mtime": 1784847806.8628116,
-    "ast_hash": "fd52de1c138b104c9fd8911a68f65fe5",
+    "mtime": 1784954530.5159235,
+    "ast_hash": "8b1f04b3d2509ccab1c1f8a4e83fd33c",
     "semantic_hash": ""
   },
   "src/lib/supabase.ts": {
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1784952770.7709248,
-    "ast_hash": "40b4f78df75bf7d2b0a83ebf532b9a2d",
+    "mtime": 1784954604.602893,
+    "ast_hash": "0c0b638e913af9335f3daeda6004a509",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -500,8 +500,8 @@
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
-    "mtime": 1784949794.5458877,
-    "ast_hash": "6486146f82a61a8c6daef2b258cb3d2c",
+    "mtime": 1784954530.5149238,
+    "ast_hash": "a86a5d2462944aa58d9c0a2b3e3b53e1",
     "semantic_hash": ""
   },
   "src/lib/itemSheet.ts": {

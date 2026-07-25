@@ -1159,6 +1159,12 @@ body {
   color: var(--color-ink-soft);
   margin-bottom: 6px;
 }
+/* "(obligatoria)" dentro de un rótulo. En gold y no en rust: avisa de un
+   requisito, no de un error — el rust queda reservado para cuando algo
+   efectivamente falló. */
+.label__req {
+  color: var(--color-gold);
+}
 
 /* ------------------------------------------------------------------ */
 /* Filtros — segmented (por tipo/estado) y chips (por tema)             */
@@ -1749,6 +1755,23 @@ body {
   font-size: 10.5px;
   letter-spacing: 0.03em;
   color: var(--color-ink-soft);
+}
+/* Borrar el tema seleccionado. Mismo tono destructivo y el mismo peso visual
+   que `.btn-eliminar` (borrar el item): las dos son la acción irreversible de
+   su bloque, y no tienen por qué verse distinto. */
+.tema-borrar {
+  margin-top: 10px;
+  padding: 0;
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+  color: var(--color-rust);
+  cursor: pointer;
+}
+.tema-borrar:hover {
+  text-decoration: underline;
 }
 
 /* ------------------------------------------------------------------ */

@@ -4,9 +4,11 @@ import type { Item, ItemInsert, LineaLista, Prioridad, Tema, TipoItem } from '..
 // instante en IndexedDB y se encolan para subir, así el form funciona igual con
 // o sin conexión (PLAN_OFFLINE.md ítems 5-6).
 import {
+  contarItemsDeTema,
   createItem,
   createTema,
   deleteRecordatoriosForItem,
+  deleteTema,
   getRecordatorioForItem,
   updateItem,
   updateTemaColor,
@@ -63,6 +65,9 @@ interface ItemFormProps {
   /** Un tema cambió (hoy: su color). Se avisa aparte de onSaved porque el
    *  cambio es del tema, no del item, y ya está guardado cuando llega. */
   onTemaUpdated: (tema: Tema) => void
+  /** Se borró un tema. Igual que onTemaUpdated: ya está guardado cuando llega,
+   *  y el padre lo saca de su lista. Sus items no se borran — quedan sin tema. */
+  onTemaDeleted: (temaId: string) => void
 }
 
 function IconMas() {
@@ -85,6 +90,7 @@ export function ItemForm({
   onCancel,
   onTemaCreated,
   onTemaUpdated,
+  onTemaDeleted,
 }: ItemFormProps) {
   const [tipo, setTipo] = useState<TipoItem>('nota')
   const [temaId, setTemaId] = useState<string>('')
@@ -235,6 +241,26 @@ export function ItemForm({
 
   // El tema seleccionado, si es uno real (no '' ni 'new'). Es el que puede
   // cambiar de color desde acá.
+  // Un item de tipo "recordatorio" SIN fecha no es un recordatorio: es una nota
+  // que dice que se acordó de algo. Por eso acá la fecha deja de ser un extra
+  // opcional y pasa a ser parte de la definición del tipo — el toggle
+  // desaparece y el campo se muestra siempre, obligatorio. Para nota/lista/
+  // tabla no cambia nada: el recordatorio sigue siendo un agregado opcional.
+  const fechaObligatoria = tipo === 'recordatorio'
+  // Lo que manda para guardar: con tipo "recordatorio" el recordatorio va sí o
+  // sí; en el resto, lo decide el toggle.
+  const recordatorioActivo = fechaObligatoria || conRecordatorio
+
+  // Cambiar de tipo NO pierde la fecha ya cargada. Al salir de "recordatorio",
+  // si había fecha se deja el toggle prendido para que siga a la vista (y se
+  // guarde); si no había, vuelve a estar apagado como cualquier item nuevo.
+  function handleTipoChange(nuevo: TipoItem) {
+    if (tipo === 'recordatorio' && nuevo !== 'recordatorio' && recordatorioFecha) {
+      setConRecordatorio(true)
+    }
+    setTipo(nuevo)
+  }
+
   const temaSeleccionado = temas.find((t) => t.id === temaId) ?? null
   const colorActivo = temaId === 'new' ? nuevoTemaColor : temaSeleccionado ? colorDeTema(temaSeleccionado) : null
 
@@ -258,6 +284,39 @@ export function ItemForm({
       onTemaUpdated(await updateTemaColor(temaSeleccionado.id, color))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo cambiar el color del tema')
+    }
+  }
+
+  // Borrar el tema seleccionado. Actúa sobre el tema del selector, igual que los
+  // swatches de color de acá al lado: un `<option>` no puede llevar un botón
+  // adentro (HTML no lo permite), y reemplazar el `<select>` nativo por un
+  // dropdown propio sólo para colgarle un ícono costaba el teclado y el picker
+  // nativo del celular. Seleccionar y después actuar ya es el patrón de este
+  // bloque.
+  //
+  // La confirmación dice CUÁNTOS items se van a quedar sin tema, porque es la
+  // consecuencia real y no es obvia desde acá: los items no se borran.
+  async function handleDeleteTema() {
+    if (!temaSeleccionado) return
+    const n = await contarItemsDeTema(temaSeleccionado.id)
+    const cuenta =
+      n === 0
+        ? 'No tiene items.'
+        : n === 1
+          ? 'Su 1 item pasa a "Sin tema".'
+          : `Sus ${n} items pasan a "Sin tema".`
+    if (!confirm(`¿Borrar el tema "${temaSeleccionado.nombre}"?\n\n${cuenta}`)) return
+
+    const borradoId = temaSeleccionado.id
+    try {
+      await deleteTema(borradoId)
+      // El item que se está editando en este form puede ser uno de los que
+      // acaba de quedar sin tema: el selector vuelve a "Sin tema" para que lo
+      // que se ve coincida con lo que se guardó.
+      setTemaId('')
+      onTemaDeleted(borradoId)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo borrar el tema')
     }
   }
 
@@ -341,8 +400,12 @@ export function ItemForm({
       return
     }
 
-    if (conRecordatorio && !recordatorioFecha) {
-      setError('Elegí una fecha y hora para el recordatorio.')
+    if (recordatorioActivo && !recordatorioFecha) {
+      setError(
+        fechaObligatoria
+          ? 'Un recordatorio necesita fecha y hora. Elegilas para poder guardar.'
+          : 'Elegí una fecha y hora para el recordatorio.',
+      )
       return
     }
 
@@ -377,9 +440,9 @@ export function ItemForm({
       // Sincronizamos el recordatorio según el toggle:
       //  - marcado con fecha → upsert (crea o actualiza, estado 'pendiente')
       //  - desmarcado pero antes existía → eliminarlo
-      if (conRecordatorio && recordatorioFecha) {
+      if (recordatorioActivo && recordatorioFecha) {
         await upsertRecordatorio(saved.id, datetimeLocalToIso(recordatorioFecha))
-      } else if (!conRecordatorio && teniaRecordatorio) {
+      } else if (!recordatorioActivo && teniaRecordatorio) {
         await deleteRecordatoriosForItem(saved.id)
       }
 
@@ -404,7 +467,7 @@ export function ItemForm({
           <select
             id="tipo"
             value={tipo}
-            onChange={(e) => setTipo(e.target.value as TipoItem)}
+            onChange={(e) => handleTipoChange(e.target.value as TipoItem)}
             className="ctl ctl--mono w-full"
           >
             {TIPOS.map((t) => (
@@ -489,6 +552,15 @@ export function ItemForm({
                 : `Color de "${temaSeleccionado?.nombre}" en toda la app — se guarda al instante`}
             </p>
           </>
+        )}
+
+        {/* Borrar sólo aplica a un tema que ya existe (no al que se está por
+            crear). Va debajo del color porque las dos acciones son sobre el
+            tema seleccionado, pero separado y en tono destructivo. */}
+        {temaSeleccionado && (
+          <button type="button" onClick={handleDeleteTema} className="tema-borrar">
+            Borrar tema “{temaSeleccionado.nombre}”
+          </button>
         )}
       </div>
 
@@ -628,23 +700,52 @@ export function ItemForm({
       </div>
 
       <div className="rec-toggle">
-        <label className="rec-toggle__check">
-          <input
-            type="checkbox"
-            checked={conRecordatorio}
-            onChange={(e) => setConRecordatorio(e.target.checked)}
-          />
-          <span>Agregar recordatorio</span>
-        </label>
+        {/* Con tipo "recordatorio" no hay nada que togglear: el campo es parte
+            del tipo, así que va un rótulo como el de cualquier campo requerido
+            del form, no un checkbox que se puede apagar. */}
+        {fechaObligatoria ? (
+          <label className="label" htmlFor="rec-fecha">
+            Fecha y hora <span className="label__req">(obligatoria)</span>
+          </label>
+        ) : (
+          <label className="rec-toggle__check">
+            <input
+              type="checkbox"
+              checked={conRecordatorio}
+              onChange={(e) => setConRecordatorio(e.target.checked)}
+            />
+            <span>Agregar recordatorio</span>
+          </label>
+        )}
 
-        {conRecordatorio && (
+        {(fechaObligatoria || conRecordatorio) && (
           <input
+            id="rec-fecha"
             type="datetime-local"
             value={recordatorioFecha}
-            onChange={(e) => setRecordatorioFecha(e.target.value)}
+            // `required` frena el submit y lo anuncia solo (accesibilidad), pero
+            // su globo nativo dice un genérico "Completa este campo". Con
+            // setCustomValidity ese mismo globo dice POR QUÉ hace falta. Se
+            // limpia en cada cambio: si no, el campo queda inválido para siempre.
+            onChange={(e) => {
+              e.currentTarget.setCustomValidity('')
+              setRecordatorioFecha(e.target.value)
+            }}
+            onInvalid={(e) =>
+              e.currentTarget.setCustomValidity('Un recordatorio necesita fecha y hora.')
+            }
+            required={fechaObligatoria}
+            aria-required={fechaObligatoria || undefined}
             className="ctl ctl--mono mt-2"
-            aria-label="Fecha y hora del recordatorio"
+            aria-label={fechaObligatoria ? undefined : 'Fecha y hora del recordatorio'}
           />
+        )}
+
+        {fechaObligatoria && (
+          <p className="tema-colores__nota">
+            Un recordatorio necesita cuándo avisarte. Para guardar algo sin fecha, usá el tipo
+            “nota”.
+          </p>
         )}
       </div>
 

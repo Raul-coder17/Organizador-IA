@@ -210,6 +210,15 @@ export function NuevoItemSheet({
     emitLocalChange()
   }
 
+  // El tema ya se borró (y sus items ya quedaron sin tema) cuando llega acá.
+  // Sale de la lista local del selector y se avisa a las páginas de abajo, que
+  // tienen que reagrupar: los items que eran de este tema ahora van a "Sin
+  // tema".
+  function handleTemaDeleted(temaId: string) {
+    setTemas((prev) => prev.filter((t) => t.id !== temaId))
+    emitLocalChange()
+  }
+
   function handleSaved() {
     emitLocalChange()
     onResuelto()
@@ -686,6 +695,7 @@ export function NuevoItemSheet({
                 onCancel={onResuelto}
                 onTemaCreated={handleTemaCreated}
                 onTemaUpdated={handleTemaUpdated}
+                onTemaDeleted={handleTemaDeleted}
               />
 
               {/* Eliminar vive acá, en el modo edición, con la misma confirmación

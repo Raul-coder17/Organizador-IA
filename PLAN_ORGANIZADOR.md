@@ -1632,6 +1632,66 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-25 — Borrar temas + fecha obligatoria para el tipo "recordatorio".
+  - **Parte A — borrar temas.** No existía la acción (quedó pendiente después
+    de la Fase 3). Hallazgo de la investigación previa: la FK ya era
+    `tema_id uuid references temas (id) on delete set null`
+    (`schema_inicial`), o sea que **el comportamiento pedido —los items no se
+    borran, pasan a "Sin tema"— ya estaba implementado del lado del servidor**
+    y no hizo falta migración ninguna.
+    - `deleteTema()` en `repo.ts`, offline-first como todo el resto (espejo
+      local + outbox, sin DELETE directo). NO alcanza con confiar en la
+      cascada del servidor, por dos motivos que quedaron documentados en el
+      código: (1) el espejo local no se entera de un cambio hecho por la FK,
+      así que sin nullear a mano los items quedarían huérfanos en la UI hasta
+      la próxima reconciliación; (2) el caso 100% offline —crear tema, crear
+      item con ese tema, borrar el tema, todo sin red— donde `planOutbox`
+      colapsa insert+delete del tema en NADA (`fold`, `tries === 0`) y el
+      insert del item habría fallado con FK 23503 para siempre. Encolando el
+      update del item ANTES, su propio `fold` pliega insert+update en un
+      insert con `tema_id: null` y sube limpio. Mismo orden que `deleteItem`:
+      primero los hijos, después el padre.
+    - **Sin cambios en `sync.ts`/`syncCore.ts`**: el motor ya es genérico por
+      entidad (`TABLE` mapea `tema: 'temas'` y el delete es genérico).
+    - UI: el borrado vive en el bloque de tema del `ItemForm`, junto al
+      selector de color. **Desviación del pedido original, a propósito:** se
+      pidió un ícono por tema dentro del dropdown, pero un `<option>` no puede
+      contener un botón (HTML no lo permite), y cambiar el `<select>` nativo
+      por uno propio sólo para eso costaba el teclado y el picker nativo del
+      celular. Se resolvió con el mismo patrón que ya usaban los swatches de
+      color: seleccionar el tema y después actuar sobre él. La confirmación
+      dice cuántos items pasan a "Sin tema" (contados contra el espejo local,
+      así que también responde sin conexión).
+    - **Punto A4 verificado empíricamente**, no por lectura: montando el
+      `ItemList` REAL con tres fixtures. `tema_id = null` (resultado del
+      borrado intencional) cae en **"Sin tema"**; `tema_id` apuntando a un
+      tema ausente (referencia desactualizada de sync) cae en **"Tema
+      eliminado"**. Son buckets distintos y el borrado intencional nunca
+      produce el segundo, porque se nullea localmente ANTES de sacar el tema.
+  - **Parte B — fecha obligatoria si `tipo === 'recordatorio'`.** Un
+    recordatorio sin fecha no es un recordatorio. Con ese tipo desaparece el
+    toggle y el campo se muestra siempre, requerido, con nota explicativa;
+    para nota/lista/tabla no cambia nada. Cambiar de tipo NO pierde la fecha
+    cargada: al salir de "recordatorio" con fecha puesta, el toggle queda
+    prendido solo para que siga a la vista y se guarde.
+    - Detalle que apareció al probarlo: con `required` a secas, el globo
+      nativo del navegador ("Completa este campo") se adelantaba a la
+      validación en JS y se comía el mensaje bueno. Se resolvió con
+      `setCustomValidity` en `onInvalid` (y limpiándolo en `onChange`), así el
+      globo nativo —que además es el accesible— dice "Un recordatorio necesita
+      fecha y hora."
+  - Verificado en claro/oscuro × desktop/375px montando los componentes reales
+    con fixtures (sin pasar por el login). `npm run build` sin errores,
+    `deno test supabase/functions/` 53/53, `npm run lint` 0 errores.
+  - **Bug pre-existente encontrado de paso (NO se arregló acá, queda aparte):**
+    en modo claro 6 de los 7 `--color-tema-*` no están definidos en `:root`
+    (sólo sobrevive `celeste`), así que los puntos y swatches de tema se
+    pintan transparentes; en oscuro andan los siete. Causa: Tailwind v4 poda
+    las variables de `@theme` que no ve usadas por una utilidad, y estos
+    colores se consumen con `var(--color-tema-X)` desde estilos inline en JS.
+    Confirmado que es anterior a este trabajo reproduciéndolo desde HEAD
+    limpio con los cambios en stash.
+
 - 2026-07-25 — Fix: la cuota diaria aprendida queda atada al modelo + hallazgo
   de deploy. Salió de diagnosticar "el asistente me corta en 20 aunque
   cambiamos de modelo".

@@ -109,6 +109,54 @@ export async function updateTemaColor(id: string, color: TemaColor): Promise<Tem
   return next
 }
 
+// Cuántos items usan este tema hoy. Lo necesita la confirmación de borrado
+// ("sus N items pasan a Sin tema"): se cuenta contra el espejo local, así que
+// también responde sin conexión.
+export async function contarItemsDeTema(temaId: string): Promise<number> {
+  const items = await loadItemsFromCache()
+  return items.filter((i) => i.tema_id === temaId).length
+}
+
+// Borra un tema. Sus items NO se borran: pasan a "Sin tema" (tema_id → null).
+//
+// El servidor ya hace justamente eso solo — la FK es
+// `tema_id references temas (id) on delete set null` (schema_inicial) —, pero
+// NO alcanza con confiar en la cascada, por dos motivos:
+//
+//  1. El espejo local no se entera de un cambio que hizo el servidor. Sin
+//     nullear acá, los items quedarían apuntando a un tema que ya no está y la
+//     UI los mostraría bajo "Tema eliminado" (el bucket huérfano de ItemList)
+//     hasta la próxima reconciliación. El borrado intencional tiene que dar
+//     "Sin tema", que es otra cosa.
+//  2. El caso 100% offline: crear tema → crear item con ese tema → borrar el
+//     tema, todo sin red. `planOutbox` colapsa insert+delete del tema en NADA
+//     (fold, tries === 0), así que ese tema nunca va a existir en el servidor;
+//     si el item conservara su `tema_id`, su insert fallaría con FK 23503 para
+//     siempre. Al encolar el update del item ANTES, el fold del item pliega
+//     insert+update en un solo insert con `tema_id: null` y sube limpio.
+//
+// Por eso el orden es el mismo que en deleteItem: primero los hijos, después
+// el padre.
+export async function deleteTema(id: string): Promise<void> {
+  const items = await loadItemsFromCache()
+  for (const item of items.filter((i) => i.tema_id === id)) {
+    // updateItem ya hace espejo local + outbox + guarda LWW.
+    await updateItem(item.id, { tema_id: null })
+  }
+
+  await deleteLocalRow('tema', id)
+  // Las ops pendientes del tema NO se descartan a mano: el fold del outbox ya
+  // resuelve insert+delete (y conserva el delete si el insert llegó a
+  // intentarse, por el caso del "ack perdido").
+  await enqueue({
+    entity: 'tema',
+    op: 'delete',
+    entityId: id,
+    payload: null,
+    baseUpdatedAt: null,
+  })
+}
+
 // ============================================================
 // Items
 // ============================================================
