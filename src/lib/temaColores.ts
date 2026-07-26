@@ -93,6 +93,20 @@ export function siguienteColorTema(temas: TemaColorRef[], semilla?: string): Tem
   return candidatos[hashTexto(semilla) % candidatos.length]
 }
 
+// Busca un tema existente por nombre, sin distinguir mayúsculas/minúsculas.
+// Es el chequeo que `repo.createTema` corre contra el espejo local ANTES de
+// insertar uno nuevo — la protección real contra duplicados cuando dos
+// acciones del mismo lote (`confirmAll` del asistente) proponen crear el
+// mismo tema nuevo: la primera lo inserta, y como el chequeo se hace contra
+// el espejo YA actualizado (no contra una copia vieja en memoria), la
+// segunda lo encuentra en vez de crear otro.
+export function encontrarTemaPorNombre<T extends { nombre: string }>(
+  temas: T[],
+  nombre: string,
+): T | undefined {
+  return temas.find((t) => t.nombre.toLowerCase() === nombre.toLowerCase())
+}
+
 // Color efectivo de un tema para pintar. Tolera la fila sin color: la caché
 // local puede tener temas guardados antes de la migración, y hasta la próxima
 // reconciliación es preferible un color derivado del id (estable) a un punto

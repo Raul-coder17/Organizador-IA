@@ -32,7 +32,7 @@ import {
 import { requestSync } from './sync'
 import { joinRecordatoriosConItems } from './recordatorios'
 import { loadItemsFromCache } from './db'
-import { siguienteColorTema, type TemaColor } from './temaColores'
+import { encontrarTemaPorNombre, siguienteColorTema, type TemaColor } from './temaColores'
 import { parseDiasSemana, proximaOcurrencia, type Recurrencia } from './recurrencia'
 import type {
   Item,
@@ -60,11 +60,25 @@ async function enqueue(op: Omit<NewOutboxOp, 'createdAt' | 'tries' | 'lastError'
 // paleta fría (decisión D4). Que el default viva ACÁ y no en el form es lo que
 // garantiza que ningún camino de creación deje un tema sin color — ni el form,
 // ni el asistente de IA, ni lo que venga después.
+//
+// Dedupea por nombre (case-insensitive) contra el espejo local ANTES de crear:
+// es la última línea de defensa contra temas repetidos. Los llamadores (el
+// form manual, la foto, el asistente) ya suelen chequear contra su propia
+// copia en memoria de la lista de temas, pero esa copia puede estar
+// desactualizada — por ejemplo cuando `confirmAll` en AssistantDrawer aplica
+// varias acciones seguidas dentro de un mismo render y ninguna ve los temas
+// que crearon las anteriores. Acá sí se ve: `putLocalTema` ya escribió el
+// tema anterior antes de que este `await` devuelva el control, así que
+// `loadTemasFromCache` lo encuentra.
 export async function createTema(
   userId: string,
   nombre: string,
   color?: TemaColor,
 ): Promise<Tema> {
+  const existentes = await loadTemasFromCache()
+  const existente = encontrarTemaPorNombre(existentes, nombre)
+  if (existente) return existente
+
   // El UUID lo genera el cliente (ítem 1): el id es el mismo local y en el
   // servidor, así el item que referencie este tema ya puede apuntarle antes de
   // que exista arriba.
@@ -73,7 +87,7 @@ export async function createTema(
     id: crypto.randomUUID(),
     user_id: userId,
     nombre,
-    color: color ?? siguienteColorTema(await loadTemasFromCache(), nombre),
+    color: color ?? siguienteColorTema(existentes, nombre),
     created_at: ts,
     updated_at: ts,
   }

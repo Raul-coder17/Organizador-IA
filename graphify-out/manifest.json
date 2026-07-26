@@ -35,12 +35,12 @@
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
-    "mtime": 1785050371.7182412,
+    "mtime": 1785067733.6281447,
     "ast_hash": "47ddc89afb7e912cd440aa34c708731a",
     "semantic_hash": ""
   },
   "src/components/ItemList.tsx": {
-    "mtime": 1785041008.344532,
+    "mtime": 1785067733.6281447,
     "ast_hash": "484fe1ea626744ff8490320f0a705934",
     "semantic_hash": ""
   },
@@ -95,7 +95,7 @@
     "semantic_hash": "8763514b217538d49952f0c7bd056d2f"
   },
   "src/lib/recordatorios.ts": {
-    "mtime": 1785049975.8359947,
+    "mtime": 1785067733.6311467,
     "ast_hash": "7dae277e0a1c84bbdc55d1be10ff8234",
     "semantic_hash": ""
   },
@@ -110,8 +110,8 @@
     "semantic_hash": "b77b4f5bfabbceaa140b9382d0d7f94f"
   },
   "src/lib/repo.ts": {
-    "mtime": 1785040878.4611032,
-    "ast_hash": "0a06324b59bee48500a005946b7644fb",
+    "mtime": 1785068394.0306635,
+    "ast_hash": "b6fd4fe68d873ccd43dc337182808317",
     "semantic_hash": ""
   },
   "src/lib/supabase.ts": {
@@ -145,8 +145,8 @@
     "semantic_hash": ""
   },
   "src/lib/useLocalReminderWatcher.ts": {
-    "mtime": 1785039217.4814446,
-    "ast_hash": "548fb6f3115faafdbbc7303dc5603b22",
+    "mtime": 1785067733.6321456,
+    "ast_hash": "ce4a7732d173ba4aa7419b1531a2c44e",
     "semantic_hash": ""
   },
   "src/lib/useRecordatoriosBadge.ts": {
@@ -175,7 +175,7 @@
     "semantic_hash": ""
   },
   "src/pages/RemindersPage.tsx": {
-    "mtime": 1785039347.461315,
+    "mtime": 1785067733.6336498,
     "ast_hash": "06402782366ebb2f110b84eb1b402bd4",
     "semantic_hash": ""
   },
@@ -190,13 +190,13 @@
     "semantic_hash": ""
   },
   "src/types/assistant.ts": {
-    "mtime": 1785064405.0589821,
+    "mtime": 1785067733.6346552,
     "ast_hash": "96f2d54228737afd44bf2e60d9118e31",
     "semantic_hash": ""
   },
   "src/types/database.ts": {
-    "mtime": 1785040850.7312098,
-    "ast_hash": "1b858366bb58ad2e644b00d2ea9dc5f6",
+    "mtime": 1785067733.6346552,
+    "ast_hash": "ce772038ea0f6a985174638aa8fbca9e",
     "semantic_hash": ""
   },
   "src/vite-env.d.ts": {
@@ -205,18 +205,18 @@
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/actions.test.ts": {
-    "mtime": 1785050047.1680202,
-    "ast_hash": "9dbf84d393284872cb9135960785e6ac",
+    "mtime": 1785067733.6346552,
+    "ast_hash": "0b6a200cb20e216b33818d9059121fe3",
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/actions.ts": {
-    "mtime": 1785064233.8770132,
-    "ast_hash": "90f70785c607366deab04f8725cdece3",
+    "mtime": 1785067733.6356602,
+    "ast_hash": "1abecf4e956bfb693e53a26f00251508",
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/index.ts": {
-    "mtime": 1785064386.633495,
-    "ast_hash": "268a936ef28764ee60a0e58130f0e0a0",
+    "mtime": 1785067733.6366558,
+    "ast_hash": "2e8c1fb46a8515c07709c1defc4d0323",
     "semantic_hash": ""
   },
   "supabase/functions/manage-ai-key/index.ts": {
@@ -225,8 +225,8 @@
     "semantic_hash": "8b7ff5e4fb963ff4e2cd864b484411e3"
   },
   "supabase/functions/send-reminder-notifications/index.ts": {
-    "mtime": 1785040893.7862344,
-    "ast_hash": "0ff84ed0dbca0b2e600d623641a2dc4a",
+    "mtime": 1785067733.6366558,
+    "ast_hash": "f739afbf42b27a715789152a30afd253",
     "semantic_hash": ""
   },
   "supabase/migrations/20260720120000_schema_inicial.sql": {
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1785065380.330737,
-    "ast_hash": "9009cf6109d2f6e2df17977a3881071f",
+    "mtime": 1785067733.608111,
+    "ast_hash": "0128da4c9a61e836bf94f09092f8e866",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -330,13 +330,13 @@
     "semantic_hash": ""
   },
   "src/lib/temaColores.test.ts": {
-    "mtime": 1784847766.549363,
-    "ast_hash": "609bd362a0a095cd9dd9751fe50bbb9b",
+    "mtime": 1785068394.0306635,
+    "ast_hash": "5b4fd81b5cf1a873f8451a4759e76885",
     "semantic_hash": ""
   },
   "src/lib/temaColores.ts": {
-    "mtime": 1784847748.1344497,
-    "ast_hash": "d003a8b7558064fce93d9220afea0045",
+    "mtime": 1785068394.0306635,
+    "ast_hash": "e213608975cc442b40ad4d1d4c8b5296",
     "semantic_hash": ""
   },
   "src/lib/theme.ts": {
@@ -475,12 +475,12 @@
     "semantic_hash": ""
   },
   "src/components/RecordatorioRow.tsx": {
-    "mtime": 1785041000.2997954,
+    "mtime": 1785067733.6291447,
     "ast_hash": "918f991e454e6d5159069ca5315bf8dc",
     "semantic_hash": ""
   },
   "src/pages/HoyPage.tsx": {
-    "mtime": 1785039350.7396462,
+    "mtime": 1785067733.6336498,
     "ast_hash": "6b1bc625553b516c6e95675aa0678def",
     "semantic_hash": ""
   },
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "src/components/AssistantDrawer.tsx": {
-    "mtime": 1785064474.6061807,
-    "ast_hash": "023253ac599b59c49271f955903963e4",
+    "mtime": 1785068394.0296612,
+    "ast_hash": "5d682fd4a08310ce506efee2803d6baa",
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
@@ -510,7 +510,7 @@
     "semantic_hash": ""
   },
   "src/components/ProposedActionCard.tsx": {
-    "mtime": 1785066611.3108394,
+    "mtime": 1785067733.6291447,
     "ast_hash": "ac4d7d7957afc5226117779184ecbd61",
     "semantic_hash": ""
   },
@@ -520,7 +520,7 @@
     "semantic_hash": ""
   },
   "src/lib/accionesPropuestas.ts": {
-    "mtime": 1785066465.7520673,
+    "mtime": 1785067733.6301477,
     "ast_hash": "2427774d1ed480b809391f0f85d6f743",
     "semantic_hash": ""
   },
@@ -615,58 +615,58 @@
     "semantic_hash": ""
   },
   "src/lib/recurrencia.test.ts": {
-    "mtime": 1785040786.04097,
-    "ast_hash": "1224b88a73a9a60130b4703e6d82a06d",
+    "mtime": 1785067733.6321456,
+    "ast_hash": "3b1d70ee6bca5cbe0ba0edd1c268d765",
     "semantic_hash": ""
   },
   "src/lib/recurrencia.ts": {
-    "mtime": 1785041103.536868,
-    "ast_hash": "c38940c47d5e0467af3134e21681f30c",
+    "mtime": 1785067733.6321456,
+    "ast_hash": "26bb03b473b88c24fe0d2833fc840a47",
     "semantic_hash": ""
   },
   "supabase/functions/send-reminder-notifications/recurrencia.test.ts": {
-    "mtime": 1785040826.4642413,
-    "ast_hash": "29258a8d73e32213abaca690238d09f1",
+    "mtime": 1785067733.637655,
+    "ast_hash": "f347353a63c4badfbc0fd416cd96c2f9",
     "semantic_hash": ""
   },
   "supabase/functions/send-reminder-notifications/recurrencia.ts": {
-    "mtime": 1785040713.3627934,
-    "ast_hash": "4943a487891f47018e3d0c3c15f470aa",
+    "mtime": 1785067733.637655,
+    "ast_hash": "4ecdce5e9fef7209da6453a7a7287457",
     "semantic_hash": ""
   },
   "supabase/migrations/20260725120000_recordatorios_recurrencia.sql": {
-    "mtime": 1785038949.863897,
-    "ast_hash": "4ae48fd7b6636fd59fb1de447ea2797b",
+    "mtime": 1785067733.637655,
+    "ast_hash": "7e908ece9b26cbd19c81ed98e169a256",
     "semantic_hash": ""
   },
   "supabase/migrations/20260725160000_recordatorios_dias_semana.sql": {
-    "mtime": 1785047186.2461724,
-    "ast_hash": "e30b3544f98962428886995c6f571dd6",
+    "mtime": 1785067733.638655,
+    "ast_hash": "22adaf575c26329e97bd2ffab6d67a3e",
     "semantic_hash": ""
   },
   "src/lib/fechaLocal.test.ts": {
-    "mtime": 1785050001.6215882,
-    "ast_hash": "c7f1a3f6d3b6d92871e9c68f310e2034",
+    "mtime": 1785067733.6301477,
+    "ast_hash": "222d300b292a5b40c83d320131c0e6b0",
     "semantic_hash": ""
   },
   "src/lib/fechaLocal.ts": {
-    "mtime": 1785049955.823196,
-    "ast_hash": "b5768d4deac681fb1ef41b8413ae9da2",
+    "mtime": 1785067733.6311467,
+    "ast_hash": "b5094481e6d93017c0bbbb3ea3f0ea39",
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/historial.test.ts": {
-    "mtime": 1785065319.9372158,
-    "ast_hash": "21e27973cac53ba1736e594ea7017885",
+    "mtime": 1785067733.6356602,
+    "ast_hash": "a25a860609a53d731947bf77a565786d",
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/historial.ts": {
-    "mtime": 1785065236.6528783,
-    "ast_hash": "79935d059cd2c14289b28570f9c381a8",
+    "mtime": 1785067733.6356602,
+    "ast_hash": "463359b07ec99efa35e5f54d00d327ba",
     "semantic_hash": ""
   },
   "src/components/ProposedActionCard.test.ts": {
-    "mtime": 1785066698.8777213,
-    "ast_hash": "ab75200b7c17692c707fdf41371475c7",
+    "mtime": 1785067733.6281447,
+    "ast_hash": "9b05760668bb92c5b7be7f9743170f06",
     "semantic_hash": ""
   }
 }

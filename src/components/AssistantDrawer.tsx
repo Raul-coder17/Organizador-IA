@@ -120,6 +120,19 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState<PendingAction[]>([])
+  // Espejo síncrono de `pending`. `confirmAll` recorre varias acciones con
+  // `await` de por medio sin que el componente vuelva a renderizar entre
+  // medio, así que el `pending` capturado en su closure queda pegado al
+  // snapshot de cuando arrancó — nunca se entera de lo que las iteraciones
+  // anteriores (u otro click del usuario, ej. cancelar una tarjeta mientras
+  // el lote corre) le hicieron al array. `pendingRef` sí se actualiza al
+  // toque porque `updatePending` lo escribe antes de pedir el re-render, así
+  // que es la única fuente confiable de "estado actual" dentro de un loop.
+  const pendingRef = useRef<PendingAction[]>([])
+  function updatePending(updater: PendingAction[] | ((prev: PendingAction[]) => PendingAction[])) {
+    pendingRef.current = typeof updater === 'function' ? updater(pendingRef.current) : updater
+    setPending(pendingRef.current)
+  }
   // Índice del mensaje del chat dueño de las tarjetas que están en `pending`.
   // Confirmar o cancelar tiene que escribir el desenlace ADENTRO de ese mensaje
   // —no en una burbuja nueva— porque el historial que se reenvía sale de
@@ -190,7 +203,7 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
     setInput('')
     setSending(true)
     setError(null)
-    setPending([])
+    updatePending([])
 
     const { data, error } = await supabase.functions.invoke<AssistantResponse>('ai-assistant', {
       body: {
@@ -258,7 +271,7 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
     // índice es el largo de `history` (que ya incluye el mensaje del usuario).
     setPendingMsgIndex(history.length)
     setMessages((prev) => [...prev, assistantMsg])
-    setPending(acciones.map((accion) => ({ accion, estado: 'idle' as EstadoAccion })))
+    updatePending(acciones.map((accion) => ({ accion, estado: 'idle' as EstadoAccion })))
     if (data.usage) setUsage(data.usage)
 
     // Rate limit por minuto: arrancamos la cuenta regresiva que bloquea el input.
@@ -269,9 +282,15 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
 
   // Resuelve el nombre de tema que propuso la IA a un id, creándolo si no
   // existe. El tema creado por la IA sale con color automático igual que el
-  // manual: el default vive en repo.createTema, no en el form (Fase 2, D4). Y
-  // como la asignación lee el espejo local — donde el tema recién creado ya
-  // está —, dos temas creados en la misma tanda de acciones no salen iguales.
+  // manual: el default vive en repo.createTema, no en el form (Fase 2, D4).
+  //
+  // El chequeo contra `temas` de acá abajo es sólo un atajo (evita el viaje a
+  // IndexedDB en el caso común): `temas` es el estado de React de este
+  // render, y en un lote de varias acciones seguidas (`confirmAll`) puede
+  // haberse quedado atrás de lo que las acciones anteriores del mismo lote
+  // ya crearon. La protección real —que dos acciones del mismo lote no creen
+  // el mismo tema dos veces— vive en `repo.createTema`, que dedupea contra el
+  // espejo local justo antes de insertar.
   async function resolveTemaId(nombre: string | null | undefined): Promise<string | null> {
     if (!nombre) return null
     const existing = temas.find((t) => t.nombre.toLowerCase() === nombre.toLowerCase())
@@ -451,14 +470,14 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
 
   // Aplica UNA acción (por índice) y actualiza su estado en la tarjeta.
   async function confirmOne(index: number): Promise<boolean> {
-    const target = pending[index]
+    const target = pendingRef.current[index]
     if (!target || target.estado !== 'idle') return false
 
-    setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'applying' } : p)))
+    updatePending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'applying' } : p)))
     setError(null)
     try {
       const creado = await applyAction(target.accion)
-      setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'done' } : p)))
+      updatePending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'done' } : p)))
       // El id real del item: en un create sale recién de aplicarlo, y es lo que
       // le permite al modelo referirse después a lo que acaba de crear sin
       // tener que volver a listar.
@@ -472,7 +491,7 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
       return true
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'No se pudo aplicar el cambio.'
-      setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'error', error: msg } : p)))
+      updatePending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'error', error: msg } : p)))
       marcarAccion(index, 'error', { error: msg })
       return false
     }
@@ -482,17 +501,21 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
   // al historial, así que el modelo podía volver a proponer lo mismo que el
   // usuario acababa de rechazar).
   function cancelOne(index: number) {
-    const target = pending[index]
+    const target = pendingRef.current[index]
     if (!target || target.estado !== 'idle') return
-    setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'cancelled' } : p)))
+    updatePending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'cancelled' } : p)))
     marcarAccion(index, 'cancelada')
     setMessages((prev) => [...prev, { role: 'assistant', text: notaCancelada(target.accion), solo_ui: true }])
   }
 
   async function confirmAll() {
-    // Aplica secuencialmente todas las que sigan pendientes (idle).
-    for (let i = 0; i < pending.length; i++) {
-      if (pending[i]?.estado === 'idle') {
+    // Aplica secuencialmente todas las que sigan pendientes (idle). Lee
+    // `pendingRef.current` en cada vuelta —no `pending`— porque el loop cruza
+    // varios `await` y mientras tanto el usuario puede cancelar una tarjeta
+    // todavía no procesada, o una iteración anterior puede haber creado un
+    // tema que ésta necesita reusar.
+    for (let i = 0; i < pendingRef.current.length; i++) {
+      if (pendingRef.current[i]?.estado === 'idle') {
         await confirmOne(i)
       }
     }

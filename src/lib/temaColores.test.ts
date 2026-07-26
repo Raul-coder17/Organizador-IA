@@ -4,6 +4,7 @@ import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert@1'
 import {
   COLORES_TEMA,
   colorDeTema,
+  encontrarTemaPorNombre,
   esColorTema,
   hashTexto,
   siguienteColorTema,
@@ -90,4 +91,61 @@ Deno.test('hashTexto es determinista y no negativo', () => {
 
 Deno.test('temaColorVar arma el token, no un color literal', () => {
   assertEquals(temaColorVar('celeste'), 'var(--color-tema-celeste)')
+})
+
+// ============================================================
+// encontrarTemaPorNombre — dedup por nombre (bug C-3a: temas duplicados
+// cuando confirmAll aplica en el mismo lote dos acciones que crean el mismo
+// tema nuevo)
+// ============================================================
+
+Deno.test('encontrarTemaPorNombre matchea sin distinguir mayúsculas/minúsculas', () => {
+  const temas = [{ nombre: 'Salud' }]
+  assertEquals(encontrarTemaPorNombre(temas, 'salud'), temas[0])
+  assertEquals(encontrarTemaPorNombre(temas, 'SALUD'), temas[0])
+  assertEquals(encontrarTemaPorNombre(temas, 'Trabajo'), undefined)
+})
+
+Deno.test('encontrarTemaPorNombre en una lista vacía no encuentra nada', () => {
+  assertEquals(encontrarTemaPorNombre([], 'Salud'), undefined)
+})
+
+interface Tema {
+  nombre: string
+  color: TemaColor
+  created_at: string
+}
+
+// `repo.createTema` (no testeable acá: necesita IndexedDB real) hace
+// exactamente esto — lee el espejo local, busca con `encontrarTemaPorNombre`
+// y sólo inserta si no está — así que este fake reproduce su forma para
+// poder probar el invariante del bug sin la capa de IndexedDB.
+function crearTemaFake(espejo: Tema[], nombre: string): Tema {
+  const existente = encontrarTemaPorNombre(espejo, nombre)
+  if (existente) return existente
+  const nuevo: Tema = { nombre, color: siguienteColorTema(espejo, nombre), created_at: '' }
+  espejo.push(nuevo)
+  return nuevo
+}
+
+Deno.test('confirmAll: dos acciones del mismo lote que crean el mismo tema nuevo producen UN solo tema', () => {
+  // Simula lo que pasa dentro de repo.createTema cuando confirmAll aplica dos
+  // acciones 'create' seguidas que piden el mismo tema nuevo ("Salud"): cada
+  // llamada lee el mismo espejo, que ya trae lo que insertó la anterior.
+  const espejoLocal: Tema[] = []
+
+  const temaDeLaPrimeraAccion = crearTemaFake(espejoLocal, 'Salud')
+  const temaDeLaSegundaAccion = crearTemaFake(espejoLocal, 'Salud')
+
+  assertEquals(espejoLocal.length, 1)
+  assertEquals(temaDeLaPrimeraAccion, temaDeLaSegundaAccion)
+})
+
+Deno.test('confirmAll: nombres de tema distintos en el mismo lote sí crean temas distintos', () => {
+  const espejoLocal: Tema[] = []
+
+  crearTemaFake(espejoLocal, 'Salud')
+  crearTemaFake(espejoLocal, 'Trabajo')
+
+  assertEquals(espejoLocal.length, 2)
 })

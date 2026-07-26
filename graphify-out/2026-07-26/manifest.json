@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "src/components/ProposedActionCard.tsx": {
-    "mtime": 1785049866.4900706,
-    "ast_hash": "bc787dee5174868a99a08ecfd1c8a614",
+    "mtime": 1785066611.3108394,
+    "ast_hash": "ac4d7d7957afc5226117779184ecbd61",
     "semantic_hash": ""
   },
   "src/components/UpdateBanner.tsx": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "src/lib/accionesPropuestas.ts": {
-    "mtime": 1785049795.6534798,
-    "ast_hash": "3baa2f59d3426330ce29d6fbbc447d2a",
+    "mtime": 1785066465.7520673,
+    "ast_hash": "2427774d1ed480b809391f0f85d6f743",
     "semantic_hash": ""
   },
   "src/lib/fotoItem.ts": {
@@ -662,6 +662,11 @@
   "supabase/functions/ai-assistant/historial.ts": {
     "mtime": 1785065236.6528783,
     "ast_hash": "79935d059cd2c14289b28570f9c381a8",
+    "semantic_hash": ""
+  },
+  "src/components/ProposedActionCard.test.ts": {
+    "mtime": 1785066698.8777213,
+    "ast_hash": "ab75200b7c17692c707fdf41371475c7",
     "semantic_hash": ""
   }
 }
