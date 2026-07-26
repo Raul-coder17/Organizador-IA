@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'rea
 import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { useAiEnabled } from '../lib/useAiEnabled'
+import { dictadoVozSoportado, useDictadoVoz } from '../lib/useDictadoVoz'
 import { supabase } from '../lib/supabase'
 // Las acciones que confirma el usuario escriben por el repositorio local (igual
 // que el CRUD manual): si la conexión se corta entre proponer y confirmar, el
@@ -76,6 +77,25 @@ function IconoCerrar() {
   )
 }
 
+function IconoMic({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      aria-hidden="true"
+    >
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5 11a7 7 0 0 0 14 0" />
+      <path d="M12 18v3" />
+      <path d="M8 21h8" />
+    </svg>
+  )
+}
+
 // El aviso de "sin conexión" del asistente.
 //
 // Es el contrapeso de la mejora en `useAiEnabled`: el botón que abre el panel
@@ -142,6 +162,25 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
   const [cooldown, setCooldown] = useState(0) // segundos restantes de rate limit corto
 
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Dictado de voz: mantener presionado el mic transcribe al mismo input de
+  // texto, sumando a lo que ya hubiera escrito — nunca lo reemplaza ni envía
+  // solo. `inputAlEmpezarRef` guarda una foto del input al momento de apretar,
+  // porque cada evento `onresult` trae el texto reconocido COMPLETO de esta
+  // sesión de grabación (no un delta), y hay que pegarlo sobre lo que ya
+  // había, no sobre el último valor de `input` (que en el próximo render ya
+  // incluye lo dictado).
+  const { grabando, errorPermiso, iniciar: iniciarDictado, detener: detenerDictado } = useDictadoVoz()
+  const inputAlEmpezarRef = useRef('')
+
+  function iniciarGrabacion() {
+    if (!online || sending || cooldown > 0) return
+    inputAlEmpezarRef.current = input
+    iniciarDictado((texto) => {
+      const base = inputAlEmpezarRef.current
+      setInput(base && texto ? `${base} ${texto}` : base || texto)
+    })
+  }
 
   // Cuenta regresiva del rate limit por minuto: deshabilita el input hasta 0.
   useEffect(() => {
@@ -602,6 +641,8 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
 
         {error && <p className="text-sm text-rust">{error}</p>}
 
+        {errorPermiso && <p className="text-sm text-rust">{errorPermiso}</p>}
+
         {cooldown > 0 && (
           <p className="text-sm text-gold">
             Esperá {cooldown} segundo{cooldown === 1 ? '' : 's'} antes de enviar otro mensaje.
@@ -623,6 +664,24 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
             disabled={!online || sending || cooldown > 0}
             className="ctl flex-1 disabled:opacity-60"
           />
+          {dictadoVozSoportado && (
+            <button
+              type="button"
+              onMouseDown={iniciarGrabacion}
+              onMouseUp={detenerDictado}
+              onMouseLeave={detenerDictado}
+              onTouchStart={iniciarGrabacion}
+              onTouchEnd={detenerDictado}
+              onTouchCancel={detenerDictado}
+              onContextMenu={(e) => e.preventDefault()}
+              disabled={!online || sending || cooldown > 0}
+              aria-label={grabando ? 'Grabando… soltá para terminar' : 'Mantené presionado para dictar'}
+              title="Mantené presionado para dictar"
+              className={`mic-btn${grabando ? ' mic-btn--recording' : ''}`}
+            >
+              <IconoMic />
+            </button>
+          )}
           <button
             type="submit"
             disabled={!online || sending || cooldown > 0 || !input.trim()}

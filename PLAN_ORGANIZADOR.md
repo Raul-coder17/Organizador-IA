@@ -2067,6 +2067,39 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-26 — **Dictado de voz en el chat del asistente**. Botón de
+  micrófono junto al input de `AssistantDrawer`, con la Web Speech API nativa
+  del navegador (`SpeechRecognition`/`webkitSpeechRecognition`) — sin IA, sin
+  gastar cuota de Gemini, todo corre del lado del cliente. Mantener presionado
+  (mouse o touch) graba y transcribe en español (`lang: 'es-ES'`); soltar (o
+  que el mouse/dedo se salga del botón) para. El texto reconocido se ESCRIBE en
+  el mismo input donde ya se tipea a mano —se suma a lo que hubiera, no lo
+  pisa— y nunca se envía solo: el usuario confirma con "Enviar" como siempre.
+  Nuevo hook `src/lib/useDictadoVoz.ts`: declara tipos mínimos propios para la
+  API (no hay tipos oficiales de TS, ni en `lib.dom.d.ts`, para algo no
+  estándar), y expone `dictadoVozSoportado` (chequeo síncrono de si el
+  navegador tiene la API) para que Firefox/Safari viejo simplemente no
+  dibujen el botón, en vez de mostrar uno roto. `onresult` llega con el texto
+  COMPLETO reconocido de la sesión de grabación (no un delta, la API reescribe
+  sus resultados interinos a medida que refina), así que `AssistantDrawer`
+  guarda una foto del input al apretar (`inputAlEmpezarRef`) y pega el
+  transcript sobre esa base en cada actualización — no sobre el `input` del
+  último render, que ya incluiría lo dictado. Error de permiso denegado
+  (`not-allowed`/`service-not-allowed`) muestra un mensaje en español debajo
+  del input; `no-speech` (nada detectado) no hace nada disruptivo, el input
+  queda como estaba. Visual: mismo tamaño/forma que `.icon-btn` (34px, borde,
+  radio 3px) en estado normal; grabando pasa a fondo `--color-rust` con texto
+  `--color-moss-ink` (mismo par que `.nav-badge`/`.tab-badge`, ya el "esto
+  necesita tu atención" del sistema) y pulso vía `@keyframes mic-pulse`,
+  respetando `prefers-reduced-motion` igual que `.sync-status--sync`.
+  Verificado con un harness estático servido por el propio Vite dev
+  (`public/_mic-harness*.html`, borrado después) contra `src/index.css` real:
+  estados idle/recording/disabled en claro y oscuro, y la lógica de
+  `dictadoVozSoportado` probada explícitamente con un objeto `window` simulado
+  sin `SpeechRecognition`/`webkitSpeechRecognition` (confirma que el botón no
+  se renderiza). No se pudo probar el reconocimiento de voz real (requiere
+  permiso de micrófono del usuario) ni un navegador sin la API de verdad
+  (Firefox) — sólo la detección de su ausencia. `tsc -b && vite build` limpio.
 - 2026-07-26 — **Auditoría del asistente, paso 3: la tarjeta y la base ya no
   pueden divergir (B-2)** (misma rama `feat/recordatorios-recurrentes`, sin
   commitear). `primeraVezDeAccionCrear` —la función que arma lo que dibuja
