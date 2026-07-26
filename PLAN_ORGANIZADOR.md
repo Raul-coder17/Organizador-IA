@@ -61,7 +61,18 @@ Migración: [`supabase/migrations/20260720120000_schema_inicial.sql`](supabase/m
 - `items(user_id, tema_id)` y `items(user_id, tipo)` — listados filtrados
   por usuario, con o sin filtro de tema/tipo.
 - `recordatorios(fecha_hora)` — soporta el query de notificaciones
-  pendientes (`where fecha_hora <= now()`).
+  pendientes (`where fecha_hora <= now()`). Sigue sirviendo igual para los
+  recurrentes: no son filas aparte, es la misma fila con la fecha adelantada.
+
+### Columnas agregadas después del schema inicial
+
+- `recordatorios.updated_at` (2026-07-22) — LWW del motor de sync offline.
+- `recordatorios.recurrencia` (2026-07-25) — `null` = una sola vez;
+  `diario`/`semanal`/`mensual`/`dias_semana` = al cumplirse, avanza `fecha_hora`
+  y vuelve a `pendiente`. Ver "Recordatorios recurrentes".
+- `recordatorios.recurrencia_dias` (2026-07-25) — sólo con `dias_semana`: qué
+  días, como enteros 0-6 con 0=domingo **en UTC**. Ver la convención en
+  "Recordatorios recurrentes"; no es la escala local del usuario.
 
 ### Cómo aplicar la migración
 
@@ -1759,6 +1770,249 @@ Supabase se niega a redirigir a un origen que no esté en su lista.
    expiration**; los proyectos nuevos vienen en 1 hora), y conviene abrirlo
    **en el mismo navegador** desde donde lo pediste.
 
+## Recordatorios recurrentes
+
+Hasta acá un recordatorio era de **una sola vez**: se disparaba (o lo marcaban
+hecho) y quedaba así para siempre. Ahora puede repetirse **diario / semanal /
+mensual / días específicos** (ej. lunes, miércoles y viernes). Sin fecha de fin
+en esta versión: para cortarlo, el usuario edita el item y elige "No se repite",
+o borra el item.
+
+### Datos
+
+`recordatorios.recurrencia` (`text`, nullable, check en `'diario' | 'semanal' |
+'mensual' | 'dias_semana'`). `null` = no se repite, que es exactamente lo que
+tienen todas las filas que ya existían — no hizo falta backfill ni cambió nada
+para lo ya creado.
+
+`recordatorios.recurrencia_dias` (`smallint[]`, nullable) guarda **qué** días,
+sólo para `'dias_semana'`. Dos checks lo sostienen: los valores están entre 0 y
+6 sin repetidos (1 a 7 días), y los días existen **si y sólo si** la recurrencia
+es `'dias_semana'` — sin eso podrían quedar días huérfanos de un recordatorio
+que pasó a diario, o un `dias_semana` sin días, que no se puede calcular.
+
+> **Convención de `recurrencia_dias`** — es la parte sutil. Enteros 0-6 con
+> **0 = domingo**, la escala de `getUTCDay()`, y por lo tanto días de la semana
+> **en UTC**, no en la zona del usuario. No es un capricho: toda la aritmética
+> de fechas es en UTC (ver abajo), así que los días tienen que estar en la misma
+> escala para poder compararse contra `getUTCDay()` sin conversión.
+>
+> En Argentina (UTC-3) los dos coinciden casi todo el día, pero **no de 21:00 a
+> 23:59**, que ya son el día siguiente en UTC. Un "los lunes a las 22" se guarda
+> como martes 01:00 UTC con `recurrencia_dias = {2}`, y la app lo vuelve a
+> mostrar como "lunes". Esa traducción la hace **sólo el cliente**
+> (`diasLocalesAUtc` / `diasUtcALocales`), que es el único que conoce la zona; el
+> servidor nunca la necesita.
+>
+> **Invariante:** el día UTC de `fecha_hora` siempre está en `recurrencia_dias`.
+> Lo mantiene `ajustarADiaMarcado`, que engancha la primera fecha al próximo día
+> marcado.
+
+### `semanal` y `dias_semana` no son lo mismo
+
+`semanal` suma 7 días desde la última vez, así que cae siempre en el mismo día.
+`dias_semana` avanza al próximo día marcado. Con **un solo día** marcado los dos
+dan exactamente lo mismo, y con **los siete**, `dias_semana` equivale a
+`diario`; las dos continuidades están fijadas con tests. Es deliberado: no hay
+combinación de días que se comporte de forma rara.
+
+**No hay filas nuevas por vuelta.** Un recordatorio recurrente es siempre la
+misma fila: cuando se cumple, se le adelanta `fecha_hora` y vuelve a
+`'pendiente'`. Así el item conserva su único recordatorio, el historial no crece
+sin control y el outbox no tiene que ordenar inserts contra updates.
+
+### La lógica vive DOS veces, a propósito
+
+`src/lib/recurrencia.ts` y
+`supabase/functions/send-reminder-notifications/recurrencia.ts` son gemelos
+exactos. No comparten código porque corren en runtimes que no se pueden importar
+entre sí (el bundle de Vite en el navegador vs. Deno en el Edge), y el **mismo**
+recordatorio puede avanzar por cualquiera de los dos caminos:
+
+- el **cliente**, cuando dispara el aviso local o el usuario marca "hecho";
+- el **cron del servidor**, cuando manda el push.
+
+Si divergieran, el mismo recordatorio caería en fechas distintas según quién lo
+movió — un bug imposible de reproducir a mano. Por eso la paridad no se confía a
+la disciplina: hay un test
+(`send-reminder-notifications/recurrencia.test.ts`) que **importa las dos
+copias** y compara sus salidas sobre un barrido de fechas. Si alguien toca una
+sola, falla.
+
+### Las dos decisiones de fechas
+
+**1. Todo en UTC.** El cliente corre en la zona del usuario y el Edge corre en
+UTC. Si un lado usara los setters locales y el otro los UTC, las dos mitades
+darían resultados distintos justo en los bordes de horario de verano. Haciendo
+todo en UTC en los dos lados, el resultado es idéntico venga de donde venga. La
+contra: en una zona **con** DST, un "todos los días a las 9" pasaría a las 8 o a
+las 10 al cruzar el cambio de hora. Para Argentina (UTC-3 todo el año) no hay
+diferencia.
+
+**2. El mensual recorta, y el recorte no se recuerda.** El 31 de enero + 1 mes
+no existe: se recorta al último día del mes destino (31/01 → 28/02, o 29/02 en
+bisiesto). Como la vuelta siguiente sale de la fecha ya recortada, un mensual del
+31 **se corre al 28** al pasar por febrero y ahí se queda (28/02 → 28/03 →
+28/04…) en vez de volver al 31.
+
+> **Limitación conocida.** Para que volviera al 31 haría falta guardar el día
+> ancla original en una columna aparte, que esta versión no tiene. Está cubierto
+> por un test que lo fija como comportamiento esperado, no como accidente.
+
+**3. El atrasado reengancha, no se acumula.** `proximaOcurrencia` no suma una
+vuelta: avanza hasta pasar el ahora. Si un "todos los días a las 9" estuvo cinco
+días sin dispararse (app cerrada, sin señal, cron caído), sumar un día lo dejaría
+todavía vencido y volvería a disparar **una vez por ciclo** hasta alcanzar el
+presente. Avanzando hasta el futuro, engancha directo en su próxima vuelta real.
+
+**4. `dias_semana` avanza de a un día, nunca cero.** Entre 1 y 7 saltos hasta
+caer en el próximo día marcado. El "nunca cero" es lo que importa: si pudiera
+quedarse en el día actual, un lunes marcado se clavaría en ese lunes para
+siempre. El caso que lo prueba es el del enunciado — hoy **es** un día marcado
+pero la hora ya pasó: tiene que irse al próximo marcado, no quedar vencido.
+
+**5. Guarda anti-bucle.** Si el cálculo **no avanza** (un `dias_semana` cuyos
+días quedaron vacíos o corruptos, una fecha ilegible), volver a `'pendiente'` con
+la misma fecha vencida dejaría el recordatorio disparando una vez por ciclo para
+siempre. En ese caso se cierra como uno de una sola vez. Está en los dos lados,
+`repo.ts` y la Edge Function, con el mismo criterio.
+
+### Offline-first, sin nada especial
+
+`marcarHecho` / `marcarEnviado` calculan la fecha nueva **localmente** y encolan
+un update común y corriente por el mismo camino que cualquier otra mutación
+(espejo local en IndexedDB + outbox). Marcar hecho un recurrente sin conexión
+avanza la fecha al instante en la UI y sube sola al reconectar.
+
+Un detalle que sí hizo falta: el watcher local lleva un set de ids "ya
+disparados en esta pestaña" para no notificar dos veces. Un recurrente que
+reengancha vuelve a `'pendiente'`, así que hay que **sacarlo de ese set** — si
+no, el supresor le impediría armar el timer del ciclo siguiente y un "todos los
+días a las 9" avisaría una sola vez hasta recargar la página. Por eso
+`marcarEnviado` ahora devuelve la fila resultante en vez de `void`.
+
+### UI
+
+- **ItemForm:** selector "No se repite / Diario / Semanal / Mensual / Días
+  específicos" al lado del campo de fecha/hora (`.rec-campos`, que los apila en
+  pantalla angosta). Son una sola decisión —"cuándo y cada cuánto"—, separarlos
+  dejaría el selector lejos del campo del que depende.
+- **Con "Diario" y "Días específicos" no se pide fecha.** El campo cambia a un
+  `<input type="time">` (sólo hora) y el de fecha desaparece. La razón es que ahí
+  la fecha no aporta nada: "diario" es todos los días y "días específicos" ya
+  trae sus días, así que lo único que el usuario decide es la HORA. Con "Semanal"
+  y "Mensual" el `datetime-local` se queda, porque ahí la fecha **sí** es la que
+  fija qué día de la semana o del mes se repite.
+- La `fecha_hora` ancla que igual hay que guardar la calcula
+  `proximaFechaConHora` (lib/fechaLocal): la próxima vez que sean esas horas —hoy
+  si no pasó, mañana si ya pasó— y de ahí `prepararRecurrencia` la corre al
+  próximo día marcado. Nunca queda vencida, que es lo que importa: el usuario
+  elige una hora sin ver ninguna fecha, así que un ancla en el pasado sonaría al
+  instante sin que nadie lo pidiera.
+- Cambiar de recurrencia **no pierde lo elegido**: al pasar a una sin fecha se
+  hereda la hora del `datetime-local`, y al volver a una con fecha se prellena
+  con el ancla calculada desde la hora.
+- Debajo de los campos, **"Primera vez: …"**, sólo cuando la fecha no está a la
+  vista. Sin eso el usuario elegiría una hora y no tendría forma de ver qué día
+  cae la primera vuelta. Se calcula con las mismas dos funciones que corren al
+  guardar, no con una cuenta aparte.
+- **Chips de días** (`.rec-dias`), sólo cuando el selector está en "Días
+  específicos": siete toggles Lun→Dom que se **reparten una sola fila** y se
+  encogen juntos. Con ancho fijo, a 375px entraban seis y el domingo caía solo en
+  una segunda fila: la semana se leía cortada justo donde no corresponde.
+  Repartida, se lee como una semana a cualquier ancho (verificado hasta 320px).
+  Se valida que haya al menos uno antes de guardar.
+- **Indicador:** una flecha circular + texto corto en la fila de recordatorio
+  (`/reminders` y Hoy comparten `RecordatorioRow`) y en la ficha de Biblioteca,
+  colgando de la fecha. Para `dias_semana` el texto son **los días** ("Lun, Mié,
+  Vie") en vez de "Cada semana" — que es la información que distingue este tipo.
+  Mismo tamaño y tono que el resto del meta: es una marca, no una alerta.
+- El armado de esa marca vive en `marcaRecurrencia` (lib/recurrencia) y no en los
+  componentes, porque la usan tres lugares y para `dias_semana` hay que convertir
+  los días de UTC a la zona del usuario antes de nombrarlos: si esa conversión se
+  copiara en cada componente, alcanzaría con olvidarla en uno para que la misma
+  repetición se leyera distinto en dos pantallas que se ven a la vez.
+- Los tres caminos que **guardan** una recurrencia (el form manual, el `create`
+  de la IA y el `update`) pasan por `prepararRecurrencia`, que hace la conversión
+  local→UTC y el enganche de la primera fecha. Misma razón: cuando eso vivía
+  suelto en cada uno, bastaba con olvidar el enganche en uno para que ese camino
+  guardara una primera fecha en un día que el usuario no había marcado.
+- **"Marcar hecho"** hace lo mismo en los dos casos, pero en un recurrente cierra
+  **esta** vuelta (el `title` lo aclara). Las dos páginas ahora reflejan **lo que
+  devuelve el repo** en vez de asumir `'hecho'`: un recurrente se mueve de
+  "Vencidos" a "Próximos" a la vista.
+
+### Asistente
+
+`recordatorio_recurrencia` en `proposeCreateItem` y `proposeUpdateItem`, con el
+system prompt enseñado a mapear "todos los días", "cada semana", "todos los
+meses". En el update acepta además el centinela `"ninguna"`, que **apaga la
+repetición sin borrar el recordatorio** (distinto de `quitar_recordatorio`, que
+lo elimina). El valor se valida en `actions.ts`: la columna tiene un CHECK y un
+valor inventado por el modelo haría fallar la escritura entera, así que cualquier
+cosa fuera del enum degrada a "una sola vez".
+
+Para días concretos, `recordatorio_dias` (array de enteros 0-6). Van en escala
+**LOCAL**, igual que `recordatorio_fecha_hora` viaja como hora local ingenua: el
+frontend convierte las dos cosas al confirmar. El prompt insiste en la
+distinción que el modelo tiende a errar — "todos los martes" es `dias_semana`
+con `[2]`, **no** `semanal` a secas — y en que al cambiar días mande la lista
+completa que queda, no sólo los que se agregan. Un `dias_semana` que llegue sin
+días válidos descarta la recurrencia entera en vez de guardar un recordatorio
+que después no se podría reprogramar.
+
+La tarjeta de preview muestra los días **antes** de confirmar ("se repite los
+Lun, Mié, Vie"), que es justo lo que hay que poder revisar.
+
+Un cuidado en `AssistantDrawer`: `upsertRecordatorio` pisa fecha **y**
+recurrencia de una, así que se completa el campo que la acción no trae con el
+valor actual. Sin eso, "movelo a las 10" borraría el "todos los días" de un
+recordatorio que ya se repetía.
+
+#### `recordatorio_hora`: la IA tampoco calcula fechas
+
+Mismo criterio que el form: con `diario` y `dias_semana` el asistente manda
+**`recordatorio_hora`** (`"HH:mm"`) y **no** `recordatorio_fecha_hora`. La
+primera vuelta la calcula el cliente con `proximaFechaConHora`, la misma función
+que usa el form manual. Con `semanal` y `mensual` sigue mandando la fecha, porque
+ahí es la que define el día.
+
+El motivo no es sólo simetría: pedirle al modelo "el próximo lunes/miércoles/
+viernes a las 7" es aritmética de calendario que no tiene por qué hacer bien, y
+un error ahí produce un recordatorio que arranca el día equivocado o directamente
+vencido. Ahora esa cuenta no se la pedimos.
+
+Como red de seguridad para las dos recurrencias que **sí** siguen necesitando
+fecha, `aplicarAccionCrear` corre con `proximaOcurrencia` cualquier ancla
+recurrente que llegue en el pasado. No aplica a los de una sola vez: ahí una
+fecha pasada puede ser deliberada y no hay "próxima vuelta" que calcular.
+
+La hora se valida en `actions.ts` igual que la recurrencia: `"7"`, `"las siete"` o
+`"25:00"` se descartan (y `"7:05"` se normaliza a `"07:05"`) en vez de viajar
+hasta el cliente y producir un `Invalid Date`.
+
+#### El bug de "contenido" vacío, y por qué el prompt lo causó
+
+Al agregar la recurrencia, el asistente empezó a crear recordatorios recurrentes
+correctos pero con **`contenido` vacío**. No hubo ningún camino de código que lo
+pisara: `mapProposedAction` copia `contenido` antes e independientemente del
+bloque de recurrencia, y `contenidoDeAccionCrear` cae a `{ texto: '' }` cuando
+falta — por eso salía vacío en silencio en vez de fallar.
+
+La causa fueron los **ejemplos trabajados** que se sumaron al system prompt.
+`contenido` nunca estuvo en `required` (sólo `tipo`), así que lo único que lo
+llenaba era el prompt; y los dos ejemplos nuevos enumeraban los campos de un
+create-con-recordatorio **omitiendo `contenido`**. Uno de ellos era, palabra por
+palabra, el pedido que falló ("recordame ir al gym los lunes, miércoles y viernes
+a las 7"). El modelo tomó el ejemplo más específico y lo leyó como una lista
+completa de campos.
+
+Lección que queda: **un ejemplo que enumera campos se lee como exhaustivo.** El
+arreglo fue por los tres lados a la vez — una regla explícita de que todo create
+lleva siempre el QUÉ del item (y que los ejemplos de abajo sólo listan los campos
+de recordatorio para no repetirse), la descripción de `contenido` en imperativo y
+marcada OBLIGATORIA, y los dos ejemplos corregidos para incluirlo.
+
 ## Deploy
 
 ### GitHub
@@ -1812,6 +2066,168 @@ desactivarla desde ahí.) El resto —recordatorios, cron, envío— ya está de
 del servidor y no depende del dominio del frontend.
 
 ## Changelog
+
+- 2026-07-26 — **Auditoría del asistente, paso 3: la tarjeta y la base ya no
+  pueden divergir (B-2)** (misma rama `feat/recordatorios-recurrentes`, sin
+  commitear). `primeraVezDeAccionCrear` —la función que arma lo que dibuja
+  `ProposedActionCard`— calculaba la primera fecha con `prepararRecurrencia`
+  pero SIN el paso de `primeraVuelta`, que es lo que corre una recurrencia
+  vencida a su próxima ocurrencia real. Con una recurrencia que arrancaba en el
+  pasado (el modelo se equivoca de día en "semanal"/"mensual", o vencida por
+  cualquier otro motivo), la tarjeta podía mostrar una fecha ya pasada mientras
+  que `aplicarAccionCrear` —que sí llamaba a `primeraVuelta`— guardaba la
+  próxima vuelta real: el usuario confirmaba una fecha y se guardaba otra.
+  Fix: `primeraVuelta` se exportó desde `accionesPropuestas.ts` (donde ya
+  vivía, privada) y `primeraVezDeAccionCrear` pasó a llamarla — misma función en
+  los dos lugares, no una reimplementación paralela. Cierra la clase completa
+  de discrepancia (cualquier recurrencia vencida al proponerse, no solo el caso
+  que la disparó), porque los cuatro tipos de recurrencia pasan por el mismo
+  `prepararRecurrencia` + `primeraVuelta`. De paso, dos ajustes para que esto
+  fuera testeable de verdad (no con una reimplementación paralela en el test):
+  `accionesPropuestas.ts` pasó a importar `./repo` (que arrastra el cliente de
+  Supabase) DINÁMICO adentro de `aplicarAccionCrear`/`resolverTemaId` en vez de
+  arriba del módulo — mismo comportamiento en el navegador, pero el resto del
+  archivo (`primeraVuelta`, `fechaLocalDeAccion`, etc., que son puros) queda
+  cargable por `deno test`; y `ProposedActionCard.tsx` pasó a importar
+  `formatFechaHora`/`proximaFechaConHora` de `fechaLocal.ts` en vez de
+  `recordatorios.ts` (mismo re-export, sin el cliente de Supabase en el medio).
+  **6 tests nuevos** en `ProposedActionCard.test.ts`: paridad tarjeta/guardado
+  para los cuatro tipos de recurrencia con fecha vencida, uno que reproduce el
+  bug viejo (prueba que la versión sin `primeraVuelta` SÍ quedaba vencida y que
+  el fix cambia el resultado) y uno de control para "una sola vez" (una fecha
+  pasada sin recurrencia no se toca, a propósito). Es el único test del repo
+  que carga un `.tsx` real (para probar la función tal como vive, no una copia)
+  y corre con `npx deno test --no-check --allow-env` en vez del `npx deno test`
+  liso del resto de la suite: `--allow-env` porque el runtime automático de JSX
+  de React lee `NODE_ENV` al cargarse, y `--no-check` porque aunque el import a
+  `./repo` es dinámico, el chequeo de tipos de Deno igual resuelve su grafo
+  completo —incluido `sync.ts`, que usa `navigator.onLine`/`document`/etc., que
+  no están en el lib por defecto de Deno— aunque en runtime nunca se ejecuta.
+  `tsc -b && vite build` (con lib DOM real) y el resto de la suite (144 tests)
+  siguen limpios; lint da solo warnings ya existentes en el repo (exportar una
+  función no-componente desde un archivo de componente rompe React Fast
+  Refresh, mismo warning que ya tenían `AuthContext.tsx`/`PushSettings.tsx`).
+- 2026-07-26 — **Auditoría del asistente, paso 2: historial estructurado**
+  (misma rama `feat/recordatorios-recurrentes`, sin commitear). El historial que
+  se le reenvía a Gemini dejó de ser texto plano: los turnos en que el modelo
+  propuso algo se reconstruyen como el par `functionCall`/`functionResponse`
+  real, con la tool y los args que emitió más el desenlace verdadero (aplicada
+  con `item_id`, cancelada, error, o `sin_responder` si el usuario siguió
+  escribiendo sin tocar la tarjeta). Antes, confirmar agregaba una frase genérica
+  ("Listo, creé el item.") y **cancelar no agregaba nada** —bug C-1—, así que el
+  modelo podía re-proponer algo ya creado o ya rechazado. Nuevo módulo puro
+  `supabase/functions/ai-assistant/historial.ts` con `buildContents`, 12 tests en
+  `historial.test.ts`. De paso arregla la alternancia de roles: la burbuja de
+  confirmación quedó marcada `solo_ui` (se ve en el chat, no viaja) y el
+  `functionResponse` se fusiona con el mensaje siguiente del usuario, así que ya
+  no quedan dos turnos `model` seguidos. `collectProposals` (nuevo, en
+  `actions.ts`) empareja cada call cruda con su acción para que no se desalineen.
+  **Fix posterior (400 de Gemini):** el primer intento fusionaba el
+  `functionResponse` con el texto nuevo del usuario en las mismas `parts` para
+  dejar la alternancia estricta; Gemini lo rechazó con 400 al confirmar el gym y
+  mandar el mensaje siguiente. Un content con `functionResponse` tiene que llevar
+  **sólo** `functionResponse`, así que ahora va en su propio turno y quedan dos
+  `user` consecutivos (resultado de la tool + mensaje nuevo), que es correcto: no
+  hay turno del modelo en el medio porque las propuestas cortan el loop y vuelven
+  al cliente. Lo que sí sigue mezclado —y es válido— es texto + `functionCall` en
+  el turno del modelo, que es lo que Gemini mismo emite. Test de regresión en
+  `historial.test.ts` + la invariante chequeada en todos los casos.
+- 2026-07-26 — **Auditoría del asistente, paso 1: logging del intercambio con
+  Gemini**. `ai-assistant` loguea el `contents` completo antes de *cada* llamada
+  del loop (no sólo la primera), la respuesta de cada vuelta con los args
+  completos de las function calls, y `client_now`. Va sólo a los logs de la Edge
+  Function; no se loguea la API key ni el blob cifrado. Las líneas largas salen
+  partidas en trozos numerados porque los logs de Supabase truncan.
+- 2026-07-26 — **Sin fecha para "Diario" y "Días específicos"** + fix del
+  `contenido` vacío (misma rama `feat/recordatorios-recurrentes`, sin
+  commitear). El form esconde el selector de fecha para esas dos recurrencias y
+  muestra sólo hora; la `fecha_hora` ancla la calcula `proximaFechaConHora`
+  (nuevo `src/lib/fechaLocal.ts`, adonde se mudaron los helpers puros de fecha
+  que vivían en `recordatorios.ts` — que los re-exporta, así ningún import
+  cambió — para que `deno test` pueda cargarlos sin arrastrar el cliente de
+  Supabase). Mismo criterio en el asistente, con `recordatorio_hora` nuevo en
+  `proposeCreateItem`/`proposeUpdateItem`. Y el bug que abrió todo esto: la IA
+  creaba el recurrente correcto pero con `contenido` vacío, causado por los
+  ejemplos del prompt que enumeraban campos sin incluirlo (ver "El bug de
+  'contenido' vacío"). 11 tests nuevos en `fechaLocal.test.ts` (el ancla nunca
+  queda en el pasado, barriendo las 24 horas × los 7 días) y 3 en
+  `actions.test.ts`.
+- 2026-07-25 — **Recurrencia por días específicos** (misma rama
+  `feat/recordatorios-recurrentes`, sin commitear). Cuarto tipo: `dias_semana`,
+  distinto de `semanal` (que sólo suma 7 días y cae siempre en el mismo día).
+  Migración `20260725160000_recordatorios_dias_semana.sql` — amplía el check de
+  `recurrencia` y agrega `recurrencia_dias smallint[]` con check de rango/unicidad
+  y de coherencia (los días existen si y sólo si la recurrencia es
+  `dias_semana`). **Aplicada al proyecto real**; `migration list` confirma las 10
+  migraciones alineadas local/remoto. El primer intento falló: el check de
+  unicidad usaba una subquery (`select count(distinct …) from unnest(…)`) y
+  Postgres no las acepta dentro de un CHECK (error 0A000). Se movió esa
+  validación a una función `immutable` `public.dias_semana_validos(smallint[])`
+  —que un CHECK sí puede llamar— y la migración se rehízo **idempotente**
+  (`if exists`/`if not exists`/`or replace`) para poder re-correrla sin depender
+  de que el rollback del intento fallido hubiera sido perfecto; los NOTICE del
+  push confirmaron que sí lo había sido. Efecto secundario a tener presente: al
+  vivir en el schema `public`, esa función queda expuesta como RPC de PostgREST.
+  Es pura sobre su argumento (no toca ninguna tabla), así que no filtra nada, y
+  de hecho se usó para verificar el check contra la base real: `[1,3,5]` `[2]` y
+  los siete días dan `true`; `[1,1,3]` (repetido), `[7]`, `[-1]` y `[]` dan
+  `false`. Convención documentada en la migración y en los dos
+  gemelos: días 0-6 con 0=domingo, **en UTC**, porque toda la aritmética es en
+  UTC; el cliente traduce desde/hacia la zona del usuario
+  (`diasLocalesAUtc`/`diasUtcALocales`), lo que importa de 21:00 a 23:59 en
+  Argentina, cuando el día local y el UTC ya no coinciden. Invariante: el día UTC
+  de `fecha_hora` siempre está entre los marcados, mantenido por
+  `ajustarADiaMarcado`. Guarda anti-bucle nueva en los dos lados: si el cálculo
+  no avanza, se cierra como un recordatorio de una sola vez en vez de quedar
+  disparando una vez por ciclo. UI: chips Lun→Dom que se reparten una sola fila
+  (con ancho fijo el domingo caía solo en una segunda, hasta 320px verificado),
+  validación de al menos un día, y el indicador pasa a mostrar "Lun, Mié, Vie".
+  Asistente: `recordatorio_dias` en create y update, prompt que distingue
+  `semanal` de `dias_semana`, y días visibles en el preview. Se extrajeron
+  `marcaRecurrencia` y `prepararRecurrencia` para que los tres caminos de
+  guardado y los tres de presentación no se separen. **33 tests nuevos** (199 en
+  total, todos verdes), incluida la paridad mecanizada extendida a las 127
+  combinaciones de días × 7 fechas base × 8 vueltas. Build y lint limpios;
+  verificación visual con el harness de CSS compilado en claro/oscuro y
+  900/375/320px (no pude sacar capturas: el panel del navegador no componía
+  frames en esta sesión, así que la verificación fue por estilos computados +
+  el harness enviado al usuario).
+
+- 2026-07-25 — **Desplegado el ítem completo de recurrencia** (simple + días
+  específicos). `send-reminder-notifications` v3 (`--no-verify-jwt`, sube también
+  `recurrencia.ts`) y `ai-assistant` v10, las dos `ACTIVE`. Verificado que el
+  cron arranca con el módulo nuevo: sin el header `x-cron-secret` devuelve
+  401 `{"error":"No autorizado."}` limpio, y como el import de `recurrencia.ts`
+  ocurre al cargar el módulo —antes del guard—, ese 401 prueba que el gemelo
+  importa bien. Schema verificado por PostgREST: `recurrencia` y
+  `recurrencia_dias` responden 200, y una columna inventada responde 400/42703
+  como control. **Todo listo para la prueba en vivo.**
+
+- 2026-07-25 — **Recordatorios recurrentes** (rama `feat/recordatorios-recurrentes`,
+  sin mergear). Un recordatorio puede repetirse diario/semanal/mensual: al
+  marcarse `enviado` o `hecho` avanza su `fecha_hora` a la próxima ocurrencia y
+  vuelve a `pendiente`, en la MISMA fila. Sin fecha de fin (se corta editando el
+  item o borrándolo). Migración `20260725120000_recordatorios_recurrencia.sql`
+  (columna nullable + check) **aplicada al proyecto real**; `migration list`
+  confirma local y remoto en `20260725120000`. La lógica vive dos veces a
+  propósito —`src/lib/recurrencia.ts` y su gemelo en la Edge Function del cron,
+  porque son runtimes que no se importan entre sí— y la paridad la fija un test
+  que importa las dos copias y compara salidas sobre un barrido de fechas.
+  Aritmética en UTC (mismo resultado en los dos lados); mensual con recorte a fin
+  de mes que **no se recuerda** (31/01 → 28/02 → 28/03, limitación documentada,
+  haría falta una columna de día ancla); `proximaOcurrencia` avanza hasta pasar
+  el ahora, así un atrasado reengancha en vez de disparar una vez por ciclo.
+  Offline-first sin nada especial (espejo local + outbox); `marcarEnviado` pasó a
+  devolver la fila para que el watcher saque de "ya disparados" al que reenganchó
+  —si no, un diario avisaría una sola vez por sesión—. UI: selector en
+  `ItemForm`, marca de repetición en `RecordatorioRow` (/reminders y Hoy) y en la
+  ficha de Biblioteca; las dos páginas ahora reflejan lo que devuelve el repo en
+  vez de asumir `hecho`. Asistente: `recordatorio_recurrencia` en create/update
+  (+ centinela `"ninguna"` para apagar la repetición sin borrar el recordatorio)
+  y system prompt actualizado. **36 tests nuevos** (166 en total, todos verdes),
+  build y lint limpios, verificación visual en claro/oscuro y desktop/~375px con
+  el harness de CSS compilado. **Falta:** desplegar las dos Edge Functions y la
+  prueba en vivo del usuario.
 
 - 2026-07-25 — Recuperar contraseña por correo. Olvidarse la contraseña dejó de
   ser una puerta cerrada. Detalle completo en la sección
