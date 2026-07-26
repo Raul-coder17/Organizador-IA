@@ -16,10 +16,17 @@
 import { createClient, type SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import {
   allFunctionCalls,
-  collectProposedActions,
+  collectProposals,
   fallbackTextForActions,
   partitionCalls,
 } from './actions.ts'
+import {
+  buildContents,
+  resumenContents,
+  type GeminiContent,
+  type GeminiPart,
+  type MensajeHistorial,
+} from './historial.ts'
 import { decideRpmSlot } from './rpm.ts'
 
 // gemini-3.1-flash-lite (no "-preview": esa variante quedó dada de baja).
@@ -67,6 +74,25 @@ async function decryptApiKey(payload: string, secretB64: string): Promise<string
 
 const TIPO_ENUM = ['nota', 'recordatorio', 'lista', 'tabla']
 const PRIORIDAD_ENUM = ['alta', 'media', 'baja']
+// Los tres valores reales de la columna `recordatorios.recurrencia` + el
+// centinela 'ninguna', que sólo tiene sentido al EDITAR (apagar la repetición
+// de un recordatorio que ya la tenía, sin borrar el recordatorio).
+const RECURRENCIA_ENUM = ['diario', 'semanal', 'mensual', 'dias_semana']
+const RECURRENCIA_ENUM_UPDATE = [...RECURRENCIA_ENUM, 'ninguna']
+
+// Descripción compartida por el campo de días de create y update: la convención
+// (0=domingo, zona local) tiene que decirse igual en los dos lados o el modelo
+// mandaría escalas distintas según la acción.
+const DIAS_DESC =
+  'Sólo con recordatorio_recurrencia = "dias_semana": qué días de la semana, como enteros donde 0=domingo, 1=lunes, 2=martes, 3=miércoles, 4=jueves, 5=viernes, 6=sábado. Ej. "los lunes, miércoles y viernes" = [1,3,5]; "los fines de semana" = [6,0]. Al menos uno.'
+
+// Con "diario" y "dias_semana" la fecha de arranque no la elige nadie: sale de
+// la hora + (si aplica) los días. Pedirle al modelo que calcule "el próximo
+// lunes/miércoles/viernes a las 7" era aritmética de calendario que no tiene por
+// qué hacer bien; con la hora sola, el cliente la calcula con la misma función
+// que usa el form manual.
+const HORA_DESC =
+  'Hora del aviso en formato "HH:mm" 24h (ej. "07:00", "21:30"), en hora LOCAL del usuario. Usalo SÓLO con recordatorio_recurrencia = "diario" o "dias_semana", y en ese caso NO mandes recordatorio_fecha_hora: la primera fecha la calcula la app (la próxima vez que sea esa hora, corrida al próximo día marcado si hay días).'
 
 const FUNCTION_DECLARATIONS = [
   {
@@ -85,7 +111,7 @@ const FUNCTION_DECLARATIONS = [
   {
     name: 'listRecordatorios',
     description:
-      'Consulta los recordatorios del usuario (fecha/hora, estado y el item asociado). Solo lectura. Úsalo para tener contexto antes de crear, mover o quitar un recordatorio.',
+      'Consulta los recordatorios del usuario (fecha/hora, estado, recurrencia y el item asociado). Solo lectura. Úsalo para tener contexto antes de crear, mover, repetir o quitar un recordatorio.',
     parameters: {
       type: 'OBJECT',
       properties: {
@@ -110,7 +136,7 @@ const FUNCTION_DECLARATIONS = [
         contenido: {
           type: 'STRING',
           description:
-            'Contenido en texto (para nota, recordatorio o tabla). Para tipo "lista" NO uses esto: usá "lineas".',
+            'OBLIGATORIO para nota, recordatorio y tabla: QUÉ es el item, en texto ("Ir al gym", "Tomar la pastilla"). Mandalo SIEMPRE, también cuando el item lleve recordatorio y/o recurrencia — sin esto el item se guarda vacío y no sirve. Para tipo "lista" NO uses esto: usá "lineas".',
         },
         lineas: {
           type: 'ARRAY',
@@ -121,7 +147,22 @@ const FUNCTION_DECLARATIONS = [
         recordatorio_fecha_hora: {
           type: 'STRING',
           description:
-            'Opcional: crea el item CON un recordatorio a esta fecha/hora LOCAL del usuario, en formato "YYYY-MM-DDTHH:mm" (ej. "2026-07-23T09:00"). Sirve para CUALQUIER tipo de item, no solo "recordatorio".',
+            'Opcional: crea el item CON un recordatorio a esta fecha/hora LOCAL del usuario, en formato "YYYY-MM-DDTHH:mm" (ej. "2026-07-23T09:00"). Sirve para CUALQUIER tipo de item, no solo "recordatorio". Con recurrencia "diario" o "dias_semana" no lo mandes: usá recordatorio_hora.',
+        },
+        recordatorio_hora: {
+          type: 'STRING',
+          description: HORA_DESC,
+        },
+        recordatorio_recurrencia: {
+          type: 'STRING',
+          enum: RECURRENCIA_ENUM,
+          description:
+            'Opcional: hace que el recordatorio se REPITA. "diario" para todos los días, "semanal" cada 7 días, "mensual" cada mes, y "dias_semana" para días concretos de la semana (ahí además mandá recordatorio_dias). Con "diario" y "dias_semana" alcanza con recordatorio_hora; con "semanal" y "mensual" mandá recordatorio_fecha_hora, que es la PRIMERA vez. Después se reprograma solo. Si no se pide repetición, omitilo.',
+        },
+        recordatorio_dias: {
+          type: 'ARRAY',
+          items: { type: 'INTEGER' },
+          description: DIAS_DESC,
         },
       },
       required: ['tipo'],
@@ -165,11 +206,27 @@ const FUNCTION_DECLARATIONS = [
         recordatorio_fecha_hora: {
           type: 'STRING',
           description:
-            'Agrega o mueve el recordatorio del item a esta fecha/hora LOCAL "YYYY-MM-DDTHH:mm".',
+            'Agrega o mueve el recordatorio del item a esta fecha/hora LOCAL "YYYY-MM-DDTHH:mm". Con recurrencia "diario" o "dias_semana" no lo mandes: usá recordatorio_hora.',
+        },
+        recordatorio_hora: {
+          type: 'STRING',
+          description: HORA_DESC,
+        },
+        recordatorio_recurrencia: {
+          type: 'STRING',
+          enum: RECURRENCIA_ENUM_UPDATE,
+          description:
+            'Cambia cada cuánto se repite el recordatorio del item. Con "dias_semana" mandá también recordatorio_dias. Usá "ninguna" para que DEJE de repetirse pero el recordatorio siga existiendo (distinto de quitar_recordatorio, que lo elimina). Omitilo si la repetición no cambia.',
+        },
+        recordatorio_dias: {
+          type: 'ARRAY',
+          items: { type: 'INTEGER' },
+          description: `${DIAS_DESC} Al cambiar los días mandá la lista COMPLETA que queda, no sólo los que se agregan.`,
         },
         quitar_recordatorio: {
           type: 'BOOLEAN',
-          description: 'true para quitar el recordatorio existente del item.',
+          description:
+            'true para quitar por completo el recordatorio existente del item (fecha incluida).',
         },
       },
       required: ['item_id'],
@@ -199,7 +256,15 @@ Reglas:
 - Antes de responder sobre qué tiene guardado, o antes de proponer cambios sobre un item existente, usá listItems (y listRecordatorios si el pedido involucra recordatorios) para ver datos reales. No inventes items ni ids.
 - Tipos válidos: nota, recordatorio, lista, tabla. Prioridades válidas: alta, media, baja (o sin prioridad).
 - El tipo "lista" tiene líneas marcables (checkboxes), NO texto libre. Para crear una lista usá el campo "lineas" (un array de strings), no "contenido". Para editar sus líneas usá lineas_agregar / lineas_quitar / lineas_marcar_hechas / lineas_desmarcar.
+- TODO create lleva SIEMPRE el QUÉ del item: "contenido" para nota, recordatorio y tabla, o "lineas" para lista. Nunca lo omitas. La fecha, la hora, la repetición y los días dicen CUÁNDO avisar, no QUÉ es el item: un create con recordatorio_fecha_hora/recordatorio_recurrencia pero sin "contenido" guarda un item vacío. Si los ejemplos de más abajo enumeran sólo los campos de recordatorio, es para no repetirse: "contenido" va igual, siempre.
 - Podés agregar un recordatorio a CUALQUIER item (no solo a los de tipo "recordatorio"): al crear, con "recordatorio_fecha_hora"; al editar, con "recordatorio_fecha_hora" (agregar/mover) o "quitar_recordatorio". La fecha/hora va en hora LOCAL del usuario, formato "YYYY-MM-DDTHH:mm".
+- Un recordatorio puede REPETIRSE, con "recordatorio_recurrencia": "diario", "semanal", "mensual" o "dias_semana". No hay fecha de fin: la repetición sigue hasta que el usuario la saque.
+- CUÁNDO empieza la repetición: con "diario" y "dias_semana" NO hace falta ninguna fecha — mandá sólo "recordatorio_hora" ("HH:mm") y la app calcula sola la primera vez (la próxima vez que sea esa hora, en un día que corresponda). Con "semanal" y "mensual" sí mandá "recordatorio_fecha_hora", porque ahí la fecha es la que define qué día de la semana o del mes se repite.
+- Si el pedido dice "todos los días", "cada mañana" o parecido: recordatorio_recurrencia = "diario" + recordatorio_hora. Ejemplo: "recordame tomar la pastilla todos los días a las 9" = un create con tipo "recordatorio", contenido = "Tomar la pastilla", recordatorio_recurrencia = "diario" y recordatorio_hora = "09:00".
+- Si el pedido nombra DÍAS CONCRETOS de la semana ("los lunes, miércoles y viernes", "todos los martes", "los fines de semana", "de lunes a viernes"), usá recordatorio_recurrencia = "dias_semana" MÁS "recordatorio_dias" con los números de esos días (0=domingo … 6=sábado) MÁS "recordatorio_hora". Ejemplo: "recordame ir al gym los lunes, miércoles y viernes a las 7" = un create con tipo "recordatorio", contenido = "Ir al gym", recordatorio_recurrencia = "dias_semana", recordatorio_dias = [1,3,5] y recordatorio_hora = "07:00". Ojo: "todos los martes" es dias_semana con [2], NO "semanal" a secas.
+- "semanal" y "dias_semana" no son lo mismo: "semanal" repite cada 7 días desde la última vez (siempre el mismo día), "dias_semana" repite en los días que se nombren. Ante un pedido con días nombrados, elegí siempre "dias_semana".
+- Cuando un recordatorio recurrente se cumple (el usuario lo marca hecho, o le llega el aviso), se reprograma SOLO para la vuelta siguiente. No propongas crear un item por cada repetición: es UN solo item con recurrencia.
+- Para que algo DEJE de repetirse sin borrarlo, usá proposeUpdateItem con recordatorio_recurrencia = "ninguna". Para eliminar el recordatorio entero, usá quitar_recordatorio. No son lo mismo.
 - Podés proponer VARIAS acciones en un mismo turno cuando el pedido lo implique. Ejemplos: "agregá una nota y ponele recordatorio para mañana 9" = UNA sola acción create con contenido + recordatorio_fecha_hora; "agregá leche y pan a mi lista del súper" (lista existente) = UN update con lineas_agregar=["leche","pan"]; "borrá la nota X y creá una tarea Y" = dos acciones (un delete + un create) en el mismo turno.
 - Cuando el usuario quiera crear, editar o borrar algo, llamá a la función propose correspondiente. Esas acciones NO se ejecutan al instante: el usuario ve un preview y confirma. Después de proponer, decile en una frase qué va a pasar cuando confirme.
 - Para editar o borrar necesitás el item_id real (obtenido de listItems). Si no lo tenés, consultá primero.${ahora}`
@@ -207,15 +272,9 @@ Reglas:
 
 // ---------------------------------------------------------------------------
 
-interface GeminiPart {
-  text?: string
-  functionCall?: { name: string; args?: Record<string, unknown> }
-  functionResponse?: { name: string; response: Record<string, unknown> }
-}
-interface GeminiContent {
-  role: string
-  parts?: GeminiPart[]
-}
+// `GeminiPart` y `GeminiContent` viven en historial.ts, que es quien arma el
+// `contents`: tenerlos declarados en un solo lado evita que las dos formas del
+// mismo payload se separen con el tiempo.
 interface GeminiCandidate {
   content?: GeminiContent
   finishReason?: string
@@ -365,6 +424,55 @@ function translateGeminiError(status: number, rawBody: string): string {
   return `Hubo un problema con la IA (código ${status}). Intentá de nuevo; si se repite, avisá.`
 }
 
+// ---------------------------------------------------------------------------
+// Auditoría del intercambio con Gemini
+//
+// Va SOLO a los logs de la Edge Function (dashboard de Supabase): ninguna tabla
+// persistente, nada de esto vuelve al cliente. Lo que se loguea es la
+// conversación en sí — texto que el propio usuario escribió o vio, más items
+// que ya le pertenecen. NO se loguea la API key (viaja aparte, en la query
+// string del fetch, y nunca entra a `contents`), ni el blob cifrado, ni el
+// secret de cifrado.
+//
+// Los logs de Supabase cortan las líneas largas, así que un payload grande se
+// parte en trozos numerados para poder reconstruirlo entero después.
+const LOG_CHUNK = 3000
+
+function logJson(prefix: string, value: unknown) {
+  let serialized: string
+  try {
+    serialized = JSON.stringify(value)
+  } catch (err) {
+    console.log(`${prefix} <no serializable: ${err instanceof Error ? err.message : String(err)}>`)
+    return
+  }
+  if (serialized.length <= LOG_CHUNK) {
+    console.log(`${prefix} ${serialized}`)
+    return
+  }
+  const total = Math.ceil(serialized.length / LOG_CHUNK)
+  for (let i = 0; i < total; i++) {
+    console.log(`${prefix} [parte ${i + 1}/${total}] ${serialized.slice(i * LOG_CHUNK, (i + 1) * LOG_CHUNK)}`)
+  }
+}
+
+// Qué contestó Gemini en esta vuelta: las function calls con sus args COMPLETOS
+// (que es donde se ve si mandó recordatorio_fecha_hora en vez de sólo
+// recordatorio_hora) o, si no llamó a ninguna, el texto. Junto con el payload de
+// ida alcanza para reconstruir un incidente real sin adivinar.
+function logRespuestaGemini(turn: number, candidate: GeminiCandidate) {
+  const parts = candidate.content?.parts ?? []
+  const functionCalls = parts
+    .filter((p) => p.functionCall)
+    .map((p) => ({ name: p.functionCall!.name, args: p.functionCall!.args ?? {} }))
+  logJson(
+    `[ai-assistant][respuesta] turno=${turn} finishReason=${candidate.finishReason ?? 'null'} calls=${functionCalls.length}`,
+    { function_calls: functionCalls, texto: textFromParts(parts) || null },
+  )
+}
+
+// ---------------------------------------------------------------------------
+
 async function callGemini(
   apiKey: string,
   contents: GeminiContent[],
@@ -477,7 +585,7 @@ async function execListRecordatorios(
 ): Promise<unknown> {
   let query = supabase
     .from('recordatorios')
-    .select('id, fecha_hora, estado, item:items(id, tipo, contenido)')
+    .select('id, fecha_hora, estado, recurrencia, recurrencia_dias, item:items(id, tipo, contenido)')
     .order('fecha_hora', { ascending: true })
 
   if (typeof args.estado === 'string') query = query.eq('estado', args.estado)
@@ -495,6 +603,14 @@ async function execListRecordatorios(
         item && typeof item.contenido?.texto === 'string' ? item.contenido.texto : (item?.contenido ?? null),
       fecha_hora: r.fecha_hora,
       estado: r.estado,
+      // null = de una sola vez. Va en el contexto para que el modelo no proponga
+      // "hacerlo diario" algo que ya lo es, ni pierda la repetición al mover una
+      // fecha.
+      recurrencia: r.recurrencia ?? null,
+      // Días guardados (escala UTC). Van al contexto sólo como referencia de que
+      // el recordatorio tiene días fijos; si el modelo propone cambiarlos manda
+      // la lista nueva completa en escala local y el cliente la convierte.
+      recurrencia_dias: r.recurrencia_dias ?? null,
     }
   })
 
@@ -572,7 +688,7 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'No se pudo descifrar la key. Volvé a guardarla en Settings.' }, 500)
   }
 
-  let body: { messages?: { role?: string; text?: string }[]; client_now?: string }
+  let body: { messages?: MensajeHistorial[]; client_now?: string }
   try {
     body = await req.json()
   } catch {
@@ -589,12 +705,24 @@ Deno.serve(async (req) => {
   const clientNow = typeof body.client_now === 'string' ? body.client_now : undefined
   const systemInstruction = buildSystemInstruction(clientNow)
 
-  const contents: GeminiContent[] = messages
-    .filter((m) => typeof m.text === 'string' && m.text.trim())
-    .map((m) => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.text as string }],
-    }))
+  // El historial NO es texto plano: los turnos en que el modelo propuso algo se
+  // reconstruyen como el par functionCall/functionResponse real, para que Gemini
+  // sepa qué se confirmó, qué se canceló y qué falló. Ver historial.ts.
+  const contents: GeminiContent[] = buildContents(messages)
+  if (contents.length === 0) {
+    return jsonResponse({ error: 'Faltan mensajes.' }, 400)
+  }
+
+  // Cabecera del intercambio. `client_now` es lo único variable de la system
+  // instruction y es la entrada con la que el modelo resuelve fechas relativas:
+  // sin verla no se puede juzgar si una fecha que propuso estaba bien calculada.
+  // El resumen del historial es lo que permite verificar de un vistazo que la
+  // reconstrucción quedó bien: la secuencia de roles tiene que alternar
+  // user/model y el conteo de calls tiene que coincidir con las propuestas.
+  console.log(
+    `[ai-assistant][payload] inicio modelo=${GEMINI_MODEL} client_now=${clientNow ?? '<ausente>'} mensajes_chat=${messages.length}`,
+  )
+  console.log(`[ai-assistant][payload] historial ${resumenContents(contents)}`)
 
   // Cada llamada exitosa a Gemini cuenta contra la cuota; llevamos el total
   // de hoy para el pre-flight de próximas y para mostrarlo en el frontend.
@@ -615,7 +743,14 @@ Deno.serve(async (req) => {
         })
       }
 
+      // El payload EXACTO de ESTA vuelta, no sólo el de la primera: a partir del
+      // segundo turno `contents` ya trae el candidate anterior y los
+      // functionResponse de las lecturas, que es justo el contexto que tenía el
+      // modelo cuando decidió lo que decidió.
+      logJson(`[ai-assistant][payload] turno=${turn} contents=`, contents)
+
       const candidate = await callGemini(apiKey, contents, systemInstruction)
+      logRespuestaGemini(turn, candidate)
 
       // Llamada exitosa: incrementamos el contador diario (atómico, respeta RLS).
       const { data: nuevo } = await supabase.rpc('increment_ai_usage')
@@ -646,9 +781,19 @@ Deno.serve(async (req) => {
       // Prioridad: si hay acciones propuestas, las devolvemos TODAS juntas (no
       // seguimos el loop). Así evitamos además responder function-calls a medias.
       if (proposes.length > 0) {
-        const acciones = collectProposedActions(proposes)
+        const propuestas = collectProposals(proposes)
+        const acciones = propuestas.map((p) => p.accion)
         const texto = textFromParts(parts) || fallbackTextForActions(acciones)
-        return jsonResponse({ respuesta_texto: texto, acciones_propuestas: acciones, ...usageField() })
+        return jsonResponse({
+          respuesta_texto: texto,
+          acciones_propuestas: acciones,
+          // La call cruda de cada acción, en el MISMO orden que
+          // `acciones_propuestas`. El cliente la guarda con el desenlace y nos la
+          // devuelve en el próximo mensaje, y así el historial puede replicar el
+          // turno tal como el modelo lo emitió en vez de parafrasearlo.
+          calls_propuestas: propuestas.map((p) => ({ tool: p.call.name, args: p.call.args })),
+          ...usageField(),
+        })
       }
 
       // Solo lecturas: ejecutamos TODAS server-side y devolvemos sus resultados

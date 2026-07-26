@@ -10,6 +10,7 @@ import {
   createTema,
   deleteItem,
   deleteRecordatoriosForItem,
+  getRecordatorioForItem,
   updateItem,
   upsertRecordatorio,
 } from '../lib/repo'
@@ -17,10 +18,17 @@ import { aplicarAccionCrear } from '../lib/accionesPropuestas'
 import { loadItemsFromCache, loadTemasFromCache } from '../lib/db'
 import { requestSync } from '../lib/sync'
 import { useSyncStatus } from '../lib/useSyncStatus'
-import { datetimeLocalToIso, isoToDatetimeLocal } from '../lib/recordatorios'
+import { datetimeLocalToIso, isoToDatetimeLocal, proximaFechaConHora } from '../lib/recordatorios'
+import { diasUtcALocales, prepararRecurrencia } from '../lib/recurrencia'
 import { ProposedActionCard, type EstadoAccion, type PendingAction } from './ProposedActionCard'
 import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
-import type { AccionPropuesta, AssistantResponse, AssistantUsage, ChatMessage } from '../types/assistant'
+import type {
+  AccionPropuesta,
+  AssistantResponse,
+  AssistantUsage,
+  ChatMessage,
+  EstadoAccionHistorial,
+} from '../types/assistant'
 
 // Asistente como drawer (PLAN_REDISEÑO.md ítem 10). Antes era la página
 // `/assistant`; ahora el MOTOR es el mismo —chat, envío, propuestas,
@@ -112,6 +120,11 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState<PendingAction[]>([])
+  // Índice del mensaje del chat dueño de las tarjetas que están en `pending`.
+  // Confirmar o cancelar tiene que escribir el desenlace ADENTRO de ese mensaje
+  // —no en una burbuja nueva— porque el historial que se reenvía sale de
+  // `messages`, y `pending` se limpia en cuanto el usuario escribe otra cosa.
+  const [pendingMsgIndex, setPendingMsgIndex] = useState<number | null>(null)
   const [usage, setUsage] = useState<AssistantUsage | null>(null)
   const [cooldown, setCooldown] = useState(0) // segundos restantes de rate limit corto
 
@@ -181,7 +194,23 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
 
     const { data, error } = await supabase.functions.invoke<AssistantResponse>('ai-assistant', {
       body: {
-        messages: history.map((m) => ({ role: m.role, text: m.text })),
+        // Además del texto va la estructura de cada acción propuesta y cómo
+        // terminó, para que el backend pueda reconstruir el turno como el par
+        // functionCall/functionResponse que realmente fue. Sin esto, confirmar o
+        // cancelar no dejaba rastro y el modelo podía re-proponer algo ya hecho
+        // o ya rechazado.
+        messages: history.map((m) => ({
+          role: m.role,
+          text: m.text,
+          solo_ui: m.solo_ui,
+          acciones: m.acciones?.map((a) => ({
+            tool: a.call?.tool,
+            args: a.call?.args,
+            estado: a.estado,
+            item_id: a.item_id,
+            error: a.error,
+          })),
+        })),
         // Hora local del usuario para que Gemini resuelva "mañana a las 9", etc.
         client_now: isoToDatetimeLocal(new Date().toISOString()),
       },
@@ -210,11 +239,24 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
     }
 
     const acciones = data.acciones_propuestas ?? []
+    const calls = data.calls_propuestas ?? []
     const assistantMsg: ChatMessage = {
       role: 'assistant',
       text: data.respuesta_texto,
-      acciones: acciones.length ? acciones : undefined,
+      // Arrancan en 'sin_responder' a propósito: si el usuario no toca las
+      // tarjetas y sigue escribiendo, ése es exactamente el desenlace que hay
+      // que informarle al modelo. Confirmar o cancelar lo pisa después.
+      acciones: acciones.length
+        ? acciones.map((accion, i) => ({
+            accion,
+            call: calls[i],
+            estado: 'sin_responder' as EstadoAccionHistorial,
+          }))
+        : undefined,
     }
+    // El mensaje del asistente se agrega al final de `history`, así que su
+    // índice es el largo de `history` (que ya incluye el mensaje del usuario).
+    setPendingMsgIndex(history.length)
     setMessages((prev) => [...prev, assistantMsg])
     setPending(acciones.map((accion) => ({ accion, estado: 'idle' as EstadoAccion })))
     if (data.usage) setUsage(data.usage)
@@ -245,13 +287,15 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
 
   // Aplica una acción propuesta contra Supabase (reusa el mismo CRUD manual, así
   // que respeta RLS). Soporta listas (líneas) y recordatorios.
-  async function applyAction(accion: AccionPropuesta): Promise<void> {
+  //
+  // Devuelve el item creado en el caso `create` —el único donde el id no se sabía
+  // de antes— para poder informárselo al modelo en el historial.
+  async function applyAction(accion: AccionPropuesta): Promise<Item | undefined> {
     if (accion.tipo_accion === 'create') {
       // El "cómo se guarda un create propuesto" es compartido con la captura por
       // foto: vive en lib/accionesPropuestas.ts. `origen: 'texto'` es lo que
       // distingue en la base este camino del de la foto.
-      await aplicarAccionCrear(accion, user!.id, temas, 'texto', sumarTema)
-      return
+      return await aplicarAccionCrear(accion, user!.id, temas, 'texto', sumarTema)
     }
 
     if (accion.tipo_accion === 'update') {
@@ -302,8 +346,55 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
 
       if (c.quitar_recordatorio) {
         await deleteRecordatoriosForItem(accion.item_id)
-      } else if (c.recordatorio_fecha_hora) {
-        await upsertRecordatorio(accion.item_id, datetimeLocalToIso(c.recordatorio_fecha_hora))
+      } else if (
+        c.recordatorio_fecha_hora ||
+        c.recordatorio_hora ||
+        c.recordatorio_recurrencia !== undefined
+      ) {
+        // `upsertRecordatorio` pisa fecha Y recurrencia de una, así que hay que
+        // completar el campo que esta acción NO trae con el valor actual. Si no,
+        // "movelo a las 10" borraría el "todos los días" de un recordatorio que
+        // ya se repetía, y "hacelo semanal" necesitaría una fecha que nadie
+        // mandó.
+        const existente = await getRecordatorioForItem(accion.item_id)
+        // Al pasar a "diario"/"días específicos" el asistente manda hora sola:
+        // la fecha de arranque se recalcula acá igual que en el form manual, en
+        // vez de conservar la del recordatorio anterior (que podría ser de un
+        // día que ya no corresponde).
+        const fechaLocal =
+          c.recordatorio_hora && !c.recordatorio_fecha_hora
+            ? proximaFechaConHora(c.recordatorio_hora)
+            : (c.recordatorio_fecha_hora ?? null)
+        const fecha = fechaLocal ? datetimeLocalToIso(fechaLocal) : existente?.fecha_hora
+
+        // Sin fecha (ni nueva ni previa) no hay recordatorio que crear: cambiar
+        // la recurrencia de algo que no existe no es una acción sensata.
+        if (fecha) {
+          const recurrencia =
+            c.recordatorio_recurrencia !== undefined
+              ? c.recordatorio_recurrencia // valor nuevo, o null para apagarla
+              : (existente?.recurrencia ?? null)
+
+          // Los días siguen la misma regla que la recurrencia: si la acción trae
+          // unos nuevos se usan (vienen en escala local, como la fecha), y si no,
+          // se conservan los que ya estaban — pero ésos ya están guardados en
+          // UTC, así que hay que devolverlos a la escala local antes de que
+          // `prepararRecurrencia` los vuelva a convertir. Sin ese ida y vuelta,
+          // mover la hora de un "lunes y miércoles" le correría los días.
+          const diasLocales =
+            c.recordatorio_dias ??
+            (existente?.recurrencia_dias
+              ? diasUtcALocales(existente.recurrencia_dias, new Date(existente.fecha_hora))
+              : null)
+
+          const listo = prepararRecurrencia(fecha, recurrencia, diasLocales)
+          await upsertRecordatorio(
+            accion.item_id,
+            listo.fechaIso,
+            listo.recurrencia,
+            listo.diasUtc,
+          )
+        }
       }
       return
     }
@@ -323,6 +414,41 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
     }
   }
 
+  // Igual que `notaOk` pero del otro lado: sin esto, cancelar no dejaba ninguna
+  // huella en el chat, y como las tarjetas se limpian al enviar el mensaje
+  // siguiente, el rechazo desaparecía de la vista por completo.
+  function notaCancelada(accion: AccionPropuesta): string {
+    switch (accion.tipo_accion) {
+      case 'create':
+        return 'Cancelaste la creación: no se creó nada.'
+      case 'update':
+        return 'Cancelaste la edición: el item quedó como estaba.'
+      case 'delete':
+        return 'Cancelaste el borrado: el item sigue ahí.'
+    }
+  }
+
+  // Graba el desenlace de una acción dentro del mensaje que la propuso. Es el
+  // único lugar donde el historial se entera de que algo se confirmó, se canceló
+  // o falló: la tarjeta de `pending` desaparece en cuanto el usuario escribe de
+  // nuevo, `messages` es lo que persiste y lo que se reenvía.
+  function marcarAccion(
+    index: number,
+    estado: EstadoAccionHistorial,
+    extra?: { item_id?: string; error?: string },
+  ) {
+    setMessages((prev) =>
+      prev.map((m, mi) =>
+        mi !== pendingMsgIndex || !m.acciones
+          ? m
+          : {
+              ...m,
+              acciones: m.acciones.map((a, ai) => (ai === index ? { ...a, estado, ...extra } : a)),
+            },
+      ),
+    )
+  }
+
   // Aplica UNA acción (por índice) y actualiza su estado en la tarjeta.
   async function confirmOne(index: number): Promise<boolean> {
     const target = pending[index]
@@ -331,20 +457,36 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
     setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'applying' } : p)))
     setError(null)
     try {
-      await applyAction(target.accion)
+      const creado = await applyAction(target.accion)
       setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'done' } : p)))
-      setMessages((prev) => [...prev, { role: 'assistant', text: notaOk(target.accion) }])
+      // El id real del item: en un create sale recién de aplicarlo, y es lo que
+      // le permite al modelo referirse después a lo que acaba de crear sin
+      // tener que volver a listar.
+      const itemId =
+        target.accion.tipo_accion === 'create' ? creado?.id : target.accion.item_id
+      marcarAccion(index, 'aplicada', { item_id: itemId })
+      // La burbuja de confirmación es sólo para el usuario (`solo_ui`): en el
+      // historial, lo que pasó ya lo dice el functionResponse, y con más detalle.
+      setMessages((prev) => [...prev, { role: 'assistant', text: notaOk(target.accion), solo_ui: true }])
       await loadData()
       return true
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'No se pudo aplicar el cambio.'
       setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'error', error: msg } : p)))
+      marcarAccion(index, 'error', { error: msg })
       return false
     }
   }
 
+  // Cancelar también deja rastro (bug C-1: antes no agregaba NADA, ni al chat ni
+  // al historial, así que el modelo podía volver a proponer lo mismo que el
+  // usuario acababa de rechazar).
   function cancelOne(index: number) {
+    const target = pending[index]
+    if (!target || target.estado !== 'idle') return
     setPending((prev) => prev.map((p, i) => (i === index ? { ...p, estado: 'cancelled' } : p)))
+    marcarAccion(index, 'cancelada')
+    setMessages((prev) => [...prev, { role: 'assistant', text: notaCancelada(target.accion), solo_ui: true }])
   }
 
   async function confirmAll() {

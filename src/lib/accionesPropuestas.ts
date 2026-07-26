@@ -1,5 +1,5 @@
-import { createItem, createTema, upsertRecordatorio } from './repo'
-import { datetimeLocalToIso } from './recordatorios'
+import { datetimeLocalToIso, proximaFechaConHora, recurrenciaSinFecha } from './fechaLocal'
+import { prepararRecurrencia, proximaOcurrencia } from './recurrencia'
 import type { AccionCrear } from '../types/assistant'
 import type { Item, ItemInsert, OrigenItem, Prioridad, Tema, TipoItem } from '../types/database'
 
@@ -52,6 +52,14 @@ export function contenidoDeAccionCrear(accion: AccionCrear): Record<string, unkn
 // Resuelve el nombre de tema que propuso la IA a un id, creándolo si no existe.
 // El tema creado por la IA sale con color automático igual que el manual: el
 // default vive en `repo.createTema`, no en el form (Fase 2, D4).
+//
+// `repo.ts` se importa DINÁMICO (acá y en `aplicarAccionCrear`) y no arriba del
+// módulo: arrastra `supabase.ts`, que lee `import.meta.env` al cargarse, y eso
+// es lo único de Vite que `deno test` no puede resolver. Diferido a runtime,
+// el resto del módulo —`primeraVuelta`, `fechaLocalDeAccion` y compañía, que sí
+// son puros— queda testeable sin arrastrar el cliente de Supabase. En el
+// navegador esto no cambia nada: sigue siendo el mismo chunk, solo que Vite lo
+// resuelve en el primer `await` en vez de al importar el módulo.
 async function resolverTemaId(
   nombre: string | null | undefined,
   userId: string,
@@ -61,6 +69,7 @@ async function resolverTemaId(
   if (!nombre) return null
   const existente = temas.find((t) => t.nombre.toLowerCase() === nombre.toLowerCase())
   if (existente) return existente.id
+  const { createTema } = await import('./repo')
   const tema = await createTema(userId, nombre)
   onTemaCreado?.(tema)
   return tema.id
@@ -83,6 +92,7 @@ export async function aplicarAccionCrear(
   origen: 'texto' | 'foto',
   onTemaCreado?: (tema: Tema) => void,
 ): Promise<Item> {
+  const { createItem, upsertRecordatorio } = await import('./repo')
   const tema_id = await resolverTemaId(accion.tema, userId, temas, onTemaCreado)
 
   const payload: ItemInsert = {
@@ -95,10 +105,72 @@ export async function aplicarAccionCrear(
   }
   const creado = await createItem(payload)
 
-  if (accion.recordatorio_fecha_hora) {
-    await upsertRecordatorio(creado.id, datetimeLocalToIso(accion.recordatorio_fecha_hora))
+  const fechaLocal = fechaLocalDeAccion(accion)
+  if (fechaLocal) {
+    // La fecha propuesta es la PRIMERA vuelta; de acá en más lo reprograma solo
+    // el repo (o el cron) según esta recurrencia. Los días vienen en escala
+    // local, igual que la fecha: `prepararRecurrencia` los pasa a UTC y corre la
+    // primera fecha al próximo día marcado, exactamente como el form manual.
+    const listo = prepararRecurrencia(
+      datetimeLocalToIso(fechaLocal),
+      accion.recordatorio_recurrencia ?? null,
+      accion.recordatorio_dias,
+    )
+    await upsertRecordatorio(
+      creado.id,
+      primeraVuelta(listo.fechaIso, listo.recurrencia, listo.diasUtc),
+      listo.recurrencia,
+      listo.diasUtc,
+    )
   }
   return creado
+}
+
+/**
+ * La fecha/hora local ("YYYY-MM-DDTHH:mm") de una acción propuesta, venga como
+ * fecha completa o como hora sola.
+ *
+ * Con recurrencia "diario" o "días específicos" el asistente manda sólo
+ * `recordatorio_hora`: la fecha de arranque no la elige nadie —igual que en el
+ * form manual, donde el selector de fecha ni se muestra— y la calcula el
+ * cliente, que es el único que conoce la zona horaria del usuario.
+ *
+ * Si por lo que sea llegan las dos, manda la hora cuando la recurrencia es de
+ * las que no llevan fecha: en ese caso la fecha que el modelo haya calculado es
+ * justamente la cuenta que le sacamos de encima.
+ */
+export function fechaLocalDeAccion(accion: AccionCrear): string | null {
+  if (accion.recordatorio_hora && recurrenciaSinFecha(accion.recordatorio_recurrencia)) {
+    return proximaFechaConHora(accion.recordatorio_hora)
+  }
+  return (
+    accion.recordatorio_fecha_hora ??
+    (accion.recordatorio_hora ? proximaFechaConHora(accion.recordatorio_hora) : null)
+  )
+}
+
+/**
+ * Red de seguridad para las fechas que sí propone el modelo: si una recurrencia
+ * arranca en el pasado, se corre a su próxima vuelta real.
+ *
+ * "Semanal" y "mensual" siguen necesitando que el modelo calcule una fecha, y
+ * ahí puede equivocarse de día o quedarse con el de ayer. Un recordatorio
+ * recurrente vencido no es inofensivo: vence al instante, se reprograma, y el
+ * usuario ve un aviso que no pidió. `proximaOcurrencia` es la misma función que
+ * usa el watcher para reenganchar un recordatorio atrasado.
+ *
+ * No aplica a los de una sola vez: ahí una fecha pasada puede ser deliberada
+ * (anotar algo que ya pasó) y no hay "próxima vuelta" que calcular.
+ */
+export function primeraVuelta(
+  fechaIso: string,
+  recurrencia: ReturnType<typeof prepararRecurrencia>['recurrencia'],
+  diasUtc: number[] | null,
+): string {
+  if (!recurrencia) return fechaIso
+  const ahoraMs = Date.now()
+  if (new Date(fechaIso).getTime() > ahoraMs) return fechaIso
+  return proximaOcurrencia(fechaIso, recurrencia, ahoraMs, diasUtc)
 }
 
 // Un item propuesto pero todavía no guardado, con los campos ya en la forma que

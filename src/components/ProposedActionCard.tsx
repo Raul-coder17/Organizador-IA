@@ -1,5 +1,47 @@
-import { formatFechaHora } from '../lib/recordatorios'
-import type { AccionPropuesta } from '../types/assistant'
+import { formatFechaHora, proximaFechaConHora } from '../lib/fechaLocal'
+import { fechaLocalDeAccion, primeraVuelta } from '../lib/accionesPropuestas'
+import {
+  RECURRENCIA_LABEL,
+  etiquetaDias,
+  parseDiasSemana,
+  prepararRecurrencia,
+} from '../lib/recurrencia'
+
+// Cuándo va a avisar la primera vez una creación propuesta, o null si no trae
+// recordatorio. Se calcula con las MISMAS funciones que van a correr al
+// confirmar (`fechaLocalDeAccion` + `prepararRecurrencia` + `primeraVuelta`),
+// no con la fecha cruda que mandó el modelo: con "diario" y "días específicos"
+// el asistente sólo manda la hora, con días la primera vuelta se corre al
+// próximo día marcado, y si la recurrencia arranca vencida `primeraVuelta` la
+// corre a su próxima ocurrencia real — exactamente lo que hace
+// `aplicarAccionCrear` al guardar. Si la tarjeta mostrara otra cosa, el
+// usuario estaría confirmando una fecha distinta de la que se guarda.
+export function primeraVezDeAccionCrear(accion: AccionCrear): string | null {
+  const local = fechaLocalDeAccion(accion)
+  // Una fecha ilegible del modelo no puede tumbar el render de la tarjeta: sin
+  // fecha mostrable simplemente no se muestra la línea del recordatorio.
+  if (!local || !Number.isFinite(new Date(local).getTime())) return null
+  const listo = prepararRecurrencia(
+    new Date(local).toISOString(),
+    accion.recordatorio_recurrencia ?? null,
+    accion.recordatorio_dias,
+  )
+  return primeraVuelta(listo.fechaIso, listo.recurrencia, listo.diasUtc)
+}
+
+// Cómo se lee una repetición propuesta, antes de confirmarla. Para
+// 'dias_semana' lo que importa son los días concretos ("los Lun, Mié, Vie"), no
+// la palabra "días específicos": es justo lo que el usuario tiene que poder
+// revisar. Los días de una propuesta vienen en escala LOCAL, así que se nombran
+// directo, sin conversión.
+function textoRepeticion(recurrencia: string, dias: number[] | undefined): string {
+  if (recurrencia !== 'dias_semana') {
+    return RECURRENCIA_LABEL[recurrencia as keyof typeof RECURRENCIA_LABEL]?.toLowerCase() ?? recurrencia
+  }
+  const limpios = parseDiasSemana(dias)
+  return limpios ? `los ${etiquetaDias(limpios)}` : 'días específicos'
+}
+import type { AccionCrear, AccionEditar, AccionPropuesta } from '../types/assistant'
 import type { Item } from '../types/database'
 
 // La tarjeta de preview de una acción propuesta por la IA: qué va a pasar si
@@ -67,6 +109,37 @@ function TablaPreview({ columnas, filas }: { columnas?: string[]; filas: string[
   )
 }
 
+// Lo mismo para una edición: la fecha legible que va a quedar, o null si lo que
+// vino no se puede leer como fecha.
+function fechaCambioRecordatorio(cambios: AccionEditar['cambios']): string | null {
+  const local =
+    cambios.recordatorio_hora && !cambios.recordatorio_fecha_hora
+      ? proximaFechaConHora(cambios.recordatorio_hora)
+      : (cambios.recordatorio_fecha_hora ?? null)
+  if (!local || !Number.isFinite(new Date(local).getTime())) return null
+  return formatFechaHora(local)
+}
+
+// La línea "Recordatorio: …" de una creación propuesta, con la fecha REAL que se
+// va a guardar y la repetición pegada al lado — no como línea aparte, porque es
+// la diferencia entre "una vez" y "para siempre" y el usuario tiene que verla
+// ANTES de confirmar.
+function RecordatorioLinea({ accion }: { accion: AccionCrear }) {
+  const primeraVez = primeraVezDeAccionCrear(accion)
+  if (!primeraVez) return null
+  return (
+    <li>
+      <span className="text-ink-soft">Recordatorio:</span> {formatFechaHora(primeraVez)}
+      {accion.recordatorio_recurrencia && (
+        <>
+          {' — se repite '}
+          {textoRepeticion(accion.recordatorio_recurrencia, accion.recordatorio_dias)}
+        </>
+      )}
+    </li>
+  )
+}
+
 export function ProposedActionCard({
   accion,
   estado,
@@ -124,12 +197,7 @@ export function ProposedActionCard({
                 <span className="text-ink-soft">Contenido:</span> {accion.contenido}
               </li>
             )}
-            {accion.recordatorio_fecha_hora && (
-              <li>
-                <span className="text-ink-soft">Recordatorio:</span>{' '}
-                {formatFechaHora(accion.recordatorio_fecha_hora)}
-              </li>
-            )}
+            <RecordatorioLinea accion={accion} />
           </ul>
         </>
       )}
@@ -185,10 +253,24 @@ export function ProposedActionCard({
                 {accion.cambios.lineas_desmarcar.join(', ')}
               </li>
             )}
-            {accion.cambios.recordatorio_fecha_hora && (
+            {/* Igual que en la creación: con "diario"/"días específicos" el
+                asistente manda hora sola, y lo que se muestra es la fecha que
+                se va a guardar, no la hora suelta. */}
+            {(accion.cambios.recordatorio_fecha_hora ?? accion.cambios.recordatorio_hora) && (
               <li>
                 <span className="text-ink-soft">Recordatorio:</span>{' '}
-                {formatFechaHora(accion.cambios.recordatorio_fecha_hora)}
+                {fechaCambioRecordatorio(accion.cambios) ?? `a las ${accion.cambios.recordatorio_hora}`}
+              </li>
+            )}
+            {accion.cambios.recordatorio_recurrencia !== undefined && (
+              <li>
+                <span className="text-ink-soft">Repetición:</span>{' '}
+                {accion.cambios.recordatorio_recurrencia
+                  ? textoRepeticion(
+                      accion.cambios.recordatorio_recurrencia,
+                      accion.cambios.recordatorio_dias,
+                    )
+                  : 'deja de repetirse'}
               </li>
             )}
             {accion.cambios.quitar_recordatorio && (

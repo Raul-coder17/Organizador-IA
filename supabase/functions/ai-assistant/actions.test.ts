@@ -95,6 +95,77 @@ Deno.test('proposeCreateItem nota + recordatorio (un solo mensaje)', () => {
   })
 })
 
+Deno.test('proposeCreateItem con hora sola: diario y días específicos no llevan fecha', () => {
+  assertEquals(
+    mapProposedAction('proposeCreateItem', {
+      tipo: 'recordatorio',
+      contenido: 'Tomar la pastilla',
+      recordatorio_hora: '9:00', // sin cero a la izquierda: se normaliza
+      recordatorio_recurrencia: 'diario',
+    }),
+    {
+      tipo_accion: 'create',
+      tipo: 'recordatorio',
+      tema: null,
+      prioridad: null,
+      contenido: 'Tomar la pastilla',
+      recordatorio_hora: '09:00',
+      recordatorio_recurrencia: 'diario',
+    },
+  )
+
+  assertEquals(
+    mapProposedAction('proposeCreateItem', {
+      tipo: 'recordatorio',
+      contenido: 'Ir al gym',
+      recordatorio_hora: '07:00',
+      recordatorio_recurrencia: 'dias_semana',
+      recordatorio_dias: [1, 3, 5],
+    }),
+    {
+      tipo_accion: 'create',
+      tipo: 'recordatorio',
+      tema: null,
+      prioridad: null,
+      contenido: 'Ir al gym',
+      recordatorio_hora: '07:00',
+      recordatorio_recurrencia: 'dias_semana',
+      recordatorio_dias: [1, 3, 5],
+    },
+  )
+})
+
+Deno.test('una hora ilegible se descarta en vez de viajar hasta el cliente', () => {
+  for (const basura of ['las siete', '7', '25:00', '12:60', 700, null]) {
+    const accion = mapProposedAction('proposeCreateItem', {
+      tipo: 'recordatorio',
+      contenido: 'x',
+      recordatorio_hora: basura,
+      recordatorio_recurrencia: 'diario',
+    })
+    assertEquals(
+      (accion as { recordatorio_hora?: string }).recordatorio_hora,
+      undefined,
+      `con ${JSON.stringify(basura)}`,
+    )
+  }
+})
+
+Deno.test('proposeUpdateItem también acepta hora sola', () => {
+  assertEquals(
+    mapProposedAction('proposeUpdateItem', {
+      item_id: 'rec-1',
+      recordatorio_hora: '21:30',
+      recordatorio_recurrencia: 'diario',
+    }),
+    {
+      tipo_accion: 'update',
+      item_id: 'rec-1',
+      cambios: { recordatorio_hora: '21:30', recordatorio_recurrencia: 'diario' },
+    },
+  )
+})
+
 Deno.test('proposeUpdateItem: marcar/agregar/quitar líneas y quitar recordatorio', () => {
   const accion = mapProposedAction('proposeUpdateItem', {
     item_id: 'lista-1',
