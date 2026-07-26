@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
-    "mtime": 1785039295.2863438,
-    "ast_hash": "260989b903df6710d71edadffb51ee76",
+    "mtime": 1785050371.7182412,
+    "ast_hash": "47ddc89afb7e912cd440aa34c708731a",
     "semantic_hash": ""
   },
   "src/components/ItemList.tsx": {
-    "mtime": 1785039369.9974067,
-    "ast_hash": "3a0e47c19806b9b0c7e21174a119060f",
+    "mtime": 1785041008.344532,
+    "ast_hash": "484fe1ea626744ff8490320f0a705934",
     "semantic_hash": ""
   },
   "src/components/LocalReminderWatcher.tsx": {
@@ -95,8 +95,8 @@
     "semantic_hash": "8763514b217538d49952f0c7bd056d2f"
   },
   "src/lib/recordatorios.ts": {
-    "mtime": 1785039162.8519957,
-    "ast_hash": "ad421710c06b847fec916b64c4b0f583",
+    "mtime": 1785049975.8359947,
+    "ast_hash": "7dae277e0a1c84bbdc55d1be10ff8234",
     "semantic_hash": ""
   },
   "src/lib/reminderScheduling.test.ts": {
@@ -110,8 +110,8 @@
     "semantic_hash": "b77b4f5bfabbceaa140b9382d0d7f94f"
   },
   "src/lib/repo.ts": {
-    "mtime": 1785039200.4685192,
-    "ast_hash": "83a5213f1f594a63422bcb5b3b718496",
+    "mtime": 1785040878.4611032,
+    "ast_hash": "0a06324b59bee48500a005946b7644fb",
     "semantic_hash": ""
   },
   "src/lib/supabase.ts": {
@@ -190,13 +190,13 @@
     "semantic_hash": ""
   },
   "src/types/assistant.ts": {
-    "mtime": 1785039457.8999097,
-    "ast_hash": "008eba344254f9c24a9caec445257980",
+    "mtime": 1785064405.0589821,
+    "ast_hash": "96f2d54228737afd44bf2e60d9118e31",
     "semantic_hash": ""
   },
   "src/types/database.ts": {
-    "mtime": 1785039161.0919762,
-    "ast_hash": "abfbfe1977ba8feb0bbfc2b807ca9a0d",
+    "mtime": 1785040850.7312098,
+    "ast_hash": "1b858366bb58ad2e644b00d2ea9dc5f6",
     "semantic_hash": ""
   },
   "src/vite-env.d.ts": {
@@ -205,18 +205,18 @@
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/actions.test.ts": {
-    "mtime": 1784698086.6354446,
-    "ast_hash": "fe1089bfc087d4f12f7625f4c4cf0e18",
-    "semantic_hash": "fe1089bfc087d4f12f7625f4c4cf0e18"
+    "mtime": 1785050047.1680202,
+    "ast_hash": "9dbf84d393284872cb9135960785e6ac",
+    "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/actions.ts": {
-    "mtime": 1785039407.7922401,
-    "ast_hash": "7c4549c39f2f23c8f8e0758f15a36d9c",
+    "mtime": 1785064233.8770132,
+    "ast_hash": "90f70785c607366deab04f8725cdece3",
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/index.ts": {
-    "mtime": 1785039448.549271,
-    "ast_hash": "99931a4f1577ca04a3f998451de7aaf4",
+    "mtime": 1785064386.633495,
+    "ast_hash": "268a936ef28764ee60a0e58130f0e0a0",
     "semantic_hash": ""
   },
   "supabase/functions/manage-ai-key/index.ts": {
@@ -225,8 +225,8 @@
     "semantic_hash": "8b7ff5e4fb963ff4e2cd864b484411e3"
   },
   "supabase/functions/send-reminder-notifications/index.ts": {
-    "mtime": 1785039251.7058885,
-    "ast_hash": "599c41db014d1033851655122d281fa1",
+    "mtime": 1785040893.7862344,
+    "ast_hash": "0ff84ed0dbca0b2e600d623641a2dc4a",
     "semantic_hash": ""
   },
   "supabase/migrations/20260720120000_schema_inicial.sql": {
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1785039852.113907,
-    "ast_hash": "85d69684a11b26190246098655246ef7",
+    "mtime": 1785065380.330737,
+    "ast_hash": "9009cf6109d2f6e2df17977a3881071f",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -475,8 +475,8 @@
     "semantic_hash": ""
   },
   "src/components/RecordatorioRow.tsx": {
-    "mtime": 1785039338.7767875,
-    "ast_hash": "ebea1a8ef60abc3bb63065abf0bf621f",
+    "mtime": 1785041000.2997954,
+    "ast_hash": "918f991e454e6d5159069ca5315bf8dc",
     "semantic_hash": ""
   },
   "src/pages/HoyPage.tsx": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "src/components/AssistantDrawer.tsx": {
-    "mtime": 1785039491.764475,
-    "ast_hash": "86a8493d92151c6cbe2de28f501ed153",
+    "mtime": 1785064474.6061807,
+    "ast_hash": "023253ac599b59c49271f955903963e4",
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "src/components/ProposedActionCard.tsx": {
-    "mtime": 1785039507.4414964,
-    "ast_hash": "e6664fd7b839707b6b6ee9af9873a956",
+    "mtime": 1785049866.4900706,
+    "ast_hash": "bc787dee5174868a99a08ecfd1c8a614",
     "semantic_hash": ""
   },
   "src/components/UpdateBanner.tsx": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "src/lib/accionesPropuestas.ts": {
-    "mtime": 1785039463.1179233,
-    "ast_hash": "636d6d4bd5dd03146fe78012e0bcbfc8",
+    "mtime": 1785049795.6534798,
+    "ast_hash": "3baa2f59d3426330ce29d6fbbc447d2a",
     "semantic_hash": ""
   },
   "src/lib/fotoItem.ts": {
@@ -615,28 +615,53 @@
     "semantic_hash": ""
   },
   "src/lib/recurrencia.test.ts": {
-    "mtime": 1785039090.2155914,
-    "ast_hash": "2d7f3c3b22196b7c12d48e7c6127c25d",
+    "mtime": 1785040786.04097,
+    "ast_hash": "1224b88a73a9a60130b4703e6d82a06d",
     "semantic_hash": ""
   },
   "src/lib/recurrencia.ts": {
-    "mtime": 1785039005.2065065,
-    "ast_hash": "291b015e065dfde8f0b02c0ab1bbad96",
+    "mtime": 1785041103.536868,
+    "ast_hash": "c38940c47d5e0467af3134e21681f30c",
     "semantic_hash": ""
   },
   "supabase/functions/send-reminder-notifications/recurrencia.test.ts": {
-    "mtime": 1785039121.3269758,
-    "ast_hash": "3031a332ae2719deaec587f657bf3a77",
+    "mtime": 1785040826.4642413,
+    "ast_hash": "29258a8d73e32213abaca690238d09f1",
     "semantic_hash": ""
   },
   "supabase/functions/send-reminder-notifications/recurrencia.ts": {
-    "mtime": 1785039025.017661,
-    "ast_hash": "10df7207156f6a3907bce28198dbc0b3",
+    "mtime": 1785040713.3627934,
+    "ast_hash": "4943a487891f47018e3d0c3c15f470aa",
     "semantic_hash": ""
   },
   "supabase/migrations/20260725120000_recordatorios_recurrencia.sql": {
     "mtime": 1785038949.863897,
     "ast_hash": "4ae48fd7b6636fd59fb1de447ea2797b",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260725160000_recordatorios_dias_semana.sql": {
+    "mtime": 1785047186.2461724,
+    "ast_hash": "e30b3544f98962428886995c6f571dd6",
+    "semantic_hash": ""
+  },
+  "src/lib/fechaLocal.test.ts": {
+    "mtime": 1785050001.6215882,
+    "ast_hash": "c7f1a3f6d3b6d92871e9c68f310e2034",
+    "semantic_hash": ""
+  },
+  "src/lib/fechaLocal.ts": {
+    "mtime": 1785049955.823196,
+    "ast_hash": "b5768d4deac681fb1ef41b8413ae9da2",
+    "semantic_hash": ""
+  },
+  "supabase/functions/ai-assistant/historial.test.ts": {
+    "mtime": 1785065319.9372158,
+    "ast_hash": "21e27973cac53ba1736e594ea7017885",
+    "semantic_hash": ""
+  },
+  "supabase/functions/ai-assistant/historial.ts": {
+    "mtime": 1785065236.6528783,
+    "ast_hash": "79935d059cd2c14289b28570f9c381a8",
     "semantic_hash": ""
   }
 }
