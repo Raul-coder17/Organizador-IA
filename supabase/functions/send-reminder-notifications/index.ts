@@ -8,7 +8,10 @@
 //   1. Busca recordatorios con estado='pendiente' y fecha_hora <= now().
 //   2. Por cada uno, junta las push_subscriptions del user_id dueño del item.
 //   3. Manda la notificación Web Push (npm:web-push) con el contenido del item.
-//   4. Si al menos un envío tuvo éxito -> estado='enviado'.
+//   4. Si al menos un envío tuvo éxito ->
+//        - recordatorio de una sola vez: estado='enviado' (fin);
+//        - recordatorio RECURRENTE: fecha_hora avanza a la próxima ocurrencia y
+//          el estado vuelve a 'pendiente', listo para la vuelta siguiente.
 //   5. Si una suscripción devuelve 410/404 (expiró) -> se borra.
 //
 // Autenticación del trigger: header `x-cron-secret` que debe coincidir con el
@@ -16,6 +19,11 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import webpush from 'npm:web-push@3.6.7'
+// Gemelo exacto de src/lib/recurrencia.ts: el mismo recordatorio puede avanzar
+// por acá (este cron) o por el cliente (aviso local / "marcar hecho"), y tiene
+// que caer en la misma fecha en los dos casos. La paridad está cubierta por
+// tests que importan las dos copias y comparan sus salidas.
+import { parseRecurrencia, proximaOcurrencia } from './recurrencia.ts'
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -42,6 +50,13 @@ function resumen(item: { tipo?: string; contenido?: Record<string, unknown> } | 
 interface RecordatorioRow {
   id: string
   fecha_hora: string
+  // null = de una sola vez. Con valor, el recordatorio se reengancha en vez de
+  // terminar (ver el update del final del loop).
+  recurrencia: string | null
+  // Sólo para recurrencia 'dias_semana'. Días EN UTC (0=domingo, escala de
+  // getUTCDay()); la conversión desde la zona del usuario ya la hizo el cliente
+  // al guardar, así que acá se comparan directo.
+  recurrencia_dias: number[] | null
   item: { user_id: string; tipo: string; contenido: Record<string, unknown> } | null
 }
 
@@ -78,7 +93,7 @@ Deno.serve(async (req) => {
 
   const { data: pendientes, error: qError } = await supabase
     .from('recordatorios')
-    .select('id, fecha_hora, item:items(user_id, tipo, contenido)')
+    .select('id, fecha_hora, recurrencia, recurrencia_dias, item:items(user_id, tipo, contenido)')
     .eq('estado', 'pendiente')
     .lte('fecha_hora', nowIso)
     .order('fecha_hora', { ascending: true })
@@ -103,6 +118,7 @@ Deno.serve(async (req) => {
   }
 
   let enviados = 0
+  let reenganchados = 0
   let sinSuscripcion = 0
   let expiradasBorradas = 0
 
@@ -150,8 +166,37 @@ Deno.serve(async (req) => {
     }
 
     if (algunoOk) {
-      await supabase.from('recordatorios').update({ estado: 'enviado' }).eq('id', rec.id)
+      // Acá se bifurca lo único que los recordatorios recurrentes cambian de
+      // este cron. Uno de una sola vez termina en 'enviado', como siempre. Uno
+      // recurrente NO termina: se le adelanta `fecha_hora` a la próxima vuelta
+      // y vuelve a 'pendiente', así el próximo ciclo del cron lo vuelve a
+      // encontrar cuando corresponda. Es la misma fila de siempre — no se crean
+      // filas nuevas por vuelta.
+      //
+      // `proximaOcurrencia` garantiza una fecha estrictamente futura aunque el
+      // recordatorio viniera atrasado (cron caído, dispositivo sin señal): si
+      // sólo sumáramos una vuelta, seguiría venciendo y se reenviaría una vez
+      // por ciclo hasta alcanzar el presente.
+      const recurrencia = parseRecurrencia(rec.recurrencia)
+      const siguiente = recurrencia
+        ? proximaOcurrencia(rec.fecha_hora, recurrencia, Date.now(), rec.recurrencia_dias)
+        : null
+
+      // Guarda anti-bucle (igual que en repo.ts): si el cálculo no avanzó
+      // —'dias_semana' sin días utilizables, fecha corrupta—, dejarlo
+      // 'pendiente' con la misma fecha vencida lo haría reenviar una vez por
+      // ciclo del cron, para siempre. Se cierra como uno de una sola vez.
+      const cambios =
+        siguiente !== null && siguiente !== rec.fecha_hora
+          ? { estado: 'pendiente', fecha_hora: siguiente }
+          : { estado: 'enviado' }
+
+      // Sin `updated_at` explícito: el trigger set_updated_at lo estampa con
+      // now(), que es lo que necesita el LWW del cliente para adoptar este
+      // cambio en la próxima reconciliación.
+      await supabase.from('recordatorios').update(cambios).eq('id', rec.id)
       enviados++
+      if (cambios.estado === 'pendiente') reenganchados++
     }
   }
 
@@ -159,6 +204,9 @@ Deno.serve(async (req) => {
     ok: true,
     procesados: recordatorios.length,
     enviados,
+    // De los enviados, cuántos eran recurrentes y quedaron reprogramados en vez
+    // de terminar. Útil para verificar la feature desde la respuesta del cron.
+    recurrentes_reenganchados: reenganchados,
     sin_suscripcion: sinSuscripcion,
     suscripciones_expiradas_borradas: expiradasBorradas,
   })

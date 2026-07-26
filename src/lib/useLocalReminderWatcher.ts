@@ -4,7 +4,7 @@ import { swReadyOrNull } from './push'
 import { resumenContenido } from './recordatorios'
 import { listRecordatoriosParaDisparo, marcarEnviado } from './repo'
 import { reconcileTimers, splitStaleReminders } from './reminderScheduling'
-import type { RecordatorioConItem } from '../types/database'
+import type { Recordatorio, RecordatorioConItem } from '../types/database'
 
 // Cada cuánto sondeamos los recordatorios que vencen pronto. La ventana que
 // mira listRecordatoriosParaDisparo (~2 min) es más ancha que este intervalo,
@@ -46,6 +46,19 @@ export function useLocalReminderWatcher(): void {
     // recordatorio si un sondeo lo ve pendiente antes de que la DB refleje
     // 'enviado' (evita duplicar en la MISMA pestaña).
     const fired = new Set<string>()
+
+    // Un recordatorio RECURRENTE no termina cuando se marca 'enviado': vuelve a
+    // 'pendiente' con la fecha de su próxima vuelta. Si lo dejáramos en `fired`,
+    // el supresor de reconcileTimers le impediría armar el timer del ciclo
+    // siguiente mientras esta pestaña siguiera abierta — un "todos los días a
+    // las 9" avisaría una sola vez y nunca más hasta recargar.
+    //
+    // Se reconoce por el estado que devuelve marcarEnviado: si volvió a quedar
+    // 'pendiente', reenganchó. Un no recurrente queda 'enviado' y sigue
+    // suprimido como siempre.
+    function desuprimirSiReenganchó(id: string, resultado: Recordatorio | null) {
+      if (resultado?.estado === 'pendiente') fired.delete(id)
+    }
 
     async function fireReminder(rec: RecordatorioConItem) {
       if (cancelled) return
@@ -117,7 +130,7 @@ export function useLocalReminderWatcher(): void {
             // 'enviado' local + encolado: en /reminders siguen viéndose como
             // vencidos (estado 'enviado' no es 'hecho') y el cron del servidor
             // ya no los reenvía.
-            await marcarEnviado(s.id)
+            desuprimirSiReenganchó(s.id, await marcarEnviado(s.id))
           } catch {
             /* si no se pudo escribir local, el próximo sondeo reintenta */
           }
@@ -151,7 +164,7 @@ export function useLocalReminderWatcher(): void {
           try {
             // Marca local + encolado: si no hay red, el 'enviado' sube solo al
             // reconectar en vez de perderse.
-            await marcarEnviado(id)
+            desuprimirSiReenganchó(id, await marcarEnviado(id))
           } catch {
             // Si ni siquiera se pudo escribir local, el cron del servidor queda
             // como respaldo (encontrará el recordatorio aún pendiente).

@@ -33,6 +33,7 @@ import { requestSync } from './sync'
 import { joinRecordatoriosConItems } from './recordatorios'
 import { loadItemsFromCache } from './db'
 import { siguienteColorTema, type TemaColor } from './temaColores'
+import { parseDiasSemana, proximaOcurrencia, type Recurrencia } from './recurrencia'
 import type {
   Item,
   ItemInsert,
@@ -254,15 +255,36 @@ export async function getRecordatorioForItem(itemId: string): Promise<Recordator
 
 // Crea o actualiza el recordatorio de un item (un item tiene a lo sumo uno en
 // esta UI).
-export async function upsertRecordatorio(itemId: string, fechaHora: string): Promise<Recordatorio> {
+//
+// `recurrencia` es null por defecto: un recordatorio es de una sola vez salvo
+// que se pida lo contrario. Se manda SIEMPRE (no sólo cuando tiene valor) para
+// que editar un recordatorio y elegir "No se repite" efectivamente lo apague —
+// omitirlo dejaría la recurrencia vieja puesta.
+export async function upsertRecordatorio(
+  itemId: string,
+  fechaHora: string,
+  recurrencia: Recurrencia | null = null,
+  dias: number[] | null = null,
+): Promise<Recordatorio> {
   const ts = nowIso()
   const existente = await getRecordatorioForItem(itemId)
+
+  // Los días sólo tienen sentido con 'dias_semana', y la base lo obliga con un
+  // check: mandarlos con cualquier otra recurrencia haría fallar la escritura
+  // entera al subir. Se normalizan acá, en el único punto por el que pasan
+  // todas las escrituras, en vez de confiar en que cada llamador se acuerde.
+  const diasFinales = recurrencia === 'dias_semana' ? (parseDiasSemana(dias) ?? null) : null
+  // Un 'dias_semana' sin días no se puede calcular; degrada a "no se repite"
+  // antes de tocar la base, así nunca queda una fila imposible de avanzar.
+  const recurrenciaFinal = recurrencia === 'dias_semana' && !diasFinales ? null : recurrencia
 
   if (existente) {
     const next: Recordatorio = {
       ...existente,
       fecha_hora: fechaHora,
       estado: 'pendiente',
+      recurrencia: recurrenciaFinal,
+      recurrencia_dias: diasFinales,
       updated_at: ts,
     }
     await putLocalRecordatorio(next)
@@ -270,7 +292,13 @@ export async function upsertRecordatorio(itemId: string, fechaHora: string): Pro
       entity: 'recordatorio',
       op: 'update',
       entityId: next.id,
-      payload: { fecha_hora: fechaHora, estado: 'pendiente', updated_at: ts },
+      payload: {
+        fecha_hora: fechaHora,
+        estado: 'pendiente',
+        recurrencia: recurrenciaFinal,
+        recurrencia_dias: diasFinales,
+        updated_at: ts,
+      },
       baseUpdatedAt: existente.updated_at,
     })
     return next
@@ -281,6 +309,8 @@ export async function upsertRecordatorio(itemId: string, fechaHora: string): Pro
     item_id: itemId,
     fecha_hora: fechaHora,
     estado: 'pendiente',
+    recurrencia: recurrenciaFinal,
+    recurrencia_dias: diasFinales,
     created_at: ts,
     updated_at: ts,
   }
@@ -314,7 +344,25 @@ export async function deleteRecordatoriosForItem(itemId: string): Promise<void> 
   }
 }
 
-async function cambiarEstado(
+// Cierra un ciclo del recordatorio: lo deja en `estado` si es de una sola vez,
+// o lo REENGANCHA en su próxima vuelta si es recurrente.
+//
+// Ese reenganche es todo el comportamiento nuevo de los recordatorios
+// recurrentes del lado del cliente: en vez de quedar 'enviado'/'hecho' para
+// siempre, la fila avanza su `fecha_hora` a la próxima ocurrencia y vuelve a
+// 'pendiente'. La fila es siempre LA MISMA (no se crean filas nuevas por cada
+// vuelta): así el item conserva su único recordatorio, el historial no crece
+// sin control, y el outbox no tiene que ordenar inserts contra updates.
+//
+// El cálculo sale de lib/recurrencia.ts, que es el gemelo exacto del que usa la
+// Edge Function del cron: el mismo recordatorio tiene que caer en la misma
+// fecha lo mueva quien lo mueva.
+//
+// Offline-first sin nada especial: esto escribe el espejo local y encola un
+// update común y corriente, igual que cualquier otra mutación. Marcar hecho un
+// recurrente sin conexión avanza la fecha localmente al instante y sube sola al
+// reconectar.
+async function cerrarCiclo(
   id: string,
   estado: Recordatorio['estado'],
 ): Promise<Recordatorio> {
@@ -322,30 +370,64 @@ async function cambiarEstado(
   if (!current) throw new Error('Ese recordatorio ya no existe.')
 
   const ts = nowIso()
-  const next: Recordatorio = { ...current, estado, updated_at: ts }
+  const recurrencia = current.recurrencia ?? null
+
+  // La próxima vuelta, si es recurrente. Para 'dias_semana' el cálculo necesita
+  // además qué días.
+  const siguiente = recurrencia
+    ? proximaOcurrencia(
+        current.fecha_hora,
+        recurrencia,
+        Date.now(),
+        current.recurrencia_dias,
+      )
+    : null
+
+  // Guarda anti-bucle: si el cálculo NO avanzó (una recurrencia que no se puede
+  // resolver — 'dias_semana' sin días válidos, una fecha corrupta), volver a
+  // 'pendiente' con la misma fecha vencida dejaría el recordatorio disparando
+  // una vez por ciclo para siempre. En ese caso se cierra como uno de una sola
+  // vez, que es el comportamiento seguro.
+  const reengancha = siguiente !== null && siguiente !== current.fecha_hora
+
+  // Los campos que cambian. Un no recurrente entra exactamente por el mismo
+  // camino de antes: sólo `estado`.
+  const cambios = reengancha
+    ? { estado: 'pendiente' as const, fecha_hora: siguiente! }
+    : { estado }
+
+  const next: Recordatorio = { ...current, ...cambios, updated_at: ts }
   await putLocalRecordatorio(next)
   await enqueue({
     entity: 'recordatorio',
     op: 'update',
     entityId: id,
-    payload: { estado, updated_at: ts },
+    payload: { ...cambios, updated_at: ts },
     baseUpdatedAt: current.updated_at,
   })
   return next
 }
 
+// El usuario lo marcó hecho a mano. Si es recurrente, "hecho" cierra ESTA
+// vuelta y arranca la siguiente (el recordatorio vuelve a 'pendiente' con la
+// fecha nueva); si no, queda 'hecho' como siempre.
 export async function marcarHecho(id: string): Promise<Recordatorio> {
-  return cambiarEstado(id, 'hecho')
+  return cerrarCiclo(id, 'hecho')
 }
 
 // Marca 'enviado' desde el aviso local. Antes esto llevaba un filtro
 // `estado = 'pendiente'` en el servidor para no pisar un 'hecho'; ahora la
 // guarda es local (no tocamos lo que ya no está pendiente) y, si dos
 // dispositivos compiten, decide el LWW por updated_at.
-export async function marcarEnviado(id: string): Promise<void> {
+//
+// Devuelve la fila resultante (o null si no había nada que marcar) porque el
+// watcher necesita saber si volvió a quedar 'pendiente': un recurrente que
+// reenganchó tiene que salir de la lista de "ya disparados" de esa pestaña, si
+// no el supresor le impediría armar el timer de la vuelta siguiente.
+export async function marcarEnviado(id: string): Promise<Recordatorio | null> {
   const current = await getLocalRecordatorio(id)
-  if (!current || current.estado !== 'pendiente') return
-  await cambiarEstado(id, 'enviado')
+  if (!current || current.estado !== 'pendiente') return null
+  return cerrarCiclo(id, 'enviado')
 }
 
 // Ventana (ms) hacia adelante que mira el watcher local: los recordatorios que

@@ -101,8 +101,17 @@ export function HoyPage() {
     setError(null)
     try {
       // Escribe el espejo local y encola la subida: anda igual sin conexión.
-      await marcarHecho(id)
-      setRecordatorios((prev) => prev.map((r) => (r.id === id ? { ...r, estado: 'hecho' } : r)))
+      // Igual que en /reminders: se refleja lo que devuelve el repo. Un
+      // recurrente no queda 'hecho' — reengancha en 'pendiente' con la fecha de
+      // la próxima vuelta, y sale solo de "Vencidos"/"Hoy" si ya no aplica.
+      const actualizado = await marcarHecho(id)
+      setRecordatorios((prev) =>
+        prev.map((r) =>
+          r.id === id
+            ? { ...r, estado: actualizado.estado, fecha_hora: actualizado.fecha_hora }
+            : r,
+        ),
+      )
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo marcar como hecho.')
     } finally {

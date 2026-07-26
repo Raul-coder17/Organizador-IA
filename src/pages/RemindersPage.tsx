@@ -81,9 +81,16 @@ export function RemindersPage() {
     setError(null)
     try {
       // Escribe el espejo local y encola la subida: anda igual sin conexión.
-      await marcarHecho(id)
+      // Se refleja lo que DEVUELVE el repo, no un 'hecho' asumido: un
+      // recordatorio recurrente no queda hecho, vuelve a 'pendiente' con la
+      // fecha de la próxima vuelta, y la fila tiene que mostrar eso.
+      const actualizado = await marcarHecho(id)
       setRecordatorios((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, estado: 'hecho' } : r)),
+        prev.map((r) =>
+          r.id === id
+            ? { ...r, estado: actualizado.estado, fecha_hora: actualizado.fecha_hora }
+            : r,
+        ),
       )
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo marcar como hecho.')

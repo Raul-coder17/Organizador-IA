@@ -20,6 +20,8 @@ export function toPlainRecordatorio(r: RecordatorioConItem): Recordatorio {
     item_id: r.item_id,
     fecha_hora: r.fecha_hora,
     estado: r.estado,
+    recurrencia: r.recurrencia ?? null,
+    recurrencia_dias: r.recurrencia_dias ?? null,
     created_at: r.created_at,
     updated_at: r.updated_at,
   }
@@ -113,30 +115,17 @@ export function clasificar(
 }
 
 // --- Helpers de fecha/hora --------------------------------------------------
-
-// Convierte un ISO (UTC, como lo guarda Postgres) al formato que espera un
-// <input type="datetime-local"> ("YYYY-MM-DDTHH:mm"), en hora local.
-export function isoToDatetimeLocal(iso: string): string {
-  const d = new Date(iso)
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
-}
-
-// Convierte el valor de un datetime-local (hora local, sin zona) a ISO UTC.
-export function datetimeLocalToIso(value: string): string {
-  return new Date(value).toISOString()
-}
-
-// Formato legible para mostrar la fecha/hora de un recordatorio.
-export function formatFechaHora(iso: string): string {
-  return new Date(iso).toLocaleString('es', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
+//
+// Viven en `fechaLocal.ts` (puro, sin Supabase, testeable con `deno test`) y se
+// re-exportan desde acá, que es de donde los importa media app.
+export {
+  datetimeLocalToIso,
+  formatFechaHora,
+  horaDeDatetimeLocal,
+  isoToDatetimeLocal,
+  proximaFechaConHora,
+  recurrenciaSinFecha,
+} from './fechaLocal'
 
 // Resumen textual del contenido de un item, para mostrarlo en la lista de
 // recordatorios sin depender del render completo de ItemList.

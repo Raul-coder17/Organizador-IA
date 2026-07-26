@@ -14,7 +14,24 @@ import {
   updateTemaColor,
   upsertRecordatorio,
 } from '../lib/repo'
-import { datetimeLocalToIso, isoToDatetimeLocal } from '../lib/recordatorios'
+import {
+  datetimeLocalToIso,
+  formatFechaHora,
+  horaDeDatetimeLocal,
+  isoToDatetimeLocal,
+  proximaFechaConHora,
+  recurrenciaSinFecha,
+} from '../lib/recordatorios'
+import {
+  DIAS_ORDEN,
+  DIA_CORTO,
+  DIA_LARGO,
+  RECURRENCIAS,
+  RECURRENCIA_LABEL,
+  diasUtcALocales,
+  prepararRecurrencia,
+  type Recurrencia,
+} from '../lib/recurrencia'
 import type { BorradorItem } from '../lib/accionesPropuestas'
 import {
   COLORES_TEMA,
@@ -109,6 +126,17 @@ export function ItemForm({
   const [filas, setFilas] = useState<FilaEditable[]>([])
   const [conRecordatorio, setConRecordatorio] = useState(false)
   const [recordatorioFecha, setRecordatorioFecha] = useState('')
+  // Hora sola ("HH:mm") para las recurrencias que no piden fecha ("Diario" y
+  // "Días específicos"). Se guarda aparte de `recordatorioFecha` y no dentro de
+  // ella para que cambiar de recurrencia y volver no pierda ninguna de las dos:
+  // el usuario ve el campo que corresponde y el otro queda esperando.
+  const [recordatorioHora, setRecordatorioHora] = useState('')
+  // '' = no se repite (una sola vez), que es el default de siempre.
+  const [recordatorioRecurrencia, setRecordatorioRecurrencia] = useState<Recurrencia | ''>('')
+  // Días marcados para 'dias_semana', en escala LOCAL (0=domingo): es lo que el
+  // usuario ve y elige. La conversión a los días UTC que se guardan se hace
+  // recién al enviar, porque depende de la hora elegida (ver lib/recurrencia).
+  const [recordatorioDias, setRecordatorioDias] = useState<number[]>([])
   // Marca si el item que estamos editando ya tenía un recordatorio, para saber
   // si al desmarcar el toggle hay que eliminarlo.
   const [teniaRecordatorio, setTeniaRecordatorio] = useState(false)
@@ -195,6 +223,9 @@ export function ItemForm({
     // exista para prellenar el toggle y la fecha.
     setConRecordatorio(false)
     setRecordatorioFecha('')
+    setRecordatorioHora('')
+    setRecordatorioRecurrencia('')
+    setRecordatorioDias([])
     setTeniaRecordatorio(false)
 
     if (editingItem) {
@@ -204,7 +235,23 @@ export function ItemForm({
           if (cancelled || !rec) return
           setConRecordatorio(true)
           setTeniaRecordatorio(true)
-          setRecordatorioFecha(isoToDatetimeLocal(rec.fecha_hora))
+          const local = isoToDatetimeLocal(rec.fecha_hora)
+          setRecordatorioFecha(local)
+          // La hora se prellena siempre, no sólo cuando la recurrencia guardada
+          // es de las que ocultan la fecha: así, si el usuario cambia a "Diario"
+          // acá mismo, el campo de hora ya trae la del recordatorio y no hay que
+          // volver a escribirla.
+          setRecordatorioHora(horaDeDatetimeLocal(local))
+          setRecordatorioRecurrencia(rec.recurrencia ?? '')
+          // Los días vuelven de UTC a la escala local para marcar los chips: lo
+          // que se guardó como "martes UTC" puede ser el "lunes" que el usuario
+          // eligió. La referencia para el corrimiento es la fecha del propio
+          // recordatorio, que es la hora con la que se guardaron.
+          setRecordatorioDias(
+            rec.recurrencia_dias
+              ? diasUtcALocales(rec.recurrencia_dias, new Date(rec.fecha_hora))
+              : [],
+          )
         })
         .catch(() => {
           /* si falla la carga del recordatorio, el form igual funciona sin él */
@@ -251,11 +298,53 @@ export function ItemForm({
   // sí; en el resto, lo decide el toggle.
   const recordatorioActivo = fechaObligatoria || conRecordatorio
 
+  // Con "Diario" y "Días específicos" no hay fecha que elegir: la repetición ya
+  // dice qué días, y lo único que falta es la hora. El selector de fecha se
+  // esconde y en su lugar va uno de hora sola; la fecha ancla que igual hay que
+  // guardar se calcula al enviar (ver `fechaLocalParaGuardar`).
+  const sinFecha = recurrenciaSinFecha(recordatorioRecurrencia)
+
+  // La fecha/hora local que se va a guardar, venga del selector de fecha o
+  // calculada a partir de la hora. Es la misma cuenta en el submit y en la nota
+  // de ayuda que le muestra al usuario cuándo va a ser la primera vez.
+  const fechaLocalParaGuardar = sinFecha
+    ? proximaFechaConHora(recordatorioHora)
+    : recordatorioFecha || null
+
+  // Cuándo va a avisar la primera vez, ya con los días aplicados. Se muestra
+  // debajo de los campos porque con "Diario"/"Días específicos" la fecha no está
+  // a la vista: sin esto el usuario elegiría una hora y no tendría forma de ver
+  // qué día cae la primera vuelta.
+  const primeraVezIso =
+    recordatorioActivo && fechaLocalParaGuardar
+      ? prepararRecurrencia(
+          datetimeLocalToIso(fechaLocalParaGuardar),
+          recordatorioRecurrencia === '' ? null : recordatorioRecurrencia,
+          recordatorioDias,
+        ).fechaIso
+      : null
+
+  // Al cambiar de recurrencia se rellena el campo que pasa a estar a la vista
+  // con lo que ya había en el otro, para que la elección no se pierda al ir y
+  // volver entre "Diario" y "Semanal".
+  function handleRecurrenciaChange(nueva: Recurrencia | '') {
+    if (recurrenciaSinFecha(nueva)) {
+      if (!recordatorioHora && recordatorioFecha) {
+        setRecordatorioHora(horaDeDatetimeLocal(recordatorioFecha))
+      }
+    } else if (!recordatorioFecha && recordatorioHora) {
+      setRecordatorioFecha(proximaFechaConHora(recordatorioHora) ?? '')
+    }
+    setRecordatorioRecurrencia(nueva)
+  }
+
   // Cambiar de tipo NO pierde la fecha ya cargada. Al salir de "recordatorio",
   // si había fecha se deja el toggle prendido para que siga a la vista (y se
   // guarde); si no había, vuelve a estar apagado como cualquier item nuevo.
   function handleTipoChange(nuevo: TipoItem) {
-    if (tipo === 'recordatorio' && nuevo !== 'recordatorio' && recordatorioFecha) {
+    // "lo ya cargado" puede ser la fecha o —con "Diario"/"Días específicos"— sólo
+    // la hora: las dos cuentan para dejar el toggle prendido.
+    if (tipo === 'recordatorio' && nuevo !== 'recordatorio' && (recordatorioFecha || recordatorioHora)) {
       setConRecordatorio(true)
     }
     setTipo(nuevo)
@@ -400,12 +489,25 @@ export function ItemForm({
       return
     }
 
-    if (recordatorioActivo && !recordatorioFecha) {
+    // Con "Diario"/"Días específicos" lo que falta es la hora, no la fecha: el
+    // mensaje tiene que nombrar el campo que el usuario está viendo.
+    if (recordatorioActivo && !fechaLocalParaGuardar) {
       setError(
-        fechaObligatoria
-          ? 'Un recordatorio necesita fecha y hora. Elegilas para poder guardar.'
-          : 'Elegí una fecha y hora para el recordatorio.',
+        sinFecha
+          ? 'Elegí la hora del aviso.'
+          : fechaObligatoria
+            ? 'Un recordatorio necesita fecha y hora. Elegilas para poder guardar.'
+            : 'Elegí una fecha y hora para el recordatorio.',
       )
+      return
+    }
+
+    // "Días específicos" sin ningún día no es una recurrencia: no habría forma
+    // de calcular la próxima vuelta. Se frena acá y no en el repo (que también
+    // se defiende) para poder decir qué falta en vez de guardar algo distinto
+    // de lo que el usuario ve.
+    if (recordatorioActivo && recordatorioRecurrencia === 'dias_semana' && recordatorioDias.length === 0) {
+      setError('Elegí al menos un día de la semana para la repetición.')
       return
     }
 
@@ -440,8 +542,18 @@ export function ItemForm({
       // Sincronizamos el recordatorio según el toggle:
       //  - marcado con fecha → upsert (crea o actualiza, estado 'pendiente')
       //  - desmarcado pero antes existía → eliminarlo
-      if (recordatorioActivo && recordatorioFecha) {
-        await upsertRecordatorio(saved.id, datetimeLocalToIso(recordatorioFecha))
+      if (recordatorioActivo && fechaLocalParaGuardar) {
+        // '' (no se repite) viaja como null: es lo que apaga una recurrencia que
+        // el recordatorio tenía antes. `prepararRecurrencia` hace el resto —
+        // pasar los días de la escala local a la UTC que se guarda y correr la
+        // primera fecha al próximo día marcado— con la misma lógica que usan
+        // los dos caminos de la IA.
+        const listo = prepararRecurrencia(
+          datetimeLocalToIso(fechaLocalParaGuardar),
+          recordatorioRecurrencia === '' ? null : recordatorioRecurrencia,
+          recordatorioDias,
+        )
+        await upsertRecordatorio(saved.id, listo.fechaIso, listo.recurrencia, listo.diasUtc)
       } else if (!recordatorioActivo && teniaRecordatorio) {
         await deleteRecordatoriosForItem(saved.id)
       }
@@ -704,8 +816,9 @@ export function ItemForm({
             del tipo, así que va un rótulo como el de cualquier campo requerido
             del form, no un checkbox que se puede apagar. */}
         {fechaObligatoria ? (
-          <label className="label" htmlFor="rec-fecha">
-            Fecha y hora <span className="label__req">(obligatoria)</span>
+          <label className="label" htmlFor={sinFecha ? 'rec-hora' : 'rec-fecha'}>
+            {sinFecha ? 'Hora' : 'Fecha y hora'}{' '}
+            <span className="label__req">(obligatoria)</span>
           </label>
         ) : (
           <label className="rec-toggle__check">
@@ -719,31 +832,119 @@ export function ItemForm({
         )}
 
         {(fechaObligatoria || conRecordatorio) && (
-          <input
-            id="rec-fecha"
-            type="datetime-local"
-            value={recordatorioFecha}
-            // `required` frena el submit y lo anuncia solo (accesibilidad), pero
-            // su globo nativo dice un genérico "Completa este campo". Con
-            // setCustomValidity ese mismo globo dice POR QUÉ hace falta. Se
-            // limpia en cada cambio: si no, el campo queda inválido para siempre.
-            onChange={(e) => {
-              e.currentTarget.setCustomValidity('')
-              setRecordatorioFecha(e.target.value)
-            }}
-            onInvalid={(e) =>
-              e.currentTarget.setCustomValidity('Un recordatorio necesita fecha y hora.')
-            }
-            required={fechaObligatoria}
-            aria-required={fechaObligatoria || undefined}
-            className="ctl ctl--mono mt-2"
-            aria-label={fechaObligatoria ? undefined : 'Fecha y hora del recordatorio'}
-          />
+          // La fecha y la repetición van juntas: son una sola decisión ("cuándo
+          // y cada cuánto"), y separarlas dejaría el selector flotando lejos del
+          // campo del que depende. En pantalla angosta se apilan.
+          <div className="rec-campos">
+            {/* "Diario" y "Días específicos" no piden fecha: la repetición ya
+                dice qué días, así que se muestra sólo la hora y la primera
+                fecha la calcula el form. Con "Semanal" y "Mensual" la fecha se
+                queda, porque ahí es la que fija el día de la semana o del mes. */}
+            {sinFecha ? (
+              <input
+                id="rec-hora"
+                type="time"
+                value={recordatorioHora}
+                onChange={(e) => {
+                  e.currentTarget.setCustomValidity('')
+                  setRecordatorioHora(e.target.value)
+                }}
+                onInvalid={(e) =>
+                  e.currentTarget.setCustomValidity('Un recordatorio necesita una hora.')
+                }
+                required={fechaObligatoria}
+                aria-required={fechaObligatoria || undefined}
+                className="ctl ctl--mono"
+                aria-label="Hora del recordatorio"
+              />
+            ) : (
+              <input
+                id="rec-fecha"
+                type="datetime-local"
+                value={recordatorioFecha}
+                // `required` frena el submit y lo anuncia solo (accesibilidad), pero
+                // su globo nativo dice un genérico "Completa este campo". Con
+                // setCustomValidity ese mismo globo dice POR QUÉ hace falta. Se
+                // limpia en cada cambio: si no, el campo queda inválido para siempre.
+                onChange={(e) => {
+                  e.currentTarget.setCustomValidity('')
+                  setRecordatorioFecha(e.target.value)
+                }}
+                onInvalid={(e) =>
+                  e.currentTarget.setCustomValidity('Un recordatorio necesita fecha y hora.')
+                }
+                required={fechaObligatoria}
+                aria-required={fechaObligatoria || undefined}
+                className="ctl ctl--mono"
+                aria-label={fechaObligatoria ? undefined : 'Fecha y hora del recordatorio'}
+              />
+            )}
+
+            {/* Sin fecha de fin en esta versión: la recurrencia se corta
+                volviendo acá y eligiendo "No se repite", o borrando el item. */}
+            <select
+              value={recordatorioRecurrencia}
+              onChange={(e) => handleRecurrenciaChange(e.target.value as Recurrencia | '')}
+              className="ctl ctl--mono"
+              aria-label="Repetición del recordatorio"
+            >
+              <option value="">No se repite</option>
+              {RECURRENCIAS.map((r) => (
+                <option key={r} value={r}>
+                  {RECURRENCIA_LABEL[r]}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Los días viven pegados al selector que los habilita, y sólo existen
+            para "Días específicos": mostrarlos siempre (deshabilitados) haría
+            creer que el resto de las recurrencias también los usa. */}
+        {recordatorioActivo && recordatorioRecurrencia === 'dias_semana' && (
+          <div className="rec-dias" role="group" aria-label="Días de la semana en que se repite">
+            {DIAS_ORDEN.map((dia) => {
+              const activo = recordatorioDias.includes(dia)
+              return (
+                <button
+                  key={dia}
+                  type="button"
+                  onClick={() =>
+                    setRecordatorioDias((prev) =>
+                      prev.includes(dia) ? prev.filter((d) => d !== dia) : [...prev, dia],
+                    )
+                  }
+                  aria-pressed={activo}
+                  aria-label={DIA_LARGO[dia]}
+                  title={DIA_LARGO[dia]}
+                  className={`rec-dia${activo ? ' rec-dia--activo' : ''}`}
+                >
+                  {DIA_CORTO[dia]}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {recordatorioActivo && recordatorioRecurrencia !== '' && (
+          <p className="tema-colores__nota">
+            {recordatorioRecurrencia === 'dias_semana'
+              ? recordatorioDias.length === 0
+                ? 'Elegí al menos un día. La hora de arriba es la del aviso; el primer recordatorio va el próximo día que marques.'
+                : 'Se repite los días marcados: cuando lo marques hecho (o cuando te avisemos), se reprograma solo para el próximo. Para cortarlo, volvé acá y elegí “No se repite”.'
+              : `Se repite ${RECURRENCIA_LABEL[recordatorioRecurrencia].toLowerCase()}: cuando lo marques hecho (o cuando te avisemos), se reprograma solo para la próxima vez. Para cortarlo, volvé acá y elegí “No se repite”.`}
+          </p>
+        )}
+
+        {/* Sólo cuando la fecha no está a la vista: con el datetime-local
+            puesto, repetir la fecha que el usuario acaba de elegir sería ruido. */}
+        {sinFecha && primeraVezIso && (
+          <p className="tema-colores__nota">Primera vez: {formatFechaHora(primeraVezIso)}</p>
         )}
 
         {fechaObligatoria && (
           <p className="tema-colores__nota">
-            Un recordatorio necesita cuándo avisarte. Para guardar algo sin fecha, usá el tipo
+            Un recordatorio necesita cuándo avisarte. Para guardar algo sin cuándo, usá el tipo
             “nota”.
           </p>
         )}

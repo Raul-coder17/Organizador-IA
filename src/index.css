@@ -1833,6 +1833,59 @@ body {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+/* Fecha/hora + repetición, una al lado de la otra: es una sola decisión
+   ("cuándo y cada cuánto"). En pantalla angosta se apilan, porque el
+   datetime-local nativo ya se come casi todo el ancho en móvil. */
+.rec-campos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.rec-campos > * {
+  flex: 1 1 170px;
+  min-width: 0;
+}
+/* Chips de días para "Días específicos". Son toggles, no un select múltiple:
+   siete opciones cortas y mutuamente compatibles se eligen más rápido tocando
+   que desplegando una lista — y en móvil un <select multiple> es directamente
+   incómodo. El estado activo se marca con relleno (no sólo con el borde) para
+   que se lea de un vistazo cuáles están puestos. */
+/* Los siete chips se reparten UNA sola fila y se encogen juntos, en vez de
+   envolver. Con ancho fijo, a 375px entraban seis y el domingo caía solo en una
+   segunda fila: la semana se leía cortada justo donde no corresponde. Repartida,
+   la fila se lee como una semana a cualquier ancho. */
+.rec-dias {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.rec-dia {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 9px 4px;
+  border: 1px solid var(--color-line);
+  border-radius: 3px;
+  background: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+.rec-dia:hover {
+  border-color: var(--color-slate);
+  color: var(--color-ink);
+}
+.rec-dia--activo {
+  background: var(--color-moss);
+  border-color: var(--color-moss);
+  color: var(--color-moss-ink);
+}
+.rec-dia--activo:hover {
+  border-color: var(--color-moss);
+  color: var(--color-moss-ink);
+}
 
 /* ------------------------------------------------------------------ */
 /* Lista de recordatorios (/reminders)                                  */
@@ -1915,6 +1968,31 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-moss);
+}
+/* Marca de "se repite". Es metadato de la fila, del mismo peso que el tipo:
+   mismo tamaño y mismo tono que .rem__tipo, sin color propio, para que no
+   compita con el estado (que sí es lo urgente). El ícono acompaña al texto en
+   vez de reemplazarlo: solo, un símbolo de repetición se confunde con
+   "sincronizando". */
+.rem__repite,
+.item-rec__repite {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-slate);
+}
+.rem__repite svg,
+.item-rec__repite svg {
+  flex: none;
+}
+/* En la ficha de Biblioteca la marca cuelga de la línea del recordatorio, que
+   ya está en mono y en el mismo tono: alcanza con separarla un poco. */
+.item-rec__repite {
+  margin-left: 6px;
 }
 .rem__contenido {
   margin: 0;
