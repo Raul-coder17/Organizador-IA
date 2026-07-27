@@ -7,7 +7,7 @@
 // Este módulo es solo almacenamiento: las mutaciones de negocio pasan por
 // repo.ts y el motor que las sube por sync.ts.
 
-import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
+import { deleteDB, openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item, Recordatorio, Tema } from '../types/database'
 import type { QueuedOp, SyncEntity } from './syncCore'
 
@@ -287,6 +287,61 @@ export async function getMeta<T>(key: string): Promise<T | null> {
 export async function setMeta(key: string, value: unknown): Promise<void> {
   const db = await getDB()
   await db.put('meta', { key, value })
+}
+
+// ============================================================
+// Borrado total del espejo local (borrar cuenta)
+// ============================================================
+
+// `deleteDB` no puede completar mientras otra conexión tenga la base abierta:
+// se queda esperando (dispara `blocked`) hasta que se cierren. Otras pestañas
+// de la app son exactamente ese caso. Como en el flujo de borrar cuenta no se
+// puede colgar la UI esperando a que el usuario cierre pestañas, se le pone
+// tope.
+const DELETE_DB_TIMEOUT_MS = 4000
+
+// Deja el dispositivo sin ningún dato del usuario. Se usa al borrar la cuenta:
+// el servidor ya no tiene nada, así que el espejo local tampoco puede quedar.
+//
+// Dos pasos, en este orden y a propósito:
+//   1) VACIAR los stores uno por uno. Es lo que de verdad garantiza que no
+//      quede información: una transacción `readwrite` corre aunque haya otras
+//      pestañas con la base abierta, sin depender de que nadie la suelte.
+//   2) BORRAR la base entera, best-effort y contra un timeout. Es la limpieza
+//      fina (se lleva también los stores y el nombre); si otra pestaña la
+//      bloquea, no importa: después del paso 1 lo que queda es un cascarón
+//      vacío.
+//
+// Nunca tira: es el último tramo de una operación irreversible que ya sucedió
+// del lado del servidor. Devuelve si logró borrar el archivo entero, sólo para
+// poder contarlo.
+export async function wipeLocalDatabase(): Promise<{ vaciada: boolean; borrada: boolean }> {
+  let vaciada = false
+  try {
+    const db = await getDB()
+    const stores = ['temas', 'items', 'recordatorios', 'outbox', 'meta'] as const
+    const tx = db.transaction(stores, 'readwrite')
+    await Promise.all(stores.map((s) => tx.objectStore(s).clear()))
+    await tx.done
+    vaciada = true
+    db.close()
+  } catch {
+    /* se intenta igual el borrado completo de abajo */
+  }
+
+  // La promesa cacheada apunta a una conexión que estamos por cerrar/borrar: se
+  // suelta para que el próximo getDB() abra una base nueva y limpia.
+  dbPromise = null
+
+  try {
+    const borrado = await Promise.race([
+      deleteDB(DB_NAME).then(() => true),
+      new Promise<false>((resolve) => setTimeout(() => resolve(false), DELETE_DB_TIMEOUT_MS)),
+    ])
+    return { vaciada, borrada: borrado }
+  } catch {
+    return { vaciada, borrada: false }
+  }
 }
 
 // ============================================================

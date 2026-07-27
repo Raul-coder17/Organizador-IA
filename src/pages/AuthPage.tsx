@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { supabase } from '../lib/supabase'
 import { AuthCard } from '../components/AuthCard'
+import { consumirAvisoCuentaBorrada } from '../lib/borrarCuenta'
 
 // La pantalla de sesión tiene tres modos y un solo formulario: los tres piden
 // email y sólo dos piden contraseña. Separarlos en tres componentes habría
@@ -25,7 +26,16 @@ export function AuthPage() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [info, setInfo] = useState<string | null>(null)
+  // El aviso de "tu cuenta se borró" se lee UNA vez, en el primer render de esta
+  // pantalla: `borrarCuenta` deja una marca en sessionStorage justo antes de
+  // cerrar la sesión, y llegar acá es la confirmación de que todo salió. Se lee
+  // en el inicializador del estado (no en un efecto) para que el mensaje ya
+  // esté en el primer pintado, sin un parpadeo de login pelado.
+  const [info, setInfo] = useState<string | null>(() =>
+    consumirAvisoCuentaBorrada()
+      ? 'Tu cuenta y todos tus datos se borraron. Si querés volver a empezar, creá una cuenta nueva.'
+      : null,
+  )
 
   function cambiarModo(siguiente: Modo) {
     setModo(siguiente)

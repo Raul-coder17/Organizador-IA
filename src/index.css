@@ -707,6 +707,98 @@ body {
   padding: 18px 20px calc(20px + env(safe-area-inset-bottom, 0px));
 }
 
+/* --- Diálogo de confirmación fuerte (borrar cuenta) ------------------ */
+/* Reusa el telón `.drawer-overlay` y el mismo criterio de montaje permanente
+   con clase `--open` que el sheet y el drawer.
+   A diferencia del sheet de "nuevo ítem", NO se convierte en bottom-sheet en
+   pantallas angostas: el bottom-sheet se siente descartable —sube desde el
+   borde, se baja de un gesto— y esto es justo lo contrario. Centrado en todos
+   los tamaños, plantado en el medio de la pantalla. */
+.confirm-modal {
+  position: fixed;
+  z-index: 32;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  width: min(460px, calc(100% - 32px));
+  max-height: min(88dvh, 640px);
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  /* Borde rust arriba: la única marca de color del diálogo, en el mismo tono
+     que el botón que lleva a él. */
+  border-top: 3px solid var(--color-rust);
+  border-radius: 8px;
+  box-shadow: var(--shadow-float);
+  transform: translate(-50%, -50%) scale(0.98);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0s linear 0.18s;
+}
+.confirm-modal--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .confirm-modal {
+    transition: none;
+  }
+}
+.confirm-modal__head {
+  flex: none;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-line);
+}
+.confirm-modal__title {
+  font-family: var(--font-fraunces);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--color-ink);
+}
+.confirm-modal__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.confirm-modal__lista {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+.confirm-modal__campo {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-line-soft);
+}
+/* El pie se apoya en `--color-card` para separarse del cuerpo sin otra línea, y
+   respeta el safe-area de los teléfonos con barra de gestos. */
+.confirm-modal__pie {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--color-line);
+  background: var(--color-card);
+  border-radius: 0 0 7px 7px;
+}
+
 /* Menú inicial de 3 opciones */
 .sheet-opciones {
   display: flex;
@@ -1195,6 +1287,31 @@ body {
   background: color-mix(in srgb, var(--color-rust) 8%, transparent);
 }
 .btn-outline:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+/* Destructivo de verdad: rust MACIZO, no delineado. El delineado
+   (`.btn-outline`) ya está gastado en cosas reversibles —cerrar sesión, quitar
+   la API key—, así que no puede ser también el aviso de "esto no se deshace".
+   El relleno lo separa de todo lo demás sin inventar un color nuevo. */
+.btn-rust {
+  background: var(--color-rust);
+  color: var(--color-moss-ink);
+  border: none;
+  padding: 10px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+}
+/* Derivado del token, igual que `.btn-moss:hover`: en claro oscurece, en oscuro
+   aclara, sin una regla por tema. */
+.btn-rust:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-rust) 88%, var(--color-ink));
+}
+.btn-rust:disabled {
   opacity: 0.5;
   cursor: default;
 }

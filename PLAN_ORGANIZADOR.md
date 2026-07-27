@@ -2013,6 +2013,187 @@ lleva siempre el QUÉ del item (y que los ejemplos de abajo sólo listan los cam
 de recordatorio para no repetirse), la descripción de `contenido` en imperativo y
 marcada OBLIGATORIA, y los dos ejemplos corregidos para incluirlo.
 
+## Borrar cuenta
+
+La única acción de la app que no se puede deshacer. Hasta acá, una cuenta creada
+no se podía cerrar: quedaba viva para siempre, con todos sus datos, aunque el
+dueño no la quisiera más.
+
+Va en **rama aparte** (`feat/borrar-cuenta`), justamente porque borra datos
+reales sin vuelta atrás y conviene mirarla antes de que llegue a producción.
+
+### Por qué no se puede hacer desde el cliente
+
+Borrar una fila de `auth.users` sólo lo permite el admin API
+(`auth.admin.deleteUser`), y ése exige el `service_role`. Esa key no puede
+existir en el navegador —quien la tenga lee y borra los datos de TODOS los
+usuarios—, así que el borrado tiene que pasar por una Edge Function.
+
+`SUPABASE_SERVICE_ROLE_KEY` ya lo inyecta la plataforma en toda Edge Function (es
+el mismo que usa `send-reminder-notifications`): **no hay ningún secret nuevo que
+configurar.**
+
+### La cascada existe, y por eso hay UN SOLO delete
+
+Antes de escribir nada se revisaron las migraciones, no se asumió. Las seis
+tablas con `user_id` propio —`temas`, `items`, `user_ai_settings`, `ai_usage`,
+`push_subscriptions`, `ai_call_log`— declaran
+`references auth.users (id) on delete cascade`, y `recordatorios` cae por
+cascada de `items` (`item_id not null references items on delete cascade`).
+
+Con eso, la función hace **un solo** `deleteUser` y no borra tabla por tabla. No
+es pereza: la cascada corre DENTRO de la misma transacción que el `DELETE` de
+`auth.users`, así que el borrado es **atómico** — o se va todo, o no se va nada.
+Borrar a mano desde la función serían seis pedidos HTTP independientes, y una
+caída en el cuarto dejaría la cuenta viva a medio vaciar, que es exactamente el
+estado que había que evitar.
+
+Confiar en la cascada es confiar en el esquema, así que después del borrado hay
+un **barrido de verificación** con el `service_role` (que no ve RLS, así que ve
+todo lo que hubiera quedado): cuenta filas en las seis tablas y, si sobrevivió
+algo, contesta 500 nombrando qué quedó en vez de un `ok` sobre un borrado a
+medias.
+
+### Nunca la cuenta de otro
+
+El `user_id` sale de `auth.getUser()` sobre el JWT del pedido. El body **no se
+lee para nada** — el cliente ni siquiera manda uno (`body: {}`, verificado en el
+navegador). Es la única defensa que importa acá, porque el cliente admin bypassa
+la RLS: si el id viniera del body, cualquier usuario autenticado podría borrar a
+cualquier otro.
+
+### La confirmación es fricción a propósito
+
+Un "¿estás seguro?" con el botón ya habilitado se aprieta por inercia; la mano es
+más rápida que la lectura. El diálogo pide **escribir `ELIMINAR`** y sólo
+entonces enciende el botón final. La comparación es `texto.trim() === 'ELIMINAR'`
+(`confirmacionValida`, función pura exportada): tolera espacios de un pegado,
+pero **no** ignora mayúsculas — que "eliminar" no alcance es el punto.
+
+Antes de pedir la palabra se dice **qué** se borra, con nombre: ítems, temas,
+configuración de IA (incluida la API key), notificaciones push, usuario y correo.
+"Se borrará tu cuenta" no es información; la lista sí.
+
+Visualmente estrena `.btn-rust` (rust **macizo**). El delineado `.btn-outline` ya
+estaba gastado en cosas reversibles —cerrar sesión, quitar la API key—, así que
+no podía ser también el aviso de "esto no se deshace". El diálogo
+(`.confirm-modal`) reusa el telón `.drawer-overlay` pero, a diferencia del sheet
+de "nuevo ítem", **no** se convierte en bottom-sheet en pantallas angostas: el
+bottom-sheet se siente descartable, y esto es lo contrario.
+
+### Sin conexión no se ofrece
+
+El borrado vive en el servidor: no hay nada que encolar en el outbox ni forma
+honesta de prometerlo. El botón se apaga y se dice por qué, mismo criterio que
+guardar el nombre o activar la IA.
+
+### El orden del lado del cliente
+
+1. **Primero el servidor.** Si falla, no se toca NADA local: la cuenta sigue
+   viva, el espejo local intacto y el diálogo queda abierto con el error para
+   reintentar sin volver a tipear.
+2. Con el `ok`: marca en `sessionStorage` → `signOut({ scope: 'local' })` →
+   baja la suscripción push del navegador → se vacía y borra la IndexedDB →
+   se limpia `localStorage`.
+
+El `signOut` va **antes** de limpiar y no al final: al caer la sesión se
+desmonta el layout privado y con él el motor de sync y el watcher de
+recordatorios, así que nadie queda leyendo ni escribiendo la base mientras se la
+vacía. Y es `scope: 'local'` porque el signOut normal le avisa al servidor, que
+ya no tiene ni usuario ni sesión que revocar.
+
+`wipeLocalDatabase` (en `db.ts`) hace dos pasos: **vacía** los stores uno por uno
+—una transacción `readwrite` corre aunque otra pestaña tenga la base abierta, así
+que esto es lo que de verdad garantiza que no quede información— y recién después
+intenta **borrar** la base entera, best-effort contra un timeout de 4 s, porque
+`deleteDB` se queda esperando indefinidamente si otra pestaña la bloquea.
+
+La limpieza de `localStorage` barre por prefijo (`organizador:*` y `sb-*`) con
+**una excepción: el tema**. Claro u oscuro no es un dato de la cuenta, y borrarlo
+haría que la pantalla cambiara de color justo en el segundo en que se confirma un
+borrado irreversible.
+
+El login lee la marca de `sessionStorage` en el inicializador del estado (no en
+un efecto, para que el mensaje esté en el primer pintado) y la consume: se ve una
+vez y no reaparece al recargar.
+
+### Verificación
+
+`npm run build` limpio. `npm run lint` con **0 errores** (siguen los 3 warnings
+previos de `ProposedActionCard.tsx`, `PushSettings.tsx` y `AuthContext.tsx`).
+
+**Nada de esto tocó la cuenta real.** El navegador de verificación no tenía
+sesión iniciada, así que no había forma de llegar a un borrado de verdad. Se usó
+un harness temporal (`_borrar-cuenta-harness.html` + `src/_harnessBorrarCuenta.tsx`,
+borrados después) que monta el componente REAL contra el CSS REAL, y un `fetch`
+interceptado para simular las respuestas del servidor sin que saliera ni un
+pedido — confirmado con `read_network_requests`: **cero llamadas** a
+`supabase.co`.
+
+Detalle del harness que vale anotar: la primera versión estaba en `public/` y no
+arrancaba. Los archivos de `public/` se sirven sin la transformación de HTML de
+Vite, así que faltaba el preámbulo de react-refresh y el módulo moría antes de la
+primera línea. Movido a la raíz del proyecto, funcionó.
+
+Verificado:
+
+- **Palabra exacta**: `eliminar`, `Eliminar`, `ELIMINA`, `ELIMINARR` y `ELlMINAR`
+  (con L minúscula infiltrada) dejan el botón apagado; `ELIMINAR`, `ELIMINAR ` y
+  `  ELIMINAR  ` lo encienden.
+- **Estados visuales en claro y oscuro, desktop y 375 px**: bloque de Ajustes,
+  diálogo cerrado/abierto, botón apagado y encendido, error, y `scrollWidth ===
+  innerWidth` (sin desborde horizontal).
+- **En vuelo**: el botón pasa a "Borrando…", los dos botones y el input quedan
+  deshabilitados, y el click en el telón **no** cierra el diálogo.
+- **Error del servidor**: con un 500 simulado, el mensaje real de la función
+  llega a la pantalla con sus `restos` ("…quedaron datos sin eliminar
+  (ai_usage (3), push_subscriptions (1))"), el diálogo sigue abierto y el botón
+  vuelve a habilitarse. Esto prueba el parseo de `error.context`, que
+  `functions.invoke` deja sin leer.
+- **Camino feliz completo**, contra un origen aparte (`http://[::1]:5173`, otro
+  origen para el navegador → storage propio y vacío, el mismo truco del ítem de
+  recuperar contraseña) sembrado con datos falsos: la base `organizador`
+  **desaparece**, `localStorage` queda **sólo** con `organizador:theme`, la marca
+  de sessionStorage queda puesta, y sale **una sola** llamada, a
+  `/functions/v1/delete-account`, con body `{}`.
+- **El aviso en el login**: con la marca puesta, la pantalla de sesión muestra
+  "Tu cuenta y todos tus datos se borraron…" en el primer pintado, y al recargar
+  ya no aparece.
+
+`npx deno check supabase/functions/delete-account/index.ts` limpio, y la suite
+completa (`npx deno test src/lib/ supabase/functions/`) en **230 passed /
+0 failed**. Deno no está instalado en la máquina, pero `npx deno` lo resuelve.
+
+### Desplegada, y probada sin poder borrar nada
+
+`supabase functions deploy delete-account` → proyecto `uesnorbrpeosynabobha`,
+estado ACTIVE, versión 1, **`verify_jwt: true`**. Ningún secret nuevo.
+
+Contra la función YA desplegada, cinco pruebas que por construcción no pueden
+borrar nada (sin un JWT de usuario no hay a quién borrar):
+
+| Caso | Resultado |
+| --- | --- |
+| Sin `Authorization` | `401 UNAUTHORIZED_NO_AUTH_HEADER` (corta el gateway) |
+| Con la anon key | `401 {"error":"Sesión inválida o expirada."}` |
+| Body con `user_id` ajeno + anon key | `401` idéntico al anterior |
+| `GET` | `405 Method not allowed` |
+| `OPTIONS` | `200` + CORS correcto |
+
+La segunda es la que importa: la anon key **sí** es un JWT válido y pasa el
+gateway, así que el 401 lo devuelve NUESTRO código —`auth.getUser()` sobre un
+token que no es de ningún usuario—. Eso prueba que la función corrió y que la
+puerta real es `getUser()`, no el gateway.
+
+La tercera es el requisito "nunca la cuenta de otro" verificado en vivo: se mandó
+un `user_id` real en el body y la respuesta fue **idéntica** a la de un body
+vacío. El body no autoriza nada porque no se lee.
+
+**Lo único que queda sin verificar** (no se puede sin borrar una cuenta de
+verdad): que `deleteUser` + la cascada efectivamente vacíen las siete tablas en
+el proyecto real, y el barrido de verificación posterior. Se prueba creando una
+cuenta descartable desde el login y borrándola.
+
 ## Deploy
 
 ### GitHub
@@ -2067,6 +2248,51 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-26 — **Borrar cuenta desde Ajustes** (rama `feat/borrar-cuenta`, sin
+  commitear). Nueva Edge Function `delete-account`: saca el `user_id` del JWT
+  vía `auth.getUser()` —el body NO se lee, así que no hay forma de pedir el
+  borrado de otro— y hace UN solo `auth.admin.deleteUser` con el
+  `service_role`. Un solo delete a propósito: se revisaron las migraciones y las
+  seis tablas con `user_id` (`temas`, `items`, `user_ai_settings`, `ai_usage`,
+  `push_subscriptions`, `ai_call_log`) ya declaran `on delete cascade` contra
+  `auth.users`, y `recordatorios` cae por cascada de `items`; la cascada corre
+  en la MISMA transacción que el delete, así que el borrado es atómico —borrar
+  tabla por tabla serían seis pedidos independientes y una caída en el cuarto
+  dejaría la cuenta a medio vaciar. Igual no se confía a ciegas en el esquema:
+  después hay un barrido con el `service_role` que cuenta filas en las seis
+  tablas y devuelve 500 nombrando lo que haya quedado en vez de un `ok` falso.
+  No hace falta configurar ningún secret nuevo: `SUPABASE_SERVICE_ROLE_KEY` ya
+  lo inyecta la plataforma. UI: bloque nuevo al final de Ajustes → Cuenta, con
+  `.btn-rust` (rust macizo — el delineado `.btn-outline` ya estaba gastado en
+  cosas reversibles) y un diálogo `.confirm-modal` que enumera qué se borra y
+  exige escribir `ELIMINAR` (`confirmacionValida`, `trim()` sí, mayúsculas no)
+  antes de encender el botón final; centrado en todos los tamaños, sin volverse
+  bottom-sheet en móvil porque el bottom-sheet se siente descartable. Sin
+  conexión el botón se apaga con su explicación. Del lado del cliente
+  (`src/lib/borrarCuenta.ts`) el orden es primero el servidor —si falla no se
+  toca nada local y se puede reintentar— y después
+  `signOut({ scope: 'local' })` (antes de limpiar, para que se desmonten el
+  motor de sync y el watcher y nadie escriba la base mientras se la vacía),
+  baja de la suscripción push, `wipeLocalDatabase` (vacía los stores primero
+  —eso corre aunque otra pestaña tenga la base abierta— y recién después
+  `deleteDB` contra un timeout de 4 s) y limpieza de `localStorage` por prefijo,
+  preservando `organizador:theme` porque el modo claro/oscuro no es un dato de
+  la cuenta. El login muestra el aviso una sola vez, leído en el inicializador
+  del estado para que esté en el primer pintado. Verificado sin tocar ninguna
+  cuenta: el navegador de prueba no tenía sesión, y las respuestas del servidor
+  se simularon interceptando `fetch` (cero llamadas reales a `supabase.co`,
+  confirmado por red). Camino feliz completo probado en un origen aparte
+  (`http://[::1]:5173`) con datos sembrados: la IndexedDB desaparece,
+  `localStorage` queda sólo con el tema y sale un único POST con body `{}`.
+  Desplegada con `supabase functions deploy delete-account` (ACTIVE, v1,
+  `verify_jwt: true`) y probada contra la función viva con cinco casos que no
+  pueden borrar nada: sin `Authorization` corta el gateway (401), con la anon
+  key corta NUESTRO `getUser()` (401 en español — prueba que el código corrió),
+  un `user_id` ajeno en el body da la respuesta idéntica a un body vacío
+  (el body no se lee), `GET` da 405 y `OPTIONS` da 200 con el CORS correcto.
+  Queda sin verificar —no se puede sin borrar una cuenta real— que la cascada
+  vacíe las tablas en producción. `tsc -b && vite build` limpio, lint 0 errores,
+  `deno check` limpio y 230 tests passed / 0 failed.
 - 2026-07-26 — **Dictado de voz en el chat del asistente**. Botón de
   micrófono junto al input de `AssistantDrawer`, con la Web Speech API nativa
   del navegador (`SpeechRecognition`/`webkitSpeechRecognition`) — sin IA, sin

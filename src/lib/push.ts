@@ -116,6 +116,24 @@ export async function subscribeToPush(userId: string): Promise<PushStatus> {
   return 'subscribed'
 }
 
+// Da de baja la suscripción SÓLO en este navegador, sin tocar la base. La usa
+// el borrado de cuenta: para entonces la fila de `push_subscriptions` ya no
+// existe (cayó por cascada) y la sesión tampoco, así que un delete contra
+// Supabase sólo podría fallar. Lo que sí hay que hacer es cortar la suscripción
+// del lado del navegador, o el service worker queda registrado esperando
+// notificaciones de una cuenta que ya no está.
+export async function unsubscribeLocalPush(): Promise<void> {
+  try {
+    if (!isPushSupported()) return
+    const reg = await swReadyOrNull()
+    if (!reg) return
+    const sub = await reg.pushManager.getSubscription()
+    if (sub) await sub.unsubscribe()
+  } catch {
+    /* best-effort: no bloquea el borrado de cuenta */
+  }
+}
+
 // Da de baja la suscripción de este navegador (opcional): la borra localmente y
 // de push_subscriptions.
 export async function unsubscribeFromPush(): Promise<PushStatus> {
