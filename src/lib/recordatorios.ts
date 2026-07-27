@@ -3,8 +3,18 @@
 // y las sube sync.ts; ver la nota en items.ts.
 
 import { supabase } from './supabase'
-import { leerTabla } from './tabla'
 import type { Item, Recordatorio, RecordatorioConItem } from '../types/database'
+
+// El resumen del contenido de un item y el armado de la notificación de un
+// recordatorio viven en notificacionRecordatorio.ts (sin Supabase, testeable
+// con `deno test`) y se re-exportan acá, que es de donde los importa el resto
+// de la UI (RecordatorioRow, etc.).
+export {
+  ACCIONES_POSPONER,
+  contenidoNotificacion,
+  resumenContenido,
+  type ContenidoNotificacion,
+} from './notificacionRecordatorio'
 
 // Rearma la forma RecordatorioConItem (recordatorio + item embebido) que usa la
 // pantalla de recordatorios, uniendo recordatorios planos con los items
@@ -126,34 +136,3 @@ export {
   proximaFechaConHora,
   recurrenciaSinFecha,
 } from './fechaLocal'
-
-// Resumen textual del contenido de un item, para mostrarlo en la lista de
-// recordatorios sin depender del render completo de ItemList.
-export function resumenContenido(item: Pick<Item, 'tipo' | 'contenido'> | null): string {
-  if (!item) return 'Item eliminado'
-  const c = item.contenido ?? {}
-  if (item.tipo === 'lista' && Array.isArray(c.items)) {
-    const lineas = c.items as { texto?: unknown }[]
-    const total = lineas.length
-    const preview = lineas
-      .slice(0, 3)
-      .map((l) => String(l.texto ?? ''))
-      .filter(Boolean)
-      .join(', ')
-    return total > 3 ? `${preview}… (${total} líneas)` : preview || 'Lista vacía'
-  }
-  // Una tabla se resume por sus encabezados y cuántas filas tiene: volcar las
-  // celdas en una línea no se lee, y desde que el editor guarda {columnas,
-  // filas} el fallback de abajo mostraría el jsonb crudo — también en el cuerpo
-  // de la notificación local, que sale de acá.
-  if (item.tipo === 'tabla') {
-    const tabla = leerTabla(c)
-    if (tabla) {
-      const cabeceras = (tabla.headers ?? []).map((h) => h.trim()).filter(Boolean).join(' · ')
-      const filas = `${tabla.rows.length} fila${tabla.rows.length === 1 ? '' : 's'}`
-      return cabeceras ? `${cabeceras} (${filas})` : filas
-    }
-  }
-  if (typeof c.texto === 'string' && c.texto.trim()) return c.texto.trim()
-  return JSON.stringify(c)
-}

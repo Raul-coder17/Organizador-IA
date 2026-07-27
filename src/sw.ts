@@ -5,6 +5,8 @@
 // dispara la Edge Function `send-reminder-notifications`.
 
 import { precacheAndRoute } from 'workbox-precaching'
+import { ACCIONES_POSPONER } from './lib/notificacionRecordatorio'
+import { posponerRecordatorio } from './lib/repo'
 
 declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | { url: string; revision: string | null })[]
@@ -32,11 +34,18 @@ interface PushPayload {
   body?: string
   url?: string
   tag?: string
+  recordatorioId?: string
 }
 
+// Minutos que pospone cada acción, por su `action` id (ver ACCIONES_POSPONER en
+// lib/recordatorios.ts, que define el mismo array para el aviso local).
+const MINUTOS_POR_ACCION: Record<string, number> = Object.fromEntries(
+  ACCIONES_POSPONER.map((a) => [a.action, a.minutos]),
+)
+
 // Notificación push: el payload viene como JSON desde la Edge Function con
-// { title, body, url, tag }. Si no se puede parsear, mostramos un texto
-// genérico.
+// { title, body, url, tag, recordatorioId }. Si no se puede parsear, mostramos
+// un texto genérico.
 self.addEventListener('push', (event) => {
   let payload: PushPayload = {}
   try {
@@ -59,16 +68,35 @@ self.addEventListener('push', (event) => {
     self.registration.showNotification(title, {
       body,
       icon: '/icon.svg',
-      badge: '/icon.svg',
-      data: { url },
+      badge: '/badge.svg',
+      data: { url, recordatorioId: payload.recordatorioId },
       tag,
+      // Sólo tiene sentido posponer un recordatorio puntual: si el payload es
+      // viejo (sin recordatorioId, de antes de este cambio) no se ofrecen
+      // botones que notificationclick no podría resolver.
+      actions: payload.recordatorioId ? [...ACCIONES_POSPONER] : undefined,
     }),
   )
 })
 
-// Click en la notificación: enfoca una pestaña abierta de la app (navegándola a
-// /reminders) o abre una nueva.
+// Click en la notificación.
+//
+// Si fue un botón de "Posponer": reprograma el recordatorio (mismo mecanismo
+// offline-first que el resto de la app — repo.ts / el motor de sync, así que
+// funciona igual sin conexión) y listo, SIN abrir la app.
+//
+// Si fue el cuerpo de la notificación: enfoca una pestaña abierta de la app
+// (navegándola a /reminders) o abre una nueva, como siempre.
 self.addEventListener('notificationclick', (event) => {
+  const recordatorioId = event.notification.data?.recordatorioId as string | undefined
+  const minutos = event.action ? MINUTOS_POR_ACCION[event.action] : undefined
+
+  if (minutos !== undefined && recordatorioId) {
+    event.notification.close()
+    event.waitUntil(posponerRecordatorio(recordatorioId, minutos).catch(() => {}))
+    return
+  }
+
   event.notification.close()
   const targetUrl = (event.notification.data?.url as string) ?? '/reminders'
 

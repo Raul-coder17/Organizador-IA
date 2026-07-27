@@ -20,7 +20,6 @@ import {
   countOutbox,
   deleteLocalRow,
   deleteOps,
-  getMeta,
   getOutbox,
   markOpsFailed,
   saveItemsToCache,
@@ -43,7 +42,7 @@ import {
 } from './syncCore'
 
 const SYNC_LOCK = 'organizador-sync'
-const RETRY_MS = 30_000
+export const RETRY_MS = 30_000
 // Pequeña espera tras una mutación para que una ráfaga (crear item + su
 // recordatorio, tildar varias líneas) se suba en un solo ciclo.
 const DEBOUNCE_MS = 200
@@ -192,7 +191,7 @@ function setState(patch: Partial<SyncState>): void {
   }
 }
 
-async function refreshPending(): Promise<void> {
+export async function refreshPending(): Promise<void> {
   try {
     setState({ pending: await countOutbox() })
   } catch {
@@ -422,12 +421,10 @@ export async function syncNow(): Promise<void> {
 // indicador reaccione en el mismo instante en que el usuario guarda.
 export function requestSync(): void {
   void refreshPending()
-  if (typeof window === 'undefined') {
-    void syncNow()
-    return
-  }
-  window.clearTimeout(debounceId)
-  debounceId = window.setTimeout(() => void syncNow(), DEBOUNCE_MS)
+  // Timers globales sin calificar (no `window.`): así el archivo también lo
+  // puede importar el service worker (sw.ts), donde no existe `window`.
+  clearTimeout(debounceId)
+  debounceId = setTimeout(() => void syncNow(), DEBOUNCE_MS)
 }
 
 // Sync a pedido del usuario (botón "Sincronizar ahora"): saltea el backoff.
@@ -440,47 +437,50 @@ export async function forceSyncNow(): Promise<void> {
 // ============================================================
 // Arranque / disparadores
 // ============================================================
+//
+// El enganche de los disparadores en sí (online/offline/foco/visibilidad/
+// intervalo) vive en SyncEngine.tsx y no acá: son APIs de `window`/`document`,
+// y este archivo lo importa también el service worker (sw.ts, para poder
+// posponer un recordatorio desde la notificación por el mismo camino
+// offline-first que el resto de la app — ver repo.ts::posponerRecordatorio),
+// donde esas APIs no existen. Acá quedan solo las piezas SIN DOM que ese
+// enganche necesita, para que sync.ts entero siga siendo importable desde los
+// dos lados.
 
-// Engancha los disparadores y hace el primer sync. Devuelve el cleanup.
-export function startSyncEngine(userId: string): () => void {
+// Fija (o suelta, con null) el usuario del ciclo de sync. La llama
+// SyncEngine.tsx al montar/desmontar.
+export function setSyncUser(userId: string | null): void {
   currentUserId = userId
+}
 
-  const onOnline = () => {
-    // Volvió la red: reseteamos el backoff para subir enseguida y limpiamos el
-    // error, que a esta altura ya es historia vieja.
-    consecutiveFails = 0
-    nextAttemptAt = 0
-    setState({ online: true, error: null })
-    void syncNow()
-  }
-  // Estar sin conexión no es un error: es un estado, y tiene su propio cartel.
-  const onOffline = () => setState({ online: false, error: null })
-  const onFocus = () => void syncNow()
-  const onVisibility = () => {
-    if (document.visibilityState === 'visible') void syncNow()
-  }
-
-  window.addEventListener('online', onOnline)
-  window.addEventListener('offline', onOffline)
-  window.addEventListener('focus', onFocus)
-  document.addEventListener('visibilitychange', onVisibility)
-  const intervalId = window.setInterval(() => void syncNow(), RETRY_MS)
-
-  // Estado inicial del indicador: conexión, pendientes en cola y la última
-  // sincronización que quedó guardada de la sesión anterior.
-  setState({ online: isOnline() })
-  void refreshPending()
-  void getMeta<string>('lastSyncAt').then((ts) => setState({ lastSyncAt: ts }))
-
+// Volvió la red: reseteamos el backoff para subir enseguida y limpiamos el
+// error, que a esta altura ya es historia vieja.
+export function noteOnline(): void {
+  consecutiveFails = 0
+  nextAttemptAt = 0
+  setState({ online: true, error: null })
   void syncNow()
+}
 
-  return () => {
-    window.removeEventListener('online', onOnline)
-    window.removeEventListener('offline', onOffline)
-    window.removeEventListener('focus', onFocus)
-    document.removeEventListener('visibilitychange', onVisibility)
-    window.clearInterval(intervalId)
-    window.clearTimeout(debounceId)
-    currentUserId = null
-  }
+// Estar sin conexión no es un error: es un estado, y tiene su propio cartel.
+export function noteOffline(): void {
+  setState({ online: false, error: null })
+}
+
+// Estado inicial de conexión del indicador, al montar el motor.
+export function refreshOnlineState(): void {
+  setState({ online: isOnline() })
+}
+
+// La última sincronización que quedó guardada de la sesión anterior (leída de
+// `meta` por SyncEngine.tsx al montar, que es quien tiene el `getMeta`).
+export function noteLastSyncAt(ts: string | null): void {
+  setState({ lastSyncAt: ts })
+}
+
+// Cancela el debounce de requestSync pendiente. La llama SyncEngine.tsx al
+// desmontar, para no disparar un sync después de cerrar sesión.
+export function cancelPendingSync(): void {
+  clearTimeout(debounceId)
+  debounceId = undefined
 }

@@ -22,29 +22,19 @@ import webpush from 'npm:web-push@3.6.7'
 // Gemelo exacto de src/lib/recurrencia.ts: el mismo recordatorio puede avanzar
 // por acá (este cron) o por el cliente (aviso local / "marcar hecho"), y tiene
 // que caer en la misma fecha en los dos casos. La paridad está cubierta por
-// tests que importan las dos copias y comparan sus salidas.
-import { parseRecurrencia, proximaOcurrencia } from './recurrencia.ts'
+// tests que importan las dos copias y comparan sus salidas. `marcaRecurrenciaCorta`
+// es la excepción: no tiene equivalente EXACTO del lado del cliente (no puede
+// conocer la zona horaria del usuario), ver la nota en recurrencia.ts.
+import { marcaRecurrenciaCorta, parseRecurrencia, proximaOcurrencia } from './recurrencia.ts'
+// Gemelo de resumenContenido() (+ el parseo de tabla que necesita) del lado
+// del cliente. Ver la nota ahí.
+import { resumenContenido } from './resumen.ts'
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
     headers: { 'Content-Type': 'application/json' },
   })
-}
-
-// Resumen textual del contenido de un item para el cuerpo de la notificación.
-function resumen(item: { tipo?: string; contenido?: Record<string, unknown> } | null): string {
-  if (!item) return 'Tenés un recordatorio pendiente.'
-  const c = item.contenido ?? {}
-  if (item.tipo === 'lista' && Array.isArray(c.items)) {
-    const lineas = (c.items as { texto?: unknown }[])
-      .map((l) => String(l.texto ?? ''))
-      .filter(Boolean)
-    const preview = lineas.slice(0, 3).join(', ')
-    return lineas.length > 3 ? `${preview}… (${lineas.length} líneas)` : preview || 'Lista'
-  }
-  if (typeof c.texto === 'string' && c.texto.trim()) return c.texto.trim()
-  return 'Tenés un recordatorio pendiente.'
 }
 
 interface RecordatorioRow {
@@ -57,7 +47,17 @@ interface RecordatorioRow {
   // getUTCDay()); la conversión desde la zona del usuario ya la hizo el cliente
   // al guardar, así que acá se comparan directo.
   recurrencia_dias: number[] | null
-  item: { user_id: string; tipo: string; contenido: Record<string, unknown> } | null
+  item:
+    | {
+        user_id: string
+        tipo: string
+        contenido: Record<string, unknown>
+        // Embebido a su vez (recordatorios → items → temas): el nombre del
+        // tema es el contexto del cuerpo de la notificación. null si el item
+        // no tiene tema.
+        tema: { nombre: string } | null
+      }
+    | null
 }
 
 interface SubRow {
@@ -93,7 +93,9 @@ Deno.serve(async (req) => {
 
   const { data: pendientes, error: qError } = await supabase
     .from('recordatorios')
-    .select('id, fecha_hora, recurrencia, recurrencia_dias, item:items(user_id, tipo, contenido)')
+    .select(
+      'id, fecha_hora, recurrencia, recurrencia_dias, item:items(user_id, tipo, contenido, tema:temas(nombre))',
+    )
     .eq('estado', 'pendiente')
     .lte('fecha_hora', nowIso)
     .order('fecha_hora', { ascending: true })
@@ -130,15 +132,27 @@ Deno.serve(async (req) => {
       continue // dejamos 'pendiente'; si se suscribe luego, se notifica después
     }
 
+    // Título = el contenido del item ("Tomar la pastilla"), no un genérico
+    // "Recordatorio". Cuerpo = contexto breve: el tema y, si se repite, una
+    // marca corta — mismo criterio que arma el aviso local (ver
+    // contenidoNotificacion en src/lib/recordatorios.ts) para que la
+    // notificación se vea igual la dispare quien la dispare.
+    const repite = marcaRecurrenciaCorta(rec)
+    const contexto = [rec.item.tema?.nombre ?? null, repite ? `Se repite: ${repite}` : null].filter(
+      (parte): parte is string => Boolean(parte),
+    )
     const payload = JSON.stringify({
-      title: 'Recordatorio',
-      body: resumen(rec.item),
+      title: resumenContenido(rec.item),
+      body: contexto.length > 0 ? contexto.join(' · ') : 'Tenés un recordatorio pendiente.',
       url: '/reminders',
       // Mismo tag que usa el aviso local del watcher para este recordatorio: si
       // los dos avisan (el 'enviado' del watcher no había subido todavía porque
       // el dispositivo estaba sin señal), el push reemplaza la notificación
       // local en vez de apilar una segunda.
       tag: `recordatorio-${rec.id}`,
+      // Lo que necesita el botón "Posponer" de la notificación (ver sw.ts,
+      // notificationclick) para saber qué recordatorio reprogramar.
+      recordatorioId: rec.id,
     })
 
     let algunoOk = false

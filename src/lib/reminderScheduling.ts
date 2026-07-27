@@ -52,6 +52,14 @@ export function computeDelayMs(fechaHora: string, now: number): number {
   return Math.max(0, target - now)
 }
 
+// Fecha a la que se pospone un recordatorio: AHORA + minutos, no la fecha
+// vencida original (posponer "15 min" a las 9:05 tiene que sonar a las 9:20,
+// no volver a sonar en el pasado). La usa repo.ts::posponerRecordatorio, que
+// dispara el botón "Posponer" de la notificación (ver sw.ts).
+export function fechaPospuesta(minutos: number, now: number): string {
+  return new Date(now + minutos * 60_000).toISOString()
+}
+
 // ============================================================
 // Catch-up de vencidos viejos (PLAN_OFFLINE.md §6.2)
 // ============================================================

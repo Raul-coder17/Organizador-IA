@@ -11,5 +11,5 @@
     "strict": true,
     "types": []
   },
-  "include": ["src/sw.ts"]
+  "include": ["src/sw.ts", "src/vite-env.d.ts", "src/types/notification-actions.d.ts"]
 }

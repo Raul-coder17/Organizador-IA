@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { swReadyOrNull } from './push'
-import { resumenContenido } from './recordatorios'
-import { listRecordatoriosParaDisparo, marcarEnviado } from './repo'
+import { ACCIONES_POSPONER, contenidoNotificacion } from './notificacionRecordatorio'
+import { listRecordatoriosParaDisparo, mapaNombresTema, marcarEnviado } from './repo'
 import { reconcileTimers, splitStaleReminders } from './reminderScheduling'
 import type { Recordatorio, RecordatorioConItem } from '../types/database'
 
@@ -66,14 +66,20 @@ export function useLocalReminderWatcher(): void {
       const reg = await swReadyOrNull()
       if (!reg || cancelled) return
       // Mismo formato que el push del servidor (send-reminder-notifications):
-      // título "Recordatorio", cuerpo = resumen del contenido, url /reminders.
-      await reg.showNotification('Recordatorio', {
-        body: resumenContenido(rec.item),
+      // título = contenido del item, cuerpo = tema + recurrencia, url
+      // /reminders. La búsqueda del nombre del tema sale del espejo local, así
+      // que anda igual sin conexión.
+      const temas = await mapaNombresTema()
+      const temaNombre = rec.item?.tema_id ? (temas.get(rec.item.tema_id) ?? null) : null
+      const { title, body } = contenidoNotificacion(rec, rec.item, temaNombre)
+      await reg.showNotification(title, {
+        body,
         icon: '/icon.svg',
-        badge: '/icon.svg',
-        data: { url: '/reminders' },
+        badge: '/badge.svg',
+        data: { url: '/reminders', recordatorioId: rec.id },
         // tag propio por recordatorio: no colapsa con otro aviso distinto.
         tag: `recordatorio-${rec.id}`,
+        actions: [...ACCIONES_POSPONER],
       })
     }
 
@@ -90,7 +96,7 @@ export function useLocalReminderWatcher(): void {
             ? 'Tenías 1 recordatorio vencido.'
             : `Tenías ${cantidad} recordatorios vencidos.`,
         icon: '/icon.svg',
-        badge: '/icon.svg',
+        badge: '/badge.svg',
         data: { url: '/reminders' },
         // tag fijo: si se acumulan varios catch-up, se reemplazan en vez de
         // apilarse.

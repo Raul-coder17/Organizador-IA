@@ -9,6 +9,7 @@
 import { assertEquals } from 'jsr:@std/assert@1'
 import {
   avanzarUnaVuelta,
+  marcaRecurrenciaCorta,
   parseDiasSemana,
   parseRecurrencia,
   proximaOcurrencia,
@@ -16,6 +17,7 @@ import {
 } from './recurrencia.ts'
 import {
   avanzarUnaVuelta as avanzarCliente,
+  marcaRecurrencia as marcaCliente,
   parseDiasSemana as parseDiasCliente,
   proximaOcurrencia as proximaCliente,
 } from '../../../src/lib/recurrencia.ts'
@@ -23,6 +25,26 @@ import {
 // Los tres tipos que no llevan días. `dias_semana` se barre aparte, contra
 // todas las combinaciones de días.
 const RECURRENCIAS: Recurrencia[] = ['diario', 'semanal', 'mensual']
+
+// Copia mínima e independiente de DIA_CORTO/DIAS_ORDEN (privados en
+// recurrencia.ts) sólo para armar el texto esperado en los tests de abajo —
+// no valida nada por sí sola, es una forma más legible de escribir el
+// resultado esperado que una lista de strings sueltas.
+const DIA_CORTO_TEST: Record<number, string> = {
+  0: 'Dom',
+  1: 'Lun',
+  2: 'Mar',
+  3: 'Mié',
+  4: 'Jue',
+  5: 'Vie',
+  6: 'Sáb',
+}
+function etiquetaDiasDePrueba(dias: number[]): string {
+  return [1, 2, 3, 4, 5, 6, 0]
+    .filter((d) => dias.includes(d))
+    .map((d) => DIA_CORTO_TEST[d])
+    .join(', ')
+}
 
 // Las 127 combinaciones no vacías de días de la semana.
 const TODAS_LAS_COMBINACIONES: number[][] = Array.from({ length: 127 }, (_, i) => {
@@ -234,4 +256,57 @@ Deno.test('paridad: dias_semana con atrasos (proximaOcurrencia) y días degenera
       }
     }
   }
+})
+
+// ============================================================
+// marcaRecurrenciaCorta (texto "Se repite: …" del cuerpo del push)
+// ============================================================
+//
+// Para diario/semanal/mensual hay paridad real con el cliente (no dependen de
+// zona horaria). Para dias_semana NO se compara contra el cliente: el cliente
+// usa la zona del navegador que corre el test (no necesariamente Argentina) y
+// el Edge asume Argentina fija a propósito (no hay otra zona que conocer del
+// lado del servidor) — ver la nota en recurrencia.ts. Ahí se testea el
+// resultado del Edge contra lo esperado a mano.
+
+Deno.test('marcaRecurrenciaCorta: diario/semanal/mensual coinciden con el texto del cliente', () => {
+  for (const recurrencia of RECURRENCIAS) {
+    const rec = { recurrencia, recurrencia_dias: null, fecha_hora: '2026-07-27T09:00:00.000Z' }
+    assertEquals(marcaRecurrenciaCorta(rec), marcaCliente(rec)?.corta ?? null)
+  }
+})
+
+Deno.test('marcaRecurrenciaCorta: sin recurrencia devuelve null', () => {
+  const rec = { recurrencia: null, recurrencia_dias: null, fecha_hora: '2026-07-27T09:00:00.000Z' }
+  assertEquals(marcaRecurrenciaCorta(rec), null)
+})
+
+Deno.test('marcaRecurrenciaCorta: dias_semana arma la marca lejos del borde de medianoche', () => {
+  // Mediodía UTC = 09:00 Argentina, lejos de cualquier cruce de día: los días
+  // UTC guardados y los locales coinciden sin corrimiento.
+  const rec = {
+    recurrencia: 'dias_semana',
+    recurrencia_dias: [1, 3, 5],
+    fecha_hora: '2026-07-27T12:00:00.000Z',
+  }
+  assertEquals(marcaRecurrenciaCorta(rec), etiquetaDiasDePrueba([1, 3, 5]))
+})
+
+Deno.test('marcaRecurrenciaCorta: dias_semana cerca de medianoche aplica el corrimiento de Argentina', () => {
+  // 01:00 UTC ya es "el día siguiente" en UTC, pero en Argentina (UTC-3)
+  // todavía son las 22:00 del día anterior: el día guardado (UTC) tiene que
+  // correrse un día hacia atrás para el texto que lee el usuario.
+  const diaUtcGuardado = new Date('2026-07-28T01:00:00.000Z').getUTCDay()
+  const diaLocalEsperado = (diaUtcGuardado + 6) % 7 // un día antes
+  const rec = {
+    recurrencia: 'dias_semana',
+    recurrencia_dias: [diaUtcGuardado],
+    fecha_hora: '2026-07-28T01:00:00.000Z',
+  }
+  assertEquals(marcaRecurrenciaCorta(rec), etiquetaDiasDePrueba([diaLocalEsperado]))
+})
+
+Deno.test('marcaRecurrenciaCorta: dias_semana sin días utilizables devuelve null', () => {
+  const rec = { recurrencia: 'dias_semana', recurrencia_dias: null, fecha_hora: '2026-07-27T12:00:00.000Z' }
+  assertEquals(marcaRecurrenciaCorta(rec), null)
 })

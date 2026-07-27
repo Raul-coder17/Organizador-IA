@@ -114,6 +114,81 @@ export function avanzarUnaVuelta(
   ).toISOString()
 }
 
+// ---------------------------------------------------------------------------
+// Marca de "se repite" para el cuerpo de la notificación del push
+// ---------------------------------------------------------------------------
+//
+// Gemelo REDUCIDO de marcaRecurrencia() en src/lib/recurrencia.ts: acá sólo
+// hace falta el texto corto ("Se repite: Lun, Mié, Vie" / "Se repite: cada
+// día"), no el título largo del tooltip, que no tiene sentido en un push.
+
+const DIA_CORTO: Record<number, string> = {
+  0: 'Dom',
+  1: 'Lun',
+  2: 'Mar',
+  3: 'Mié',
+  4: 'Jue',
+  5: 'Vie',
+  6: 'Sáb',
+}
+
+// Mismos textos que RECURRENCIA_CORTA del cliente (src/lib/recurrencia.ts):
+// tienen que coincidir letra por letra, porque el cliente arma el cuerpo del
+// aviso local pegándole "Se repite: " a este mismo valor (ver
+// contenidoNotificacion en src/lib/recordatorios.ts) y acá se hace lo mismo —
+// si no coincidieran, el mismo recordatorio se leería distinto según quién
+// mandó el aviso.
+const RECURRENCIA_CORTA: Record<Exclude<Recurrencia, 'dias_semana'>, string> = {
+  diario: 'Cada día',
+  semanal: 'Cada semana',
+  mensual: 'Cada mes',
+}
+
+// "Lun, Mié, Vie" — en orden de semana (lunes primero), igual que el gemelo.
+function etiquetaDias(dias: number[]): string {
+  return DIAS_ORDEN.filter((d) => dias.includes(d))
+    .map((d) => DIA_CORTO[d])
+    .join(', ')
+}
+
+// Corrimiento UTC → local FIJO para Argentina (UTC-3, sin horario de verano —
+// misma asunción que documenta src/lib/recurrencia.ts: "para la zona de esta
+// app no hay diferencia"). A propósito NO usa la hora local del servidor (Deno
+// corre en UTC y no tiene por qué coincidir con la del usuario): en cambio
+// deriva el corrimiento de la hora UTC de la propia fecha, aritmética pura que
+// da el mismo resultado sin importar dónde corra este código. Local 21:00 a
+// 23:59 en Argentina cae en UTC 00:00-02:59 del día siguiente — ahí el
+// corrimiento es +1; el resto del día, 0 (igual que corrimientoDiaUtc en el
+// cliente, pero sin depender de Date#getDay() local).
+const HORA_UTC_CORRIMIENTO = 3
+
+function diasUtcALocalesArgentina(diasUtc: number[], fechaIso: string): number[] {
+  const horaUtc = new Date(fechaIso).getUTCHours()
+  const corrimiento = horaUtc < HORA_UTC_CORRIMIENTO ? 1 : 0
+  return parseDiasSemana(diasUtc.map((d) => (d - corrimiento + 7) % 7)) ?? []
+}
+
+// La marca "Se repite: …" para el cuerpo de la notificación, o null si no se
+// repite (o si 'dias_semana' no tiene días utilizables — mismo criterio que el
+// cliente: no se promete una repetición que no se puede sostener).
+export function marcaRecurrenciaCorta(rec: {
+  recurrencia: unknown
+  recurrencia_dias: unknown
+  fecha_hora: string
+}): string | null {
+  const recurrencia = parseRecurrencia(rec.recurrencia)
+  if (!recurrencia) return null
+
+  if (recurrencia === 'dias_semana') {
+    const utc = parseDiasSemana(rec.recurrencia_dias)
+    if (!utc) return null
+    const locales = diasUtcALocalesArgentina(utc, rec.fecha_hora)
+    return locales.length > 0 ? etiquetaDias(locales) : null
+  }
+
+  return RECURRENCIA_CORTA[recurrencia]
+}
+
 // La próxima ocurrencia ESTRICTAMENTE POSTERIOR a `ahoraMs`.
 //
 // Avanzar una sola vuelta no alcanza: un recordatorio atrasado (el cron estuvo

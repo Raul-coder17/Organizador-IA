@@ -343,21 +343,3 @@ export async function wipeLocalDatabase(): Promise<{ vaciada: boolean; borrada: 
     return { vaciada, borrada: false }
   }
 }
-
-// ============================================================
-// Almacenamiento persistente (PLAN_OFFLINE.md ítem 10, adelantado)
-// ============================================================
-
-// Pide al navegador que marque el almacenamiento como persistente para que
-// IndexedDB (y el outbox futuro) no sea desalojado bajo presión de espacio.
-// Best-effort: si el navegador no lo soporta o lo deniega, no bloquea nada.
-export async function ensurePersistentStorage(): Promise<boolean> {
-  try {
-    if (typeof navigator === 'undefined' || !navigator.storage?.persist) return false
-    // Si ya es persistente, no volvemos a pedirlo.
-    if (await navigator.storage.persisted()) return true
-    return await navigator.storage.persist()
-  } catch {
-    return false
-  }
-}

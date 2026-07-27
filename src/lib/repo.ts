@@ -34,6 +34,7 @@ import { joinRecordatoriosConItems } from './recordatorios'
 import { loadItemsFromCache } from './db'
 import { encontrarTemaPorNombre, siguienteColorTema, type TemaColor } from './temaColores'
 import { parseDiasSemana, proximaOcurrencia, type Recurrencia } from './recurrencia'
+import { fechaPospuesta } from './reminderScheduling'
 import type {
   Item,
   ItemInsert,
@@ -122,6 +123,16 @@ export async function updateTemaColor(id: string, color: TemaColor): Promise<Tem
     baseUpdatedAt: current.updated_at ?? null,
   })
   return next
+}
+
+// Nombre de cada tema por id, para dar contexto a la notificación de un
+// recordatorio (qué tema es — ver contenidoNotificacion en
+// notificacionRecordatorio.ts).
+// Sale del espejo local: igual que el resto de las lecturas de repo.ts,
+// funciona sin conexión.
+export async function mapaNombresTema(): Promise<Map<string, string>> {
+  const temas = await loadTemasFromCache()
+  return new Map(temas.map((t) => [t.id, t.nombre]))
 }
 
 // Cuántos items usan este tema hoy. Lo necesita la confirmación de borrado
@@ -442,6 +453,42 @@ export async function marcarEnviado(id: string): Promise<Recordatorio | null> {
   const current = await getLocalRecordatorio(id)
   if (!current || current.estado !== 'pendiente') return null
   return cerrarCiclo(id, 'enviado')
+}
+
+// Pospone un recordatorio ya disparado: mueve `fecha_hora` a AHORA + minutos
+// (no a la fecha vencida original) y lo deja 'pendiente'. Lo dispara el botón
+// "Posponer X" de la notificación (ver sw.ts, notificationclick), tanto para
+// el aviso local como para el push del servidor — para cuando el usuario llega
+// a tocar el botón, el recordatorio ya quedó 'enviado' (uno de una sola vez) o
+// reenganchado a su próxima vuelta real 'pendiente' (uno recurrente); en los
+// dos casos alcanza con correr la fecha, sin tocar `recurrencia` ni
+// `recurrencia_dias`: posponer mueve SOLO esta próxima ocurrencia.
+//
+// Mismo camino offline-first que el resto de las mutaciones (espejo local +
+// outbox): funciona igual si el botón se toca sin conexión. Si el recordatorio
+// no está en el espejo local de este dispositivo (nunca llegó a sincronizarse
+// acá, caso raro en el alcance de 1-2 dispositivos de esta app), no hay nada
+// que mover localmente y se devuelve null — el próximo sync de otro
+// dispositivo no se ve afectado.
+export async function posponerRecordatorio(
+  id: string,
+  minutos: number,
+): Promise<Recordatorio | null> {
+  const current = await getLocalRecordatorio(id)
+  if (!current) return null
+
+  const ts = nowIso()
+  const fechaHora = fechaPospuesta(minutos, Date.now())
+  const next: Recordatorio = { ...current, fecha_hora: fechaHora, estado: 'pendiente', updated_at: ts }
+  await putLocalRecordatorio(next)
+  await enqueue({
+    entity: 'recordatorio',
+    op: 'update',
+    entityId: id,
+    payload: { fecha_hora: fechaHora, estado: 'pendiente', updated_at: ts },
+    baseUpdatedAt: current.updated_at,
+  })
+  return next
 }
 
 // Ventana (ms) hacia adelante que mira el watcher local: los recordatorios que

@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from 'react'
 import { useAuth } from '../lib/AuthContext'
-import { ensurePersistentStorage } from '../lib/db'
+import { ensurePersistentStorage } from '../lib/persistentStorage'
 import { AuthPage } from '../pages/AuthPage'
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {

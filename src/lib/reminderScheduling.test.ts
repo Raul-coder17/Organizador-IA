@@ -1,7 +1,12 @@
 // Tests de la lógica pura de scheduling del aviso local de recordatorios.
 // Correr con: npx deno test src/lib/reminderScheduling.test.ts
 import { assertEquals } from 'jsr:@std/assert@1'
-import { computeDelayMs, reconcileTimers, splitStaleReminders } from './reminderScheduling.ts'
+import {
+  computeDelayMs,
+  fechaPospuesta,
+  reconcileTimers,
+  splitStaleReminders,
+} from './reminderScheduling.ts'
 
 const T0 = Date.parse('2026-07-22T12:00:00.000Z')
 const en90s = new Date(T0 + 90_000).toISOString()
@@ -17,6 +22,13 @@ Deno.test('computeDelayMs: futuro devuelve el delta; vencido devuelve 0', () => 
   assertEquals(computeDelayMs(en90s, T0), 90_000)
   assertEquals(computeDelayMs(hace60s, T0), 0)
   assertEquals(computeDelayMs('no-es-fecha', T0), 0)
+})
+
+Deno.test('fechaPospuesta: suma minutos a AHORA, no a la fecha vencida original', () => {
+  // Un recordatorio que venció hace 3h se pospone desde AHORA (T0), no desde
+  // esa fecha vieja: 15 min después de T0, no 15 min después de hace3h.
+  assertEquals(fechaPospuesta(15, T0), new Date(T0 + 15 * 60_000).toISOString())
+  assertEquals(fechaPospuesta(60, T0), new Date(T0 + 60 * 60_000).toISOString())
 })
 
 Deno.test('arma un timer para un pendiente sin timer previo', () => {
