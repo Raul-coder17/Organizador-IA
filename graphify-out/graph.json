@@ -747,8 +747,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_app",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "app.tsx"
     },
     {
@@ -758,8 +758,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_app_rutasprivadas",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "rutasprivadas()"
     },
     {
@@ -769,8 +769,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_app_app",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "app()"
     },
     {
@@ -802,8 +802,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_components_appshell_assistantredirect",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "assistantredirect()"
     },
     {
@@ -975,7 +975,7 @@
       "label": "IconoChispa()",
       "file_type": "code",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L55",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "src_components_assistantdrawer_iconochispa",
       "community": 13,
@@ -986,7 +986,7 @@
       "label": "IconoCerrar()",
       "file_type": "code",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L71",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "src_components_assistantdrawer_iconocerrar",
       "community": 13,
@@ -994,10 +994,21 @@
       "norm_label": "iconocerrar()"
     },
     {
+      "label": "IconoMic()",
+      "file_type": "code",
+      "source_file": "src/components/AssistantDrawer.tsx",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "src_components_assistantdrawer_iconomic",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
+      "norm_label": "iconomic()"
+    },
+    {
       "label": "AvisoSinConexion()",
       "file_type": "code",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L92",
+      "source_location": "L112",
       "_origin": "ast",
       "id": "src_components_assistantdrawer_avisosinconexion",
       "community": 13,
@@ -1008,7 +1019,7 @@
       "label": "AssistantDrawer()",
       "file_type": "code",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L111",
+      "source_location": "L131",
       "_origin": "ast",
       "id": "src_components_assistantdrawer_assistantdrawer",
       "community": 37,
@@ -1038,14 +1049,36 @@
       "norm_label": "authcard()"
     },
     {
+      "label": "BorrarCuenta.tsx",
+      "file_type": "code",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_components_borrarcuenta",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
+      "norm_label": "borrarcuenta.tsx"
+    },
+    {
+      "label": "BorrarCuenta()",
+      "file_type": "code",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "src_components_borrarcuenta_borrarcuenta",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
+      "norm_label": "borrarcuenta()"
+    },
+    {
       "label": "ItemForm.tsx",
       "file_type": "code",
       "source_file": "src/components/ItemForm.tsx",
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_itemform",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "itemform.tsx"
     },
     {
@@ -1055,8 +1088,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_components_itemform_nuevalinea",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "nuevalinea()"
     },
     {
@@ -1066,8 +1099,8 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_components_itemform_filaeditable",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "filaeditable"
     },
     {
@@ -1077,8 +1110,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_components_itemform_afilaseditables",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "afilaseditables()"
     },
     {
@@ -1088,8 +1121,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_components_itemform_itemformprops",
-      "community": 34,
-      "community_name": "buscar.test.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itemformprops"
     },
     {
@@ -1099,8 +1132,8 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "src_components_itemform_iconmas",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "iconmas()"
     },
     {
@@ -1110,8 +1143,8 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "src_components_itemform_tipos",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "tipos"
     },
     {
@@ -1121,8 +1154,8 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_components_itemform_prioridades",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "prioridades"
     },
     {
@@ -1132,8 +1165,8 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "src_components_itemform_itemform",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "itemform()"
     },
     {
@@ -1176,8 +1209,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_components_itemlist_itemlistprops",
-      "community": 34,
-      "community_name": "buscar.test.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itemlistprops"
     },
     {
@@ -1253,8 +1286,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_components_itemlist_itemlist",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemlist()"
     },
     {
@@ -1264,8 +1297,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 46,
+      "community_name": "reminderScheduling.ts",
       "norm_label": "localreminderwatcher.tsx"
     },
     {
@@ -1275,8 +1308,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher_localreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 46,
+      "community_name": "reminderScheduling.ts",
       "norm_label": "localreminderwatcher()"
     },
     {
@@ -1539,8 +1572,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_protectedroute",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "protectedroute.tsx"
     },
     {
@@ -1550,8 +1583,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_protectedroute_protectedroute",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "protectedroute()"
     },
     {
@@ -1583,8 +1616,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_recordatoriorow",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recordatoriorow.tsx"
     },
     {
@@ -1605,8 +1638,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_components_recordatoriorow_recordatoriorow",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recordatoriorow()"
     },
     {
@@ -1638,8 +1671,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncsettings",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "syncsettings.tsx"
     },
     {
@@ -1649,8 +1682,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncsettings_syncsettings",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "syncsettings()"
     },
     {
@@ -1660,8 +1693,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "syncstatus.tsx"
     },
     {
@@ -1671,8 +1704,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncstatus_syncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "syncstatus()"
     },
     {
@@ -1682,8 +1715,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_updatebanner",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "updatebanner.tsx"
     },
     {
@@ -1693,8 +1726,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_components_updatebanner_updatebanner",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "updatebanner()"
     },
     {
@@ -1704,8 +1737,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_authcontext",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "authcontext.tsx"
     },
     {
@@ -1715,8 +1748,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_authcontext_authcontextvalue",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "authcontextvalue"
     },
     {
@@ -1737,8 +1770,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_authcontext_readcachedsession",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "readcachedsession()"
     },
     {
@@ -1748,8 +1781,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_lib_authcontext_leernombre",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "leernombre()"
     },
     {
@@ -1759,8 +1792,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_lib_authcontext_authprovider",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "authprovider()"
     },
     {
@@ -1874,6 +1907,83 @@
       "norm_label": "borradordeaccioncrear()"
     },
     {
+      "label": "borrarCuenta.ts",
+      "file_type": "code",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_borrarcuenta",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "borrarcuenta.ts"
+    },
+    {
+      "label": "confirmacionValida()",
+      "file_type": "code",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "src_lib_borrarcuenta_confirmacionvalida",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
+      "norm_label": "confirmacionvalida()"
+    },
+    {
+      "label": "consumirAvisoCuentaBorrada()",
+      "file_type": "code",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "src_lib_borrarcuenta_consumiravisocuentaborrada",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "consumiravisocuentaborrada()"
+    },
+    {
+      "label": "limpiarStorageLocal()",
+      "file_type": "code",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "src_lib_borrarcuenta_limpiarstoragelocal",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "limpiarstoragelocal()"
+    },
+    {
+      "label": "mensajeDeError()",
+      "file_type": "code",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "src_lib_borrarcuenta_mensajedeerror",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "mensajedeerror()"
+    },
+    {
+      "label": "ResultadoBorrado",
+      "file_type": "code",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L103",
+      "_origin": "ast",
+      "id": "src_lib_borrarcuenta_resultadoborrado",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "resultadoborrado"
+    },
+    {
+      "label": "borrarCuenta()",
+      "file_type": "code",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L110",
+      "_origin": "ast",
+      "id": "src_lib_borrarcuenta_borrarcuenta",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "borrarcuenta()"
+    },
+    {
       "label": "buscar.test.ts",
       "file_type": "code",
       "source_file": "src/lib/buscar.test.ts",
@@ -1891,8 +2001,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_buscar_test_item",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "item()"
     },
     {
@@ -2100,8 +2210,8 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "src_lib_buscar_filtraritems",
-      "community": 34,
-      "community_name": "buscar.test.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "filtraritems()"
     },
     {
@@ -2144,8 +2254,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_db_newoutboxop",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "newoutboxop"
     },
     {
@@ -2177,8 +2287,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_lib_db_organizadordb",
-      "community": 34,
-      "community_name": "buscar.test.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "organizadordb"
     },
     {
@@ -2188,8 +2298,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_lib_db_getdb",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getdb()"
     },
     {
@@ -2199,8 +2309,8 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_lib_db_loadtemasfromcache",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "loadtemasfromcache()"
     },
     {
@@ -2210,8 +2320,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_db_loaditemsfromcache",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "loaditemsfromcache()"
     },
     {
@@ -2221,8 +2331,8 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_lib_db_loadrecordatoriosfromcache",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "loadrecordatoriosfromcache()"
     },
     {
@@ -2265,8 +2375,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_lib_db_getlocaltema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocaltema()"
     },
     {
@@ -2276,8 +2386,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_lib_db_putlocaltema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocaltema()"
     },
     {
@@ -2287,8 +2397,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_db_getlocalitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalitem()"
     },
     {
@@ -2298,8 +2408,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_lib_db_putlocalitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocalitem()"
     },
     {
@@ -2309,8 +2419,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalrecordatorio()"
     },
     {
@@ -2320,8 +2430,8 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_db_putlocalrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "putlocalrecordatorio()"
     },
     {
@@ -2331,8 +2441,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatoriosbyitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getlocalrecordatoriosbyitem()"
     },
     {
@@ -2342,8 +2452,8 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "src_lib_db_deletelocalrow",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deletelocalrow()"
     },
     {
@@ -2353,8 +2463,8 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "src_lib_db_enqueueop",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "enqueueop()"
     },
     {
@@ -2408,8 +2518,8 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "src_lib_db_deleteopsforentity",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleteopsforentity()"
     },
     {
@@ -2435,14 +2545,25 @@
       "norm_label": "setmeta()"
     },
     {
+      "label": "wipeLocalDatabase()",
+      "file_type": "code",
+      "source_file": "src/lib/db.ts",
+      "source_location": "L318",
+      "_origin": "ast",
+      "id": "src_lib_db_wipelocaldatabase",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "wipelocaldatabase()"
+    },
+    {
       "label": "ensurePersistentStorage()",
       "file_type": "code",
       "source_file": "src/lib/db.ts",
-      "source_location": "L299",
+      "source_location": "L354",
       "_origin": "ast",
       "id": "src_lib_db_ensurepersistentstorage",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "ensurepersistentstorage()"
     },
     {
@@ -2452,8 +2573,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_fechalocal_test",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "fechalocal.test.ts"
     },
     {
@@ -2463,8 +2584,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_fechalocal_test_lunes_mediodia",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "lunes_mediodia"
     },
     {
@@ -2474,8 +2595,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_fechalocal",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "fechalocal.ts"
     },
     {
@@ -2485,8 +2606,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_lib_fechalocal_isotodatetimelocal",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "isotodatetimelocal()"
     },
     {
@@ -2507,8 +2628,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_lib_fechalocal_formatfechahora",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "formatfechahora()"
     },
     {
@@ -2518,8 +2639,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_lib_fechalocal_recurrenciasinfecha",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recurrenciasinfecha()"
     },
     {
@@ -2529,8 +2650,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_lib_fechalocal_horadedatetimelocal",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "horadedatetimelocal()"
     },
     {
@@ -2540,8 +2661,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_lib_fechalocal_proximafechaconhora",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "proximafechaconhora()"
     },
     {
@@ -2617,8 +2738,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_itemsheet",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemsheet.ts"
     },
     {
@@ -2628,8 +2749,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetapi",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itemsheetapi"
     },
     {
@@ -2639,8 +2760,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetcontext",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemsheetcontext"
     },
     {
@@ -2650,8 +2771,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_itemsheet_useitemsheet",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "useitemsheet()"
     },
     {
@@ -2776,10 +2897,21 @@
       "norm_label": "subscribetopush()"
     },
     {
+      "label": "unsubscribeLocalPush()",
+      "file_type": "code",
+      "source_file": "src/lib/push.ts",
+      "source_location": "L125",
+      "_origin": "ast",
+      "id": "src_lib_push_unsubscribelocalpush",
+      "community": 49,
+      "community_name": "theme.ts",
+      "norm_label": "unsubscribelocalpush()"
+    },
+    {
       "label": "unsubscribeFromPush()",
       "file_type": "code",
       "source_file": "src/lib/push.ts",
-      "source_location": "L121",
+      "source_location": "L139",
       "_origin": "ast",
       "id": "src_lib_push_unsubscribefrompush",
       "community": 49,
@@ -2793,8 +2925,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_recordatorios",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recordatorios.ts"
     },
     {
@@ -2815,8 +2947,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_recordatorios_joinrecordatoriosconitems",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "joinrecordatoriosconitems()"
     },
     {
@@ -2837,8 +2969,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estadorecordatorio",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -2848,8 +2980,8 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estado_label",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "estado_label"
     },
     {
@@ -2859,8 +2991,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_lib_recordatorios_tipo_label",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "tipo_label"
     },
     {
@@ -2870,8 +3002,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_lib_recordatorios_mismodia",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "mismodia()"
     },
     {
@@ -2881,8 +3013,8 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_lib_recordatorios_clasificar",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "clasificar()"
     },
     {
@@ -2892,8 +3024,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "src_lib_recordatorios_resumencontenido",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "resumencontenido()"
     },
     {
@@ -2903,8 +3035,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_recurrencia_test",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "lib/recurrencia.test.ts"
     },
     {
@@ -2914,8 +3046,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_recurrencia_test_l_m_v",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "l_m_v"
     },
     {
@@ -2925,8 +3057,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_lib_recurrencia_test_solo_mar",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "solo_mar"
     },
     {
@@ -2936,8 +3068,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_recurrencia_test_todos",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "todos"
     },
     {
@@ -2947,8 +3079,8 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_lib_recurrencia_test_ahora",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "ahora"
     },
     {
@@ -2958,8 +3090,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_recurrencia",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "lib/recurrencia.ts"
     },
     {
@@ -2980,8 +3112,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_lib_recurrencia_recurrencias",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recurrencias"
     },
     {
@@ -3002,8 +3134,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_lib_recurrencia_recurrencia_corta",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "recurrencia_corta"
     },
     {
@@ -3013,8 +3145,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_lib_recurrencia_dias_orden",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "dias_orden"
     },
     {
@@ -3024,8 +3156,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_lib_recurrencia_dia_corto",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "dia_corto"
     },
     {
@@ -3035,8 +3167,8 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_lib_recurrencia_dia_largo",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "dia_largo"
     },
     {
@@ -3046,8 +3178,8 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "src_lib_recurrencia_parsediassemana",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "parsediassemana()"
     },
     {
@@ -3057,8 +3189,8 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "src_lib_recurrencia_etiquetadias",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "etiquetadias()"
     },
     {
@@ -3068,8 +3200,8 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_lib_recurrencia_corrimientodiautc",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "corrimientodiautc()"
     },
     {
@@ -3079,8 +3211,8 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "src_lib_recurrencia_diaslocalesautc",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "diaslocalesautc()"
     },
     {
@@ -3090,8 +3222,8 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "src_lib_recurrencia_diasutcalocales",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "diasutcalocales()"
     },
     {
@@ -3112,8 +3244,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_recurrencia_marcarecurrencia",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "marcarecurrencia()"
     },
     {
@@ -3123,8 +3255,8 @@
       "source_location": "L243",
       "_origin": "ast",
       "id": "src_lib_recurrencia_parserecurrencia",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "parserecurrencia()"
     },
     {
@@ -3134,8 +3266,8 @@
       "source_location": "L264",
       "_origin": "ast",
       "id": "src_lib_recurrencia_avanzarunavuelta",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "avanzarunavuelta()"
     },
     {
@@ -3145,8 +3277,8 @@
       "source_location": "L325",
       "_origin": "ast",
       "id": "src_lib_recurrencia_proximaocurrencia",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "proximaocurrencia()"
     },
     {
@@ -3156,8 +3288,8 @@
       "source_location": "L353",
       "_origin": "ast",
       "id": "src_lib_recurrencia_ajustaradiamarcado",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 15,
+      "community_name": "Edge Function send-reminder-notifications",
       "norm_label": "ajustaradiamarcado()"
     },
     {
@@ -3365,8 +3497,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_repo",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "repo.ts"
     },
     {
@@ -3376,8 +3508,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_lib_repo_nowiso",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "nowiso()"
     },
     {
@@ -3387,8 +3519,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_lib_repo_enqueue",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "enqueue()"
     },
     {
@@ -3398,8 +3530,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_lib_repo_createtema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "createtema()"
     },
     {
@@ -3409,8 +3541,8 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "src_lib_repo_updatetemacolor",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "updatetemacolor()"
     },
     {
@@ -3420,8 +3552,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_repo_contaritemsdetema",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "contaritemsdetema()"
     },
     {
@@ -3431,8 +3563,8 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "src_lib_repo_deletetema",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deletetema()"
     },
     {
@@ -3442,8 +3574,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "src_lib_repo_item_editable",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "item_editable"
     },
     {
@@ -3453,8 +3585,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_repo_itempatch",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "itempatch()"
     },
     {
@@ -3464,8 +3596,8 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "src_lib_repo_createitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "createitem()"
     },
     {
@@ -3475,8 +3607,8 @@
       "source_location": "L219",
       "_origin": "ast",
       "id": "src_lib_repo_updateitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "updateitem()"
     },
     {
@@ -3486,8 +3618,8 @@
       "source_location": "L239",
       "_origin": "ast",
       "id": "src_lib_repo_deleteitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleteitem()"
     },
     {
@@ -3497,8 +3629,8 @@
       "source_location": "L265",
       "_origin": "ast",
       "id": "src_lib_repo_getrecordatorioforitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getrecordatorioforitem()"
     },
     {
@@ -3508,8 +3640,8 @@
       "source_location": "L277",
       "_origin": "ast",
       "id": "src_lib_repo_upsertrecordatorio",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "upsertrecordatorio()"
     },
     {
@@ -3519,8 +3651,8 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "src_lib_repo_deleterecordatoriosforitem",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "deleterecordatoriosforitem()"
     },
     {
@@ -3530,8 +3662,8 @@
       "source_location": "L379",
       "_origin": "ast",
       "id": "src_lib_repo_cerrarciclo",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "cerrarciclo()"
     },
     {
@@ -3541,8 +3673,8 @@
       "source_location": "L428",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "marcarhecho()"
     },
     {
@@ -3552,8 +3684,8 @@
       "source_location": "L441",
       "_origin": "ast",
       "id": "src_lib_repo_marcarenviado",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "marcarenviado()"
     },
     {
@@ -3563,8 +3695,8 @@
       "source_location": "L457",
       "_origin": "ast",
       "id": "src_lib_repo_listrecordatoriosparadisparo",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "listrecordatoriosparadisparo()"
     },
     {
@@ -3673,8 +3805,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_lib_sync_hassyncsettled",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "hassyncsettled()"
     },
     {
@@ -3695,8 +3827,8 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "src_lib_sync_subscribelocalchange",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "subscribelocalchange()"
     },
     {
@@ -3717,8 +3849,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_sync_syncstate",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "syncstate"
     },
     {
@@ -3761,8 +3893,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "src_lib_sync_getsyncstate",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "getsyncstate()"
     },
     {
@@ -3772,8 +3904,8 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesync",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "subscribesync()"
     },
     {
@@ -3926,8 +4058,8 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "src_lib_sync_forcesyncnow",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "forcesyncnow()"
     },
     {
@@ -4168,8 +4300,8 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_lib_synccore_formathacecuanto",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "formathacecuanto()"
     },
     {
@@ -4487,8 +4619,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_temacolores_temacolorvar",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "temacolorvar()"
     },
     {
@@ -4520,8 +4652,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_theme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "theme.ts"
     },
     {
@@ -4531,8 +4663,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_lib_theme_theme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "theme"
     },
     {
@@ -4542,8 +4674,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_lib_theme_listeners",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "listeners"
     },
     {
@@ -4553,8 +4685,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_lib_theme_istheme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "istheme()"
     },
     {
@@ -4564,8 +4696,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_theme_readstoredtheme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "readstoredtheme()"
     },
     {
@@ -4575,8 +4707,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_lib_theme_prefersdark",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "prefersdark()"
     },
     {
@@ -4586,8 +4718,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_lib_theme_resolveinitialtheme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "resolveinitialtheme()"
     },
     {
@@ -4597,8 +4729,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_lib_theme_applytheme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "applytheme()"
     },
     {
@@ -4608,8 +4740,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_lib_theme_gettheme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "gettheme()"
     },
     {
@@ -4619,8 +4751,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_lib_theme_settheme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "settheme()"
     },
     {
@@ -4630,8 +4762,8 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "src_lib_theme_subscribe",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "subscribe()"
     },
     {
@@ -4641,8 +4773,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_lib_theme_usetheme",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "usetheme()"
     },
     {
@@ -4652,8 +4784,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_useaienabled",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "useaienabled.ts"
     },
     {
@@ -4663,8 +4795,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_useaienabled_readaienabledcache",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "readaienabledcache()"
     },
     {
@@ -4674,8 +4806,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_lib_useaienabled_writeaienabledcache",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "writeaienabledcache()"
     },
     {
@@ -4688,6 +4820,160 @@
       "community": 37,
       "community_name": "AssistantDrawer.tsx",
       "norm_label": "useaienabled()"
+    },
+    {
+      "label": "useDictadoVoz.ts",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "usedictadovoz.ts"
+    },
+    {
+      "label": "DictadoRecognitionAlternative",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognitionalternative",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadorecognitionalternative"
+    },
+    {
+      "label": "DictadoRecognitionResult",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognitionresult",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadorecognitionresult"
+    },
+    {
+      "label": "DictadoRecognitionResultList",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognitionresultlist",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadorecognitionresultlist"
+    },
+    {
+      "label": "DictadoRecognitionEvent",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognitionevent",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadorecognitionevent"
+    },
+    {
+      "label": "DictadoRecognitionErrorEvent",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognitionerrorevent",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadorecognitionerrorevent"
+    },
+    {
+      "label": "DictadoRecognition",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognition",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadorecognition"
+    },
+    {
+      "label": ".start()",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognition_start",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": ".start()"
+    },
+    {
+      "label": ".stop()",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognition_stop",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": ".stop()"
+    },
+    {
+      "label": ".abort()",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognition_abort",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": ".abort()"
+    },
+    {
+      "label": "DictadoRecognitionConstructor",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadorecognitionconstructor",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadorecognitionconstructor"
+    },
+    {
+      "label": "getRecognitionCtor()",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_getrecognitionctor",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "getrecognitionctor()"
+    },
+    {
+      "label": "DictadoVoz",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_dictadovoz",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "dictadovoz"
+    },
+    {
+      "label": "useDictadoVoz()",
+      "file_type": "code",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L68",
+      "_origin": "ast",
+      "id": "src_lib_usedictadovoz_usedictadovoz",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "norm_label": "usedictadovoz()"
     },
     {
       "label": "useIsWide.ts",
@@ -4729,8 +5015,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 46,
+      "community_name": "reminderScheduling.ts",
       "norm_label": "uselocalreminderwatcher.ts"
     },
     {
@@ -4740,8 +5026,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher_uselocalreminderwatcher",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 46,
+      "community_name": "reminderScheduling.ts",
       "norm_label": "uselocalreminderwatcher()"
     },
     {
@@ -4773,8 +5059,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "usesyncstatus.ts"
     },
     {
@@ -4784,8 +5070,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus_usesyncstatus",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "usesyncstatus()"
     },
     {
@@ -4795,8 +5081,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "main.tsx"
     },
     {
@@ -4814,7 +5100,7 @@
       "label": "Modo",
       "file_type": "code",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "src_pages_authpage_modo",
       "community": 49,
@@ -4825,7 +5111,7 @@
       "label": "SUBTITULO",
       "file_type": "code",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_pages_authpage_subtitulo",
       "community": 49,
@@ -4836,7 +5122,7 @@
       "label": "ACCION",
       "file_type": "code",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L16",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_authpage_accion",
       "community": 49,
@@ -4847,7 +5133,7 @@
       "label": "AuthPage()",
       "file_type": "code",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L22",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "src_pages_authpage_authpage",
       "community": 49,
@@ -4861,8 +5147,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_hoypage",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "hoypage.tsx"
     },
     {
@@ -4872,8 +5158,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_hoypage_saludo",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "saludo()"
     },
     {
@@ -4883,8 +5169,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_pages_hoypage_fechalarga",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "fechalarga()"
     },
     {
@@ -4894,8 +5180,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_pages_hoypage_contarportema",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "contarportema()"
     },
     {
@@ -4905,8 +5191,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_pages_hoypage_hoypage",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "hoypage()"
     },
     {
@@ -4916,8 +5202,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_itemspage",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemspage.tsx"
     },
     {
@@ -4927,8 +5213,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtrotipo",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "filtrotipo"
     },
     {
@@ -4938,8 +5224,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtros_tipo",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "filtros_tipo"
     },
     {
@@ -4949,8 +5235,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_pages_itemspage_indexarrecordatorios",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "indexarrecordatorios()"
     },
     {
@@ -4960,8 +5246,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_pages_itemspage_itemspage",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "itemspage()"
     },
     {
@@ -4971,8 +5257,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_reminderspage",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "reminderspage.tsx"
     },
     {
@@ -4982,8 +5268,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtro",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "filtro"
     },
     {
@@ -4993,8 +5279,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_pages_reminderspage_orden_grupos",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "orden_grupos"
     },
     {
@@ -5004,8 +5290,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_pages_reminderspage_titulo_grupo",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "titulo_grupo"
     },
     {
@@ -5015,8 +5301,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtros",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "filtros"
     },
     {
@@ -5026,8 +5312,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_pages_reminderspage_pasafiltro",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "pasafiltro()"
     },
     {
@@ -5037,8 +5323,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_pages_reminderspage_reminderspage",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "reminderspage()"
     },
     {
@@ -5103,48 +5389,48 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_settingspage",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "settingspage.tsx"
     },
     {
       "label": "TEMAS_UI",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_pages_settingspage_temas_ui",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "temas_ui"
     },
     {
       "label": "Apariencia()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "src_pages_settingspage_apariencia",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "apariencia()"
     },
     {
       "label": "NombrePerfil()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L59",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "src_pages_settingspage_nombreperfil",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "nombreperfil()"
     },
     {
       "label": "SettingsPage()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L135",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "src_pages_settingspage_settingspage",
       "community": 5,
@@ -5323,8 +5609,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_types_database",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "database.ts"
     },
     {
@@ -5367,8 +5653,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_types_database_estadorecordatorio",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -5378,8 +5664,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_types_database_tema",
-      "community": 34,
-      "community_name": "buscar.test.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "tema"
     },
     {
@@ -5389,8 +5675,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_types_database_temainsert",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "temainsert"
     },
     {
@@ -5411,8 +5697,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_types_database_item",
-      "community": 34,
-      "community_name": "buscar.test.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "item"
     },
     {
@@ -5422,8 +5708,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_types_database_iteminsert",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "iteminsert"
     },
     {
@@ -5433,8 +5719,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_types_database_recordatorio",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "recordatorio"
     },
     {
@@ -5444,8 +5730,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_types_database_recordatorioinsert",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "recordatorioinsert"
     },
     {
@@ -5455,8 +5741,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_types_database_recordatorioconitem",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recordatorioconitem"
     },
     {
@@ -5466,8 +5752,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_types_database_pushsubscriptionrow",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "pushsubscriptionrow"
     },
     {
@@ -5477,8 +5763,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_types_database_useraisettings",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "useraisettings"
     },
     {
@@ -5488,8 +5774,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_types_database_aiusage",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "aiusage"
     },
     {
@@ -6283,6 +6569,50 @@
       "community": 62,
       "community_name": "ai-assistant/rpm.ts",
       "norm_label": "deciderpmslot()"
+    },
+    {
+      "label": "delete-account/index.ts",
+      "file_type": "code",
+      "source_file": "supabase/functions/delete-account/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "supabase_functions_delete_account_index",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
+      "norm_label": "delete-account/index.ts"
+    },
+    {
+      "label": "CORS_HEADERS",
+      "file_type": "code",
+      "source_file": "supabase/functions/delete-account/index.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "supabase_functions_delete_account_index_cors_headers",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
+      "norm_label": "cors_headers"
+    },
+    {
+      "label": "jsonResponse()",
+      "file_type": "code",
+      "source_file": "supabase/functions/delete-account/index.ts",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "supabase_functions_delete_account_index_jsonresponse",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
+      "norm_label": "jsonresponse()"
+    },
+    {
+      "label": "TABLAS_DEL_USUARIO",
+      "file_type": "code",
+      "source_file": "supabase/functions/delete-account/index.ts",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "supabase_functions_delete_account_index_tablas_del_usuario",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
+      "norm_label": "tablas_del_usuario"
     },
     {
       "label": "extract.test.ts",
@@ -8722,9 +9052,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 37,
       "norm_label": "organizador catalog-style mockup (html)",
-      "community_name": "lib/recurrencia.ts",
+      "community_name": "AssistantDrawer.tsx",
       "id": "dise_o_mockup_organizador_mockup"
     },
     {
@@ -8736,9 +9066,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 37,
       "norm_label": "app html shell (vite entry)",
-      "community_name": "lib/recurrencia.ts",
+      "community_name": "AssistantDrawer.tsx",
       "id": "index_page"
     },
     {
@@ -8750,9 +9080,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 50,
+      "community": 37,
       "norm_label": "render static site blueprint (organizador-ia)",
-      "community_name": "recordatorios.ts",
+      "community_name": "AssistantDrawer.tsx",
       "id": "render_service"
     },
     {
@@ -8834,9 +9164,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 5,
       "norm_label": "web locks api single-flight sync",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Recordatorios y watcher local",
       "id": "plan_offline_web_locks_singleflight"
     },
     {
@@ -8862,9 +9192,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 5,
       "norm_label": "sync trigger events (online/focus/visibility/interval/post-mutation)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Recordatorios y watcher local",
       "id": "plan_offline_sync_triggers"
     },
     {
@@ -9044,9 +9374,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 37,
       "norm_label": "catalog card visual design system",
-      "community_name": "lib/recurrencia.ts",
+      "community_name": "AssistantDrawer.tsx",
       "id": "plan_organizador_visual_redesign"
     },
     {
@@ -9058,9 +9388,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 50,
+      "community": 37,
       "norm_label": "adoption of react-router-dom for /settings route",
-      "community_name": "recordatorios.ts",
+      "community_name": "AssistantDrawer.tsx",
       "id": "plan_organizador_react_router_adoption"
     },
     {
@@ -9086,9 +9416,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 50,
+      "community": 37,
       "norm_label": "render static site deployment",
-      "community_name": "recordatorios.ts",
+      "community_name": "AssistantDrawer.tsx",
       "id": "plan_organizador_render_deploy"
     },
     {
@@ -9184,9 +9514,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 37,
       "norm_label": "marcarhecho",
-      "community_name": "lib/recurrencia.ts",
+      "community_name": "AssistantDrawer.tsx",
       "id": "src_lib_recordatorios_marcarhecho"
     },
     {
@@ -9212,9 +9542,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 46,
       "norm_label": "listrecordatoriosparadisparo",
-      "community_name": "Recordatorios y watcher local",
+      "community_name": "reminderScheduling.ts",
       "id": "src_lib_recordatorios_listrecordatoriosparadisparo"
     },
     {
@@ -9254,9 +9584,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 5,
       "norm_label": "sync.ts (sync engine)",
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community_name": "Recordatorios y watcher local",
       "id": "src_lib_sync_sync"
     },
     {
@@ -11020,7 +11350,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L111",
+      "source_location": "L131",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11031,7 +11361,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L92",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11042,7 +11372,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L71",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11053,7 +11383,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L55",
+      "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11061,11 +11391,22 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AssistantDrawer.tsx",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_assistantdrawer",
+      "target": "src_components_assistantdrawer_iconomic",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11077,7 +11418,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11089,7 +11430,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11101,7 +11442,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11113,7 +11454,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11125,7 +11466,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11161,7 +11502,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11173,7 +11514,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11185,7 +11526,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11197,7 +11538,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11209,7 +11550,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11221,7 +11562,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11233,7 +11574,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11245,7 +11586,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L22",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11257,7 +11598,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L22",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11269,7 +11610,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L22",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11281,7 +11622,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11293,7 +11634,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11305,7 +11646,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11317,7 +11658,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11329,7 +11670,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11341,7 +11682,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11353,7 +11694,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11365,7 +11706,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11377,7 +11718,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11389,7 +11730,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L19",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11401,7 +11742,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L19",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11437,7 +11778,31 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L20",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_assistantdrawer",
+      "target": "src_lib_usedictadovoz",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AssistantDrawer.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_assistantdrawer",
+      "target": "src_lib_usedictadovoz_usedictadovoz",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AssistantDrawer.tsx",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11449,7 +11814,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11461,7 +11826,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11473,7 +11838,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11485,7 +11850,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11497,7 +11862,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11509,7 +11874,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11521,7 +11886,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11533,7 +11898,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11545,7 +11910,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11557,7 +11922,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11569,7 +11934,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11581,7 +11946,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer",
@@ -11594,7 +11959,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L112",
+      "source_location": "L132",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer_assistantdrawer",
@@ -11606,7 +11971,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L113",
+      "source_location": "L133",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer_assistantdrawer",
@@ -11618,7 +11983,19 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AssistantDrawer.tsx",
-      "source_location": "L114",
+      "source_location": "L173",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_assistantdrawer_assistantdrawer",
+      "target": "src_lib_usedictadovoz_usedictadovoz"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/AssistantDrawer.tsx",
+      "source_location": "L134",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_assistantdrawer_assistantdrawer",
@@ -11681,6 +12058,125 @@
       "_origin": "ast",
       "source": "src_pages_resetpasswordpage",
       "target": "src_components_authcard_authcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta",
+      "target": "src_components_borrarcuenta_borrarcuenta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta",
+      "target": "src_lib_borrarcuenta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta",
+      "target": "src_lib_borrarcuenta_borrarcuenta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta",
+      "target": "src_lib_borrarcuenta_confirmacionvalida",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta",
+      "target": "src_lib_usesyncstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta",
+      "target": "src_lib_usesyncstatus_usesyncstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/SettingsPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_settingspage",
+      "target": "src_components_borrarcuenta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta_borrarcuenta",
+      "target": "src_lib_borrarcuenta_confirmacionvalida"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/BorrarCuenta.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_borrarcuenta_borrarcuenta",
+      "target": "src_lib_usesyncstatus_usesyncstatus"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/SettingsPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_settingspage",
+      "target": "src_components_borrarcuenta_borrarcuenta",
       "confidence_score": 1.0
     },
     {
@@ -14599,7 +15095,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -14655,7 +15151,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15069,7 +15565,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15127,7 +15623,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15608,7 +16104,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_nombreperfil",
@@ -15620,7 +16116,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L136",
+      "source_location": "L137",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_settingspage",
@@ -16099,6 +16595,240 @@
       "source": "src_lib_accionespropuestas_borradoritem",
       "target": "src_types_database_tipoitem",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_borrarcuenta_borrarcuenta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_borrarcuenta_confirmacionvalida",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_borrarcuenta_consumiravisocuentaborrada",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_borrarcuenta_limpiarstoragelocal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_borrarcuenta_mensajedeerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L103",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_borrarcuenta_resultadoborrado",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_db",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_db_wipelocaldatabase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_push",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_push_unsubscribelocalpush",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_supabase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_supabase_supabase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta",
+      "target": "src_lib_theme",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/AuthPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_authpage",
+      "target": "src_lib_borrarcuenta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/AuthPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_authpage",
+      "target": "src_lib_borrarcuenta_consumiravisocuentaborrada",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/AuthPage.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_authpage_authpage",
+      "target": "src_lib_borrarcuenta_consumiravisocuentaborrada"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L159",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta_borrarcuenta",
+      "target": "src_lib_borrarcuenta_limpiarstoragelocal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L117",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta_borrarcuenta",
+      "target": "src_lib_borrarcuenta_mensajedeerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L149",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta_borrarcuenta",
+      "target": "src_lib_db_wipelocaldatabase"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/borrarCuenta.ts",
+      "source_location": "L142",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_borrarcuenta_borrarcuenta",
+      "target": "src_lib_push_unsubscribelocalpush"
     },
     {
       "relation": "imports_from",
@@ -16715,7 +17445,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/db.ts",
-      "source_location": "L299",
+      "source_location": "L354",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_db",
@@ -16973,6 +17703,17 @@
       "_origin": "ast",
       "source": "src_lib_db",
       "target": "src_lib_db_table_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/db.ts",
+      "source_location": "L318",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_db",
+      "target": "src_lib_db_wipelocaldatabase",
       "confidence_score": 1.0
     },
     {
@@ -17440,6 +18181,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_db_setmeta",
+      "target": "src_lib_db_getdb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/db.ts",
+      "source_location": "L321",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_db_wipelocaldatabase",
       "target": "src_lib_db_getdb",
       "confidence_score": 1.0
     },
@@ -19103,11 +19856,22 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/push.ts",
-      "source_location": "L121",
+      "source_location": "L139",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_push",
       "target": "src_lib_push_unsubscribefrompush",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/push.ts",
+      "source_location": "L125",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_push",
+      "target": "src_lib_push_unsubscribelocalpush",
       "confidence_score": 1.0
     },
     {
@@ -19197,10 +19961,22 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/push.ts",
-      "source_location": "L122",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_push_unsubscribefrompush",
+      "target": "src_lib_push_ispushsupported",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/push.ts",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_push_unsubscribelocalpush",
       "target": "src_lib_push_ispushsupported",
       "confidence_score": 1.0
     },
@@ -19233,10 +20009,22 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/push.ts",
-      "source_location": "L123",
+      "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_push_unsubscribefrompush",
+      "target": "src_lib_push_swreadyornull",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/push.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_push_unsubscribelocalpush",
       "target": "src_lib_push_swreadyornull",
       "confidence_score": 1.0
     },
@@ -19257,7 +20045,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/push.ts",
-      "source_location": "L124",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_push_unsubscribefrompush",
@@ -24344,7 +25132,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24356,7 +25144,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24452,7 +25240,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24464,7 +25252,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_apariencia",
@@ -24488,7 +25276,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24500,7 +25288,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_apariencia",
@@ -24557,7 +25345,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24581,7 +25369,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24593,7 +25381,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24623,6 +25411,161 @@
       "_origin": "ast",
       "source": "src_pages_hoypage_hoypage",
       "target": "src_lib_useaienabled_useaienabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognitionalternative",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognitionconstructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognitionerrorevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognitionevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognitionresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognitionresultlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadovoz",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_getrecognitionctor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz",
+      "target": "src_lib_usedictadovoz_usedictadovoz",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz_dictadorecognition",
+      "target": "src_lib_usedictadovoz_dictadorecognition_abort",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz_dictadorecognition",
+      "target": "src_lib_usedictadovoz_dictadorecognition_start",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz_dictadorecognition",
+      "target": "src_lib_usedictadovoz_dictadorecognition_stop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/useDictadoVoz.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_usedictadovoz_usedictadovoz",
+      "target": "src_lib_usedictadovoz_dictadorecognition_abort",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -24762,7 +25705,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24774,7 +25717,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -24787,7 +25730,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L61",
+      "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_nombreperfil",
@@ -24797,7 +25740,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_authpage",
@@ -24808,7 +25751,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L22",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_authpage",
@@ -24819,7 +25762,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_authpage",
@@ -24830,7 +25773,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/AuthPage.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_authpage",
@@ -25295,7 +26238,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -25306,7 +26249,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L59",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -25317,7 +26260,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L135",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -25328,7 +26271,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -27061,6 +28004,39 @@
       "_origin": "ast",
       "source": "supabase_functions_ai_assistant_rpm",
       "target": "supabase_functions_ai_assistant_rpm_rpmdecision",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/delete-account/index.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_delete_account_index",
+      "target": "supabase_functions_delete_account_index_cors_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/delete-account/index.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_delete_account_index",
+      "target": "supabase_functions_delete_account_index_jsonresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "supabase/functions/delete-account/index.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "supabase_functions_delete_account_index",
+      "target": "supabase_functions_delete_account_index_tablas_del_usuario",
       "confidence_score": 1.0
     },
     {
@@ -30211,5 +31187,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "6b334ec1e6bcfc10ccf3c99ca9675cc323ae4c5a"
+  "built_at_commit": "4057ba7ac7e745dc9175dea7749794aca926f61b"
 }

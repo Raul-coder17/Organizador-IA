@@ -362,8 +362,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "package_devdependencies_types_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 52,
+      "community_name": "@types/react",
       "norm_label": "@types/react"
     },
     {
@@ -373,8 +373,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "types_react",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 52,
+      "community_name": "@types/react",
       "norm_label": "@types/react"
     },
     {
@@ -428,8 +428,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "package_devdependencies_eslint",
-      "community": 60,
-      "community_name": "eslint",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -439,8 +439,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "eslint",
-      "community": 60,
-      "community_name": "eslint",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -1022,8 +1022,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_authcard",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "authcard.tsx"
     },
     {
@@ -1033,8 +1033,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_components_authcard_authcard",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "authcard()"
     },
     {
@@ -1055,8 +1055,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_components_itemform_nuevalinea",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "nuevalinea()"
     },
     {
@@ -1077,8 +1077,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_components_itemform_afilaseditables",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "afilaseditables()"
     },
     {
@@ -1088,8 +1088,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_components_itemform_itemformprops",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemformprops"
     },
     {
@@ -1132,8 +1132,8 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "src_components_itemform_itemform",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "itemform()"
     },
     {
@@ -1176,8 +1176,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_components_itemlist_itemlistprops",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemlistprops"
     },
     {
@@ -1264,8 +1264,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "localreminderwatcher.tsx"
     },
     {
@@ -1275,8 +1275,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_components_localreminderwatcher_localreminderwatcher",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "localreminderwatcher()"
     },
     {
@@ -1308,8 +1308,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_nuevoitemsheetprops",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "nuevoitemsheetprops"
     },
     {
@@ -1561,8 +1561,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_pushsettings",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "pushsettings.tsx"
     },
     {
@@ -1572,8 +1572,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_components_pushsettings_pushsettings",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "pushsettings()"
     },
     {
@@ -1583,8 +1583,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_recordatoriorow",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "recordatoriorow.tsx"
     },
     {
@@ -1605,8 +1605,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_components_recordatoriorow_recordatoriorow",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "recordatoriorow()"
     },
     {
@@ -1638,8 +1638,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncsettings",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncsettings.tsx"
     },
     {
@@ -1649,8 +1649,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncsettings_syncsettings",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncsettings()"
     },
     {
@@ -1660,8 +1660,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncstatus",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncstatus.tsx"
     },
     {
@@ -1671,8 +1671,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncstatus_syncstatus",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncstatus()"
     },
     {
@@ -1704,8 +1704,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_authcontext",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "authcontext.tsx"
     },
     {
@@ -1715,8 +1715,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_authcontext_authcontextvalue",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "authcontextvalue"
     },
     {
@@ -1737,8 +1737,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_authcontext_readcachedsession",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "readcachedsession()"
     },
     {
@@ -1748,8 +1748,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_lib_authcontext_leernombre",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "leernombre()"
     },
     {
@@ -1759,8 +1759,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_lib_authcontext_authprovider",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "authprovider()"
     },
     {
@@ -1891,8 +1891,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_buscar_test_item",
-      "community": 34,
-      "community_name": "buscar.test.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "item()"
     },
     {
@@ -2144,8 +2144,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_db_newoutboxop",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "newoutboxop"
     },
     {
@@ -2177,8 +2177,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_lib_db_organizadordb",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "organizadordb"
     },
     {
@@ -2188,8 +2188,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_lib_db_getdb",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "getdb()"
     },
     {
@@ -2199,8 +2199,8 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_lib_db_loadtemasfromcache",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "loadtemasfromcache()"
     },
     {
@@ -2210,8 +2210,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_lib_db_loaditemsfromcache",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "loaditemsfromcache()"
     },
     {
@@ -2221,8 +2221,8 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_lib_db_loadrecordatoriosfromcache",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "loadrecordatoriosfromcache()"
     },
     {
@@ -2265,8 +2265,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_lib_db_getlocaltema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "getlocaltema()"
     },
     {
@@ -2276,8 +2276,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_lib_db_putlocaltema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "putlocaltema()"
     },
     {
@@ -2287,8 +2287,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_db_getlocalitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "getlocalitem()"
     },
     {
@@ -2298,8 +2298,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_lib_db_putlocalitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "putlocalitem()"
     },
     {
@@ -2309,8 +2309,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatorio",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "getlocalrecordatorio()"
     },
     {
@@ -2320,8 +2320,8 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_db_putlocalrecordatorio",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "putlocalrecordatorio()"
     },
     {
@@ -2331,8 +2331,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_lib_db_getlocalrecordatoriosbyitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "getlocalrecordatoriosbyitem()"
     },
     {
@@ -2342,8 +2342,8 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "src_lib_db_deletelocalrow",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "deletelocalrow()"
     },
     {
@@ -2353,8 +2353,8 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "src_lib_db_enqueueop",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "enqueueop()"
     },
     {
@@ -2408,8 +2408,8 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "src_lib_db_deleteopsforentity",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "deleteopsforentity()"
     },
     {
@@ -2617,8 +2617,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_itemsheet",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "itemsheet.ts"
     },
     {
@@ -2628,8 +2628,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetapi",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "itemsheetapi"
     },
     {
@@ -2639,8 +2639,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetcontext",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "itemsheetcontext"
     },
     {
@@ -2650,8 +2650,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_itemsheet_useitemsheet",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "useitemsheet()"
     },
     {
@@ -2661,8 +2661,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_items",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "items.ts"
     },
     {
@@ -2683,8 +2683,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_push",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "push.ts"
     },
     {
@@ -2694,8 +2694,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_lib_push_vapid_public_key",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "vapid_public_key"
     },
     {
@@ -2705,8 +2705,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_lib_push_pushstatus",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "pushstatus"
     },
     {
@@ -2716,8 +2716,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_lib_push_ispushsupported",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "ispushsupported()"
     },
     {
@@ -2727,8 +2727,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_push_swreadyornull",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "swreadyornull()"
     },
     {
@@ -2738,8 +2738,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_lib_push_getpushstatus",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "getpushstatus()"
     },
     {
@@ -2749,8 +2749,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_lib_push_urlbase64touint8array",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "urlbase64touint8array()"
     },
     {
@@ -2760,8 +2760,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_lib_push_keytobase64",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "keytobase64()"
     },
     {
@@ -2771,8 +2771,8 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_lib_push_subscribetopush",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "subscribetopush()"
     },
     {
@@ -2782,8 +2782,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_push_unsubscribefrompush",
-      "community": 50,
-      "community_name": "recordatorios.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "unsubscribefrompush()"
     },
     {
@@ -2793,8 +2793,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_recordatorios",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "recordatorios.ts"
     },
     {
@@ -2815,8 +2815,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_recordatorios_joinrecordatoriosconitems",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "joinrecordatoriosconitems()"
     },
     {
@@ -2837,8 +2837,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estadorecordatorio",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -2848,8 +2848,8 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_lib_recordatorios_estado_label",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "estado_label"
     },
     {
@@ -2859,8 +2859,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_lib_recordatorios_tipo_label",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "tipo_label"
     },
     {
@@ -2870,8 +2870,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_lib_recordatorios_mismodia",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "mismodia()"
     },
     {
@@ -2881,8 +2881,8 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_lib_recordatorios_clasificar",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "clasificar()"
     },
     {
@@ -2892,8 +2892,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "src_lib_recordatorios_resumencontenido",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "resumencontenido()"
     },
     {
@@ -3354,8 +3354,8 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "src_lib_reminderscheduling_reconciletimers",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 46,
+      "community_name": "reminderScheduling.ts",
       "norm_label": "reconciletimers()"
     },
     {
@@ -3365,8 +3365,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_repo",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "repo.ts"
     },
     {
@@ -3376,8 +3376,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_lib_repo_nowiso",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "nowiso()"
     },
     {
@@ -3387,191 +3387,191 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_lib_repo_enqueue",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "enqueue()"
     },
     {
       "label": "createTema()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L63",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "src_lib_repo_createtema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "createtema()"
     },
     {
       "label": "updateTemaColor()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L94",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "src_lib_repo_updatetemacolor",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "updatetemacolor()"
     },
     {
       "label": "contarItemsDeTema()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L116",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_repo_contaritemsdetema",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "contaritemsdetema()"
     },
     {
       "label": "deleteTema()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L141",
+      "source_location": "L155",
       "_origin": "ast",
       "id": "src_lib_repo_deletetema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "deletetema()"
     },
     {
       "label": "ITEM_EDITABLE",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L168",
+      "source_location": "L182",
       "_origin": "ast",
       "id": "src_lib_repo_item_editable",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "item_editable"
     },
     {
       "label": "itemPatch()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L170",
+      "source_location": "L184",
       "_origin": "ast",
       "id": "src_lib_repo_itempatch",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "itempatch()"
     },
     {
       "label": "createItem()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L178",
+      "source_location": "L192",
       "_origin": "ast",
       "id": "src_lib_repo_createitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "createitem()"
     },
     {
       "label": "updateItem()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L205",
+      "source_location": "L219",
       "_origin": "ast",
       "id": "src_lib_repo_updateitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "updateitem()"
     },
     {
       "label": "deleteItem()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L225",
+      "source_location": "L239",
       "_origin": "ast",
       "id": "src_lib_repo_deleteitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "deleteitem()"
     },
     {
       "label": "getRecordatorioForItem()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L251",
+      "source_location": "L265",
       "_origin": "ast",
       "id": "src_lib_repo_getrecordatorioforitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "getrecordatorioforitem()"
     },
     {
       "label": "upsertRecordatorio()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L263",
+      "source_location": "L277",
       "_origin": "ast",
       "id": "src_lib_repo_upsertrecordatorio",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "upsertrecordatorio()"
     },
     {
       "label": "deleteRecordatoriosForItem()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L333",
+      "source_location": "L347",
       "_origin": "ast",
       "id": "src_lib_repo_deleterecordatoriosforitem",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "deleterecordatoriosforitem()"
     },
     {
       "label": "cerrarCiclo()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L365",
+      "source_location": "L379",
       "_origin": "ast",
       "id": "src_lib_repo_cerrarciclo",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "cerrarciclo()"
     },
     {
       "label": "marcarHecho()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L414",
+      "source_location": "L428",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "marcarhecho()"
     },
     {
       "label": "marcarEnviado()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L427",
+      "source_location": "L441",
       "_origin": "ast",
       "id": "src_lib_repo_marcarenviado",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 1,
+      "community_name": "Gestion de items (ItemForm/ItemList)",
       "norm_label": "marcarenviado()"
     },
     {
       "label": "listRecordatoriosParaDisparo()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L443",
+      "source_location": "L457",
       "_origin": "ast",
       "id": "src_lib_repo_listrecordatoriosparadisparo",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "listrecordatoriosparadisparo()"
     },
     {
       "label": "countRecordatoriosPendientesHoy()",
       "file_type": "code",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L453",
+      "source_location": "L467",
       "_origin": "ast",
       "id": "src_lib_repo_countrecordatoriospendienteshoy",
       "community": 37,
@@ -3585,8 +3585,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_supabase",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "supabase.ts"
     },
     {
@@ -3596,8 +3596,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_lib_supabase_supabase",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "supabase"
     },
     {
@@ -3651,8 +3651,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesyncsettled",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 37,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "subscribesyncsettled()"
     },
     {
@@ -3673,8 +3673,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_lib_sync_hassyncsettled",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "hassyncsettled()"
     },
     {
@@ -3695,8 +3695,8 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "src_lib_sync_subscribelocalchange",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "subscribelocalchange()"
     },
     {
@@ -3717,8 +3717,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_lib_sync_syncstate",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "syncstate"
     },
     {
@@ -3761,8 +3761,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "src_lib_sync_getsyncstate",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "getsyncstate()"
     },
     {
@@ -3772,8 +3772,8 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesync",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "subscribesync()"
     },
     {
@@ -3926,8 +3926,8 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "src_lib_sync_forcesyncnow",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "forcesyncnow()"
     },
     {
@@ -4168,8 +4168,8 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_lib_synccore_formathacecuanto",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "formathacecuanto()"
     },
     {
@@ -4179,8 +4179,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_tabla_test",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "tabla.test.ts"
     },
     {
@@ -4190,8 +4190,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_tabla",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "tabla.ts"
     },
     {
@@ -4201,8 +4201,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_lib_tabla_tabla",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "tabla"
     },
     {
@@ -4212,8 +4212,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_tabla_grilla",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "grilla"
     },
     {
@@ -4223,8 +4223,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_lib_tabla_cell",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "cell()"
     },
     {
@@ -4234,8 +4234,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_lib_tabla_nombrecolumna",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "nombrecolumna()"
     },
     {
@@ -4245,8 +4245,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_lib_tabla_parsetabla",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "parsetabla()"
     },
     {
@@ -4256,8 +4256,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_lib_tabla_parsetexttable",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "parsetexttable()"
     },
     {
@@ -4267,8 +4267,8 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_lib_tabla_partirlinea",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "partirlinea()"
     },
     {
@@ -4278,8 +4278,8 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_lib_tabla_leertabla",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "leertabla()"
     },
     {
@@ -4289,8 +4289,8 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "src_lib_tabla_grillavacia",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "grillavacia()"
     },
     {
@@ -4300,8 +4300,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_lib_tabla_agrilla",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "agrilla()"
     },
     {
@@ -4311,8 +4311,8 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "src_lib_tabla_grilladesdetexto",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "grilladesdetexto()"
     },
     {
@@ -4322,8 +4322,8 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "src_lib_tabla_grilladesdecontenido",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "grilladesdecontenido()"
     },
     {
@@ -4333,8 +4333,8 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "src_lib_tabla_contenidodegrilla",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "contenidodegrilla()"
     },
     {
@@ -4352,12 +4352,23 @@
       "label": "tema()",
       "file_type": "code",
       "source_file": "src/lib/temaColores.test.ts",
-      "source_location": "L15",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "src_lib_temacolores_test_tema",
       "community": 44,
       "community_name": "AppShell.tsx",
       "norm_label": "tema()"
+    },
+    {
+      "label": "crearTemaFake()",
+      "file_type": "code",
+      "source_file": "src/lib/temaColores.test.ts",
+      "source_location": "L123",
+      "_origin": "ast",
+      "id": "src_lib_temacolores_test_creartemafake",
+      "community": 44,
+      "community_name": "AppShell.tsx",
+      "norm_label": "creartemafake()"
     },
     {
       "label": "temaColores.ts",
@@ -4448,10 +4459,21 @@
       "norm_label": "siguientecolortema()"
     },
     {
+      "label": "encontrarTemaPorNombre()",
+      "file_type": "code",
+      "source_file": "src/lib/temaColores.ts",
+      "source_location": "L103",
+      "_origin": "ast",
+      "id": "src_lib_temacolores_encontrartemapornombre",
+      "community": 44,
+      "community_name": "AppShell.tsx",
+      "norm_label": "encontrartemapornombre()"
+    },
+    {
       "label": "colorDeTema()",
       "file_type": "code",
       "source_file": "src/lib/temaColores.ts",
-      "source_location": "L100",
+      "source_location": "L114",
       "_origin": "ast",
       "id": "src_lib_temacolores_colordetema",
       "community": 44,
@@ -4462,7 +4484,7 @@
       "label": "temaColorVar()",
       "file_type": "code",
       "source_file": "src/lib/temaColores.ts",
-      "source_location": "L107",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_temacolores_temacolorvar",
       "community": 44,
@@ -4476,8 +4498,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_temas",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "temas.ts"
     },
     {
@@ -4630,8 +4652,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_useaienabled",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "useaienabled.ts"
     },
     {
@@ -4641,8 +4663,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_useaienabled_readaienabledcache",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "readaienabledcache()"
     },
     {
@@ -4652,8 +4674,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_lib_useaienabled_writeaienabledcache",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "writeaienabledcache()"
     },
     {
@@ -4718,8 +4740,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher_uselocalreminderwatcher",
-      "community": 38,
-      "community_name": "@types/react",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "uselocalreminderwatcher()"
     },
     {
@@ -4751,8 +4773,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "usesyncstatus.ts"
     },
     {
@@ -4762,8 +4784,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus_usesyncstatus",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "usesyncstatus()"
     },
     {
@@ -4784,8 +4806,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_authpage",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "authpage.tsx"
     },
     {
@@ -4795,8 +4817,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_pages_authpage_modo",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "modo"
     },
     {
@@ -4806,8 +4828,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_pages_authpage_subtitulo",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "subtitulo"
     },
     {
@@ -4817,8 +4839,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_pages_authpage_accion",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "accion"
     },
     {
@@ -4828,8 +4850,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_pages_authpage_authpage",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "authpage()"
     },
     {
@@ -4839,8 +4861,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_hoypage",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "hoypage.tsx"
     },
     {
@@ -4850,8 +4872,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_hoypage_saludo",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "saludo()"
     },
     {
@@ -4861,8 +4883,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_pages_hoypage_fechalarga",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "fechalarga()"
     },
     {
@@ -4872,8 +4894,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_pages_hoypage_contarportema",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "contarportema()"
     },
     {
@@ -4883,8 +4905,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_pages_hoypage_hoypage",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "hoypage()"
     },
     {
@@ -4894,8 +4916,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_itemspage",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "itemspage.tsx"
     },
     {
@@ -4905,8 +4927,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtrotipo",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "filtrotipo"
     },
     {
@@ -4916,8 +4938,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtros_tipo",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "filtros_tipo"
     },
     {
@@ -4927,8 +4949,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_pages_itemspage_indexarrecordatorios",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "indexarrecordatorios()"
     },
     {
@@ -4938,8 +4960,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_pages_itemspage_itemspage",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 8,
+      "community_name": "SettingsPage.tsx",
       "norm_label": "itemspage()"
     },
     {
@@ -4949,8 +4971,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_reminderspage",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "reminderspage.tsx"
     },
     {
@@ -4960,8 +4982,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtro",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "filtro"
     },
     {
@@ -4971,8 +4993,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_pages_reminderspage_orden_grupos",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "orden_grupos"
     },
     {
@@ -4982,8 +5004,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_pages_reminderspage_titulo_grupo",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "titulo_grupo"
     },
     {
@@ -4993,8 +5015,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtros",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "filtros"
     },
     {
@@ -5004,8 +5026,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_pages_reminderspage_pasafiltro",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "pasafiltro()"
     },
     {
@@ -5015,8 +5037,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_pages_reminderspage_reminderspage",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 47,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "reminderspage()"
     },
     {
@@ -5026,8 +5048,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_resetpasswordpage",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "resetpasswordpage.tsx"
     },
     {
@@ -5037,8 +5059,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_pages_resetpasswordpage_estado",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "estado"
     },
     {
@@ -5048,8 +5070,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_pages_resetpasswordpage_errorenlaurl",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "errorenlaurl()"
     },
     {
@@ -5059,8 +5081,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_pages_resetpasswordpage_mensajedeerror",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "mensajedeerror()"
     },
     {
@@ -5070,8 +5092,8 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_pages_resetpasswordpage_resetpasswordpage",
-      "community": 5,
-      "community_name": "Recordatorios y watcher local",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "resetpasswordpage()"
     },
     {
@@ -5081,8 +5103,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_settingspage",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "settingspage.tsx"
     },
     {
@@ -5092,8 +5114,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_pages_settingspage_temas_ui",
-      "community": 47,
-      "community_name": "lib/recurrencia.ts",
+      "community": 49,
+      "community_name": "theme.ts",
       "norm_label": "temas_ui"
     },
     {
@@ -5114,8 +5136,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_pages_settingspage_nombreperfil",
-      "community": 8,
-      "community_name": "SettingsPage.tsx",
+      "community": 0,
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "norm_label": "nombreperfil()"
     },
     {
@@ -5301,8 +5323,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_types_database",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "database.ts"
     },
     {
@@ -5345,8 +5367,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_types_database_estadorecordatorio",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -5356,8 +5378,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_types_database_tema",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "tema"
     },
     {
@@ -5367,8 +5389,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_types_database_temainsert",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "temainsert"
     },
     {
@@ -5389,8 +5411,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_types_database_item",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "item"
     },
     {
@@ -5411,8 +5433,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_types_database_recordatorio",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "recordatorio"
     },
     {
@@ -5422,8 +5444,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_types_database_recordatorioinsert",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "recordatorioinsert"
     },
     {
@@ -5433,8 +5455,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_types_database_recordatorioconitem",
-      "community": 44,
-      "community_name": "AppShell.tsx",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "recordatorioconitem"
     },
     {
@@ -5444,8 +5466,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_types_database_pushsubscriptionrow",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "pushsubscriptionrow"
     },
     {
@@ -5455,8 +5477,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_types_database_useraisettings",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "useraisettings"
     },
     {
@@ -5466,8 +5488,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_types_database_aiusage",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 38,
+      "community_name": "@types/react",
       "norm_label": "aiusage"
     },
     {
@@ -8700,9 +8722,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 47,
       "norm_label": "organizador catalog-style mockup (html)",
-      "community_name": "AppShell.tsx",
+      "community_name": "lib/recurrencia.ts",
       "id": "dise_o_mockup_organizador_mockup"
     },
     {
@@ -8714,9 +8736,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 47,
       "norm_label": "app html shell (vite entry)",
-      "community_name": "AppShell.tsx",
+      "community_name": "lib/recurrencia.ts",
       "id": "index_page"
     },
     {
@@ -8728,9 +8750,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 50,
       "norm_label": "render static site blueprint (organizador-ia)",
-      "community_name": "AppShell.tsx",
+      "community_name": "recordatorios.ts",
       "id": "render_service"
     },
     {
@@ -8812,9 +8834,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 0,
       "norm_label": "web locks api single-flight sync",
-      "community_name": "SettingsPage.tsx",
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "id": "plan_offline_web_locks_singleflight"
     },
     {
@@ -8840,9 +8862,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 0,
       "norm_label": "sync trigger events (online/focus/visibility/interval/post-mutation)",
-      "community_name": "SettingsPage.tsx",
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "id": "plan_offline_sync_triggers"
     },
     {
@@ -8868,9 +8890,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "notification tag dedup between local watcher and cron push",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "plan_offline_reminder_dedup_tag"
     },
     {
@@ -8882,9 +8904,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "decision: no runtime caching of supabase data in service worker",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "plan_offline_sw_no_data_cache"
     },
     {
@@ -9008,9 +9030,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "two-way reminder notifications (local + cron)",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "plan_organizador_two_way_notifications"
     },
     {
@@ -9022,9 +9044,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 47,
       "norm_label": "catalog card visual design system",
-      "community_name": "AppShell.tsx",
+      "community_name": "lib/recurrencia.ts",
       "id": "plan_organizador_visual_redesign"
     },
     {
@@ -9036,9 +9058,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 50,
       "norm_label": "adoption of react-router-dom for /settings route",
-      "community_name": "AppShell.tsx",
+      "community_name": "recordatorios.ts",
       "id": "plan_organizador_react_router_adoption"
     },
     {
@@ -9064,9 +9086,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 50,
       "norm_label": "render static site deployment",
-      "community_name": "AppShell.tsx",
+      "community_name": "recordatorios.ts",
       "id": "plan_organizador_render_deploy"
     },
     {
@@ -9078,9 +9100,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "web push via vapid keys + pg_cron",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "plan_organizador_vapid_push"
     },
     {
@@ -9162,9 +9184,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 47,
       "norm_label": "marcarhecho",
-      "community_name": "AppShell.tsx",
+      "community_name": "lib/recurrencia.ts",
       "id": "src_lib_recordatorios_marcarhecho"
     },
     {
@@ -9176,9 +9198,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "marcarenviado",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "src_lib_recordatorios_marcarenviado"
     },
     {
@@ -9190,9 +9212,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 5,
       "norm_label": "listrecordatoriosparadisparo",
-      "community_name": "@types/react",
+      "community_name": "Recordatorios y watcher local",
       "id": "src_lib_recordatorios_listrecordatoriosparadisparo"
     },
     {
@@ -9232,9 +9254,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 0,
       "norm_label": "sync.ts (sync engine)",
-      "community_name": "SettingsPage.tsx",
+      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
       "id": "src_lib_sync_sync"
     },
     {
@@ -9246,9 +9268,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "sw.ts (service worker)",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "src_sw_sw"
     },
     {
@@ -9288,9 +9310,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "send-reminder-notifications edge function handler",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "supabase_functions_send_reminder_notifications_index_handlesend"
     },
     {
@@ -9316,9 +9338,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 46,
       "norm_label": "push_subscriptions migration",
-      "community_name": "@types/react",
+      "community_name": "reminderScheduling.ts",
       "id": "supabase_migrations_20260721181500_push_subscriptions_pushsubscriptions"
     },
     {
@@ -17439,7 +17461,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L76",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createtema",
@@ -17511,7 +17533,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L117",
+      "source_location": "L131",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_contaritemsdetema",
@@ -17523,7 +17545,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L142",
+      "source_location": "L156",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deletetema",
@@ -17535,7 +17557,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L444",
+      "source_location": "L458",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_listrecordatoriosparadisparo",
@@ -17631,7 +17653,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L458",
+      "source_location": "L472",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_countrecordatoriospendienteshoy",
@@ -17643,7 +17665,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L444",
+      "source_location": "L458",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_listrecordatoriosparadisparo",
@@ -17811,7 +17833,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L95",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updatetemacolor",
@@ -17835,7 +17857,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L80",
+      "source_location": "L94",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createtema",
@@ -17847,7 +17869,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L100",
+      "source_location": "L114",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updatetemacolor",
@@ -17871,7 +17893,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L206",
+      "source_location": "L220",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updateitem",
@@ -17895,7 +17917,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L194",
+      "source_location": "L208",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createitem",
@@ -17907,7 +17929,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L212",
+      "source_location": "L226",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updateitem",
@@ -17930,7 +17952,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L369",
+      "source_location": "L383",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_cerrarciclo",
@@ -17943,7 +17965,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L428",
+      "source_location": "L442",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_marcarenviado",
@@ -17966,7 +17988,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L400",
+      "source_location": "L414",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_cerrarciclo",
@@ -17979,7 +18001,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L290",
+      "source_location": "L304",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_upsertrecordatorio",
@@ -18003,7 +18025,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L230",
+      "source_location": "L244",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deleteitem",
@@ -18015,7 +18037,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L334",
+      "source_location": "L348",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deleterecordatoriosforitem",
@@ -18027,7 +18049,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L252",
+      "source_location": "L266",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_getrecordatorioforitem",
@@ -18051,7 +18073,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L233",
+      "source_location": "L247",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deleteitem",
@@ -18063,7 +18085,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L336",
+      "source_location": "L350",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deleterecordatoriosforitem",
@@ -18075,7 +18097,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L148",
+      "source_location": "L162",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deletetema",
@@ -18267,7 +18289,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L232",
+      "source_location": "L246",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deleteitem",
@@ -19563,7 +19585,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L447",
+      "source_location": "L461",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_listrecordatoriosparadisparo",
@@ -20319,7 +20341,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L276",
+      "source_location": "L290",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_upsertrecordatorio",
@@ -20462,7 +20484,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L378",
+      "source_location": "L392",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_cerrarciclo",
@@ -20787,7 +20809,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L365",
+      "source_location": "L379",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20798,7 +20820,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L116",
+      "source_location": "L130",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20809,7 +20831,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L453",
+      "source_location": "L467",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20820,7 +20842,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L178",
+      "source_location": "L192",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20831,7 +20853,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L63",
+      "source_location": "L73",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20842,7 +20864,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L225",
+      "source_location": "L239",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20853,7 +20875,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L333",
+      "source_location": "L347",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20864,7 +20886,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L141",
+      "source_location": "L155",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20886,7 +20908,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L251",
+      "source_location": "L265",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20897,7 +20919,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L168",
+      "source_location": "L182",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20908,7 +20930,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L170",
+      "source_location": "L184",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20919,7 +20941,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L443",
+      "source_location": "L457",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20930,7 +20952,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L427",
+      "source_location": "L441",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20941,7 +20963,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L414",
+      "source_location": "L428",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20963,7 +20985,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L205",
+      "source_location": "L219",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20974,7 +20996,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L94",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -20985,7 +21007,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L263",
+      "source_location": "L277",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo",
@@ -21026,6 +21048,18 @@
       "_origin": "ast",
       "source": "src_lib_repo",
       "target": "src_lib_temacolores",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/repo.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_repo",
+      "target": "src_lib_temacolores_encontrartemapornombre",
       "confidence_score": 1.0
     },
     {
@@ -21189,7 +21223,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L372",
+      "source_location": "L386",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_cerrarciclo",
@@ -21201,7 +21235,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L179",
+      "source_location": "L193",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createitem",
@@ -21213,7 +21247,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L71",
+      "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createtema",
@@ -21237,7 +21271,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L209",
+      "source_location": "L223",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updateitem",
@@ -21249,7 +21283,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L98",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updatetemacolor",
@@ -21261,7 +21295,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L269",
+      "source_location": "L283",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_upsertrecordatorio",
@@ -21273,7 +21307,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L401",
+      "source_location": "L415",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_cerrarciclo",
@@ -21285,7 +21319,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L195",
+      "source_location": "L209",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createitem",
@@ -21297,7 +21331,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L81",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createtema",
@@ -21309,7 +21343,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L237",
+      "source_location": "L251",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deleteitem",
@@ -21321,7 +21355,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L337",
+      "source_location": "L351",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deleterecordatoriosforitem",
@@ -21333,7 +21367,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L152",
+      "source_location": "L166",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deletetema",
@@ -21357,7 +21391,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L213",
+      "source_location": "L227",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updateitem",
@@ -21369,7 +21403,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L101",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updatetemacolor",
@@ -21381,7 +21415,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L291",
+      "source_location": "L305",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_upsertrecordatorio",
@@ -21394,7 +21428,19 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/repo.ts",
-      "source_location": "L76",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_repo_createtema",
+      "target": "src_lib_temacolores_encontrartemapornombre"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/repo.ts",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_createtema",
@@ -21405,7 +21451,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L145",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_deletetema",
@@ -21417,7 +21463,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L210",
+      "source_location": "L224",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_updateitem",
@@ -21453,7 +21499,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L270",
+      "source_location": "L284",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_upsertrecordatorio",
@@ -21465,7 +21511,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L430",
+      "source_location": "L444",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_marcarenviado",
@@ -21477,7 +21523,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
-      "source_location": "L415",
+      "source_location": "L429",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_repo_marcarhecho",
@@ -23680,6 +23726,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_temacolores_test",
+      "target": "src_lib_temacolores_encontrartemapornombre",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/temaColores.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_temacolores_test",
       "target": "src_lib_temacolores_escolortema",
       "confidence_score": 1.0
     },
@@ -23747,7 +23805,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/temaColores.test.ts",
-      "source_location": "L15",
+      "source_location": "L123",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_temacolores_test",
+      "target": "src_lib_temacolores_test_creartemafake",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/temaColores.test.ts",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_temacolores_test",
@@ -23755,10 +23824,46 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/temaColores.test.ts",
+      "source_location": "L115",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_temacolores_test_tema",
+      "target": "src_lib_temacolores_temacolor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/temaColores.test.ts",
+      "source_location": "L124",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_temacolores_test_creartemafake",
+      "target": "src_lib_temacolores_encontrartemapornombre",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/temaColores.test.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_temacolores_test_creartemafake",
+      "target": "src_lib_temacolores_siguientecolortema",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/temaColores.ts",
-      "source_location": "L100",
+      "source_location": "L114",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_temacolores",
@@ -23774,6 +23879,17 @@
       "_origin": "ast",
       "source": "src_lib_temacolores",
       "target": "src_lib_temacolores_colores_tema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/temaColores.ts",
+      "source_location": "L103",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_temacolores",
+      "target": "src_lib_temacolores_encontrartemapornombre",
       "confidence_score": 1.0
     },
     {
@@ -23846,7 +23962,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/temaColores.ts",
-      "source_location": "L107",
+      "source_location": "L121",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_temacolores",
@@ -23918,7 +24034,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/temaColores.ts",
-      "source_location": "L101",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_temacolores_colordetema",
@@ -23942,7 +24058,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/temaColores.ts",
-      "source_location": "L102",
+      "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_temacolores_colordetema",
@@ -30095,5 +30211,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "70f3c36384ad0524087aee7a4e9c339040d694d1"
+  "built_at_commit": "6b334ec1e6bcfc10ccf3c99ca9675cc323ae4c5a"
 }

@@ -80,8 +80,8 @@
     "semantic_hash": ""
   },
   "src/lib/db.ts": {
-    "mtime": 1784847788.7350905,
-    "ast_hash": "4bcee28256d195345bf7ef76bad68328",
+    "mtime": 1785069839.0150967,
+    "ast_hash": "34499e2b2260ce2c6e558790801890a2",
     "semantic_hash": ""
   },
   "src/lib/items.ts": {
@@ -90,9 +90,9 @@
     "semantic_hash": "81f4166abaa5ee00276be4b4b0c5a5f1"
   },
   "src/lib/push.ts": {
-    "mtime": 1784701926.1029432,
-    "ast_hash": "8763514b217538d49952f0c7bd056d2f",
-    "semantic_hash": "8763514b217538d49952f0c7bd056d2f"
+    "mtime": 1785069858.71607,
+    "ast_hash": "fe597763b4b41caa81612ec3a090ed0e",
+    "semantic_hash": ""
   },
   "src/lib/recordatorios.ts": {
     "mtime": 1785067733.6311467,
@@ -165,8 +165,8 @@
     "semantic_hash": "787e5a07efeb2bf6209d5937195f2f68"
   },
   "src/pages/AuthPage.tsx": {
-    "mtime": 1784968488.0270474,
-    "ast_hash": "8e6220257a038525740a621e68aced7f",
+    "mtime": 1785070012.9910367,
+    "ast_hash": "2d98fbe2a0ee91d72c7c0169a0495f24",
     "semantic_hash": ""
   },
   "src/pages/ItemsPage.tsx": {
@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "src/pages/SettingsPage.tsx": {
-    "mtime": 1784852494.1025708,
-    "ast_hash": "8da03497f279682838a6945306382289",
+    "mtime": 1785070001.5984268,
+    "ast_hash": "fc13c03d582a5b3e8df17c8dfbfc377b",
     "semantic_hash": ""
   },
   "src/sw.ts": {
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1785067733.608111,
-    "ast_hash": "0128da4c9a61e836bf94f09092f8e866",
+    "mtime": 1785070776.4218764,
+    "ast_hash": "8932c0fd40354f32e719e228a744b6fa",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "src/components/AssistantDrawer.tsx": {
-    "mtime": 1785068394.0296612,
-    "ast_hash": "5d682fd4a08310ce506efee2803d6baa",
+    "mtime": 1785068974.7783775,
+    "ast_hash": "299701d02d8523aa5d4f4dbad2cf6ba4",
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
@@ -667,6 +667,26 @@
   "src/components/ProposedActionCard.test.ts": {
     "mtime": 1785067733.6281447,
     "ast_hash": "9b05760668bb92c5b7be7f9743170f06",
+    "semantic_hash": ""
+  },
+  "src/components/BorrarCuenta.tsx": {
+    "mtime": 1785069958.299353,
+    "ast_hash": "6b0e27fca1c189e906350ca7288f7303",
+    "semantic_hash": ""
+  },
+  "src/lib/borrarCuenta.ts": {
+    "mtime": 1785070060.74481,
+    "ast_hash": "76b794ec7200aef38be81df6a569419f",
+    "semantic_hash": ""
+  },
+  "src/lib/useDictadoVoz.ts": {
+    "mtime": 1785068948.6980333,
+    "ast_hash": "893902b8feb52bb156c71acc0b11250a",
+    "semantic_hash": ""
+  },
+  "supabase/functions/delete-account/index.ts": {
+    "mtime": 1785069816.7142856,
+    "ast_hash": "22f91fa337c3a0a4d7cc283cac92fecc",
     "semantic_hash": ""
   }
 }
