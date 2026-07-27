@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#eef0ec; --card:#f7f8f5; --card-2:#e9ece5;
+  --ink:#1e2a22; --ink-soft:#4b5750; --ink-mute:#8a938a;
+  --line:#d7dad2; --line-soft:#e4e7e0;
+  --moss:#3d5c41; --moss-ink:#eaf0ea; --moss-tint:#e3eae1;
+  --rust:#9c3b22; --gold:#b98530; --slate:#7c8577;
+  --shadow:0 1px 2px rgba(30,42,34,.04), 0 8px 24px -16px rgba(30,42,34,.18);
+}
+[data-theme="dark"]{
+  --paper:#12160f; --card:#1a1f17; --card-2:#232a20;
+  --ink:#e8ece3; --ink-soft:#a9b2a5; --ink-mute:#71796f;
+  --line:#2b322a; --line-soft:#222820;
+  --moss:#6f9873; --moss-ink:#0e120c; --moss-tint:#20291d;
+  --rust:#cc7458; --gold:#d3ab63; --slate:#939c90;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -18px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{margin:0}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px}
+::-webkit-scrollbar-track{background:transparent}
+.hscroll{overflow-y:hidden;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{height:0;width:0}
+@keyframes om-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes om-fade{from{opacity:0}to{opacity:1}}
+@keyframes om-sheet{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+input,textarea,select,button{font-family:inherit}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--moss)}
+a{color:var(--moss);text-decoration:none}
+a:hover{color:var(--ink)}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="min-height:100vh;background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;">
+<div style="display:flex;min-height:100vh;max-width:1360px;margin:0 auto;">
+
+  <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+  <aside style="width:264px;flex:none;border-right:1px solid var(--line);padding:22px 18px;display:flex;flex-direction:column;gap:20px;position:sticky;top:0;height:100vh;">
+    <div style="display:flex;align-items:baseline;gap:8px;padding:0 4px;">
+      <div style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.05;">Organizador</div>
+    </div>
+    <div style="position:relative;">
+      <div style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--ink-mute);display:flex;pointer-events:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
+      </div>
+      <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Buscar en todo…" style="width:100%;padding:9px 12px 9px 34px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:13.5px;color:var(--ink);"/>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:2px;">
+      <button onClick="{{ goHoy }}" style="{{ navStyle.hoy }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg><span>Hoy</span></button>
+      <button onClick="{{ goItems }}" style="{{ navStyle.items }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h16M4 18h11"></path></svg><span>Biblioteca</span></button>
+      <button onClick="{{ goRem }}" style="{{ navStyle.rem }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg><span>Recordatorios</span><sc-if value="{{ pendientes }}"><span style="{{ badgeStyle }}">{{ pendientes }}</span></sc-if></button>
+      <button onClick="{{ goAjustes }}" style="{{ navStyle.ajustes }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"></path><circle cx="14" cy="7" r="2.2"></circle><circle cx="8" cy="17" r="2.2"></circle></svg><span>Ajustes</span></button>
+    </nav>
+    <button onClick="{{ openNew }}" style="margin-top:2px;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.08em;cursor:pointer;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>NUEVO ITEM</button>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;">
+      <button onClick="{{ openAssistant }}" style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--moss-tint);border:1px solid var(--line);border-radius:3px;color:var(--ink);cursor:pointer;font-size:13px;text-align:left;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--moss)" stroke-width="1.6"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10z"></path></svg>
+        <span style="flex:1;">Asistente IA</span></button>
+      <div style="display:flex;align-items:center;gap:9px;padding:2px 4px;border-top:1px solid var(--line-soft);padding-top:12px;">
+        <div style="width:30px;height:30px;border-radius:50%;background:var(--moss);color:var(--moss-ink);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;">RR</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">raul.ramiros07</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:var(--slate);">EN LÍNEA · SYNC OK</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  </sc-if>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column;position:relative;">
+
+    <sc-if value="{{ narrow }}">
+    <header style="position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 16px 12px;display:flex;flex-direction:column;gap:11px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-family:'Fraunces',serif;font-weight:600;font-size:18px;flex:1;">Organizador</div>
+        <button onClick="{{ toggleTheme }}" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--line);border-radius:3px;color:var(--ink-soft);cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"></path></svg></button>
+      </div>
+      <div style="position:relative;">
+        <div style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--ink-mute);display:flex;pointer-events:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
+        </div>
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Buscar ítems, temas, recordatorios…" style="width:100%;padding:10px 12px 10px 34px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:14px;color:var(--ink);"/>
+      </div>
+    </header>
+    </sc-if>
+
+    <div style="{{ contentStyle }}">
+
+      <!-- SEARCH RESULTS -->
+      <sc-if value="{{ searching }}">
+      <section style="animation:om-fade .2s ease;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:14px;">RESULTADOS · {{ searchCount }}</div>
+        <sc-for list="{{ searchResults }}" as="it" hint-placeholder-count="3">
+          <div style="{{ it.cardStyle }}">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style="{{ it.dotStyle }}"></span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);">{{ it.tipoLabel }} · {{ it.temaName }}</span>
+            </div>
+            <div style="font-size:14.5px;line-height:1.45;">{{ it.snippet }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noResults }}">
+          <div style="padding:34px 10px;text-align:center;color:var(--ink-mute);font-size:14px;">Sin resultados para "<span style="color:var(--ink-soft);">{{ query }}</span>".</div>
+        </sc-if>
+      </section>
+      </sc-if>
+
+      <!-- HOY -->
+      <sc-if value="{{ showHoy }}" hint-placeholder-val="{{ true }}">
+      <section style="animation:om-rise .35s ease;">
+        <div style="margin-bottom:22px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--slate);text-transform:uppercase;">{{ todayLabel }}</div>
+          <h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:30px;letter-spacing:-.02em;margin:4px 0 0;">{{ greeting }}</h1>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:26px;">
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:4px;padding:14px 14px;box-shadow:var(--shadow);">
+            <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--rust);line-height:1;">{{ nVencidos }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-soft);margin-top:6px;">VENCIDOS</div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:4px;padding:14px 14px;box-shadow:var(--shadow);">
+            <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--gold);line-height:1;">{{ nHoy }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-soft);margin-top:6px;">PARA HOY</div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:4px;padding:14px 14px;box-shadow:var(--shadow);">
+            <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:600;line-height:1;">{{ nItems }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-soft);margin-top:6px;">ÍTEMS</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;margin-bottom:28px;overflow-x:auto;" class="hscroll">
+          <button onClick="{{ openNew }}" style="flex:none;display:flex;align-items:center;gap:8px;padding:10px 15px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>NUEVO</button>
+          <button onClick="{{ openPhoto }}" style="flex:none;display:flex;align-items:center;gap:8px;padding:10px 15px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 8a2 2 0 0 1 2-2h2l1.4-2h5.2L20 6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><circle cx="12" cy="13" r="3.4"></circle></svg>FOTO</button>
+          <button onClick="{{ openAssistant }}" style="flex:none;display:flex;align-items:center;gap:8px;padding:10px 15px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--moss)" stroke-width="1.7"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10z"></path></svg>PREGUNTAR</button>
+        </div>
+
+        <sc-if value="{{ hasVencidos }}">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <h2 style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;margin:0;color:var(--rust);">Vencidos</h2>
+          <div style="flex:1;height:1px;background:var(--line);"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:26px;">
+          <sc-for list="{{ vencidos }}" as="r" hint-placeholder-count="1">
+            <div style="{{ r.cardStyle }}">
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--rust);margin-bottom:5px;">{{ r.whenLabel }} · {{ r.tipoLabel }}</div>
+                <div style="font-size:14.5px;line-height:1.45;">{{ r.content }}</div>
+              </div>
+              <button onClick="{{ r.onDone }}" style="{{ doneBtnStyle }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l4 4 10-10"></path></svg>HECHO</button>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <h2 style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;margin:0;">Para hoy</h2>
+          <div style="flex:1;height:1px;background:var(--line);"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:26px;">
+          <sc-for list="{{ deHoy }}" as="r" hint-placeholder-count="2">
+            <div style="{{ r.cardStyle }}">
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--gold);margin-bottom:5px;">{{ r.whenLabel }} · {{ r.tipoLabel }}</div>
+                <div style="font-size:14.5px;line-height:1.45;">{{ r.content }}</div>
+              </div>
+              <button onClick="{{ r.onDone }}" style="{{ doneBtnStyle }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l4 4 10-10"></path></svg>HECHO</button>
+            </div>
+          </sc-for>
+          <sc-if value="{{ noHoy }}"><div style="padding:22px;text-align:center;color:var(--ink-mute);font-size:13.5px;background:var(--card);border:1px dashed var(--line);border-radius:4px;">Nada más para hoy. 🌱 despejado.</div></sc-if>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <h2 style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;margin:0;">Tus temas</h2>
+          <div style="flex:1;height:1px;background:var(--line);"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;">
+          <sc-for list="{{ themeCards }}" as="t" hint-placeholder-count="5">
+            <button onClick="{{ t.onOpen }}" style="text-align:left;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:13px 14px;cursor:pointer;box-shadow:var(--shadow);">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="{{ t.dotStyle }}"></span><span style="font-family:'Fraunces',serif;font-weight:600;font-size:15px;">{{ t.name }}</span></div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-soft);">{{ t.countLabel }}</div>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- BIBLIOTECA -->
+      <sc-if value="{{ showItems }}">
+      <section style="animation:om-rise .3s ease;">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px;">
+          <div>
+            <h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:26px;letter-spacing:-.02em;margin:0;">Biblioteca</h1>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);margin-top:3px;">{{ libCountLabel }}</div>
+          </div>
+          <sc-if value="{{ wide }}"><button onClick="{{ openNew }}" style="flex:none;display:flex;align-items:center;gap:7px;padding:9px 14px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>NUEVO</button></sc-if>
+        </div>
+
+        <div style="display:flex;gap:6px;margin-bottom:12px;background:var(--card-2);border:1px solid var(--line);border-radius:4px;padding:4px;">
+          <sc-for list="{{ tipoChips }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button></sc-for>
+        </div>
+        <div style="display:flex;gap:7px;margin-bottom:22px;overflow-x:auto;padding-bottom:2px;" class="hscroll">
+          <sc-for list="{{ temaChips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.onClick }}" style="{{ c.style }}"><sc-if value="{{ c.dotStyle }}"><span style="{{ c.dotStyle }}"></span></sc-if>{{ c.label }}</button></sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:26px;">
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+            <div>
+              <button onClick="{{ g.onToggle }}" style="width:100%;display:flex;align-items:center;gap:10px;background:none;border:none;padding:0 0 10px;cursor:pointer;color:var(--ink);text-align:left;border-bottom:1px solid var(--line);">
+                <span style="{{ g.dotStyle }}"></span>
+                <h2 style="font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0;">{{ g.name }}</h2>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-soft);">{{ g.countLabel }}</span>
+                <span style="flex:1;"></span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-soft)" stroke-width="1.8" style="{{ g.chevronStyle }}"><path d="M6 9l6 6 6-6"></path></svg>
+              </button>
+              <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:9px;padding-top:12px;">
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2">
+                  <article style="{{ it.cardStyle }}">
+                    <div style="display:flex;align-items:flex-start;gap:12px;">
+                      <div style="flex:1;min-width:0;">
+                        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;flex-wrap:wrap;">
+                          <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);">{{ it.tipoLabel }}</span>
+                          <sc-if value="{{ it.priorityLabel }}"><span style="{{ it.priorityStyle }}">{{ it.priorityLabel }}</span></sc-if>
+                          <sc-if value="{{ it.hasReminder }}"><span style="display:inline-flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--slate);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"></path></svg>{{ it.reminderLabel }}</span></sc-if>
+                        </div>
+                        <sc-if value="{{ it.isNote }}"><div style="font-size:14.5px;line-height:1.5;text-wrap:pretty;">{{ it.content }}</div></sc-if>
+                        <sc-if value="{{ it.isList }}"><div style="display:flex;flex-direction:column;gap:6px;">
+                          <sc-for list="{{ it.lines }}" as="ln" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:9px;"><span style="{{ ln.boxStyle }}"><sc-if value="{{ ln.done }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--moss-ink)" stroke-width="3"><path d="M5 12l4 4 10-10"></path></svg></sc-if></span><span style="{{ ln.textStyle }}">{{ ln.text }}</span></div></sc-for>
+                        </div></sc-if>
+                        <sc-if value="{{ it.isTable }}"><div style="border:1px solid var(--line);border-radius:3px;overflow-x:auto;" class="hscroll">
+                          <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:340px;">
+                            <thead><tr>
+                              <sc-for list="{{ it.headers }}" as="h" hint-placeholder-count="3"><th style="text-align:left;padding:8px 12px;background:var(--card-2);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;border-bottom:1px solid var(--line);white-space:nowrap;">{{ h }}</th></sc-for>
+                            </tr></thead>
+                            <tbody>
+                              <sc-for list="{{ it.rows }}" as="row" hint-placeholder-count="3"><tr style="{{ row.style }}"><sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="3"><td style="padding:8px 12px;border-bottom:1px solid var(--line-soft);white-space:nowrap;">{{ cell }}</td></sc-for></tr></sc-for>
+                            </tbody>
+                          </table>
+                        </div></sc-if>
+                      </div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;gap:16px;margin-top:11px;">
+                      <button onClick="{{ it.onEdit }}" style="background:none;border:none;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);cursor:pointer;padding:0;">EDITAR</button>
+                      <button onClick="{{ it.onDelete }}" style="background:none;border:none;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--rust);cursor:pointer;padding:0;">ELIMINAR</button>
+                    </div>
+                  </article>
+                </sc-for>
+              </div>
+              </sc-if>
+            </div>
+          </sc-for>
+          <sc-if value="{{ libEmpty }}"><div style="padding:40px 10px;text-align:center;color:var(--ink-mute);font-size:14px;background:var(--card);border:1px dashed var(--line);border-radius:4px;">No hay ítems con este filtro.</div></sc-if>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- RECORDATORIOS -->
+      <sc-if value="{{ showRem }}">
+      <section style="animation:om-rise .3s ease;">
+        <h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:26px;letter-spacing:-.02em;margin:0 0 16px;">Recordatorios</h1>
+        <div style="display:flex;gap:6px;margin-bottom:22px;background:var(--card-2);border:1px solid var(--line);border-radius:4px;padding:4px;overflow-x:auto;" class="hscroll">
+          <sc-for list="{{ remChips }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button></sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <sc-for list="{{ remGroups }}" as="g" hint-placeholder-count="3">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                <h2 style="font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin:0;{{ g.headColor }}">{{ g.title }}</h2>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);">{{ g.count }}</span>
+                <div style="flex:1;height:1px;background:var(--line);"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <sc-for list="{{ g.items }}" as="r" hint-placeholder-count="2">
+                  <div style="{{ r.cardStyle }}">
+                    <div style="flex:1;min-width:0;">
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.07em;margin-bottom:6px;{{ r.metaColor }}">{{ r.whenLabel }} · {{ r.tipoLabel }}</div>
+                      <div style="{{ r.contentStyle }}">{{ r.content }}</div>
+                    </div>
+                    <sc-if value="{{ r.pending }}"><button onClick="{{ r.onDone }}" style="{{ doneBtnStyle }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l4 4 10-10"></path></svg>HECHO</button></sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- AJUSTES -->
+      <sc-if value="{{ showAjustes }}">
+      <section style="animation:om-rise .3s ease;max-width:640px;">
+        <h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:26px;letter-spacing:-.02em;margin:0 0 22px;">Ajustes</h1>
+
+        <div style="margin-bottom:26px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:10px;">APARIENCIA</div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px;box-shadow:var(--shadow);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;">
+              <div><div style="font-size:14.5px;font-weight:500;">Tema</div><div style="font-size:12.5px;color:var(--ink-soft);margin-top:2px;">Claro u oscuro para toda la app.</div></div>
+              <div style="display:flex;gap:4px;background:var(--card-2);border:1px solid var(--line);border-radius:3px;padding:3px;">
+                <button onClick="{{ setLight }}" style="{{ lightBtnStyle }}">CLARO</button>
+                <button onClick="{{ setDark }}" style="{{ darkBtnStyle }}">OSCURO</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:26px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:10px;">ASISTENTE IA</div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px;box-shadow:var(--shadow);">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:var(--ink-soft);">Estado:</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--moss);">ACTIVA</span></div>
+            <button style="padding:8px 14px;background:none;border:1px solid var(--rust);color:var(--rust);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;">DESACTIVAR / QUITAR KEY</button>
+            <div style="font-size:12px;color:var(--ink-mute);margin-top:12px;line-height:1.5;">Tu API key se valida contra Gemini y se guarda cifrada en el servidor. Nunca se guarda en el navegador.</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:26px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:10px;">NOTIFICACIONES</div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px;box-shadow:var(--shadow);">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;color:var(--ink-soft);">Estado:</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--rust);">RECHAZADAS</span></div>
+            <div style="font-size:12px;color:var(--ink-mute);margin-top:12px;line-height:1.5;">Bloqueaste las notificaciones para este sitio. Habilitalas desde la configuración del navegador y recargá.</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:26px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:10px;">SINCRONIZACIÓN</div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px;box-shadow:var(--shadow);">
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--ink-soft);">Conexión</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--moss);">EN LÍNEA</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--ink-soft);">Cambios pendientes</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">0</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--ink-soft);">Última sincronización</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);">recién</span></div>
+            </div>
+            <button style="padding:9px 15px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;">SINCRONIZAR AHORA</button>
+          </div>
+        </div>
+
+        <button style="width:100%;padding:12px;background:none;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;cursor:pointer;">CERRAR SESIÓN · raul.ramiros07@gmail.com</button>
+      </section>
+      </sc-if>
+
+    </div>
+
+    <!-- BOTTOM NAV (mobile) -->
+    <sc-if value="{{ narrow }}">
+    <nav style="position:sticky;bottom:0;z-index:20;background:var(--paper);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);align-items:center;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));">
+      <button onClick="{{ goHoy }}" style="{{ tabStyle.hoy }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:.02em;">Hoy</span></button>
+      <button onClick="{{ goItems }}" style="{{ tabStyle.items }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h16M4 18h11"></path></svg><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;">Biblio</span></button>
+      <div style="display:flex;justify-content:center;"><button onClick="{{ openNew }}" style="width:52px;height:52px;margin-top:-22px;border-radius:50%;background:var(--moss);color:var(--moss-ink);border:3px solid var(--paper);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg></button></div>
+      <button onClick="{{ goRem }}" style="{{ tabStyle.rem }}"><div style="position:relative;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg><sc-if value="{{ pendientes }}"><span style="position:absolute;top:-5px;right:-8px;min-width:15px;height:15px;padding:0 4px;background:var(--rust);color:#fff;border-radius:9px;font-family:'IBM Plex Mono',monospace;font-size:9px;display:flex;align-items:center;justify-content:center;">{{ pendientes }}</span></sc-if></div><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;">Recor</span></button>
+      <button onClick="{{ goAjustes }}" style="{{ tabStyle.ajustes }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"></path><circle cx="14" cy="7" r="2.2"></circle><circle cx="8" cy="17" r="2.2"></circle></svg><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;">Ajustes</span></button>
+    </nav>
+    <button onClick="{{ openAssistant }}" style="position:fixed;right:16px;bottom:82px;z-index:19;width:50px;height:50px;border-radius:50%;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--moss)" stroke-width="1.6"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10z"></path></svg></button>
+    </sc-if>
+
+  </main>
+</div>
+
+<!-- ASSISTANT PANEL -->
+<sc-if value="{{ assistantOpen }}">
+<div onClick="{{ closeAssistant }}" style="position:fixed;inset:0;z-index:40;background:rgba(15,20,13,.42);animation:om-fade .2s ease;"></div>
+<div style="{{ assistantPanelStyle }}">
+  <div style="display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--moss)" stroke-width="1.6"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10z"></path></svg>
+    <div style="font-family:'Fraunces',serif;font-weight:600;font-size:16px;flex:1;">Asistente</div>
+    <button onClick="{{ toggleHistory }}" style="{{ histBtnStyle }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg></button>
+    <button onClick="{{ closeAssistant }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--ink-soft);cursor:pointer;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+  </div>
+
+  <sc-if value="{{ historyOpen }}">
+  <div style="flex:1;overflow-y:auto;padding:14px 16px;">
+    <button onClick="{{ newConversation }}" style="width:100%;display:flex;align-items:center;gap:8px;justify-content:center;padding:11px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;cursor:pointer;margin-bottom:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>NUEVA CONVERSACIÓN</button>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:10px;">HISTORIAL</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <sc-for list="{{ conversations }}" as="c" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:11px 13px;">
+          <button onClick="{{ c.onOpen }}" style="flex:1;min-width:0;text-align:left;background:none;border:none;cursor:pointer;color:var(--ink);padding:0;">
+            <div style="font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ c.title }}</div>
+            <div style="font-size:12px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px;">{{ c.preview }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.05em;color:var(--ink-mute);margin-top:5px;">{{ c.date }}</div>
+          </button>
+          <button onClick="{{ c.onDelete }}" style="flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--ink-mute);cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"></path></svg></button>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ chatOpen }}">
+  <div style="flex:1;overflow-y:auto;padding:16px 16px;display:flex;flex-direction:column;gap:12px;">
+    <sc-for list="{{ messages }}" as="m" hint-placeholder-count="2">
+      <div style="{{ m.rowStyle }}"><div style="{{ m.bubbleStyle }}">{{ m.text }}</div></div>
+    </sc-for>
+    <sc-if value="{{ proposal }}">
+      <div style="align-self:flex-start;max-width:90%;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moss);border-radius:4px;padding:14px;box-shadow:var(--shadow);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--moss);margin-bottom:9px;">PROPUESTA · CREAR ÍTEM</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font-size:13.5px;margin-bottom:13px;">
+          <div><span style="color:var(--ink-soft);">Tipo:</span> {{ proposal.tipo }}</div>
+          <div><span style="color:var(--ink-soft);">Tema:</span> {{ proposal.tema }}</div>
+          <div><span style="color:var(--ink-soft);">Prioridad:</span> {{ proposal.prioridad }}</div>
+          <div><span style="color:var(--ink-soft);">Contenido:</span> {{ proposal.contenido }}</div>
+        </div>
+        <div style="display:flex;gap:9px;">
+          <button onClick="{{ confirmProposal }}" style="padding:8px 15px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;">CONFIRMAR</button>
+          <button onClick="{{ cancelProposal }}" style="padding:8px 15px;background:none;color:var(--ink-soft);border:none;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;">CANCELAR</button>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+  <div style="border-top:1px solid var(--line);padding:12px 14px;display:flex;gap:9px;align-items:center;">
+    <input value="{{ draft }}" onInput="{{ onDraft }}" onKeyDown="{{ onDraftKey }}" placeholder="Escribí un mensaje…" style="flex:1;padding:11px 13px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:14px;color:var(--ink);"/>
+    <button onClick="{{ send }}" style="padding:11px 16px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;">ENVIAR</button>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- NEW ITEM SHEET -->
+<sc-if value="{{ newOpen }}">
+<div onClick="{{ closeNew }}" style="position:fixed;inset:0;z-index:40;background:rgba(15,20,13,.42);animation:om-fade .2s ease;"></div>
+<div style="{{ newSheetStyle }}">
+  <div style="display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);">
+    <div style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;flex:1;">{{ newTitle }}</div>
+    <button onClick="{{ closeNew }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--ink-soft);cursor:pointer;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:18px;">
+
+    <sc-if value="{{ newMenu }}">
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button onClick="{{ toForm }}" style="display:flex;align-items:center;gap:13px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:4px;cursor:pointer;text-align:left;color:var(--ink);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--moss)" stroke-width="1.6"><path d="M4 6h13M4 12h16M4 18h9"></path></svg>
+        <div><div style="font-weight:600;font-size:15px;">Escribir</div><div style="font-size:12.5px;color:var(--ink-soft);margin-top:2px;">Nota, lista o tabla a mano.</div></div></button>
+      <button onClick="{{ toPhoto }}" style="display:flex;align-items:center;gap:13px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:4px;cursor:pointer;text-align:left;color:var(--ink);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--moss)" stroke-width="1.6"><path d="M3 8a2 2 0 0 1 2-2h2l1.4-2h5.2L20 6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><circle cx="12" cy="13" r="3.4"></circle></svg>
+        <div><div style="font-weight:600;font-size:15px;">Desde una foto</div><div style="font-size:12.5px;color:var(--ink-soft);margin-top:2px;">La IA extrae el contenido de una imagen.</div></div></button>
+      <button onClick="{{ toAssistantFromNew }}" style="display:flex;align-items:center;gap:13px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:4px;cursor:pointer;text-align:left;color:var(--ink);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--moss)" stroke-width="1.6"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10z"></path></svg>
+        <div><div style="font-weight:600;font-size:15px;">Pedirle a la IA</div><div style="font-size:12.5px;color:var(--ink-soft);margin-top:2px;">Describí en palabras qué querés crear.</div></div></button>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ newForm }}">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:8px;">TIPO</div>
+        <div style="display:flex;gap:5px;background:var(--card-2);border:1px solid var(--line);border-radius:3px;padding:4px;">
+          <button onClick="{{ setNota }}" style="{{ tipoBtn.nota }}">Nota</button>
+          <button onClick="{{ setLista }}" style="{{ tipoBtn.lista }}">Lista</button>
+          <button onClick="{{ setTabla }}" style="{{ tipoBtn.tabla }}">Tabla</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:8px;">TEMA</div>
+          <select style="width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:14px;color:var(--ink);">
+            <option>Programación</option><option>Compras</option><option>Comida</option><option>Trabajo</option><option>Personal</option><option>+ Nuevo tema…</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:8px;">PRIORIDAD</div>
+          <select style="width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:14px;color:var(--ink);">
+            <option>Sin prioridad</option><option>Baja</option><option>Media</option><option>Alta</option>
+          </select>
+        </div>
+      </div>
+
+      <sc-if value="{{ isNota }}">
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:8px;">CONTENIDO</div>
+        <textarea rows="4" placeholder="Escribí tu nota…" style="width:100%;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:14px;color:var(--ink);resize:vertical;line-height:1.5;"></textarea>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isLista }}">
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:8px;">LÍNEAS</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <sc-for list="{{ formLines }}" as="ln" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:9px;">
+              <span style="width:18px;height:18px;border:1.5px solid var(--line);border-radius:3px;flex:none;background:var(--card);"></span>
+              <input value="{{ ln }}" style="flex:1;padding:9px 11px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:14px;color:var(--ink);"/>
+              <button style="width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--ink-mute);cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+            </div>
+          </sc-for>
+          <button style="align-self:flex-start;display:flex;align-items:center;gap:6px;padding:8px 12px;background:none;border:1px dashed var(--line);border-radius:3px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;cursor:pointer;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>AGREGAR LÍNEA</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isTabla }}">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);">TABLA</div>
+          <div style="display:flex;gap:6px;">
+            <button style="display:flex;align-items:center;gap:5px;padding:6px 10px;background:none;border:1px dashed var(--line);border-radius:3px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.05em;cursor:pointer;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>COLUMNA</button>
+            <button style="display:flex;align-items:center;gap:5px;padding:6px 10px;background:none;border:1px dashed var(--line);border-radius:3px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.05em;cursor:pointer;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>FILA</button>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:3px;overflow-x:auto;" class="hscroll">
+          <table style="width:100%;border-collapse:collapse;min-width:320px;">
+            <thead><tr>
+              <th style="padding:0;background:var(--card-2);border-bottom:1px solid var(--line);"><input value="Módulo" style="width:100%;padding:9px 11px;background:none;border:none;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;"/></th>
+              <th style="padding:0;background:var(--card-2);border-bottom:1px solid var(--line);border-left:1px solid var(--line);"><input value="Estado" style="width:100%;padding:9px 11px;background:none;border:none;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;"/></th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="border-bottom:1px solid var(--line-soft);"><input value="Captura por foto" style="width:100%;padding:9px 11px;background:none;border:none;font-size:13px;color:var(--ink);"/></td><td style="border-bottom:1px solid var(--line-soft);border-left:1px solid var(--line-soft);"><input value="Pendiente" style="width:100%;padding:9px 11px;background:none;border:none;font-size:13px;color:var(--ink);"/></td></tr>
+              <tr><td><input value="Editor de tabla" style="width:100%;padding:9px 11px;background:none;border:none;font-size:13px;color:var(--ink);"/></td><td style="border-left:1px solid var(--line-soft);"><input value="En curso" style="width:100%;padding:9px 11px;background:none;border:none;font-size:13px;color:var(--ink);"/></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:11.5px;color:var(--ink-mute);margin-top:8px;">Editá cada celda directamente. Agregá filas y columnas con los botones de arriba.</div>
+      </div>
+      </sc-if>
+
+      <div style="display:flex;align-items:center;gap:10px;padding-top:2px;">
+        <span style="width:18px;height:18px;background:var(--moss);border-radius:3px;flex:none;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--moss-ink)" stroke-width="3"><path d="M5 12l4 4 10-10"></path></svg></span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--ink-soft);">AGREGAR RECORDATORIO</span>
+        <input type="datetime-local" style="margin-left:auto;padding:8px 10px;background:var(--card);border:1px solid var(--line);border-radius:3px;font-size:13px;color:var(--ink);"/>
+      </div>
+
+      <div style="display:flex;gap:10px;padding-top:4px;">
+        <button onClick="{{ closeNew }}" style="flex:1;padding:12px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;cursor:pointer;">GUARDAR</button>
+        <button onClick="{{ toMenu }}" style="padding:12px 18px;background:none;color:var(--ink-soft);border:1px solid var(--line);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;cursor:pointer;">VOLVER</button>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ newPhoto }}">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="border:1.5px dashed var(--line);border-radius:6px;background:repeating-linear-gradient(135deg,var(--card),var(--card) 10px,var(--card-2) 10px,var(--card-2) 20px);padding:38px 20px;text-align:center;">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--ink-mute)" stroke-width="1.4" style="margin-bottom:10px;"><path d="M3 8a2 2 0 0 1 2-2h2l1.4-2h5.2L20 6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><circle cx="12" cy="13" r="3.6"></circle></svg>
+        <div style="font-size:14px;color:var(--ink-soft);">Sacá una foto o arrastrá una imagen</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;color:var(--ink-mute);margin-top:6px;">recibo · lista escrita · pizarra · captura</div>
+      </div>
+      <sc-if value="{{ photoAnalyzed }}">
+      <div style="background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moss);border-radius:4px;padding:15px;box-shadow:var(--shadow);animation:om-rise .3s ease;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--moss);margin-bottom:10px;">DETECTADO POR LA IA · REVISÁ ANTES DE GUARDAR</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;margin-bottom:14px;">
+          <div><span style="color:var(--ink-soft);">Tipo:</span> lista</div>
+          <div><span style="color:var(--ink-soft);">Tema sugerido:</span> Compras</div>
+          <div><span style="color:var(--ink-soft);">Prioridad:</span> media</div>
+          <div><span style="color:var(--ink-soft);">Contenido:</span> Leche · Huevos · Pan · Café · Manteca</div>
+        </div>
+        <div style="display:flex;gap:9px;">
+          <button onClick="{{ closeNew }}" style="padding:9px 15px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;">GUARDAR</button>
+          <button onClick="{{ toForm }}" style="padding:9px 15px;background:none;color:var(--ink-soft);border:1px solid var(--line);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;">EDITAR</button>
+        </div>
+      </div>
+      </sc-if>
+      <sc-if value="{{ photoIdle }}">
+      <button onClick="{{ analyzePhoto }}" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--moss);color:var(--moss-ink);border:none;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10z"></path></svg>ANALIZAR IMAGEN</button>
+      </sc-if>
+      <button onClick="{{ toMenu }}" style="padding:11px;background:none;color:var(--ink-soft);border:1px solid var(--line);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;cursor:pointer;">VOLVER</button>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:860},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Apariencia&quot;},&quot;themeColorsOn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Apariencia&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: 'hoy', theme: 'light', wide: true,
+    query: '', draft: '',
+    assistantOpen: false, historyOpen: false,
+    newOpen: false, newMode: 'menu', newTipo: 'nota', photoAnalyzed: false,
+    tipoFilter: 'todos', temaFilter: 'todos', remFilter: 'todos',
+    collapsed: {},
+    messages: [{ role: 'assistant', text: 'Hola, soy tu asistente. Pedime que cree, edite o borre ítems, o preguntame por tus recordatorios. Siempre te muestro los cambios antes de aplicarlos.' }],
+    proposal: null,
+    conversations: [
+      { id: 'c1', title: 'Crear nota de café', preview: 'Creé una nota en Comida para comprar café…', date: 'Hoy · 10:24' },
+      { id: 'c2', title: 'Recordatorios pendientes', preview: 'Tenés 3 recordatorios sin resolver…', date: 'Ayer · 18:02' },
+      { id: 'c3', title: 'Organizar compras de la semana', preview: 'Agregué 4 ítems a la lista de Compras…', date: '22 jul · 09:15' },
+    ],
+  };
+
+  themes = [
+    { id: 'prog', name: 'Programación', color: 'oklch(0.56 0.10 255)' },
+    { id: 'compras', name: 'Compras', color: 'oklch(0.60 0.10 195)' },
+    { id: 'comida', name: 'Comida', color: 'oklch(0.58 0.10 150)' },
+    { id: 'trabajo', name: 'Trabajo', color: 'oklch(0.54 0.11 305)' },
+    { id: 'personal', name: 'Personal', color: 'oklch(0.56 0.09 225)' },
+  ];
+
+  items = [
+    { id: 'i1', tema: 'prog', tipo: 'tabla', priority: 'alta',
+      headers: ['Módulo', 'Estado', 'Prioridad'],
+      rows: [['Captura por foto', 'Pendiente', 'Alta'], ['Editor de tabla', 'En curso', 'Media'], ['Modo oscuro', 'Hecho', 'Media'], ['Historial del asistente', 'Pendiente', 'Baja']] },
+    { id: 'i2', tema: 'prog', tipo: 'nota', priority: 'alta', reminder: 'hoy 10:00',
+      content: 'Rediseñar interfaz de Organizador. Vistas, forms y navegación — todo.' },
+    { id: 'i3', tema: 'compras', tipo: 'lista', priority: null,
+      lines: [{ text: 'Leche', done: true }, { text: 'Huevos', done: false }, { text: 'Pan', done: false }, { text: 'Café', done: false }] },
+    { id: 'i4', tema: 'comida', tipo: 'nota', priority: 'media',
+      content: 'Receta de pan de masa madre: 500g harina, 350g agua, 100g masa madre activa, 10g sal. Amasar 10 min, reposar 4h con pliegues cada 30 min, formar y frío 12h, hornear a 230°C con vapor 20 min y 210°C 25 min más.' },
+    { id: 'i5', tema: 'trabajo', tipo: 'nota', priority: 'alta', reminder: 'mié 09:00',
+      content: 'Llamar al contador antes del cierre trimestral.' },
+    { id: 'i6', tema: 'trabajo', tipo: 'lista', priority: 'media',
+      lines: [{ text: 'Escribir changelog', done: true }, { text: 'Tag de versión', done: false }, { text: 'Avisar al equipo', done: false }] },
+    { id: 'i7', tema: 'personal', tipo: 'nota', priority: 'baja', reminder: 'sáb 12:00',
+      content: 'Renovar el pasaporte — turno online.' },
+  ];
+
+  reminders = [
+    { id: 'r1', when: 'vencido', whenLabel: 'lun 20 jul · 09:00', tipo: 'nota', tema: 'comida', content: 'Pan de masa madre: revisar la masa madre.' },
+    { id: 'r2', when: 'hoy', whenLabel: 'hoy · 10:00', tipo: 'nota', tema: 'prog', content: 'Rediseñar interfaz de Organizador.' },
+    { id: 'r3', when: 'proximo', whenLabel: 'mié 24 jul · 09:00', tipo: 'nota', tema: 'trabajo', content: 'Llamar al contador antes del cierre trimestral.' },
+    { id: 'r4', when: 'proximo', whenLabel: 'sáb 27 jul · 12:00', tipo: 'nota', tema: 'personal', content: 'Renovar el pasaporte — turno online.' },
+    { id: 'r5', when: 'hecho', whenLabel: 'mié 22 jul · 23:00', tipo: 'nota', tema: 'compras', content: 'Comprar regalo de cumpleaños.' },
+  ];
+
+  tipoLabels = { nota: 'NOTA', lista: 'LISTA', tabla: 'TABLA' };
+  prioLabels = { alta: 'ALTA', media: 'MEDIA', baja: 'BAJA' };
+  prioColors = { alta: 'var(--rust)', media: 'var(--gold)', baja: 'var(--slate)' };
+
+  componentDidMount() {
+    if (this.props.theme) this.setState({ theme: this.props.theme });
+    this._onResize = () => this.setState({ wide: window.innerWidth >= 900 });
+    this._onResize();
+    window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); }
+
+  themeById(id) { return this.themes.find(t => t.id === id) || { name: '—', color: 'var(--slate)' }; }
+  dot(color, size) { return { width: (size || 10) + 'px', height: (size || 10) + 'px', borderRadius: '50%', background: color, flex: 'none', display: 'inline-block' }; }
+
+  go(s) { this.setState({ screen: s, query: '', assistantOpen: false, newOpen: false }); }
+  openNewSheet(mode) { this.setState({ newOpen: true, newMode: mode || 'menu', photoAnalyzed: false }); }
+
+  renderVals() {
+    const s = this.state;
+    const themeColorsOn = this.props.themeColorsOn !== false;
+    const wide = s.wide, narrow = !s.wide;
+    const searching = s.query.trim().length > 0;
+
+    // nav styles
+    const navBase = { display: 'flex', alignItems: 'center', gap: '11px', padding: '9px 11px', background: 'none', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '14px', fontWeight: 500, textAlign: 'left', width: '100%', fontFamily: "'IBM Plex Sans',sans-serif" };
+    const mkNav = (k) => (s.screen === k && !searching)
+      ? { ...navBase, background: 'var(--moss-tint)', color: 'var(--ink)' }
+      : { ...navBase, color: 'var(--ink-soft)' };
+    const navStyle = { hoy: mkNav('hoy'), items: mkNav('items'), rem: mkNav('rem'), ajustes: mkNav('ajustes') };
+
+    const tabBase = { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', padding: '6px 2px', background: 'none', border: 'none', cursor: 'pointer' };
+    const mkTab = (k) => ({ ...tabBase, color: (s.screen === k && !searching) ? 'var(--moss)' : 'var(--ink-mute)' });
+    const tabStyle = { hoy: mkTab('hoy'), items: mkTab('items'), rem: mkTab('rem'), ajustes: mkTab('ajustes') };
+
+    const pendientes = this.reminders.filter(r => r.when === 'vencido' || r.when === 'hoy' || r.when === 'proximo').length;
+    const badgeStyle = { marginLeft: 'auto', minWidth: '18px', height: '18px', padding: '0 5px', background: 'var(--rust)', color: '#fff', borderRadius: '9px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' };
+
+    const contentStyle = { flex: 1, padding: wide ? '34px 40px 60px' : '18px 16px 40px', width: '100%', maxWidth: wide ? '900px' : '100%' };
+
+    // ---- HOY ----
+    const doneBtnStyle = { flex: 'none', alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '7px 11px', background: 'none', border: '1px solid var(--line)', borderRadius: '3px', color: 'var(--ink-soft)', fontFamily: "'IBM Plex Mono',monospace", fontSize: '10.5px', letterSpacing: '.06em', cursor: 'pointer' };
+    const remCard = (r, accent) => ({ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'var(--card)', border: '1px solid var(--line)', borderLeft: '4px solid ' + accent, borderRadius: '4px', padding: '13px 15px', boxShadow: 'var(--shadow)' });
+    const enrichR = (r, accent) => ({ ...r, tipoLabel: this.tipoLabels[r.tipo], onDone: () => {}, cardStyle: remCard(r, accent) });
+    const vencidos = this.reminders.filter(r => r.when === 'vencido').map(r => enrichR(r, 'var(--rust)'));
+    const deHoy = this.reminders.filter(r => r.when === 'hoy').map(r => enrichR(r, 'var(--gold)'));
+
+    const themeCards = this.themes.map(t => {
+      const n = this.items.filter(i => i.tema === t.id).length;
+      return { name: t.name, dotStyle: this.dot(themeColorsOn ? t.color : 'var(--slate)'), countLabel: n + (n === 1 ? ' ÍTEM' : ' ÍTEMS'), onOpen: () => this.setState({ screen: 'items', temaFilter: t.id, tipoFilter: 'todos', query: '' }) };
+    });
+
+    // ---- BIBLIOTECA ----
+    const itemCard = (it) => ({ background: 'var(--card)', border: '1px solid var(--line)', borderLeft: '4px solid ' + (it.priority ? this.prioColors[it.priority] : 'var(--line)'), borderRadius: '4px', padding: '14px 16px', boxShadow: 'var(--shadow)' });
+    const enrichItem = (it) => {
+      const th = this.themeById(it.tema);
+      return {
+        ...it,
+        tipoLabel: this.tipoLabels[it.tipo],
+        temaName: th.name,
+        priorityLabel: it.priority ? this.prioLabels[it.priority] : '',
+        priorityStyle: { fontFamily: "'IBM Plex Mono',monospace", fontSize: '10.5px', letterSpacing: '.1em', color: it.priority ? this.prioColors[it.priority] : 'var(--ink-mute)' },
+        hasReminder: !!it.reminder, reminderLabel: it.reminder || '',
+        isNote: it.tipo === 'nota', isList: it.tipo === 'lista', isTable: it.tipo === 'tabla',
+        lines: (it.lines || []).map(l => ({ text: l.text, done: l.done, boxStyle: { width: '17px', height: '17px', flex: 'none', borderRadius: '3px', border: l.done ? 'none' : '1.5px solid var(--line)', background: l.done ? 'var(--moss)' : 'var(--card)', display: 'flex', alignItems: 'center', justifyContent: 'center' }, textStyle: { fontSize: '14px', color: l.done ? 'var(--slate)' : 'var(--ink)', textDecoration: l.done ? 'line-through' : 'none' } })),
+        rows: (it.rows || []).map((r, i) => ({ cells: r, style: { background: i % 2 ? 'var(--card-2)' : 'transparent' } })),
+        cardStyle: itemCard(it),
+        dotStyle: this.dot(themeColorsOn ? th.color : 'var(--slate)', 9),
+        onEdit: () => this.openNewSheet('form'), onDelete: () => {},
+      };
+    };
+
+    const tipoOrder = [['todos', 'Todos'], ['nota', 'Notas'], ['lista', 'Listas'], ['tabla', 'Tablas']];
+    const chipBase = { padding: '7px 13px', borderRadius: '3px', border: 'none', background: 'none', cursor: 'pointer', fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', letterSpacing: '.05em', whiteSpace: 'nowrap' };
+    const tipoChips = tipoOrder.map(([id, label]) => ({ label, onClick: () => this.setState({ tipoFilter: id }), style: s.tipoFilter === id ? { ...chipBase, flex: 1, background: 'var(--card)', color: 'var(--ink)', boxShadow: 'var(--shadow)' } : { ...chipBase, flex: 1, color: 'var(--ink-soft)' } }));
+
+    const pillBase = { display: 'inline-flex', alignItems: 'center', gap: '7px', padding: '7px 13px', borderRadius: '999px', border: '1px solid var(--line)', cursor: 'pointer', fontSize: '12.5px', whiteSpace: 'nowrap', fontFamily: "'IBM Plex Sans',sans-serif" };
+    const temaChips = [{ id: 'todos', name: 'Todos los temas', color: null }].concat(this.themes).map(t => {
+      const active = s.temaFilter === t.id;
+      return { label: t.name, dotStyle: (t.color && themeColorsOn) ? this.dot(t.color, 9) : null,
+        onClick: () => this.setState({ temaFilter: t.id }),
+        style: active ? { ...pillBase, background: 'var(--ink)', color: 'var(--paper)', borderColor: 'var(--ink)' } : { ...pillBase, background: 'var(--card)', color: 'var(--ink-soft)' } };
+    });
+
+    let libItems = this.items.filter(i => (s.tipoFilter === 'todos' || i.tipo === s.tipoFilter) && (s.temaFilter === 'todos' || i.tema === s.temaFilter));
+    const groups = this.themes.filter(t => s.temaFilter === 'todos' || t.id === s.temaFilter).map(t => {
+      const its = libItems.filter(i => i.tema === t.id).map(enrichItem);
+      const open = !s.collapsed[t.id];
+      return its.length ? {
+        id: t.id, name: t.name, countLabel: its.length + (its.length === 1 ? ' ÍTEM' : ' ÍTEMS'),
+        dotStyle: this.dot(themeColorsOn ? t.color : 'var(--slate)', 11),
+        chevronStyle: { transform: open ? 'none' : 'rotate(-90deg)', transition: 'transform .2s' },
+        open, items: its, onToggle: () => this.setState(st => ({ collapsed: { ...st.collapsed, [t.id]: !st.collapsed[t.id] } })),
+      } : null;
+    }).filter(Boolean);
+    const libEmpty = libItems.length === 0;
+    const libCountLabel = this.items.length + ' ÍTEMS · ' + this.themes.length + ' TEMAS';
+
+    // ---- RECORDATORIOS ----
+    const remChipsOrder = [['todos', 'Todos'], ['vencido', 'Vencidos'], ['proximo', 'Próximos'], ['hecho', 'Hechos']];
+    const remChips = remChipsOrder.map(([id, label]) => ({ label, onClick: () => this.setState({ remFilter: id }), style: s.remFilter === id ? { ...chipBase, background: 'var(--card)', color: 'var(--ink)', boxShadow: 'var(--shadow)' } : { ...chipBase, color: 'var(--ink-soft)' } }));
+    const remAccent = { vencido: 'var(--rust)', hoy: 'var(--gold)', proximo: 'var(--gold)', hecho: 'var(--slate)' };
+    const remMeta = { vencido: 'color:var(--rust);', hoy: 'color:var(--gold);', proximo: 'color:var(--gold);', hecho: 'color:var(--slate);' };
+    const remSections = [['vencido', 'Vencidos'], ['hoy', 'Hoy'], ['proximo', 'Próximos'], ['hecho', 'Hechos']];
+    const remGroups = remSections.filter(([w]) => s.remFilter === 'todos' || s.remFilter === w || (s.remFilter === 'proximo' && w === 'hoy')).map(([w, title]) => {
+      const its = this.reminders.filter(r => r.when === w).map(r => ({
+        ...r, tipoLabel: this.tipoLabels[r.tipo], pending: w !== 'hecho', onDone: () => {},
+        cardStyle: remCard(r, remAccent[w]),
+        metaColor: remMeta[w],
+        contentStyle: { fontSize: '14.5px', lineHeight: 1.45, color: w === 'hecho' ? 'var(--slate)' : 'var(--ink)', textDecoration: w === 'hecho' ? 'line-through' : 'none' },
+      }));
+      return its.length ? { title, count: its.length, items: its, headColor: w === 'vencido' ? 'color:var(--rust);' : '' } : null;
+    }).filter(Boolean);
+
+    // ---- SEARCH ----
+    const q = s.query.trim().toLowerCase();
+    let searchResults = [];
+    if (searching) {
+      searchResults = this.items.filter(it => {
+        const th = this.themeById(it.tema);
+        const hay = [th.name, it.tipo, it.content || '', (it.lines || []).map(l => l.text).join(' '), (it.rows || []).flat().join(' ')].join(' ').toLowerCase();
+        return hay.includes(q);
+      }).map(it => {
+        const th = this.themeById(it.tema);
+        const snippet = it.content || (it.lines ? it.lines.map(l => l.text).join(' · ') : (it.rows ? it.rows.map(r => r[0]).join(' · ') : ''));
+        return { tipoLabel: this.tipoLabels[it.tipo], temaName: th.name, snippet, dotStyle: this.dot(themeColorsOn ? th.color : 'var(--slate)', 9), cardStyle: { background: 'var(--card)', border: '1px solid var(--line)', borderRadius: '4px', padding: '13px 15px', marginBottom: '9px', boxShadow: 'var(--shadow)' } };
+      });
+    }
+
+    // ---- ASSISTANT ----
+    const messages = s.messages.map(m => ({ text: m.text,
+      rowStyle: { display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' },
+      bubbleStyle: m.role === 'user'
+        ? { maxWidth: '82%', background: 'var(--moss)', color: 'var(--moss-ink)', padding: '10px 13px', borderRadius: '10px 10px 2px 10px', fontSize: '14px', lineHeight: 1.45 }
+        : { maxWidth: '85%', background: 'var(--card)', border: '1px solid var(--line)', color: 'var(--ink)', padding: '10px 13px', borderRadius: '10px 10px 10px 2px', fontSize: '14px', lineHeight: 1.45 } }));
+    const conversations = s.conversations.map(c => ({ ...c, onOpen: () => this.setState({ historyOpen: false }), onDelete: () => this.setState(st => ({ conversations: st.conversations.filter(x => x.id !== c.id) })) }));
+
+    const panelBase = { position: 'fixed', zIndex: 41, background: 'var(--paper)', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 60px -20px rgba(0,0,0,.4)' };
+    const assistantPanelStyle = wide
+      ? { ...panelBase, top: 0, right: 0, height: '100vh', width: '420px', borderLeft: '1px solid var(--line)', animation: 'om-fade .25s ease' }
+      : { ...panelBase, left: 0, right: 0, bottom: 0, height: '86vh', borderTopLeftRadius: '14px', borderTopRightRadius: '14px', animation: 'om-sheet .28s ease' };
+    const newSheetStyle = wide
+      ? { ...panelBase, top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '540px', maxHeight: '86vh', borderRadius: '8px', border: '1px solid var(--line)', animation: 'om-rise .25s ease' }
+      : { ...panelBase, left: 0, right: 0, bottom: 0, maxHeight: '90vh', borderTopLeftRadius: '14px', borderTopRightRadius: '14px', animation: 'om-sheet .28s ease' };
+    const histBtnStyle = { width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: s.historyOpen ? 'var(--moss-tint)' : 'none', border: 'none', borderRadius: '3px', color: 'var(--ink-soft)', cursor: 'pointer' };
+
+    // ---- NEW ITEM ----
+    const segBase = { flex: 1, padding: '9px', borderRadius: '3px', border: 'none', cursor: 'pointer', fontFamily: "'IBM Plex Sans',sans-serif", fontSize: '13.5px' };
+    const mkSeg = (k) => s.newTipo === k ? { ...segBase, background: 'var(--card)', color: 'var(--ink)', boxShadow: 'var(--shadow)', fontWeight: 500 } : { ...segBase, background: 'none', color: 'var(--ink-soft)' };
+    const tipoBtn = { nota: mkSeg('nota'), lista: mkSeg('lista'), tabla: mkSeg('tabla') };
+    const newTitles = { menu: 'Nuevo ítem', form: 'Nuevo ítem', photo: 'Capturar desde foto' };
+
+    // ---- AJUSTES theme seg ----
+    const themeSeg = (on) => ({ padding: '7px 15px', borderRadius: '2px', border: 'none', cursor: 'pointer', fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', letterSpacing: '.06em', background: on ? 'var(--moss)' : 'none', color: on ? 'var(--moss-ink)' : 'var(--ink-soft)' });
+
+    const hoy = new Date();
+    const dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+    const meses = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+    const todayLabel = dias[hoy.getDay()] + ' ' + hoy.getDate() + ' ' + meses[hoy.getMonth()];
+
+    return {
+      theme: s.theme, wide, narrow, searching,
+      navStyle, tabStyle, pendientes, badgeStyle, contentStyle,
+      goHoy: () => this.go('hoy'), goItems: () => this.go('items'), goRem: () => this.go('rem'), goAjustes: () => this.go('ajustes'),
+      toggleTheme: () => this.setState(st => ({ theme: st.theme === 'light' ? 'dark' : 'light' })),
+      openNew: () => this.openNewSheet('menu'), openPhoto: () => this.openNewSheet('photo'), closeNew: () => this.setState({ newOpen: false }),
+      openAssistant: () => this.setState({ assistantOpen: true, historyOpen: false }), closeAssistant: () => this.setState({ assistantOpen: false }),
+      onQuery: (e) => this.setState({ query: e.target.value }),
+
+      // hoy
+      todayLabel, greeting: 'Buenas, Raúl', nVencidos: vencidos.length, nHoy: deHoy.length, nItems: this.items.length,
+      hasVencidos: vencidos.length > 0, vencidos, deHoy, noHoy: deHoy.length === 0, doneBtnStyle, themeCards,
+      showHoy: s.screen === 'hoy' && !searching,
+
+      // search
+      searchResults, searchCount: searchResults.length, noResults: searchResults.length === 0, query: s.query,
+
+      // biblioteca
+      showItems: s.screen === 'items' && !searching, tipoChips, temaChips, groups, libEmpty, libCountLabel,
+
+      // recordatorios
+      showRem: s.screen === 'rem' && !searching, remChips, remGroups,
+
+      // ajustes
+      showAjustes: s.screen === 'ajustes' && !searching,
+      setLight: () => this.setState({ theme: 'light' }), setDark: () => this.setState({ theme: 'dark' }),
+      lightBtnStyle: themeSeg(s.theme === 'light'), darkBtnStyle: themeSeg(s.theme === 'dark'),
+
+      // assistant
+      assistantOpen: s.assistantOpen, historyOpen: s.historyOpen, chatOpen: !s.historyOpen,
+      toggleHistory: () => this.setState(st => ({ historyOpen: !st.historyOpen })), histBtnStyle,
+      newConversation: () => this.setState({ historyOpen: false, messages: [{ role: 'assistant', text: '¿En qué te ayudo? Puedo crear, editar o buscar ítems.' }], proposal: null }),
+      conversations, messages, assistantPanelStyle,
+      proposal: s.proposal, draft: s.draft,
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      onDraftKey: (e) => { if (e.key === 'Enter') this._send(); },
+      send: () => this._send(),
+      confirmProposal: () => this.setState(st => ({ proposal: null, messages: st.messages.concat({ role: 'assistant', text: 'Listo, creé el ítem. Lo vas a ver en su tema.' }) })),
+      cancelProposal: () => this.setState({ proposal: null }),
+
+      // new item
+      newOpen: s.newOpen, newSheetStyle, newTitle: newTitles[s.newMode], newMenu: s.newMode === 'menu', newForm: s.newMode === 'form', newPhoto: s.newMode === 'photo',
+      toForm: () => this.setState({ newMode: 'form' }), toPhoto: () => this.setState({ newMode: 'photo' }), toMenu: () => this.setState({ newMode: 'menu' }),
+      toAssistantFromNew: () => this.setState({ newOpen: false, assistantOpen: true, historyOpen: false }),
+      setNota: () => this.setState({ newTipo: 'nota' }), setLista: () => this.setState({ newTipo: 'lista' }), setTabla: () => this.setState({ newTipo: 'tabla' }),
+      tipoBtn, isNota: s.newTipo === 'nota', isLista: s.newTipo === 'lista', isTabla: s.newTipo === 'tabla',
+      formLines: ['Leche', 'Huevos', 'Pan'],
+      analyzePhoto: () => this.setState({ photoAnalyzed: true }), photoAnalyzed: s.photoAnalyzed, photoIdle: !s.photoAnalyzed,
+    };
+  }
+
+  _send() {
+    const d = this.state.draft.trim();
+    if (!d) return;
+    this.setState(st => ({
+      draft: '', historyOpen: false,
+      messages: st.messages.concat({ role: 'user', text: d }, { role: 'assistant', text: 'Preparé la creación de un ítem para que la confirmes.' }),
+      proposal: { tipo: 'nota', tema: 'Comida', prioridad: 'media', contenido: 'comprar café' },
+    }));
+  }
+}
+</script>
+</body>
+</html>

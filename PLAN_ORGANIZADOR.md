@@ -2194,6 +2194,96 @@ verdad): que `deleteUser` + la cascada efectivamente vacíen las siete tablas en
 el proyecto real, y el barrido de verificación posterior. Se prueba creando una
 cuenta descartable desde el login y borrándola.
 
+## Notificaciones: contenido más claro + posponer
+
+Dos mejoras sobre el mismo aviso (local y push), pensadas para no abrir la app
+sólo para posponer algo.
+
+### Contenido más informativo
+
+Título y cuerpo cambiaron de forma: antes el título era siempre "Recordatorio"
+y el cuerpo el contenido del item. Ahora el título ES el contenido del item
+("Tomar la pastilla" en vez de "Recordatorio"), y el cuerpo es contexto breve
+—el nombre del tema y, si se repite, una marca corta ("Se repite: Lun, Mié,
+Vie")— separados por " · " cuando hay los dos, o el genérico de siempre si no
+hay ninguno.
+
+El armado vive en `src/lib/notificacionRecordatorio.ts`
+(`contenidoNotificacion` + `resumenContenido`, que se separó de
+`recordatorios.ts` a propósito: ese archivo importa `supabase.ts`, que lee
+`import.meta.env` y no corre bajo `deno test`; sacando estas dos funciones
+puras a su propio módulo, sí se pueden testear). El nombre del tema sale de
+`repo.ts::mapaNombresTema()` (lookup por id contra el espejo local).
+
+Del lado del servidor hay un gemelo: `supabase/functions/send-reminder-
+notifications/resumen.ts` (puerto de `resumenContenido` + el parseo mínimo de
+tabla que necesita) y `marcaRecurrenciaCorta` en el `recurrencia.ts` de esa
+carpeta. La parte que no tiene un gemelo EXACTO es `dias_semana`: convertir
+"días guardados en UTC" a "días en la zona del usuario" necesita saber esa
+zona, y el cliente la conoce (browser) pero el Edge no (Deno corre en UTC). El
+Edge asume Argentina fija (UTC-3, sin horario de verano) —la misma asunción
+que ya hacía `recurrencia.ts` para la aritmética de fechas— derivando el
+corrimiento de la hora UTC de la propia fecha en vez de la hora local del
+proceso, para que el resultado no dependa de en qué TZ esté configurado el
+server. Verificado con tests dedicados (no hay paridad automática con el
+cliente para este caso, por lo mismo: el proceso de test no necesariamente
+corre en hora argentina).
+
+El badge (ícono monocromo chico de Android) pasó a ser dedicado
+(`public/badge.svg`, una campana simple) en vez de reusar el ícono a color de
+la app, que a 24dp se pierde.
+
+### Posponer desde la notificación
+
+Dos botones (`Notification.actions`, límite práctico de acciones que
+soportan los navegadores): "Posponer 15 min" y "Posponer 1 hora"
+(`ACCIONES_POSPONER` en `notificacionRecordatorio.ts`, compartida por el aviso
+local y el push). Tocar uno reprograma sin abrir la app; tocar el CUERPO sigue
+abriendo `/reminders` como siempre.
+
+El manejo vive en `sw.ts::notificationclick`, que ahora mira `event.action`.
+La reprogramación (`repo.ts::posponerRecordatorio`) mueve `fecha_hora` a AHORA
++ minutos —no a la fecha vencida original— y no toca `recurrencia` ni
+`recurrencia_dias`: posponer corre sólo esta próxima vuelta, no cambia el
+patrón. Pasa por el mismo camino offline-first de siempre (espejo local +
+outbox), así que funciona igual sin conexión.
+
+**Cambio de arquitectura que esto forzó:** para que `sw.ts` pudiera importar
+`repo.ts` (y por lo tanto `sync.ts`, transitivamente), `sync.ts` tenía que
+poder tipar bajo `lib: ["ES2022", "WebWorker"]` (sin `dom`, que es el lib de
+`tsconfig.worker.json`). `startSyncEngine` usaba `window`/`document`
+directamente, que no existen en ese lib ni en un service worker de verdad. Se
+lo sacó de `sync.ts`: el enganche de eventos (`online`/`offline`/foco/
+visibilidad/intervalo) ahora vive en `SyncEngine.tsx` (que sí tiene DOM,
+siendo un componente), y `sync.ts` quedó con primitivas sin DOM que ese
+enganche llama (`setSyncUser`, `noteOnline`, `noteOffline`,
+`refreshOnlineState`, `noteLastSyncAt`, `cancelPendingSync`,
+`refreshPending`); `requestSync` pasó de `window.setTimeout` a `setTimeout` a
+secas (existe sin calificar en los dos libs). Mismo motivo llevó
+`ensurePersistentStorage` (usa `navigator.storage.persist()`, que NO existe en
+un service worker por spec, a diferencia de `persisted()`) de `db.ts` a su
+propio archivo `src/lib/persistentStorage.ts`. También se completó a mano
+`NotificationAction`/`NotificationOptions.actions` en
+`src/types/notification-actions.d.ts`: esta versión de TypeScript todavía no
+los tiene en `lib.dom.d.ts` ni en `lib.webworker.d.ts`, aunque los navegadores
+los soportan hace años.
+
+**Verificado:** `tsc -b` limpio (los tres proyectos: app, node, worker),
+`vite build` genera `dist/sw.js` con el service worker completo (`repo.ts` +
+`sync.ts` + `@supabase/supabase-js` incluidos: el cliente de Supabase
+construye bien en un SW porque ya cae solo a almacenamiento en memoria cuando
+no hay `localStorage`, y `requestSync` ya no necesita `window`), `npx eslint .`
+sin errores, y 174 tests unitarios (`deno test`: 156 del lado cliente + 18 del
+Edge, incluye `fechaPospuesta`, `contenidoNotificacion` y
+`marcaRecurrenciaCorta`). Edge Function `send-reminder-notifications`
+redesplegada (`--no-verify-jwt`, incluye los dos archivos nuevos `resumen.ts`
+y el `recurrencia.ts` ampliado).
+
+**Lo único que no se puede probar sin permisos reales de notificación** (queda
+para el usuario, con la app cerrada y con la app abierta): crear un
+recordatorio, esperar el aviso, tocar "Posponer 15 min" y confirmar que
+`/reminders` muestra la fecha nueva sin haber abierto la app.
+
 ## Deploy
 
 ### GitHub
@@ -2248,6 +2338,39 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-27 — **Gestión de temas desde Biblioteca**. Cada chip de tema (no
+  "Todos los temas" ni "Sin tema", que no son temas reales) suma un botón
+  "⋮" que abre un menú chico con las mismas 7 muestras de color y el mismo
+  "Borrar tema" que ya existían en `ItemForm` — sin duplicar lógica: el
+  swatch grid vive en `TemaColorPicker.tsx` y la cuenta+confirmación+borrado
+  en `lib/temaAcciones.ts`, y `ItemForm` pasó a consumir esas mismas piezas.
+  El menú nuevo (`TemaOpcionesMenu.tsx`) sigue el criterio visual de
+  `NuevoItemSheet` — modal centrado ≥900px / bottom-sheet <900px, mismo
+  telón `.drawer-overlay` — y llama a `updateTemaColor`/`deleteTema` de
+  `repo.ts` directo (offline-first, sin cambios de lógica), avisando con
+  `emitLocalChange()` como ya hacía `NuevoItemSheet`. Si el tema borrado era
+  el filtro activo, la Biblioteca vuelve a "Todos los temas". Se mantuvo el
+  selector de `ItemForm` (no se reemplazó, sólo se refactorizó). `tsc -b`,
+  `vite build` y `eslint` limpios. Verificado en el harness: abrir/cerrar
+  por telón, cambiar color (con reflejo instantáneo en el punto del chip de
+  Biblioteca) y el selector de `ItemForm` sin regresión, en claro/oscuro y
+  desktop (modal)/mobile 390px (bottom-sheet). Borrar un tema real no se
+  probó en vivo (es destructivo) — la ruta comparte código con el borrado ya
+  validado desde `ItemForm`.
+- 2026-07-27 — **Notificaciones: contenido más claro + posponer** (ver
+  sección propia). Título = contenido del item, cuerpo = tema + marca de
+  recurrencia (mismo criterio en el aviso local y el push, con gemelos
+  `src/lib/notificacionRecordatorio.ts` /
+  `supabase/functions/send-reminder-notifications/resumen.ts`), badge
+  dedicado (`public/badge.svg`), y dos botones "Posponer 15 min"/"Posponer 1
+  hora" en la notificación que reprograman sin abrir la app
+  (`repo.ts::posponerRecordatorio`, mismo camino offline-first de siempre).
+  Forzó separar el enganche DOM de `sync.ts` hacia `SyncEngine.tsx` para que
+  `sw.ts` pudiera importar `repo.ts` sin arrastrar `window`/`document` a un
+  archivo que tipa bajo `lib: webworker`. `tsc -b`, `vite build` y
+  `eslint` limpios; 174 tests unitarios (`deno test`, 156 cliente + 18 Edge).
+  Edge Function redesplegada. Falta la prueba en vivo del botón "Posponer"
+  con permisos de notificación reales (app abierta y cerrada).
 - 2026-07-26 — **Borrar cuenta desde Ajustes** (rama `feat/borrar-cuenta`, sin
   commitear). Nueva Edge Function `delete-account`: saca el `user_id` del JWT
   vía `auth.getUser()` —el body NO se lee, así que no hay forma de pedir el

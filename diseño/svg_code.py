@@ -1,0 +1,144 @@
+svg_code = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Fondo con gradiente moderno -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="50%" stop-color="#00A8CC" />
+      <stop offset="100%" stop-color="#005B66" />
+    </linearGradient>
+
+    <!-- Gradiente para la campana -->
+    <linearGradient id="bellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFEA00" />
+      <stop offset="100%" stop-color="#FF9100" />
+    </linearGradient>
+
+    <!-- Gradiente para el cuerpo del lápiz -->
+    <linearGradient id="pencilGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFC107" />
+      <stop offset="50%" stop-color="#FFB300" />
+      <stop offset="100%" stop-color="#FF8F00" />
+    </linearGradient>
+
+    <!-- Sombra suave para elementos principales -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+    
+    <filter id="smallShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.2" />
+    </filter>
+  </defs>
+
+  <!-- 1. Fondo Circular del Icono -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGrad)" filter="url(#dropShadow)" />
+
+  <!-- 2. Portapapeles (Clipboard) -->
+  <g id="clipboard" filter="url(#dropShadow)">
+    <!-- Borde exterior oscuro -->
+    <rect x="150" y="80" width="230" height="350" rx="28" fill="#003D45" />
+    <!-- Hoja de papel blanca -->
+    <rect x="156" y="86" width="218" height="338" rx="22" fill="#FFFFFF" />
+  </g>
+
+  <!-- 3. Anillas / Ganchos de encuadernación (Izquierda del papel) -->
+  <g id="binders" filter="url(#smallShadow)">
+    <!-- Anilla 1 -->
+    <rect x="136" y="132" width="40" height="16" rx="8" fill="#90A4AE" stroke="#37474F" stroke-width="2" />
+    <!-- Anilla 2 -->
+    <rect x="136" y="212" width="40" height="16" rx="8" fill="#90A4AE" stroke="#37474F" stroke-width="2" />
+    <!-- Anilla 3 -->
+    <rect x="136" y="292" width="40" height="16" rx="8" fill="#90A4AE" stroke="#37474F" stroke-width="2" />
+  </g>
+
+  <!-- 4. Lápiz (A la izquierda) -->
+  <g id="pencil" filter="url(#dropShadow)">
+    <!-- Goma de borrar (Rosa) -->
+    <path d="M 85,160 L 85,152 A 15,15 0 0,1 115,152 L 115,160 Z" fill="#FF8A80" />
+    <!-- Abrazadera metálica -->
+    <rect x="85" y="160" width="30" height="18" fill="#CFD8DC" />
+    <line x1="85" y1="166" x2="115" y2="166" stroke="#90A4AE" stroke-width="2" />
+    <line x1="85" y1="172" x2="115" y2="172" stroke="#90A4AE" stroke-width="2" />
+    <!-- Cuerpo de madera amarillo/naranja -->
+    <polygon points="85,178 115,178 115,310 85,310" fill="url(#pencilGrad)" />
+    <!-- Línea central del lápiz -->
+    <line x1="100" y1="178" x2="100" y2="310" stroke="#FFE082" stroke-width="2" opacity="0.6" />
+    <!-- Punta de madera afinada -->
+    <polygon points="85,310 115,310 100,350" fill="#FFE082" />
+    <!-- Mina de grafito -->
+    <polygon points="94,334 106,334 100,350" fill="#263238" />
+  </g>
+
+  <!-- 5. Lista de Tareas (Checklist & Notas) -->
+  <g id="checklist">
+    <!-- Ítem 1 -->
+    <path d="M 185,130 L 197,142 L 220,118" stroke="#00E676" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <line x1="235" y1="130" x2="310" y2="130" stroke="#90A4AE" stroke-width="6" stroke-linecap="round" />
+    
+    <!-- Ítem 2 -->
+    <path d="M 185,180 L 197,192 L 220,168" stroke="#00E676" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <line x1="235" y1="180" x2="290" y2="180" stroke="#90A4AE" stroke-width="6" stroke-linecap="round" />
+    
+    <!-- Ítem 3 -->
+    <path d="M 185,230 L 197,242 L 220,218" stroke="#00E676" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <line x1="235" y1="230" x2="300" y2="230" stroke="#90A4AE" stroke-width="6" stroke-linecap="round" />
+  </g>
+
+  <!-- 6. Tabla / Cuadrícula de Datos (Parte inferior del papel) -->
+  <g id="table">
+    <!-- Fondo y Borde de la Tabla -->
+    <rect x="182" y="265" width="165" height="125" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="3" />
+    <!-- Cabecera azul suave -->
+    <path d="M 182,275 A 10,10 0 0,1 192,265 L 337,265 A 10,10 0 0,1 347,275 L 347,295 L 182,295 Z" fill="#E0F2FE" />
+    
+    <!-- Líneas Horizontales -->
+    <line x1="182" y1="295" x2="347" y2="295" stroke="#CBD5E1" stroke-width="2" />
+    <line x1="182" y1="326" x2="347" y2="326" stroke="#CBD5E1" stroke-width="2" />
+    <line x1="182" y1="357" x2="347" y2="357" stroke="#CBD5E1" stroke-width="2" />
+    
+    <!-- Líneas Verticales -->
+    <line x1="237" y1="265" x2="237" y2="390" stroke="#CBD5E1" stroke-width="2" />
+    <line x1="292" y1="265" x2="292" y2="390" stroke="#CBD5E1" stroke-width="2" />
+
+    <!-- Indicadores/Datos simulados en la cabecera -->
+    <rect x="194" y="277" width="30" height="6" rx="3" fill="#0284C7" />
+    <rect x="249" y="277" width="30" height="6" rx="3" fill="#0284C7" />
+    <rect x="304" y="277" width="30" height="6" rx="3" fill="#0284C7" />
+
+    <!-- Datos simulados en celdas (Puntos y barras pequeñas) -->
+    <circle cx="210" cy="310" r="4" fill="#64748B" />
+    <circle cx="210" cy="341" r="4" fill="#64748B" />
+    <circle cx="210" cy="373" r="4" fill="#64748B" />
+
+    <rect x="249" y="307" width="30" height="6" rx="3" fill="#94A3B8" />
+    <rect x="249" y="338" width="22" height="6" rx="3" fill="#94A3B8" />
+    <rect x="249" y="370" width="26" height="6" rx="3" fill="#94A3B8" />
+
+    <rect x="304" y="307" width="26" height="6" rx="3" fill="#94A3B8" />
+    <rect x="304" y="338" width="30" height="6" rx="3" fill="#94A3B8" />
+    <rect x="304" y="370" width="18" height="6" rx="3" fill="#94A3B8" />
+  </g>
+
+  <!-- 7. Insignia de Campana de Notificación (Esquina superior derecha) -->
+  <g id="bellBadge" filter="url(#dropShadow)">
+    <!-- Círculo de fondo oscuro/moderno -->
+    <circle cx="355" cy="115" r="48" fill="#1E293B" stroke="#00E5FF" stroke-width="3" />
+    
+    <!-- Botón superior de la campana -->
+    <circle cx="355" cy="83" r="5" fill="#FFC107" />
+    
+    <!-- Cuerpo de la campana -->
+    <path d="M 355,86 C 336,86 325,100 325,117 L 319,132 L 391,132 L 385,117 C 385,100 374,86 355,86 Z" fill="url(#bellGrad)" />
+    
+    <!-- Badajo (Péndulo inferior de la campana) -->
+    <path d="M 345,132 A 10,10 0 0,0 365,132 Z" fill="#E65100" />
+    
+    <!-- Punto de notificación verde brillante (Badged dot) -->
+    <circle cx="378" cy="88" r="10" fill="#00E676" stroke="#1E293B" stroke-width="3" />
+  </g>
+</svg>"""
+
+with open("icono_app.svg", "w", encoding="utf-8") as f:
+    f.write(svg_code)
+
+print("SVG Generated successfully.")
