@@ -3,10 +3,11 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { deleteItem, updateItem } from '../lib/repo'
 import { loadItemsFromCache, loadRecordatoriosFromCache, loadTemasFromCache } from '../lib/db'
-import { hasSyncSettled, subscribeLocalChange, subscribeSyncSettled } from '../lib/sync'
+import { emitLocalChange, hasSyncSettled, subscribeLocalChange, subscribeSyncSettled } from '../lib/sync'
 import { useItemSheet } from '../lib/itemSheet'
 import type { Item, LineaLista, Recordatorio, Tema, TipoItem } from '../types/database'
 import { ItemList } from '../components/ItemList'
+import { TemaOpcionesMenu } from '../components/TemaOpcionesMenu'
 import { colorDeTema, temaColorVar } from '../lib/temaColores'
 import { filtrarItems } from '../lib/buscar'
 
@@ -65,6 +66,9 @@ export function ItemsPage() {
   const [error, setError] = useState<string | null>(null)
   const [filterTemaId, setFilterTemaId] = useState('todos')
   const [filterTipo, setFilterTipo] = useState<FiltroTipo>('todos')
+  // Tema cuyo menú "⋮" (cambiar color / borrar) está abierto, disparado desde
+  // el chip de Biblioteca — ver TemaOpcionesMenu.
+  const [temaMenuId, setTemaMenuId] = useState<string | null>(null)
   const location = useLocation()
 
   // El alta y la edición de ítems ya no viven en esta página: las maneja el
@@ -152,6 +156,24 @@ export function ItemsPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error eliminando item')
     }
+  }
+
+  // El color ya está guardado (repo.ts) cuando llega acá: se refleja en el
+  // chip local y se avisa al resto de la app, mismo criterio que
+  // NuevoItemSheet con el selector de ItemForm.
+  function handleTemaMenuUpdated(tema: Tema) {
+    setTemas((prev) => prev.map((t) => (t.id === tema.id ? tema : t)))
+    emitLocalChange()
+  }
+
+  // El tema ya se borró (y sus items pasaron a "Sin tema") cuando llega acá.
+  // Si era el filtro activo, ya no hay nada que mostrar bajo ese id: vuelve a
+  // "Todos los temas" en vez de dejar la Biblioteca filtrando por un tema
+  // que ya no existe.
+  function handleTemaMenuDeleted(temaId: string) {
+    setTemas((prev) => prev.filter((t) => t.id !== temaId))
+    if (filterTemaId === temaId) setFilterTemaId('todos')
+    emitLocalChange()
   }
 
   // Marca/desmarca una línea de una lista: UI optimista + persistencia; si el
@@ -248,20 +270,29 @@ export function ItemsPage() {
             Todos los temas
           </button>
           {temas.map((tema) => (
-            <button
-              key={tema.id}
-              type="button"
-              onClick={() => setFilterTemaId(tema.id)}
-              aria-pressed={filterTemaId === tema.id}
-              className={`chip${filterTemaId === tema.id ? ' chip--active' : ''}`}
-            >
-              <span
-                className="tema-dot"
-                style={{ background: temaColorVar(colorDeTema(tema)) }}
-                aria-hidden="true"
-              />
-              {tema.nombre}
-            </button>
+            <span key={tema.id} className="chip-group">
+              <button
+                type="button"
+                onClick={() => setFilterTemaId(tema.id)}
+                aria-pressed={filterTemaId === tema.id}
+                className={`chip${filterTemaId === tema.id ? ' chip--active' : ''}`}
+              >
+                <span
+                  className="tema-dot"
+                  style={{ background: temaColorVar(colorDeTema(tema)) }}
+                  aria-hidden="true"
+                />
+                {tema.nombre}
+              </button>
+              <button
+                type="button"
+                onClick={() => setTemaMenuId(tema.id)}
+                className="chip__opciones"
+                aria-label={`Opciones del tema "${tema.nombre}"`}
+              >
+                ⋮
+              </button>
+            </span>
           ))}
           <button
             type="button"
@@ -302,6 +333,13 @@ export function ItemsPage() {
           onToggleLinea={handleToggleLinea}
         />
       )}
+
+      <TemaOpcionesMenu
+        tema={temas.find((t) => t.id === temaMenuId) ?? null}
+        onClose={() => setTemaMenuId(null)}
+        onUpdated={handleTemaMenuUpdated}
+        onDeleted={handleTemaMenuDeleted}
+      />
     </main>
   )
 }

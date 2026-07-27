@@ -707,6 +707,83 @@ body {
   padding: 18px 20px calc(20px + env(safe-area-inset-bottom, 0px));
 }
 
+/* --- Menú "⋮" de un tema (Biblioteca): cambiar color / borrar -------- */
+/* Mismo criterio que `.nuevo-sheet` — modal centrado (≥900px) / bottom-sheet
+   (<900px) — pero bastante más chico: dos acciones, no un formulario. Reusa
+   el telón `.drawer-overlay`. */
+.tema-opciones-sheet {
+  position: fixed;
+  z-index: 31;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-paper);
+  box-shadow: var(--shadow-float);
+  top: 50%;
+  left: 50%;
+  width: min(340px, calc(100% - 32px));
+  max-height: min(80dvh, 480px);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  transform: translate(-50%, -50%) scale(0.98);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0s linear 0.18s;
+}
+.tema-opciones-sheet--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+@media (max-width: 899px) {
+  .tema-opciones-sheet {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 60dvh;
+    border: none;
+    border-top: 1px solid var(--color-line);
+    border-radius: 14px 14px 0 0;
+    opacity: 1;
+    transform: translateY(100%);
+    transition:
+      transform 0.24s ease,
+      visibility 0s linear 0.24s;
+  }
+  .tema-opciones-sheet--open {
+    transform: none;
+    transition: transform 0.24s ease;
+  }
+}
+.tema-opciones-sheet__head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 14px 18px;
+  border-bottom: 1px solid var(--color-line);
+}
+.tema-opciones-sheet__title {
+  font-family: var(--font-fraunces);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-ink);
+}
+.tema-opciones-sheet__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+}
+
 /* --- Diálogo de confirmación fuerte (borrar cuenta) ------------------ */
 /* Reusa el telón `.drawer-overlay` y el mismo criterio de montaje permanente
    con clase `--open` que el sheet y el drawer.
@@ -968,7 +1045,8 @@ body {
   cursor: default;
 }
 @media (prefers-reduced-motion: reduce) {
-  .nuevo-sheet {
+  .nuevo-sheet,
+  .tema-opciones-sheet {
     transition: none;
   }
 }
@@ -1427,6 +1505,37 @@ body {
   background: var(--color-ink);
   border-color: var(--color-ink);
   color: var(--color-paper);
+}
+
+/* Envuelve el chip de un tema real junto a su botón "⋮" (Biblioteca): dos
+   controles hermanos, no anidados (un <button> no puede llevar otro
+   adentro). "Todos los temas" y "Sin tema" no son temas reales y quedan
+   fuera de este wrapper — no tienen menú. */
+.chip-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+}
+.chip__opciones {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--color-ink-soft);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.chip__opciones:hover {
+  color: var(--color-ink);
+  background: var(--color-line);
 }
 
 /* ------------------------------------------------------------------ */

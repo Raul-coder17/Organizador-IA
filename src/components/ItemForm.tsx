@@ -4,11 +4,9 @@ import type { Item, ItemInsert, LineaLista, Prioridad, Tema, TipoItem } from '..
 // instante en IndexedDB y se encolan para subir, así el form funciona igual con
 // o sin conexión (PLAN_OFFLINE.md ítems 5-6).
 import {
-  contarItemsDeTema,
   createItem,
   createTema,
   deleteRecordatoriosForItem,
-  deleteTema,
   getRecordatorioForItem,
   updateItem,
   updateTemaColor,
@@ -33,14 +31,9 @@ import {
   type Recurrencia,
 } from '../lib/recurrencia'
 import type { BorradorItem } from '../lib/accionesPropuestas'
-import {
-  COLORES_TEMA,
-  TEMA_COLOR_LABEL,
-  colorDeTema,
-  siguienteColorTema,
-  temaColorVar,
-  type TemaColor,
-} from '../lib/temaColores'
+import { COLORES_TEMA, colorDeTema, siguienteColorTema, type TemaColor } from '../lib/temaColores'
+import { borrarTemaConConfirmacion } from '../lib/temaAcciones'
+import { TemaColorSwatches } from './TemaColorPicker'
 import {
   contenidoDeGrilla,
   grillaDesdeContenido,
@@ -387,18 +380,10 @@ export function ItemForm({
   // consecuencia real y no es obvia desde acá: los items no se borran.
   async function handleDeleteTema() {
     if (!temaSeleccionado) return
-    const n = await contarItemsDeTema(temaSeleccionado.id)
-    const cuenta =
-      n === 0
-        ? 'No tiene items.'
-        : n === 1
-          ? 'Su 1 item pasa a "Sin tema".'
-          : `Sus ${n} items pasan a "Sin tema".`
-    if (!confirm(`¿Borrar el tema "${temaSeleccionado.nombre}"?\n\n${cuenta}`)) return
-
     const borradoId = temaSeleccionado.id
     try {
-      await deleteTema(borradoId)
+      const borrado = await borrarTemaConConfirmacion(temaSeleccionado)
+      if (!borrado) return
       // El item que se está editando en este form puede ser uno de los que
       // acaba de quedar sin tema: el selector vuelve a "Sin tema" para que lo
       // que se ve coincida con lo que se guardó.
@@ -644,20 +629,7 @@ export function ItemForm({
             en pantalla y seleccionado. */}
         {colorActivo && (
           <>
-            <div className="tema-colores" role="group" aria-label="Color del tema">
-              {COLORES_TEMA.map((color) => (
-                <button
-                  key={color}
-                  type="button"
-                  onClick={() => handleColorClick(color)}
-                  aria-pressed={color === colorActivo}
-                  aria-label={TEMA_COLOR_LABEL[color]}
-                  title={TEMA_COLOR_LABEL[color]}
-                  style={{ background: temaColorVar(color) }}
-                  className={`swatch${color === colorActivo ? ' swatch--activa' : ''}`}
-                />
-              ))}
-            </div>
+            <TemaColorSwatches activo={colorActivo} onSelect={handleColorClick} />
             <p className="tema-colores__nota">
               {temaId === 'new'
                 ? 'Color del tema nuevo — se asigna solo, podés cambiarlo'
