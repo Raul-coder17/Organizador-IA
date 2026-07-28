@@ -2284,6 +2284,45 @@ para el usuario, con la app cerrada y con la app abierta): crear un
 recordatorio, esperar el aviso, tocar "Posponer 15 min" y confirmar que
 `/reminders` muestra la fecha nueva sin haber abierto la app.
 
+## Exportar mis datos
+
+Botón "Exportar mis datos" en Ajustes → Cuenta, junto a "Borrar cuenta" (antes
+de esa sección, porque es lo contrario de destructivo). Respaldo simple, 100%
+local: lee del mismo espejo IndexedDB que ya usa toda la app
+(`loadTemasFromCache`/`loadItemsFromCache`/`loadRecordatoriosFromCache` de
+`db.ts`), así que funciona sin conexión y sin pegarle al servidor.
+
+Toda la lógica vive en `src/lib/exportarDatos.ts` (sin dependencias de React,
+sólo IndexedDB + DOM para disparar la descarga); `ExportarDatos.tsx` es sólo
+los dos botones y el manejo de estado/errores.
+
+Dos formatos, con objetivos distintos:
+
+- **JSON** (`organizador-datos-YYYY-MM-DD.json`) — fidelidad completa.
+  Agrupado por tema (y un balde aparte `itemsSinTema`), con cada item
+  llevando su `contenido` crudo (tal cual lo guarda la base, para no perder
+  nada), un `resumen` legible (reusa `resumenContenido` de
+  `notificacionRecordatorio.ts`, el mismo texto que ya arma el título de las
+  notificaciones) y sus recordatorios anidados adentro (no tres arrays
+  sueltos que hay que volver a cruzar a mano).
+- **CSV** (`organizador-datos-YYYY-MM-DD.csv`) — una fila por item a
+  propósito más simple: Tipo, Tema, Prioridad, Contenido (el mismo
+  `resumen`), Creado, Recordatorio. Separador `;` y no `,`: en Excel en
+  español la coma es el separador decimal, así que un CSV con comas se abre
+  entero en una columna — con `;` se abre bien sin pasos extra. Fecha en
+  `dd/mm/aaaa hh:mm` a mano (no `toLocaleString`, que en es-AR trunca el año a
+  2 dígitos y mete una coma en el valor). BOM UTF-8 al inicio para que los
+  acentos/ñ no salgan rotos en Excel/Windows.
+
+**Verificado:** `tsc -b`, `vite build` y `eslint` limpios. Probado en vivo en
+el harness contra la cuenta real (interceptando `URL.createObjectURL` para
+leer el blob sin depender de la carpeta de descargas): el JSON sale con la
+estructura anidada esperada y datos reales, y el CSV sale con `;`, fechas
+`dd/mm/aaaa hh:mm` sin comas sueltas y sin quedar pegado en "Exportando…".
+Revisado visualmente en claro/oscuro y desktop/mobile (375px). Falta que el
+usuario abra los archivos descargados en Excel/Sheets y en un editor de texto
+para confirmar que sus datos reales están completos y legibles.
+
 ## Deploy
 
 ### GitHub
@@ -2338,6 +2377,16 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-27 — **Exportar mis datos** (ver sección propia). Botón en
+  Ajustes → Cuenta, junto a "Borrar cuenta". Lee del espejo local
+  (`db.ts`, sin red) y ofrece JSON (fidelidad completa, agrupado por tema con
+  recordatorios anidados) o CSV (una fila por item, separador `;` para
+  Excel en español, fecha `dd/mm/aaaa hh:mm`). Nuevo `src/lib/exportarDatos.ts`
+  + `src/components/ExportarDatos.tsx`. `tsc -b`, `vite build` y `eslint`
+  limpios. Verificado en el harness contra datos reales (JSON con estructura
+  anidada correcta, CSV con `;` y fechas sin comas) y visualmente en
+  claro/oscuro y desktop/mobile. Falta que el usuario abra los dos archivos
+  descargados y confirme que sus datos están completos.
 - 2026-07-27 — **Gestión de temas desde Biblioteca**. Cada chip de tema (no
   "Todos los temas" ni "Sin tema", que no son temas reales) suma un botón
   "⋮" que abre un menú chico con las mismas 7 muestras de color y el mismo

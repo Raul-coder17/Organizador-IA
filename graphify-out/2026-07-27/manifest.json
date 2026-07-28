@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
-    "mtime": 1785067733.6281447,
-    "ast_hash": "47ddc89afb7e912cd440aa34c708731a",
+    "mtime": 1785187844.8424094,
+    "ast_hash": "52edac95bbfabca6592c57963dfa1cf7",
     "semantic_hash": ""
   },
   "src/components/ItemList.tsx": {
@@ -170,8 +170,8 @@
     "semantic_hash": ""
   },
   "src/pages/ItemsPage.tsx": {
-    "mtime": 1784869541.7727568,
-    "ast_hash": "600f89cf584e6e539fe8b944804440a3",
+    "mtime": 1785187742.6568725,
+    "ast_hash": "093b8b6c1a06c67040e26fc06f822d70",
     "semantic_hash": ""
   },
   "src/pages/RemindersPage.tsx": {
@@ -717,6 +717,21 @@
   "public/badge.svg": {
     "mtime": 1785184228.2581148,
     "ast_hash": "1654c7396e5bdfbecdd6fb176e2febf7",
+    "semantic_hash": ""
+  },
+  "src/components/TemaColorPicker.tsx": {
+    "mtime": 1785187840.8233962,
+    "ast_hash": "87d1f39f9ba23d68f0514d848ccb30ea",
+    "semantic_hash": ""
+  },
+  "src/components/TemaOpcionesMenu.tsx": {
+    "mtime": 1785187848.171056,
+    "ast_hash": "d3852089f9f431454aafd256cd531a4b",
+    "semantic_hash": ""
+  },
+  "src/lib/temaAcciones.ts": {
+    "mtime": 1785187834.043114,
+    "ast_hash": "d7b78c185ef37b6b5d28e8bf09da2585",
     "semantic_hash": ""
   }
 }

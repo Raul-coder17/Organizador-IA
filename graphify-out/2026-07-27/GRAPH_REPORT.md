@@ -1,11 +1,11 @@
 # Graph Report - Organizador  (2026-07-27)
 
 ## Corpus Check
-- 114 files · ~222,743 words
+- 117 files · ~223,508 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 907 nodes · 1936 edges · 75 communities (59 shown, 16 thin omitted)
+- 915 nodes · 1969 edges · 72 communities (56 shown, 16 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 36 edges (avg confidence: 0.75)
 - Token cost: 0 input · 0 output
 
@@ -66,7 +66,6 @@
 - @types/react
 - HoyPage.tsx
 - ItemList.tsx
-- db.ts
 - 6. Ítems de trabajo, ordenados
 - Mapa del proyecto
 - Estructura de carpetas y responsabilidad de cada módulo
@@ -79,10 +78,8 @@
 - 8. Auditoría de contraste (ítem 2)
 - lib/recurrencia.ts
 - accionesPropuestas.ts
-- temaColores.ts
 - ProposedActionCard.tsx
 - ItemForm
-- listItems
 - RemindersPage
 - Adoption of react-router-dom for /settings Route
 - notification-actions.d.ts
@@ -91,25 +88,25 @@
 1. `useAuth()` - 28 edges
 2. `getDB()` - 24 edges
 3. `Item` - 24 edges
-4. `ItemForm()` - 20 edges
-5. `HoyPage()` - 18 edges
-6. `Tema` - 18 edges
+4. `Tema` - 21 edges
+5. `ItemForm()` - 19 edges
+6. `HoyPage()` - 18 edges
 7. `ItemsPage()` - 17 edges
 8. `compilerOptions` - 17 edges
 9. `supabase` - 15 edges
 10. `useSyncStatus()` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `SyncEngine()` --shares_data_with--> `sync.ts (sync engine)`  [INFERRED]
-  src/components/SyncEngine.tsx → PLAN_OFFLINE.md
-- `planOutbox()` --shares_data_with--> `sync.ts (sync engine)`  [INFERRED]
-  src/lib/syncCore.ts → PLAN_OFFLINE.md
 - `useLocalReminderWatcher()` --shares_data_with--> `listRecordatoriosParaDisparo`  [INFERRED]
   src/lib/useLocalReminderWatcher.ts → PLAN_OFFLINE.md
 - `Adoption of react-router-dom for /settings Route` --references--> `ItemsPage()`  [EXTRACTED]
   PLAN_ORGANIZADOR.md → src/pages/ItemsPage.tsx
 - `marcarHecho` --shares_data_with--> `RemindersPage()`  [INFERRED]
   PLAN_ORGANIZADOR.md → src/pages/RemindersPage.tsx
+- `Web Push via VAPID Keys + pg_cron` --references--> `PushSettings()`  [EXTRACTED]
+  PLAN_ORGANIZADOR.md → src/components/PushSettings.tsx
+- `SyncEngine()` --shares_data_with--> `sync.ts (sync engine)`  [INFERRED]
+  src/components/SyncEngine.tsx → PLAN_OFFLINE.md
 
 ## Import Cycles
 - None detected.
@@ -119,15 +116,15 @@
 - **Sync Status Indicator UI Group** — src_components_syncstatus_syncstatus, src_components_syncsettings_syncsettings, src_lib_sync_sync [EXTRACTED 0.95]
 - **Dual-Path Reminder Delivery (local watcher + server cron)** — src_lib_uselocalreminderwatcher_uselocalreminderwatcher, supabase_functions_send_reminder_notifications_index_handlesend, src_lib_reminderscheduling_splitstalereminders [INFERRED 0.85]
 
-## Communities (75 total, 16 thin omitted)
+## Communities (72 total, 16 thin omitted)
 
 ### Community 0 - "Motor de sincronizacion offline (db/outbox/sync)"
-Cohesion: 0.15
-Nodes (30): deleteLocalRow(), deleteOpsForEntity(), enqueueOp(), getLocalItem(), getLocalRecordatorio(), getLocalRecordatoriosByItem(), getLocalTema(), putLocalItem() (+22 more)
+Cohesion: 0.09
+Nodes (50): TemaColorSwatches(), TemaOpcionesMenu(), TemaOpcionesMenuProps, deleteLocalRow(), deleteOpsForEntity(), enqueueOp(), getDB(), getLocalItem() (+42 more)
 
 ### Community 1 - "Gestion de items (ItemForm/ItemList)"
-Cohesion: 0.15
-Nodes (9): DictadoRecognition, DictadoRecognitionAlternative, DictadoRecognitionConstructor, DictadoRecognitionErrorEvent, DictadoRecognitionEvent, DictadoRecognitionResult, DictadoRecognitionResultList, DictadoVoz (+1 more)
+Cohesion: 0.14
+Nodes (10): AssistantDrawer(), DictadoRecognition, DictadoRecognitionAlternative, DictadoRecognitionConstructor, DictadoRecognitionErrorEvent, DictadoRecognitionEvent, DictadoRecognitionResult, DictadoRecognitionResultList (+2 more)
 
 ### Community 3 - "Asistente IA - acciones propuestas"
 Cohesion: 0.10
@@ -135,11 +132,11 @@ Nodes (16): callGemini(), CORS_HEADERS, FUNCTION_DECLARATIONS, GeminiError, logJ
 
 ### Community 4 - "Config ESLint y devDependencies"
 Cohesion: 0.15
-Nodes (13): eslint, eslint-plugin-react-refresh, globals, devDependencies, eslint, eslint-plugin-react-refresh, globals, supabase (+5 more)
+Nodes (13): eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, devDependencies, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, supabase (+5 more)
 
 ### Community 5 - "Recordatorios y watcher local"
-Cohesion: 0.29
-Nodes (3): AssistantRedirect(), UpdateBanner(), SettingsPage()
+Cohesion: 0.19
+Nodes (8): AssistantRedirect(), ProtectedRoute(), UpdateBanner(), AuthContextValue, AuthProvider(), leerNombre(), readCachedSession(), ensurePersistentStorage()
 
 ### Community 6 - "Config TypeScript (app)"
 Cohesion: 0.08
@@ -166,8 +163,8 @@ Cohesion: 0.22
 Nodes (8): background_color, description, display, icons, name, short_name, start_url, theme_color
 
 ### Community 13 - "Documentacion raiz / planes / auth context"
-Cohesion: 0.18
-Nodes (10): FaseFoto, Vista, extraerDeFoto(), ExtraerOpts, FotoPreparada, leerComoDataUrl(), prepararFoto(), emitLocalChange() (+2 more)
+Cohesion: 0.17
+Nodes (10): FaseFoto, NuevoItemSheetProps, Vista, extraerDeFoto(), ExtraerOpts, FotoPreparada, leerComoDataUrl(), prepararFoto() (+2 more)
 
 ### Community 14 - "Edge Function manage-ai-key"
 Cohesion: 0.40
@@ -190,8 +187,8 @@ Cohesion: 1.00
 Nodes (3): App icon mockup: notebook with checklist and notification bell, Checklist/notebook motif (ring-bound notepad, green checkmarks, pencil, table grid), Notification bell badge element (top-right circular badge with bell icon and green dot)
 
 ### Community 22 - "Service worker push"
-Cohesion: 0.17
-Nodes (24): SyncEngine(), ApplyOutcome, cancelPendingSync(), emitSettled(), ERROR_LABEL, FlushResult, isOnline(), Listener (+16 more)
+Cohesion: 0.05
+Nodes (81): Hard Delete + Full Re-fetch Reconciliation (vs Soft-Delete), Last-Write-Wins via updated_at + Conditional Update, Sync Trigger Events (online/focus/visibility/interval/post-mutation), Trigger Adjustment to Respect Client-Sent updated_at, Web Locks API Single-Flight Sync, RLS Design: Join-Based Policies for recordatorios, Database Schema (temas/items/recordatorios), BorrarCuenta() (+73 more)
 
 ### Community 29 - "HoyPage.tsx"
 Cohesion: 0.14
@@ -217,21 +214,25 @@ Nodes (9): name, private, scripts, build, dev, lint, preview, type (+1 more)
 Cohesion: 0.16
 Nodes (16): CLAVES_NO_BUSCABLES, esObjeto(), filtrarTemas(), indiceDe(), ItemConTema, juntarStrings(), normalizar(), LISTA (+8 more)
 
+### Community 35 - "eslint-plugin-react-hooks"
+Cohesion: 0.18
+Nodes (10): AuthCard(), consumirAvisoCuentaBorrada(), supabase, ACCION, AuthPage(), Modo, SUBTITULO, errorEnLaUrl() (+2 more)
+
 ### Community 37 - "AssistantDrawer.tsx"
-Cohesion: 0.13
-Nodes (13): AbrirAsistenteContext, AppShell(), Destino, DESTINOS, TRAZO, AssistantDrawer(), NuevoItemSheet(), useAuth() (+5 more)
+Cohesion: 0.11
+Nodes (10): AbrirAsistenteContext, AppShell(), Destino, DESTINOS, TRAZO, ItemSheetContext, countRecordatoriosPendientesHoy(), medir() (+2 more)
 
 ### Community 38 - "ItemForm.tsx"
-Cohesion: 0.11
-Nodes (22): FilaEditable, ItemFormProps, PRIORIDADES, TIPOS, BorradorItem, DIA_CORTO, DIA_LARGO, DIAS_ORDEN (+14 more)
+Cohesion: 0.30
+Nodes (11): applyTheme(), getTheme(), isTheme(), listeners, prefersDark(), readStoredTheme(), resolveInitialTheme(), setTheme() (+3 more)
 
 ### Community 43 - "Outbox Pattern for Offline Mutations"
 Cohesion: 0.33
 Nodes (7): Graphify Project Rules, Outbox Pattern for Offline Mutations, Offline Support Architecture Plan, Organizador Personal IA - Master Plan, AuthContext, db.ts (IndexedDB store layer), repo.ts (local mutation repository)
 
 ### Community 44 - "AppShell.tsx"
-Cohesion: 0.31
-Nodes (13): aGrilla(), cell(), contenidoDeGrilla(), Grilla, grillaDesdeContenido(), grillaDesdeTexto(), grillaVacia(), leerTabla() (+5 more)
+Cohesion: 0.35
+Nodes (12): aGrilla(), cell(), contenidoDeGrilla(), grillaDesdeContenido(), grillaDesdeTexto(), grillaVacia(), leerTabla(), nombreColumna() (+4 more)
 
 ### Community 45 - "extract-from-photo/index.ts"
 Cohesion: 0.07
@@ -242,32 +243,24 @@ Cohesion: 0.08
 Nodes (28): Catch-up Notification for Stale Reminders, Notification Tag Dedup between Local Watcher and Cron Push, Decision: No Runtime Caching of Supabase Data in Service Worker, Two-Way Reminder Notifications (Local + Cron), Web Push via VAPID Keys + pg_cron, LocalReminderWatcher(), listRecordatoriosParaDisparo, marcarEnviado (+20 more)
 
 ### Community 47 - "recordatorios.ts"
-Cohesion: 0.16
-Nodes (19): RecordatorioRow(), formatFechaHora(), ACCIONES_POSPONER, contenidoNotificacion, resumenContenido(), itemTexto, recSimple, clasificar() (+11 more)
+Cohesion: 0.09
+Nodes (33): armarGrupos(), Grupo, ItemContent(), ItemListProps, parseLista(), PRIORIDAD_LABEL, TIPO_LABEL, IconRepetir() (+25 more)
 
 ### Community 48 - "historial.ts"
 Cohesion: 0.16
 Nodes (17): PROPOSE_TOOLS, AccionHistorial, buildContents(), callDeAccion(), esEstado(), EstadoAccionHistorial, GeminiContent, GeminiPart (+9 more)
 
 ### Community 49 - "theme.ts"
-Cohesion: 0.05
-Nodes (61): Sync Trigger Events (online/focus/visibility/interval/post-mutation), Web Locks API Single-Flight Sync, AuthCard(), BorrarCuenta(), ProtectedRoute(), PushSettings(), SyncSettings(), SyncStatus() (+53 more)
+Cohesion: 0.24
+Nodes (16): PushSettings(), borrarCuenta(), limpiarStorageLocal(), mensajeDeError(), ResultadoBorrado, wipeLocalDatabase(), getPushStatus(), isPushSupported() (+8 more)
 
 ### Community 50 - "syncCore.ts"
-Cohesion: 0.13
-Nodes (23): deleteOps(), getOutbox(), markOpsFailed(), applyOp(), errorMessage(), flushOutbox(), backoffDelayMs(), blockedByParent() (+15 more)
+Cohesion: 0.36
+Nodes (8): NuevoItemSheet(), useAuth(), Theme, readAiEnabledCache(), useAiEnabled(), writeAiEnabledCache(), SettingsPage(), TEMAS_UI
 
 ### Community 53 - "HoyPage.tsx"
-Cohesion: 0.21
-Nodes (22): armarGrupos(), ItemList(), filtrarItems(), item(), loadItemsFromCache(), loadRecordatoriosFromCache(), loadTemasFromCache(), useItemSheet() (+14 more)
-
-### Community 54 - "ItemList.tsx"
-Cohesion: 0.15
-Nodes (15): Grupo, ItemContent(), ItemListProps, parseLista(), PRIORIDAD_LABEL, TIPO_LABEL, NuevoItemSheetProps, IconRepetir() (+7 more)
-
-### Community 55 - "db.ts"
-Cohesion: 0.22
-Nodes (15): countOutbox(), getDB(), getMeta(), MetaRow, NewOutboxOp, OutboxOp, saveItemsToCache(), saveRecordatoriosToCache() (+7 more)
+Cohesion: 0.16
+Nodes (29): ItemList(), filtrarItems(), item(), loadItemsFromCache(), loadRecordatoriosFromCache(), loadTemasFromCache(), useItemSheet(), clasificar() (+21 more)
 
 ### Community 56 - "6. Ítems de trabajo, ordenados"
 Cohesion: 0.29
@@ -286,8 +279,8 @@ Cohesion: 0.40
 Nodes (5): 1. Arquitectura general, 2. Flujo de datos offline, 3. Flujo del asistente de IA, 4. Flujo de notificaciones (local vs. servidor + dedup), Diagramas
 
 ### Community 60 - "AssistantDrawer.tsx"
-Cohesion: 0.17
-Nodes (9): EstadoAccion, AccionBorrar, AccionEnHistorial, AssistantResponse, AssistantUsage, CallPropuesta, ChatMessage, EstadoAccionHistorial (+1 more)
+Cohesion: 0.13
+Nodes (17): ItemFormProps, PendingAction, BorradorItem, AccionBorrar, AccionCrear, AccionEditar, AccionEnHistorial, AccionPropuesta (+9 more)
 
 ### Community 61 - "5. Clasificación: qué se puede hacer ya, qué no"
 Cohesion: 0.40
@@ -310,32 +303,24 @@ Cohesion: 0.50
 Nodes (4): 8. Auditoría de contraste (ítem 2), D6 resuelta (2026-07-24), El resultado inesperado: la paleta oscura contrasta mejor que la clara, Lo que esto significa
 
 ### Community 66 - "lib/recurrencia.ts"
-Cohesion: 0.28
-Nodes (13): ajustarADiaMarcado(), avanzarUnaVuelta(), corrimientoDiaUtc(), diasLocalesAUtc(), diasUtcALocales(), parseDiasSemana(), parseRecurrencia(), proximaOcurrencia() (+5 more)
+Cohesion: 0.14
+Nodes (23): FilaEditable, PRIORIDADES, TIPOS, ajustarADiaMarcado(), avanzarUnaVuelta(), corrimientoDiaUtc(), DIA_CORTO, DIA_LARGO (+15 more)
 
 ### Community 67 - "accionesPropuestas.ts"
-Cohesion: 0.35
-Nodes (11): primeraVezDeAccionCrear(), fechaQueGuardaAplicarAccionCrear(), aplicarAccionCrear(), borradorDeAccionCrear(), contenidoDeAccionCrear(), fechaLocalDeAccion(), primeraVuelta(), resolverTemaId() (+3 more)
-
-### Community 68 - "temaColores.ts"
-Cohesion: 0.35
-Nodes (11): colorDeTema(), COLORES_TEMA, encontrarTemaPorNombre(), esColorTema(), hashTexto(), siguienteColorTema(), TEMA_COLOR_LABEL, TemaColor (+3 more)
+Cohesion: 0.31
+Nodes (12): primeraVezDeAccionCrear(), fechaQueGuardaAplicarAccionCrear(), aplicarAccionCrear(), borradorDeAccionCrear(), contenidoDeAccionCrear(), fechaLocalDeAccion(), primeraVuelta(), resolverTemaId() (+4 more)
 
 ### Community 69 - "ProposedActionCard.tsx"
-Cohesion: 0.26
-Nodes (9): contenidoTexto(), fechaCambioRecordatorio(), PendingAction, ProposedActionCard(), RecordatorioLinea(), textoRepeticion(), etiquetaDias(), RECURRENCIA_LABEL (+1 more)
+Cohesion: 0.31
+Nodes (7): contenidoTexto(), EstadoAccion, fechaCambioRecordatorio(), ProposedActionCard(), RecordatorioLinea(), textoRepeticion(), etiquetaDias()
 
 ### Community 70 - "ItemForm"
 Cohesion: 0.36
 Nodes (8): aFilasEditables(), ItemForm(), nuevaLinea(), horaDeDatetimeLocal(), isoToDatetimeLocal(), proximaFechaConHora(), recurrenciaSinFecha(), LUNES_MEDIODIA
 
-### Community 71 - "listItems"
-Cohesion: 0.25
-Nodes (8): Hard Delete + Full Re-fetch Reconciliation (vs Soft-Delete), Last-Write-Wins via updated_at + Conditional Update, Trigger Adjustment to Respect Client-Sent updated_at, RLS Design: Join-Based Policies for recordatorios, Database Schema (temas/items/recordatorios), listItems(), listTemas(), schema_inicial migration (temas/items/recordatorios)
-
 ### Community 72 - "RemindersPage"
-Cohesion: 0.40
-Nodes (6): Organizador Catalog-Style Mockup (HTML), App HTML Shell (Vite entry), Catalog Card Visual Design System, marcarHecho, pasaFiltro(), RemindersPage()
+Cohesion: 1.00
+Nodes (3): Organizador Catalog-Style Mockup (HTML), App HTML Shell (Vite entry), Catalog Card Visual Design System
 
 ### Community 73 - "Adoption of react-router-dom for /settings Route"
 Cohesion: 0.67
@@ -355,15 +340,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Graphify Project Rules` and `Organizador Personal IA - Master Plan`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `useAuth()` connect `AssistantDrawer.tsx` to `Recordatorios y watcher local`, `RemindersPage`, `Documentacion raiz / planes / auth context`, `reminderScheduling.ts`, `recordatorios.ts`, `theme.ts`, `HoyPage.tsx`, `Service worker push`, `AssistantDrawer.tsx`?**
+- **Why does `useAuth()` connect `syncCore.ts` to `Gestion de items (ItemForm/ItemList)`, `Recordatorios y watcher local`, `AssistantDrawer.tsx`, `Documentacion raiz / planes / auth context`, `reminderScheduling.ts`, `recordatorios.ts`, `theme.ts`, `HoyPage.tsx`, `Service worker push`, `AssistantDrawer.tsx`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **Why does `Item` connect `ItemList.tsx` to `Motor de sincronizacion offline (db/outbox/sync)`, `buscar.test.ts`, `accionesPropuestas.ts`, `ProposedActionCard.tsx`, `AssistantDrawer.tsx`, `ItemForm.tsx`, `Documentacion raiz / planes / auth context`, `recordatorios.ts`, `theme.ts`, `HoyPage.tsx`, `db.ts`, `AssistantDrawer.tsx`?**
+- **Why does `Item` connect `recordatorios.ts` to `Motor de sincronizacion offline (db/outbox/sync)`, `lib/recurrencia.ts`, `accionesPropuestas.ts`, `buscar.test.ts`, `ProposedActionCard.tsx`, `AssistantDrawer.tsx`, `eslint-plugin-react-hooks`, `Documentacion raiz / planes / auth context`, `HoyPage.tsx`, `Service worker push`, `AssistantDrawer.tsx`?**
   _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `supabase` connect `theme.ts` to `AssistantDrawer.tsx`, `Documentacion raiz / planes / auth context`, `recordatorios.ts`, `Service worker push`, `AssistantDrawer.tsx`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Why does `supabase` connect `eslint-plugin-react-hooks` to `Recordatorios y watcher local`, `AssistantDrawer.tsx`, `Documentacion raiz / planes / auth context`, `recordatorios.ts`, `theme.ts`, `syncCore.ts`, `Service worker push`, `AssistantDrawer.tsx`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **What connects `name`, `private`, `version` to the rest of the system?**
   _310 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Asistente IA - acciones propuestas` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
-- **Should `Config TypeScript (app)` be split into smaller, more focused modules?**
-  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
+- **Should `Motor de sincronizacion offline (db/outbox/sync)` be split into smaller, more focused modules?**
+  _Cohesion score 0.09195402298850575 - nodes in this community are weakly interconnected._
+- **Should `Gestion de items (ItemForm/ItemList)` be split into smaller, more focused modules?**
+  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._

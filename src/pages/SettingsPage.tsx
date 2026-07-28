@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { supabase } from '../lib/supabase'
 import { BorrarCuenta } from '../components/BorrarCuenta'
+import { ExportarDatos } from '../components/ExportarDatos'
 import { PushSettings } from '../components/PushSettings'
 import { SyncSettings } from '../components/SyncSettings'
 import { readAiEnabledCache, writeAiEnabledCache } from '../lib/useAiEnabled'
@@ -329,6 +330,10 @@ export function SettingsPage() {
             Cerrar sesión
           </button>
         </div>
+
+        <hr className="border-line" />
+
+        <ExportarDatos />
 
         {/* Borrar cuenta va último y detrás de su propia línea: es irreversible
             y no tiene por qué compartir espacio con "cerrar sesión", que es lo
