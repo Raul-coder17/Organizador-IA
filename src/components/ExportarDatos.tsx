@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../lib/AuthContext'
-import { exportarCSV, exportarJSON } from '../lib/exportarDatos'
+import { exportarCSV, exportarJSON } from '../lib/descargarExport'
 
 // Exportar mis datos: respaldo local, sin red (lee del mismo espejo local que
 // el resto de la app). Va antes que "Borrar cuenta" a propósito: es lo

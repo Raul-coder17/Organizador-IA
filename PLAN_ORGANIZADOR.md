@@ -2292,9 +2292,16 @@ local: lee del mismo espejo IndexedDB que ya usa toda la app
 (`loadTemasFromCache`/`loadItemsFromCache`/`loadRecordatoriosFromCache` de
 `db.ts`), así que funciona sin conexión y sin pegarle al servidor.
 
-Toda la lógica vive en `src/lib/exportarDatos.ts` (sin dependencias de React,
-sólo IndexedDB + DOM para disparar la descarga); `ExportarDatos.tsx` es sólo
-los dos botones y el manejo de estado/errores.
+La lógica está partida en dos, igual que `notificacionRecordatorio.ts` y
+`reminderScheduling.ts`, y por el mismo motivo (poder testear con `deno test`
+sin arrastrar `idb` ni `document`, que no existen bajo Deno):
+
+- `src/lib/exportarDatos.ts` — **puro**: los tipos, el cruce de las tres
+  tablas (`armarDatosExport`), el volcado a texto (`contenidoLegible`) y el
+  armado de los dos formatos (`construirJSON` / `construirCSV`).
+- `src/lib/descargarExport.ts` — la parte que toca el mundo: lee el espejo
+  local y dispara la descarga con un `<a download>` temporal.
+- `src/components/ExportarDatos.tsx` — los dos botones y el estado/errores.
 
 Dos formatos, con objetivos distintos:
 
@@ -2305,23 +2312,62 @@ Dos formatos, con objetivos distintos:
   `notificacionRecordatorio.ts`, el mismo texto que ya arma el título de las
   notificaciones) y sus recordatorios anidados adentro (no tres arrays
   sueltos que hay que volver a cruzar a mano).
-- **CSV** (`organizador-datos-YYYY-MM-DD.csv`) — una fila por item a
-  propósito más simple: Tipo, Tema, Prioridad, Contenido (el mismo
-  `resumen`), Creado, Recordatorio. Separador `;` y no `,`: en Excel en
+- **CSV** (`organizador-datos-YYYY-MM-DD.csv`) — una fila por item: Tipo,
+  Tema, Prioridad, Contenido, Creado, Recordatorio. Aplanado **no** quiere
+  decir recortado: el contenido va entero (ver abajo), sólo que como texto en
+  una celda en vez de como estructura. Separador `;` y no `,`: en Excel en
   español la coma es el separador decimal, así que un CSV con comas se abre
   entero en una columna — con `;` se abre bien sin pasos extra. Fecha en
   `dd/mm/aaaa hh:mm` a mano (no `toLocaleString`, que en es-AR trunca el año a
   2 dígitos y mete una coma en el valor). BOM UTF-8 al inicio para que los
   acentos/ñ no salgan rotos en Excel/Windows.
 
-**Verificado:** `tsc -b`, `vite build` y `eslint` limpios. Probado en vivo en
-el harness contra la cuenta real (interceptando `URL.createObjectURL` para
-leer el blob sin depender de la carpeta de descargas): el JSON sale con la
-estructura anidada esperada y datos reales, y el CSV sale con `;`, fechas
-`dd/mm/aaaa hh:mm` sin comas sueltas y sin quedar pegado en "Exportando…".
-Revisado visualmente en claro/oscuro y desktop/mobile (375px). Falta que el
-usuario abra los archivos descargados en Excel/Sheets y en un editor de texto
-para confirmar que sus datos reales están completos y legibles.
+### Fix (2026-07-27): CSV con contenido truncado y escapado incompleto
+
+La primera versión salió con dos problemas, encontrados al abrir el archivo
+en Excel:
+
+**1. El contenido de las tablas venía recortado.** La columna Contenido usaba
+`resumenContenido()`, que es el helper de las **notificaciones**: de una tabla
+devuelve encabezados + conteo ("Categoría · Detalle (16 filas)"). Sirve para
+un título de una línea; en un respaldo pierde justo los datos. Ahora hay un
+`contenidoLegible()` propio del export que vuelca **todo**: la tabla entera
+(encabezados + todas las filas, una por línea, celdas separadas por `" | "`),
+las listas con su marca de hecho (`[x]` / `[ ]`), y el texto plano de las
+notas. Como el campo va quoteado, la tabla entra completa en UNA celda y
+Excel/Sheets la muestran multilínea, sin correr ninguna columna.
+
+**2. El escapado tenía un agujero con el CR pelado.** El `;` y las comillas ya
+se quoteaban bien (el desalineamiento que se vio en Excel era en realidad el
+desborde visual de una celda sobre la de al lado, que estaba vacía — el
+archivo estaba bien). Pero la normalización era `/\r?\n/`, que **exige** el
+`\n`: un `\r` suelto no se normalizaba *ni* contaba entre los caracteres que
+obligan a quotear, así que salía crudo al archivo y Excel lo leía como fin de
+fila, partiendo la línea y corriendo todas las columnas de ahí en adelante.
+Además el `\n` se reemplazaba por `" / "`, que es lossy y bloqueaba lo de
+arriba. Ahora `celdaCSV()` normaliza cualquier variante de salto a `\n` y
+quotea según RFC 4180 (separador, comillas o salto → comillas dobles, y las
+comillas internas duplicadas), preservando el salto en vez de destruirlo.
+
+El JSON no estaba afectado: siempre guardó el `contenido` crudo tal cual la
+base. Se le sumó igual un `contenidoTexto` con la misma versión legible, para
+no tener que reconstruirla a mano al leer el respaldo.
+
+**Verificado:** `tsc -b`, `vite build` y `eslint` limpios; **257 tests**
+(`npx deno test src/lib/ supabase/functions/`), 14 nuevos en
+`exportarDatos.test.ts` — incluyen el caso hostil pedido (un tema y una tabla
+con `;`, comillas dobles y saltos de línea a la vez) verificado **parseando el
+CSV resultante con un parser RFC 4180** y comprobando que todas las filas
+tienen exactamente 6 campos y que cada valor llegó entero a su columna.
+Probado en vivo contra la cuenta real interceptando `URL.createObjectURL`: la
+tabla "Cruji Pizza" sale con sus 17 líneas (encabezado + 16 filas) dentro de
+la celda Contenido, con 6 campos en las 3 filas del archivo, y su fila `Lema`
+—que tiene comillas dobles en el dato real— sobrevive el round-trip. El JSON
+sigue trayendo las 16 filas crudas. Revisado visualmente en claro/oscuro y
+desktop/mobile (375px).
+
+Falta que el usuario abra los dos archivos y confirme que la tabla se ve
+completa en Excel/Sheets.
 
 ## Deploy
 
@@ -2377,6 +2423,19 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-27 — **Fix: exportación CSV con contenido truncado y escapado
+  incompleto** (ver sección propia). (a) La columna Contenido usaba
+  `resumenContenido()` (el de las notificaciones), que de una tabla devuelve
+  encabezados + conteo: se reemplazó por un `contenidoLegible()` propio del
+  export que vuelca la tabla entera, las listas con su marca de hecho y el
+  texto de las notas. (b) `celdaCSV()` normalizaba con `/\r?\n/`, que exige el
+  `\n`, así que un CR pelado salía crudo y sin quotear y Excel lo leía como fin
+  de fila: ahora normaliza cualquier salto a `\n` y quotea según RFC 4180,
+  preservándolo. El desalineamiento reportado en Excel resultó ser desborde
+  visual de una celda sobre otra vacía, no un problema del archivo. De paso se
+  partió `exportarDatos.ts` en puro (armado) + `descargarExport.ts` (IndexedDB
+  y descarga) para poder testear con `deno test`. 14 tests nuevos, 257 en
+  total; `tsc -b`, `vite build` y `eslint` limpios.
 - 2026-07-27 — **Exportar mis datos** (ver sección propia). Botón en
   Ajustes → Cuenta, junto a "Borrar cuenta". Lee del espejo local
   (`db.ts`, sin red) y ofrece JSON (fidelidad completa, agrupado por tema con

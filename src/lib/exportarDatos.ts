@@ -1,21 +1,25 @@
-// Exportar mis datos (Ajustes → Cuenta): respaldo local en JSON o CSV.
+// Exportar mis datos (Ajustes → Cuenta): armado de los dos formatos.
 //
-// Lee del mismo espejo local (IndexedDB) que el resto de la app — no pide red
-// ni pasa por Supabase — así que funciona offline igual que todas las
-// pantallas que leen de `db.ts`.
+// Este archivo es PURO — no toca IndexedDB ni el DOM. La lectura del espejo
+// local y la descarga en sí viven en `descargarExport.ts`; acá sólo se
+// transforma. La separación es la misma que ya tienen
+// `notificacionRecordatorio.ts` (separado de `recordatorios.ts`) y
+// `reminderScheduling.ts` (de `useLocalReminderWatcher.ts`), y por el mismo
+// motivo: así el armado se puede testear con `deno test` sin arrastrar `idb`
+// ni `document`, que no existen bajo Deno.
 //
 // Dos formatos con objetivos distintos:
-//   - JSON: fidelidad completa. Cada item con su(s) recordatorio(s) anidados y
-//     agrupado por tema (no un dump de las tres tablas sueltas).
-//   - CSV: una fila por item, aplanada a propósito — no intenta cargar la
-//     estructura anidada de una lista o una tabla en una celda, así que usa el
-//     mismo resumen legible que ya arma `resumenContenido` para las
-//     notificaciones.
+//   - JSON: fidelidad completa. Agrupado por tema, con los recordatorios
+//     anidados dentro de su item y el `contenido` crudo tal cual lo guarda la
+//     base — un respaldo no puede perder nada.
+//   - CSV: una fila por item, aplanado a propósito para abrirse bien en
+//     Excel/Sheets. Aplanado NO quiere decir recortado: el contenido va
+//     entero (ver `contenidoLegible`), sólo que como texto en una celda en
+//     vez de como estructura.
 
-import { loadItemsFromCache, loadRecordatoriosFromCache, loadTemasFromCache } from './db'
-import { resumenContenido } from './notificacionRecordatorio'
+import { leerTabla } from './tabla'
 import { marcaRecurrencia } from './recurrencia'
-import type { Item, Recordatorio } from '../types/database'
+import type { Item, Recordatorio, Tema } from '../types/database'
 
 export interface UsuarioExport {
   email: string | null
@@ -36,7 +40,9 @@ interface ItemExport {
   tipo: Item['tipo']
   prioridad: Item['prioridad']
   origen: Item['origen']
-  resumen: string
+  /** El contenido volcado a texto plano legible (ver `contenidoLegible`). */
+  contenidoTexto: string
+  /** El jsonb crudo, tal cual la base. Es lo que hace del JSON un respaldo. */
   contenido: Record<string, unknown>
   creadoEn: string
   actualizadoEn: string
@@ -58,6 +64,43 @@ export interface DatosExport {
   itemsSinTema: ItemExport[]
 }
 
+/**
+ * El contenido de un item volcado a texto plano, COMPLETO.
+ *
+ * No reusa `resumenContenido` (el de las notificaciones) a propósito: ese
+ * está pensado para un título de una línea y de una tabla devuelve sólo los
+ * encabezados y cuántas filas tiene ("Categoría · Detalle (16 filas)"). En un
+ * respaldo eso es justo lo que no se puede perder.
+ *
+ * Los saltos de línea que mete acá son deliberados: el CSV quotea el campo,
+ * así que la tabla entra entera en UNA celda y Excel/Sheets la muestran
+ * multilínea, sin correr ninguna columna.
+ */
+export function contenidoLegible(item: Pick<Item, 'tipo' | 'contenido'>): string {
+  const c = item.contenido ?? {}
+
+  // Tabla: encabezados + TODAS las filas, una por línea, celdas con " | ".
+  if (item.tipo === 'tabla') {
+    const tabla = leerTabla(c)
+    if (tabla) {
+      const filas = tabla.headers ? [tabla.headers, ...tabla.rows] : tabla.rows
+      return filas.map((f) => f.join(' | ')).join('\n')
+    }
+  }
+
+  // Lista: una línea por ítem, marcando lo hecho. Se conserva el estado
+  // porque una lista de compras a medio tachar sin las marcas es otra lista.
+  if (item.tipo === 'lista' && Array.isArray(c.items)) {
+    const lineas = c.items as { texto?: unknown; hecho?: unknown }[]
+    return lineas.map((l) => `${l.hecho ? '[x]' : '[ ]'} ${String(l.texto ?? '')}`).join('\n')
+  }
+
+  if (typeof c.texto === 'string' && c.texto.trim()) return c.texto.trim()
+
+  // Último recurso: el jsonb crudo. Feo, pero no pierde nada.
+  return JSON.stringify(c)
+}
+
 function aRecordatorioExport(r: Recordatorio): RecordatorioExport {
   return {
     id: r.id,
@@ -75,7 +118,7 @@ function aItemExport(item: Item, recordatorios: Recordatorio[]): ItemExport {
     tipo: item.tipo,
     prioridad: item.prioridad,
     origen: item.origen,
-    resumen: resumenContenido(item),
+    contenidoTexto: contenidoLegible(item),
     contenido: item.contenido,
     creadoEn: item.created_at,
     actualizadoEn: item.updated_at,
@@ -83,18 +126,19 @@ function aItemExport(item: Item, recordatorios: Recordatorio[]): ItemExport {
   }
 }
 
-// Junta temas + items + recordatorios del espejo local y arma la estructura
-// anidada que consumen `construirJSON`/`construirCSV`. Separado de la
-// descarga en sí para poder testearlo sin tocar el DOM.
-export async function recolectarDatosExport(
-  usuario: UsuarioExport = { email: null, nombre: null },
-): Promise<DatosExport> {
-  const [temas, items, recordatorios] = await Promise.all([
-    loadTemasFromCache(),
-    loadItemsFromCache(),
-    loadRecordatoriosFromCache(),
-  ])
-
+/**
+ * Cruza las tres tablas del espejo local en la estructura anidada que
+ * consumen los dos formatos: cada item dentro de su tema y con sus
+ * recordatorios adentro, en vez de tres arrays sueltos que haya que volver a
+ * cruzar a mano.
+ */
+export function armarDatosExport(
+  temas: Tema[],
+  items: Item[],
+  recordatorios: Recordatorio[],
+  usuario: UsuarioExport,
+  generadoEn = new Date().toISOString(),
+): DatosExport {
   const recordatoriosPorItem = new Map<string, Recordatorio[]>()
   for (const r of recordatorios) {
     const lista = recordatoriosPorItem.get(r.item_id) ?? []
@@ -115,7 +159,7 @@ export async function recolectarDatosExport(
   }
 
   return {
-    generadoEn: new Date().toISOString(),
+    generadoEn,
     usuario,
     temas: temas.map((t) => ({
       id: t.id,
@@ -130,17 +174,46 @@ export async function recolectarDatosExport(
   }
 }
 
-function fechaArchivo(d = new Date()): string {
-  const yyyy = d.getFullYear()
-  const mm = String(d.getMonth() + 1).padStart(2, '0')
-  const dd = String(d.getDate()).padStart(2, '0')
-  return `${yyyy}-${mm}-${dd}`
+export function construirJSON(datos: DatosExport): string {
+  return JSON.stringify(datos, null, 2)
 }
 
-// dd/mm/yyyy hh:mm a mano y no `toLocaleString`: el `dateStyle: 'short'` de
-// es-AR trunca el año a 2 dígitos y mete una coma en medio del valor, que
-// después hay que escapar en el CSV. Un formato fijo evita las dos cosas.
-function fechaLegible(iso: string): string {
+// ============================================================
+// CSV
+// ============================================================
+
+const CABECERAS_CSV = ['Tipo', 'Tema', 'Prioridad', 'Contenido', 'Creado', 'Recordatorio']
+
+// Separador `;` y no `,`: en Excel en español la coma es el separador
+// decimal, así que un CSV con comas se abre entero en una sola columna. Con
+// `;` se abre bien sin pasos extra, que es justo el objetivo acá.
+const SEPARADOR_CSV = ';'
+
+// Fin de fila del CSV. RFC 4180 pide CRLF, y es lo que Excel espera.
+const FIN_LINEA_CSV = '\r\n'
+
+/**
+ * Un campo escapado según RFC 4180: si contiene el separador, comillas o un
+ * salto de línea, va entre comillas dobles, y las comillas de adentro se
+ * duplican.
+ *
+ * El CR pelado (`\r` sin `\n`) es el que rompía: la versión anterior
+ * normalizaba con `/\r?\n/`, que EXIGE el `\n`, y tampoco lo contaba entre los
+ * caracteres que obligan a quotear — así que salía crudo al archivo y Excel lo
+ * leía como fin de fila, partiendo la línea al medio y corriendo todas las
+ * columnas de ahí en adelante. Acá se normaliza cualquier variante a `\n` y
+ * después se quotea, que además preserva el salto en vez de destruirlo.
+ */
+export function celdaCSV(valor: string): string {
+  const limpio = valor.replace(/\r\n?/g, '\n')
+  // La coma no es nuestro separador, pero se quotea igual: algunos lectores
+  // (Sheets entre ellos) la sniffean para adivinar el separador del archivo.
+  return /[;",\n]/.test(limpio) ? `"${limpio.replace(/"/g, '""')}"` : limpio
+}
+
+/** dd/mm/aaaa hh:mm. A mano y no `toLocaleString`: el `dateStyle: 'short'` de
+ *  es-AR trunca el año a 2 dígitos y mete una coma en medio del valor. */
+export function fechaLegible(iso: string): string {
   const d = new Date(iso)
   if (!Number.isFinite(d.getTime())) return iso
   const dd = String(d.getDate()).padStart(2, '0')
@@ -150,49 +223,10 @@ function fechaLegible(iso: string): string {
   return `${dd}/${mm}/${d.getFullYear()} ${hh}:${min}`
 }
 
-// Dispara la descarga vía un <a download> temporal: no hay backend que sirva
-// el archivo, así que arma el blob y lo "clickea" solo.
-function descargar(contenido: string, nombre: string, tipoMime: string): void {
-  const blob = new Blob([contenido], { type: tipoMime })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = nombre
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  URL.revokeObjectURL(url)
-}
-
-export async function exportarJSON(usuario: UsuarioExport): Promise<void> {
-  const datos = await recolectarDatosExport(usuario)
-  descargar(
-    JSON.stringify(datos, null, 2),
-    `organizador-datos-${fechaArchivo()}.json`,
-    'application/json',
-  )
-}
-
-const CABECERAS_CSV = ['Tipo', 'Tema', 'Prioridad', 'Contenido', 'Creado', 'Recordatorio']
-
-// Separador `;` y no `,`: en Excel en español la coma es el separador
-// decimal, así que un CSV con comas se abre entero en una sola columna. Con
-// `;` se abre bien sin pasos extra, que es justo el objetivo acá.
-const SEPARADOR_CSV = ';'
-
-function celdaCSV(valor: string): string {
-  const limpio = valor.replace(/\r?\n/g, ' / ')
-  if (limpio.includes(SEPARADOR_CSV) || limpio.includes('"') || limpio.includes(',')) {
-    return `"${limpio.replace(/"/g, '""')}"`
-  }
-  return limpio
-}
-
 function recordatoriosCSV(recs: RecordatorioExport[]): string {
-  if (recs.length === 0) return ''
   return recs
     .map((r) => `${fechaLegible(r.fechaHora)} (${r.estado}${r.repite ? `, ${r.repite}` : ''})`)
-    .join(' / ')
+    .join('\n')
 }
 
 function filaCSV(item: ItemExport, temaNombre: string): string[] {
@@ -200,29 +234,20 @@ function filaCSV(item: ItemExport, temaNombre: string): string[] {
     item.tipo,
     temaNombre,
     item.prioridad ?? '',
-    item.resumen,
+    item.contenidoTexto,
     fechaLegible(item.creadoEn),
     recordatoriosCSV(item.recordatorios),
   ]
 }
 
-export async function exportarCSV(): Promise<void> {
-  const datos = await recolectarDatosExport()
-
+export function construirCSV(datos: DatosExport): string {
   const filas: string[][] = []
   for (const tema of datos.temas) {
     for (const item of tema.items) filas.push(filaCSV(item, tema.nombre))
   }
   for (const item of datos.itemsSinTema) filas.push(filaCSV(item, 'Sin tema'))
 
-  const lineas = [CABECERAS_CSV, ...filas].map((fila) =>
-    fila.map(celdaCSV).join(SEPARADOR_CSV),
-  )
-  // BOM inicial: sin él, Excel en Windows a veces interpreta el UTF-8 como
-  // Latin-1 y las tildes/ñ salen rotas.
-  descargar(
-    '﻿' + lineas.join('\r\n'),
-    `organizador-datos-${fechaArchivo()}.csv`,
-    'text/csv;charset=utf-8',
-  )
+  return [CABECERAS_CSV, ...filas]
+    .map((fila) => fila.map(celdaCSV).join(SEPARADOR_CSV))
+    .join(FIN_LINEA_CSV)
 }

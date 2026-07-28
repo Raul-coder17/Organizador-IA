@@ -428,8 +428,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "package_devdependencies_eslint",
-      "community": 54,
-      "community_name": "ItemList.tsx",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -439,8 +439,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "eslint",
-      "community": 54,
-      "community_name": "ItemList.tsx",
+      "community": 4,
+      "community_name": "Config ESLint y devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -450,8 +450,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "package_devdependencies_eslint_plugin_react_hooks",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 75,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "eslint-plugin-react-hooks"
     },
     {
@@ -461,8 +461,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "eslint_plugin_react_hooks",
-      "community": 4,
-      "community_name": "Config ESLint y devDependencies",
+      "community": 75,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "eslint-plugin-react-hooks"
     },
     {
@@ -1022,8 +1022,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_components_assistantdrawer_assistantdrawer",
-      "community": 1,
-      "community_name": "Gestion de items (ItemForm/ItemList)",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "assistantdrawer()"
     },
     {
@@ -1055,8 +1055,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_borrarcuenta",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "borrarcuenta.tsx"
     },
     {
@@ -1066,9 +1066,31 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_components_borrarcuenta_borrarcuenta",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "borrarcuenta()"
+    },
+    {
+      "label": "ExportarDatos.tsx",
+      "file_type": "code",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_components_exportardatos",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
+      "norm_label": "exportardatos.tsx"
+    },
+    {
+      "label": "ExportarDatos()",
+      "file_type": "code",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "src_components_exportardatos_exportardatos",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
+      "norm_label": "exportardatos()"
     },
     {
       "label": "ItemForm.tsx",
@@ -1077,8 +1099,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_itemform",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "itemform.tsx"
     },
     {
@@ -1088,8 +1110,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_components_itemform_nuevalinea",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "nuevalinea()"
     },
     {
@@ -1099,8 +1121,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_components_itemform_filaeditable",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "filaeditable"
     },
     {
@@ -1110,8 +1132,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_components_itemform_afilaseditables",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "afilaseditables()"
     },
     {
@@ -1121,8 +1143,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_components_itemform_itemformprops",
-      "community": 60,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemformprops"
     },
     {
@@ -1132,8 +1154,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_components_itemform_iconmas",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "iconmas()"
     },
     {
@@ -1143,8 +1165,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_components_itemform_tipos",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "tipos"
     },
     {
@@ -1154,8 +1176,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_components_itemform_prioridades",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "prioridades"
     },
     {
@@ -1165,8 +1187,8 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_components_itemform_itemform",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "itemform()"
     },
     {
@@ -1176,8 +1198,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_itemlist",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemlist.tsx"
     },
     {
@@ -1187,8 +1209,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_components_itemlist_tipo_label",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "tipo_label"
     },
     {
@@ -1198,8 +1220,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_components_itemlist_prioridad_label",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "prioridad_label"
     },
     {
@@ -1209,8 +1231,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_components_itemlist_itemlistprops",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemlistprops"
     },
     {
@@ -1220,8 +1242,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_components_itemlist_iconcampana",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "iconcampana()"
     },
     {
@@ -1231,8 +1253,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_components_itemlist_iconchevron",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "iconchevron()"
     },
     {
@@ -1242,8 +1264,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_components_itemlist_parselista",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "parselista()"
     },
     {
@@ -1253,8 +1275,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_components_itemlist_itemcontent",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemcontent()"
     },
     {
@@ -1264,8 +1286,8 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "src_components_itemlist_grupo",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "grupo"
     },
     {
@@ -1275,8 +1297,8 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "src_components_itemlist_armargrupos",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "armargrupos()"
     },
     {
@@ -1286,8 +1308,8 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_components_itemlist_itemlist",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemlist()"
     },
     {
@@ -1341,8 +1363,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_nuevoitemsheetprops",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "nuevoitemsheetprops"
     },
     {
@@ -1407,8 +1429,8 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "src_components_nuevoitemsheet_nuevoitemsheet",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "nuevoitemsheet()"
     },
     {
@@ -1484,8 +1506,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_components_proposedactioncard_estadoaccion",
-      "community": 69,
-      "community_name": "ProposedActionCard.tsx",
+      "community": 60,
+      "community_name": "AssistantDrawer.tsx",
       "norm_label": "estadoaccion"
     },
     {
@@ -1627,8 +1649,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_components_recordatoriorow_iconrepetir",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "iconrepetir()"
     },
     {
@@ -1671,8 +1693,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncsettings",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "syncsettings.tsx"
     },
     {
@@ -1682,8 +1704,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncsettings_syncsettings",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "syncsettings()"
     },
     {
@@ -1693,8 +1715,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_syncstatus",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "syncstatus.tsx"
     },
     {
@@ -1704,8 +1726,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_components_syncstatus_syncstatus",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "syncstatus()"
     },
     {
@@ -1715,8 +1737,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_temacolorpicker",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temacolorpicker.tsx"
     },
     {
@@ -1726,8 +1748,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_components_temacolorpicker_temacolorswatches",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temacolorswatches()"
     },
     {
@@ -1737,8 +1759,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_temaopcionesmenu",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temaopcionesmenu.tsx"
     },
     {
@@ -1748,8 +1770,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_components_temaopcionesmenu_temaopcionesmenuprops",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temaopcionesmenuprops"
     },
     {
@@ -1759,8 +1781,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_components_temaopcionesmenu_iconocerrar",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "iconocerrar()"
     },
     {
@@ -1770,8 +1792,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_components_temaopcionesmenu_temaopcionesmenu",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temaopcionesmenu()"
     },
     {
@@ -1869,8 +1891,8 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_lib_authcontext_useauth",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "useauth()"
     },
     {
@@ -1880,8 +1902,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_accionespropuestas",
-      "community": 67,
-      "community_name": "accionesPropuestas.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "accionespropuestas.ts"
     },
     {
@@ -1891,8 +1913,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_accionespropuestas_tablaatexto",
-      "community": 67,
-      "community_name": "accionesPropuestas.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "tablaatexto()"
     },
     {
@@ -1902,8 +1924,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_lib_accionespropuestas_contenidodeaccioncrear",
-      "community": 67,
-      "community_name": "accionesPropuestas.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "contenidodeaccioncrear()"
     },
     {
@@ -1957,8 +1979,8 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "src_lib_accionespropuestas_borradoritem",
-      "community": 60,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "borradoritem"
     },
     {
@@ -1968,8 +1990,8 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "src_lib_accionespropuestas_borradordeaccioncrear",
-      "community": 67,
-      "community_name": "accionesPropuestas.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "borradordeaccioncrear()"
     },
     {
@@ -1979,8 +2001,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_borrarcuenta",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "borrarcuenta.ts"
     },
     {
@@ -1990,8 +2012,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_lib_borrarcuenta_confirmacionvalida",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "confirmacionvalida()"
     },
     {
@@ -2012,8 +2034,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_lib_borrarcuenta_limpiarstoragelocal",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "limpiarstoragelocal()"
     },
     {
@@ -2023,8 +2045,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "src_lib_borrarcuenta_mensajedeerror",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "mensajedeerror()"
     },
     {
@@ -2034,8 +2056,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_lib_borrarcuenta_resultadoborrado",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "resultadoborrado"
     },
     {
@@ -2045,8 +2067,8 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "src_lib_borrarcuenta_borrarcuenta",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "borrarcuenta()"
     },
     {
@@ -2067,8 +2089,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_buscar_test_item",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
       "norm_label": "item()"
     },
     {
@@ -2276,8 +2298,8 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "src_lib_buscar_filtraritems",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "filtraritems()"
     },
     {
@@ -2353,8 +2375,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_lib_db_organizadordb",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "organizadordb"
     },
     {
@@ -2617,9 +2639,207 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "src_lib_db_wipelocaldatabase",
-      "community": 49,
-      "community_name": "theme.ts",
+      "community": 35,
+      "community_name": "eslint-plugin-react-hooks",
       "norm_label": "wipelocaldatabase()"
+    },
+    {
+      "label": "exportarDatos.ts",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "exportardatos.ts"
+    },
+    {
+      "label": "UsuarioExport",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_usuarioexport",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "usuarioexport"
+    },
+    {
+      "label": "RecordatorioExport",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_recordatorioexport",
+      "community": 34,
+      "community_name": "buscar.test.ts",
+      "norm_label": "recordatorioexport"
+    },
+    {
+      "label": "ItemExport",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_itemexport",
+      "community": 34,
+      "community_name": "buscar.test.ts",
+      "norm_label": "itemexport"
+    },
+    {
+      "label": "TemaExport",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_temaexport",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "temaexport"
+    },
+    {
+      "label": "DatosExport",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_datosexport",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "datosexport"
+    },
+    {
+      "label": "aRecordatorioExport()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_arecordatorioexport",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "arecordatorioexport()"
+    },
+    {
+      "label": "aItemExport()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L72",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_aitemexport",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "aitemexport()"
+    },
+    {
+      "label": "recolectarDatosExport()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_recolectardatosexport",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "recolectardatosexport()"
+    },
+    {
+      "label": "fechaArchivo()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L133",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_fechaarchivo",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "fechaarchivo()"
+    },
+    {
+      "label": "fechaLegible()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_fechalegible",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "fechalegible()"
+    },
+    {
+      "label": "descargar()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L155",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_descargar",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "descargar()"
+    },
+    {
+      "label": "exportarJSON()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L167",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_exportarjson",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "exportarjson()"
+    },
+    {
+      "label": "CABECERAS_CSV",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L176",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_cabeceras_csv",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "cabeceras_csv"
+    },
+    {
+      "label": "celdaCSV()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L183",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_celdacsv",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "celdacsv()"
+    },
+    {
+      "label": "recordatoriosCSV()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L191",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_recordatorioscsv",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "recordatorioscsv()"
+    },
+    {
+      "label": "filaCSV()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L198",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_filacsv",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "filacsv()"
+    },
+    {
+      "label": "exportarCSV()",
+      "file_type": "code",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L209",
+      "_origin": "ast",
+      "id": "src_lib_exportardatos_exportarcsv",
+      "community": 55,
+      "community_name": "exportarDatos.ts",
+      "norm_label": "exportarcsv()"
     },
     {
       "label": "fechaLocal.test.ts",
@@ -2628,8 +2848,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_fechalocal_test",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 69,
+      "community_name": "ProposedActionCard.tsx",
       "norm_label": "fechalocal.test.ts"
     },
     {
@@ -2639,8 +2859,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_fechalocal_test_lunes_mediodia",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 69,
+      "community_name": "ProposedActionCard.tsx",
       "norm_label": "lunes_mediodia"
     },
     {
@@ -2650,8 +2870,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_fechalocal",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 69,
+      "community_name": "ProposedActionCard.tsx",
       "norm_label": "fechalocal.ts"
     },
     {
@@ -2683,8 +2903,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_lib_fechalocal_formatfechahora",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 69,
+      "community_name": "ProposedActionCard.tsx",
       "norm_label": "formatfechahora()"
     },
     {
@@ -2694,8 +2914,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_lib_fechalocal_recurrenciasinfecha",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 69,
+      "community_name": "ProposedActionCard.tsx",
       "norm_label": "recurrenciasinfecha()"
     },
     {
@@ -2705,8 +2925,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_lib_fechalocal_horadedatetimelocal",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 69,
+      "community_name": "ProposedActionCard.tsx",
       "norm_label": "horadedatetimelocal()"
     },
     {
@@ -2716,8 +2936,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_lib_fechalocal_proximafechaconhora",
-      "community": 70,
-      "community_name": "ItemForm",
+      "community": 69,
+      "community_name": "ProposedActionCard.tsx",
       "norm_label": "proximafechaconhora()"
     },
     {
@@ -2727,8 +2947,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_fotoitem",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 70,
+      "community_name": "ItemForm",
       "norm_label": "fotoitem.ts"
     },
     {
@@ -2738,8 +2958,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_lib_fotoitem_fotopreparada",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 70,
+      "community_name": "ItemForm",
       "norm_label": "fotopreparada"
     },
     {
@@ -2749,8 +2969,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_lib_fotoitem_prepararfoto",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 70,
+      "community_name": "ItemForm",
       "norm_label": "prepararfoto()"
     },
     {
@@ -2760,8 +2980,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_lib_fotoitem_leercomodataurl",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 70,
+      "community_name": "ItemForm",
       "norm_label": "leercomodataurl()"
     },
     {
@@ -2771,8 +2991,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_lib_fotoitem_extraeropts",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 70,
+      "community_name": "ItemForm",
       "norm_label": "extraeropts"
     },
     {
@@ -2782,8 +3002,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "src_lib_fotoitem_extraerdefoto",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 70,
+      "community_name": "ItemForm",
       "norm_label": "extraerdefoto()"
     },
     {
@@ -2793,8 +3013,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_itemsheet",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemsheet.ts"
     },
     {
@@ -2804,8 +3024,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetapi",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemsheetapi"
     },
     {
@@ -2815,8 +3035,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_lib_itemsheet_itemsheetcontext",
-      "community": 37,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemsheetcontext"
     },
     {
@@ -2859,8 +3079,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_notificacionrecordatorio_test",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "notificacionrecordatorio.test.ts"
     },
     {
@@ -2870,8 +3090,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_lib_notificacionrecordatorio_test_recsimple",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "recsimple"
     },
     {
@@ -2881,8 +3101,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_notificacionrecordatorio_test_itemtexto",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "itemtexto"
     },
     {
@@ -2892,8 +3112,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_notificacionrecordatorio",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "notificacionrecordatorio.ts"
     },
     {
@@ -2914,8 +3134,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_lib_notificacionrecordatorio_contenidonotificacion",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "contenidonotificacion"
     },
     {
@@ -2925,8 +3145,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_lib_notificacionrecordatorio_acciones_posponer",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "acciones_posponer"
     },
     {
@@ -3244,8 +3464,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_lib_recurrencia_recurrencia",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "recurrencia"
     },
     {
@@ -3255,8 +3475,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_lib_recurrencia_recurrencias",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recurrencias"
     },
     {
@@ -3266,8 +3486,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_lib_recurrencia_recurrencia_label",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "recurrencia_label"
     },
     {
@@ -3288,8 +3508,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_lib_recurrencia_dias_orden",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "dias_orden"
     },
     {
@@ -3299,8 +3519,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_lib_recurrencia_dia_corto",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "dia_corto"
     },
     {
@@ -3310,8 +3530,8 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_lib_recurrencia_dia_largo",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "dia_largo"
     },
     {
@@ -3332,8 +3552,8 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "src_lib_recurrencia_etiquetadias",
-      "community": 69,
-      "community_name": "ProposedActionCard.tsx",
+      "community": 66,
+      "community_name": "lib/recurrencia.ts",
       "norm_label": "etiquetadias()"
     },
     {
@@ -3706,8 +3926,8 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_lib_repo_mapanombrestema",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "mapanombrestema()"
     },
     {
@@ -3838,8 +4058,8 @@
       "source_location": "L439",
       "_origin": "ast",
       "id": "src_lib_repo_marcarhecho",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 47,
+      "community_name": "recordatorios.ts",
       "norm_label": "marcarhecho()"
     },
     {
@@ -4014,8 +4234,8 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "src_lib_sync_emitlocalchange",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "emitlocalchange()"
     },
     {
@@ -4025,8 +4245,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_lib_sync_syncstate",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "syncstate"
     },
     {
@@ -4069,8 +4289,8 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "src_lib_sync_getsyncstate",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "getsyncstate()"
     },
     {
@@ -4080,8 +4300,8 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "src_lib_sync_subscribesync",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "subscribesync()"
     },
     {
@@ -4234,8 +4454,8 @@
       "source_location": "L431",
       "_origin": "ast",
       "id": "src_lib_sync_forcesyncnow",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "forcesyncnow()"
     },
     {
@@ -4531,8 +4751,8 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_lib_synccore_formathacecuanto",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "formathacecuanto()"
     },
     {
@@ -4575,8 +4795,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_tabla_grilla",
-      "community": 66,
-      "community_name": "lib/recurrencia.ts",
+      "community": 44,
+      "community_name": "AppShell.tsx",
       "norm_label": "grilla"
     },
     {
@@ -4729,8 +4949,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_temacolores_test",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temacolores.test.ts"
     },
     {
@@ -4740,8 +4960,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_lib_temacolores_test_tema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "tema()"
     },
     {
@@ -4751,8 +4971,8 @@
       "source_location": "L123",
       "_origin": "ast",
       "id": "src_lib_temacolores_test_creartemafake",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "creartemafake()"
     },
     {
@@ -4762,8 +4982,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_temacolores",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temacolores.ts"
     },
     {
@@ -4773,8 +4993,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_lib_temacolores_colores_tema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "colores_tema"
     },
     {
@@ -4784,8 +5004,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_lib_temacolores_temacolor",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temacolor"
     },
     {
@@ -4795,8 +5015,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_lib_temacolores_tema_color_label",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "tema_color_label"
     },
     {
@@ -4806,8 +5026,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_lib_temacolores_escolortema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "escolortema()"
     },
     {
@@ -4817,8 +5037,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_lib_temacolores_hashtexto",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "hashtexto()"
     },
     {
@@ -4828,8 +5048,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_lib_temacolores_temacolorref",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temacolorref"
     },
     {
@@ -4839,8 +5059,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "src_lib_temacolores_siguientecolortema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "siguientecolortema()"
     },
     {
@@ -4850,8 +5070,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_lib_temacolores_encontrartemapornombre",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "encontrartemapornombre()"
     },
     {
@@ -4861,8 +5081,8 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "src_lib_temacolores_colordetema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "colordetema()"
     },
     {
@@ -4872,8 +5092,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_temacolores_temacolorvar",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "temacolorvar()"
     },
     {
@@ -4916,8 +5136,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_lib_theme_theme",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 38,
+      "community_name": "ItemForm.tsx",
       "norm_label": "theme"
     },
     {
@@ -5037,8 +5257,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_useaienabled",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "useaienabled.ts"
     },
     {
@@ -5048,8 +5268,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_useaienabled_readaienabledcache",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "readaienabledcache()"
     },
     {
@@ -5059,8 +5279,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_lib_useaienabled_writeaienabledcache",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "writeaienabledcache()"
     },
     {
@@ -5070,8 +5290,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_lib_useaienabled_useaienabled",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 13,
+      "community_name": "Documentacion raiz / planes / auth context",
       "norm_label": "useaienabled()"
     },
     {
@@ -5268,8 +5488,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_uselocalreminderwatcher",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 68,
+      "community_name": "useLocalReminderWatcher.ts",
       "norm_label": "uselocalreminderwatcher.ts"
     },
     {
@@ -5312,8 +5532,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "usesyncstatus.ts"
     },
     {
@@ -5323,8 +5543,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_usesyncstatus_usesyncstatus",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "usesyncstatus()"
     },
     {
@@ -5455,8 +5675,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_itemspage",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "itemspage.tsx"
     },
     {
@@ -5466,8 +5686,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtrotipo",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "filtrotipo"
     },
     {
@@ -5477,8 +5697,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_pages_itemspage_filtros_tipo",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "filtros_tipo"
     },
     {
@@ -5488,8 +5708,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_pages_itemspage_indexarrecordatorios",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "indexarrecordatorios()"
     },
     {
@@ -5510,8 +5730,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_pages_reminderspage",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 47,
+      "community_name": "recordatorios.ts",
       "norm_label": "reminderspage.tsx"
     },
     {
@@ -5521,8 +5741,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtro",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 47,
+      "community_name": "recordatorios.ts",
       "norm_label": "filtro"
     },
     {
@@ -5532,8 +5752,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_pages_reminderspage_orden_grupos",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 47,
+      "community_name": "recordatorios.ts",
       "norm_label": "orden_grupos"
     },
     {
@@ -5543,8 +5763,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_pages_reminderspage_titulo_grupo",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 47,
+      "community_name": "recordatorios.ts",
       "norm_label": "titulo_grupo"
     },
     {
@@ -5554,8 +5774,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_pages_reminderspage_filtros",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 47,
+      "community_name": "recordatorios.ts",
       "norm_label": "filtros"
     },
     {
@@ -5565,8 +5785,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_pages_reminderspage_pasafiltro",
-      "community": 53,
-      "community_name": "HoyPage.tsx",
+      "community": 47,
+      "community_name": "recordatorios.ts",
       "norm_label": "pasafiltro()"
     },
     {
@@ -5650,7 +5870,7 @@
       "label": "TEMAS_UI",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "src_pages_settingspage_temas_ui",
       "community": 50,
@@ -5661,7 +5881,7 @@
       "label": "Apariencia()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L16",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "src_pages_settingspage_apariencia",
       "community": 38,
@@ -5672,22 +5892,22 @@
       "label": "NombrePerfil()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L60",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "src_pages_settingspage_nombreperfil",
-      "community": 22,
-      "community_name": "Service worker push",
+      "community": 50,
+      "community_name": "syncCore.ts",
       "norm_label": "nombreperfil()"
     },
     {
       "label": "SettingsPage()",
       "file_type": "code",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L136",
+      "source_location": "L137",
       "_origin": "ast",
       "id": "src_pages_settingspage_settingspage",
-      "community": 50,
-      "community_name": "syncCore.ts",
+      "community": 5,
+      "community_name": "Recordatorios y watcher local",
       "norm_label": "settingspage()"
     },
     {
@@ -5741,8 +5961,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_types_assistant_accioncrear",
-      "community": 60,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "accioncrear"
     },
     {
@@ -5752,8 +5972,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_types_assistant_accioneditar",
-      "community": 60,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "accioneditar"
     },
     {
@@ -5862,8 +6082,8 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "src_types_assistant_photoextractresponse",
-      "community": 13,
-      "community_name": "Documentacion raiz / planes / auth context",
+      "community": 70,
+      "community_name": "ItemForm",
       "norm_label": "photoextractresponse"
     },
     {
@@ -5873,8 +6093,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_types_database",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "database.ts"
     },
     {
@@ -5884,8 +6104,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_types_database_tipoitem",
-      "community": 60,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "tipoitem"
     },
     {
@@ -5895,8 +6115,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_types_database_prioridad",
-      "community": 60,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "prioridad"
     },
     {
@@ -5906,8 +6126,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_types_database_origenitem",
-      "community": 60,
-      "community_name": "AssistantDrawer.tsx",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "origenitem"
     },
     {
@@ -5917,8 +6137,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_types_database_estadorecordatorio",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "estadorecordatorio"
     },
     {
@@ -5928,8 +6148,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_types_database_tema",
-      "community": 0,
-      "community_name": "Motor de sincronizacion offline (db/outbox/sync)",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "tema"
     },
     {
@@ -5939,8 +6159,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_types_database_temainsert",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "temainsert"
     },
     {
@@ -5950,8 +6170,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_types_database_linealista",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "linealista"
     },
     {
@@ -5961,8 +6181,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_types_database_item",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "item"
     },
     {
@@ -5972,8 +6192,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_types_database_iteminsert",
-      "community": 67,
-      "community_name": "accionesPropuestas.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "iteminsert"
     },
     {
@@ -5983,8 +6203,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_types_database_recordatorio",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 34,
+      "community_name": "buscar.test.ts",
       "norm_label": "recordatorio"
     },
     {
@@ -5994,8 +6214,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_types_database_recordatorioinsert",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "recordatorioinsert"
     },
     {
@@ -6016,8 +6236,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_types_database_pushsubscriptionrow",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "pushsubscriptionrow"
     },
     {
@@ -6027,8 +6247,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_types_database_useraisettings",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "useraisettings"
     },
     {
@@ -6038,8 +6258,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_types_database_aiusage",
-      "community": 47,
-      "community_name": "recordatorios.ts",
+      "community": 54,
+      "community_name": "ItemList.tsx",
       "norm_label": "aiusage"
     },
     {
@@ -9693,9 +9913,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 71,
       "norm_label": "notification tag dedup between local watcher and cron push",
-      "community_name": "reminderScheduling.ts",
+      "community_name": "Web Push via VAPID Keys + pg_cron",
       "id": "plan_offline_reminder_dedup_tag"
     },
     {
@@ -9707,9 +9927,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 71,
       "norm_label": "decision: no runtime caching of supabase data in service worker",
-      "community_name": "reminderScheduling.ts",
+      "community_name": "Web Push via VAPID Keys + pg_cron",
       "id": "plan_offline_sw_no_data_cache"
     },
     {
@@ -9903,9 +10123,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 71,
       "norm_label": "web push via vapid keys + pg_cron",
-      "community_name": "reminderScheduling.ts",
+      "community_name": "Web Push via VAPID Keys + pg_cron",
       "id": "plan_organizador_vapid_push"
     },
     {
@@ -10071,9 +10291,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 71,
       "norm_label": "sw.ts (service worker)",
-      "community_name": "reminderScheduling.ts",
+      "community_name": "Web Push via VAPID Keys + pg_cron",
       "id": "src_sw_sw"
     },
     {
@@ -10113,9 +10333,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 71,
       "norm_label": "send-reminder-notifications edge function handler",
-      "community_name": "reminderScheduling.ts",
+      "community_name": "Web Push via VAPID Keys + pg_cron",
       "id": "supabase_functions_send_reminder_notifications_index_handlesend"
     },
     {
@@ -10141,9 +10361,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 71,
       "norm_label": "push_subscriptions migration",
-      "community_name": "reminderScheduling.ts",
+      "community_name": "Web Push via VAPID Keys + pg_cron",
       "id": "supabase_migrations_20260721181500_push_subscriptions_pushsubscriptions"
     },
     {
@@ -12650,6 +12870,113 @@
       "_origin": "ast",
       "source": "src_pages_settingspage",
       "target": "src_components_borrarcuenta_borrarcuenta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_exportardatos",
+      "target": "src_components_exportardatos_exportardatos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_exportardatos",
+      "target": "src_lib_authcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_exportardatos",
+      "target": "src_lib_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_exportardatos",
+      "target": "src_lib_exportardatos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_exportardatos",
+      "target": "src_lib_exportardatos_exportarcsv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_exportardatos",
+      "target": "src_lib_exportardatos_exportarjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/SettingsPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_settingspage",
+      "target": "src_components_exportardatos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/ExportarDatos.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_exportardatos_exportardatos",
+      "target": "src_lib_authcontext_useauth"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/SettingsPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_pages_settingspage",
+      "target": "src_components_exportardatos_exportardatos",
       "confidence_score": 1.0
     },
     {
@@ -15556,7 +15883,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -15612,7 +15939,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -16218,7 +16545,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -16276,7 +16603,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -17053,7 +17380,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L61",
+      "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_nombreperfil",
@@ -17065,7 +17392,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L137",
+      "source_location": "L138",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_settingspage",
@@ -18014,6 +18341,30 @@
       "context": "argument",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L214",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarcsv",
+      "target": "src_lib_buscar_test_item"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_recolectardatosexport",
+      "target": "src_lib_buscar_test_item"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "src/pages/ItemsPage.tsx",
       "source_location": "L208",
       "weight": 1.0,
@@ -18742,6 +19093,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_db",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
       "source_location": "L34",
       "weight": 1.0,
@@ -19138,6 +19501,30 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_db_loadtemasfromcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_recolectardatosexport",
+      "target": "src_lib_db_loadtemasfromcache"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/lib/repo.ts",
       "source_location": "L17",
       "weight": 1.0,
@@ -19217,6 +19604,30 @@
       "_origin": "ast",
       "source": "src_pages_itemspage_itemspage",
       "target": "src_lib_db_loadtemasfromcache"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_db_loaditemsfromcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L94",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_recolectardatosexport",
+      "target": "src_lib_db_loaditemsfromcache"
     },
     {
       "relation": "imports",
@@ -19337,6 +19748,30 @@
       "_origin": "ast",
       "source": "src_pages_reminderspage_reminderspage",
       "target": "src_lib_db_loaditemsfromcache"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_db_loadrecordatoriosfromcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_recolectardatosexport",
+      "target": "src_lib_db_loadrecordatoriosfromcache"
     },
     {
       "relation": "imports",
@@ -20044,6 +20479,481 @@
       "_origin": "ast",
       "source": "src_lib_sync_reconcile",
       "target": "src_lib_db_setmeta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_aitemexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_arecordatorioexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L176",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_cabeceras_csv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L183",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_celdacsv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_datosexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_descargar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L209",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_exportarcsv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L167",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_exportarjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_fechaarchivo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L143",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_fechalegible",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L198",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_filacsv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_itemexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_recolectardatosexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_recordatorioexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L191",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_recordatorioscsv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_temaexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_exportardatos_usuarioexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_notificacionrecordatorio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_notificacionrecordatorio_resumencontenido",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_recurrencia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_lib_recurrencia_marcarecurrencia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_types_database",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_types_database_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos",
+      "target": "src_types_database_recordatorio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_recordatorioexport",
+      "target": "src_types_database_recordatorio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_itemexport",
+      "target": "src_types_database_item",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_aitemexport",
+      "target": "src_lib_exportardatos_arecordatorioexport",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_arecordatorioexport",
+      "target": "src_lib_recurrencia_marcarecurrencia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_aitemexport",
+      "target": "src_lib_notificacionrecordatorio_resumencontenido",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_recolectardatosexport",
+      "target": "src_lib_exportardatos_aitemexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L210",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarcsv",
+      "target": "src_lib_exportardatos_recolectardatosexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L168",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarjson",
+      "target": "src_lib_exportardatos_recolectardatosexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L225",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarcsv",
+      "target": "src_lib_exportardatos_fechaarchivo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L171",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarjson",
+      "target": "src_lib_exportardatos_fechaarchivo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L204",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_filacsv",
+      "target": "src_lib_exportardatos_fechalegible",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L194",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_recordatorioscsv",
+      "target": "src_lib_exportardatos_fechalegible",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L223",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarcsv",
+      "target": "src_lib_exportardatos_descargar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L169",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarjson",
+      "target": "src_lib_exportardatos_descargar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L219",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarcsv",
+      "target": "src_lib_exportardatos_celdacsv",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L205",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_filacsv",
+      "target": "src_lib_exportardatos_recordatorioscsv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/exportarDatos.ts",
+      "source_location": "L214",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_exportardatos_exportarcsv",
+      "target": "src_lib_exportardatos_filacsv",
       "confidence_score": 1.0
     },
     {
@@ -26680,7 +27590,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -26692,7 +27602,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -26788,7 +27698,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -26800,7 +27710,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_apariencia",
@@ -26824,7 +27734,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -26836,7 +27746,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_apariencia",
@@ -26893,7 +27803,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -26917,7 +27827,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -26929,7 +27839,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -27253,7 +28163,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -27265,7 +28175,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -27278,7 +28188,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L62",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage_nombreperfil",
@@ -27786,7 +28696,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -27797,7 +28707,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -27808,7 +28718,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L136",
+      "source_location": "L137",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -27819,7 +28729,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/SettingsPage.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_pages_settingspage",
@@ -33103,5 +34013,5 @@
       "source_file": "PLAN_ORGANIZADOR.md"
     }
   ],
-  "built_at_commit": "f625cb2d7e966ec69a9eb9ba6777d5be543b7b5a"
+  "built_at_commit": "64651f60ff80acf15226b71fb792f9588d825063"
 }
