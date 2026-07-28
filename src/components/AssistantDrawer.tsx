@@ -15,14 +15,22 @@ import {
   updateItem,
   upsertRecordatorio,
 } from '../lib/repo'
-import { aplicarAccionCrear } from '../lib/accionesPropuestas'
+import {
+  aplicarAccionCrear,
+  borradorDeAccionCrear,
+  borradorDeAccionEditar,
+  datosFinalesDeItem,
+  lineasConCambios,
+  lineasDeItem,
+  type BorradorItem,
+} from '../lib/accionesPropuestas'
 import { loadItemsFromCache, loadTemasFromCache } from '../lib/db'
 import { requestSync } from '../lib/sync'
 import { useSyncStatus } from '../lib/useSyncStatus'
 import { datetimeLocalToIso, isoToDatetimeLocal, proximaFechaConHora } from '../lib/recordatorios'
 import { diasUtcALocales, prepararRecurrencia } from '../lib/recurrencia'
 import { ProposedActionCard, type EstadoAccion, type PendingAction } from './ProposedActionCard'
-import type { Item, ItemInsert, LineaLista, Tema } from '../types/database'
+import type { Item, ItemInsert, Recordatorio, Tema } from '../types/database'
 import type {
   AccionPropuesta,
   AssistantResponse,
@@ -128,7 +136,22 @@ function AvisoSinConexion() {
   )
 }
 
-export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function AssistantDrawer({
+  open,
+  onClose,
+  onEditarPropuesta,
+}: {
+  open: boolean
+  onClose: () => void
+  /** "Editar antes de confirmar": abre la propuesta en el sheet de ítem, con el
+   *  `ItemForm` de siempre ya cargado. Lo provee el shell, que es el que tiene
+   *  el sheet — ver `abrirBorradorPropuesto` en AppShell. */
+  onEditarPropuesta?: (
+    borrador: BorradorItem,
+    item: Item | null,
+    onGuardado: (guardado: Item) => void,
+  ) => void
+}) {
   const { user } = useAuth()
   const aiEnabled = useAiEnabled()
   const { online } = useSyncStatus()
@@ -261,6 +284,10 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
             estado: a.estado,
             item_id: a.item_id,
             error: a.error,
+            // Si el usuario la ajustó en el form antes de guardar, el modelo
+            // tiene que enterarse de que lo aplicado NO son sus `args`.
+            ajustada: a.ajustada,
+            datos_finales: a.datos_finales,
           })),
         })),
         // Hora local del usuario para que Gemini resuelva "mañana a las 9", etc.
@@ -365,37 +392,15 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
       if ('tema' in c) patch.tema_id = await resolveTemaId(c.tema)
       if (c.contenido) patch.contenido = { texto: c.contenido }
 
-      // Edición de líneas de lista: partimos del contenido actual del item.
+      // Edición de líneas de lista: partimos del contenido actual del item. El
+      // cálculo vive en `lib/accionesPropuestas` porque "editar antes de
+      // confirmar" tiene que precargar el form con EXACTAMENTE lo mismo que se
+      // guardaría acá; con dos copias, revisar la propuesta habría podido
+      // mostrar una lista distinta de la que se iba a escribir.
       const editaLineas =
         c.lineas_agregar || c.lineas_quitar || c.lineas_marcar_hechas || c.lineas_desmarcar
       if (editaLineas) {
-        const norm = (s: string) => s.trim().toLowerCase()
-        let lineas: LineaLista[] = Array.isArray(current?.contenido.items)
-          ? (current!.contenido.items as LineaLista[]).map((l) => ({
-              id: typeof l.id === 'string' ? l.id : crypto.randomUUID(),
-              texto: String(l.texto ?? ''),
-              hecho: Boolean(l.hecho),
-            }))
-          : []
-        if (c.lineas_quitar) {
-          const rm = new Set(c.lineas_quitar.map(norm))
-          lineas = lineas.filter((l) => !rm.has(norm(l.texto)))
-        }
-        if (c.lineas_marcar_hechas) {
-          const mk = new Set(c.lineas_marcar_hechas.map(norm))
-          lineas = lineas.map((l) => (mk.has(norm(l.texto)) ? { ...l, hecho: true } : l))
-        }
-        if (c.lineas_desmarcar) {
-          const dm = new Set(c.lineas_desmarcar.map(norm))
-          lineas = lineas.map((l) => (dm.has(norm(l.texto)) ? { ...l, hecho: false } : l))
-        }
-        if (c.lineas_agregar) {
-          lineas = [
-            ...lineas,
-            ...c.lineas_agregar.map((t) => ({ id: crypto.randomUUID(), texto: t, hecho: false })),
-          ]
-        }
-        patch.contenido = { items: lineas }
+        patch.contenido = { items: lineasConCambios(lineasDeItem(current), c) }
       }
 
       if (Object.keys(patch).length > 0) {
@@ -493,7 +498,12 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
   function marcarAccion(
     index: number,
     estado: EstadoAccionHistorial,
-    extra?: { item_id?: string; error?: string },
+    extra?: {
+      item_id?: string
+      error?: string
+      ajustada?: boolean
+      datos_finales?: Record<string, unknown>
+    },
   ) {
     setMessages((prev) =>
       prev.map((m, mi) =>
@@ -534,6 +544,89 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
       marcarAccion(index, 'error', { error: msg })
       return false
     }
+  }
+
+  // "Editar antes de confirmar": la propuesta se abre en el `ItemForm` de
+  // siempre, ya cargada, y el usuario ajusta lo que quiera antes de guardar.
+  //
+  // Lo que se guarda desde ahí NO pasa por `applyAction`: el form escribe
+  // directo con `createItem`/`updateItem`, igual que cualquier item hecho a
+  // mano. Es a propósito — "confirmar la propuesta tal cual" y "guardé esto que
+  // revisé y corregí" son dos cosas distintas, y la segunda ya no necesita que
+  // nadie interprete los args del modelo.
+  async function editOne(index: number) {
+    const target = pendingRef.current[index]
+    if (!target || target.estado !== 'idle' || !onEditarPropuesta) return
+    const accion = target.accion
+    if (accion.tipo_accion === 'delete') return // un borrado no se edita: es sí o no
+
+    setError(null)
+
+    if (accion.tipo_accion === 'create') {
+      onEditarPropuesta(borradorDeAccionCrear(accion, 'texto'), null, (guardado) => {
+        void resolverConAjustes(index, guardado)
+      })
+      return
+    }
+
+    // Update: el borrador es el item REAL con los cambios propuestos encima, y
+    // el form abre en modo edición sobre ese mismo item.
+    const item = items.find((it) => it.id === accion.item_id)
+    if (!item) {
+      // Sin el item no se puede abrir una edición: abrir el form igual lo
+      // trataría como creación y duplicaría lo que se quería cambiar.
+      setError('No encuentro ese item para editarlo. Probá confirmar la propuesta o pedile al asistente que lo busque de nuevo.')
+      return
+    }
+    const temaNombre = item.tema_id ? (temas.find((t) => t.id === item.tema_id)?.nombre ?? null) : null
+    // El recordatorio actual hace falta para completar lo que los cambios NO
+    // traen: "movelo a las 10" no puede perder el "todos los días" que ya tenía.
+    const existente = await getRecordatorioForItem(item.id).catch(() => null)
+
+    onEditarPropuesta(
+      borradorDeAccionEditar(accion, item, temaNombre, existente),
+      item,
+      (guardado) => {
+        void resolverConAjustes(index, guardado)
+      },
+    )
+  }
+
+  // El form guardó: la tarjeta queda aplicada y el historial se entera de que lo
+  // que existe son los datos FINALES, no los que propuso el modelo (sin esto,
+  // en el turno siguiente hablaría de un item que no es el que hay).
+  async function resolverConAjustes(index: number, guardado: Item) {
+    updatePending((prev) =>
+      prev.map((p, i) => (i === index ? { ...p, estado: 'done', ajustada: true } : p)),
+    )
+
+    // Se releen del espejo local en vez de adivinarse: el tema puede haberse
+    // creado recién dentro del form, y el recordatorio se guarda aparte del item.
+    let temaNombre: string | null = null
+    let recordatorio: Recordatorio | null = null
+    try {
+      const [temasFrescos, rec] = await Promise.all([
+        loadTemasFromCache(),
+        getRecordatorioForItem(guardado.id),
+      ])
+      temaNombre = guardado.tema_id
+        ? (temasFrescos.find((t) => t.id === guardado.tema_id)?.nombre ?? null)
+        : null
+      recordatorio = rec
+    } catch {
+      /* lectura local best-effort: sin esto el desenlace igual se informa */
+    }
+
+    marcarAccion(index, 'aplicada', {
+      item_id: guardado.id,
+      ajustada: true,
+      datos_finales: datosFinalesDeItem(guardado, temaNombre, recordatorio),
+    })
+    setMessages((prev) => [
+      ...prev,
+      { role: 'assistant', text: 'Listo, lo guardé con tus ajustes.', solo_ui: true },
+    ])
+    await loadData()
   }
 
   // Cancelar también deja rastro (bug C-1: antes no agregaba NADA, ni al chat ni
@@ -630,9 +723,13 @@ export function AssistantDrawer({ open, onClose }: { open: boolean; onClose: () 
                   accion={p.accion}
                   estado={p.estado}
                   errorMsg={p.error}
+                  ajustada={p.ajustada}
                   items={items}
                   onConfirm={() => confirmOne(i)}
                   onCancel={() => cancelOne(i)}
+                  // Sin el puente del shell no hay dónde abrir el form: la
+                  // tarjeta se queda con Confirmar/Cancelar y nada se rompe.
+                  onEdit={onEditarPropuesta ? () => void editOne(i) : undefined}
                 />
               ))}
             </div>

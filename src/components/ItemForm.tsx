@@ -64,12 +64,18 @@ interface ItemFormProps {
   userId: string
   temas: Tema[]
   editingItem: Item | null
-  /** Item propuesto por la IA y todavía no guardado, para arrancar el form con
-   *  sus campos ya cargados ("editar antes de guardar" de la captura por foto,
-   *  ítem 14). Se ignora si hay `editingItem`: editar un item real manda.
-   *  Sigue siendo una CREACIÓN — un borrador no tiene id ni existe en la base. */
+  /** Propuesta de la IA todavía no guardada, para arrancar el form con sus
+   *  campos ya cargados ("editar antes de guardar" de la foto, "editar antes de
+   *  confirmar" del asistente).
+   *
+   *  Sin `editingItem` es una CREACIÓN: el borrador no tiene id ni existe en la
+   *  base. CON `editingItem` es una edición y el borrador describe cómo va a
+   *  quedar ese item (el actual + los cambios propuestos encima): manda sobre lo
+   *  que está guardado, porque eso es justamente lo que hay que revisar. */
   borrador?: BorradorItem | null
-  onSaved: () => void
+  /** Recibe el item ya guardado (creado o actualizado): el asistente lo necesita
+   *  para contarle al modelo con qué datos terminó la acción. */
+  onSaved: (item: Item) => void
   onCancel: () => void
   onTemaCreated: (tema: Tema) => void
   /** Un tema cambió (hoy: su color). Se avisa aparte de onSaved porque el
@@ -137,7 +143,42 @@ export function ItemForm({
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (editingItem) {
+    // El borrador manda sobre el item guardado cuando viene: describe cómo va a
+    // quedar el item (creación nueva, o item existente + los cambios que propuso
+    // la IA), y revisar ESO es justamente para lo que se abre el form.
+    if (borrador) {
+      // Mismos campos que una creación/edición a mano — el form no sabe ni le
+      // importa de dónde salieron —, sólo que ya vienen llenos y el usuario
+      // corrige lo que quiera antes de guardar.
+      setTipo(borrador.tipo)
+      setPrioridad(borrador.prioridad ?? '')
+      setContenidoTexto(borrador.contenidoTexto)
+      setLineas(borrador.lineas.map((l) => ({ ...l })))
+      // La propuesta trae la tabla aplanada a texto con pipes; acá se abre como
+      // grilla y se guarda estructurada, igual que cualquier otra.
+      const grilla = borrador.tipo === 'tabla' ? grillaDesdeTexto(borrador.contenidoTexto) : null
+      setColumnas(grilla?.columnas ?? [])
+      setFilas(grilla ? aFilasEditables(grilla.filas) : [])
+
+      // El tema viene por nombre: si ya existe se selecciona (sin duplicarlo), y
+      // si no, se precarga el flujo de "crear tema nuevo" con el nombre puesto.
+      // Es la misma resolución que hace el asistente al confirmar una acción,
+      // pero acá pasa por el form para que el usuario pueda cambiarlo.
+      const existente = borrador.temaNombre
+        ? temas.find((t) => t.nombre.toLowerCase() === borrador.temaNombre!.toLowerCase())
+        : undefined
+      if (existente) {
+        setTemaId(existente.id)
+        setNuevoTemaNombre('')
+      } else if (borrador.temaNombre) {
+        setTemaId('new')
+        setNuevoTemaNombre(borrador.temaNombre)
+        setNuevoTemaColor(siguienteColorTema(temas))
+      } else {
+        setTemaId('')
+        setNuevoTemaNombre('')
+      }
+    } else if (editingItem) {
       setTipo(editingItem.tipo)
       setTemaId(editingItem.tema_id ?? '')
       setPrioridad(editingItem.prioridad ?? '')
@@ -163,41 +204,7 @@ export function ItemForm({
         editingItem.tipo === 'tabla' ? grillaDesdeContenido(editingItem.contenido) : null
       setColumnas(grilla?.columnas ?? [])
       setFilas(grilla ? aFilasEditables(grilla.filas) : [])
-    } else if (borrador) {
-      // Creación arrancada desde una propuesta de la IA (hoy: la foto). Mismos
-      // campos que una creación a mano — el form no sabe ni le importa de dónde
-      // salieron —, sólo que ya vienen llenos y el usuario corrige lo que quiera
-      // antes de guardar.
-      setTipo(borrador.tipo)
-      setPrioridad(borrador.prioridad ?? '')
-      setContenidoTexto(borrador.contenidoTexto)
-      setLineas(
-        borrador.lineas.map((texto) => ({ id: crypto.randomUUID(), texto, hecho: false })),
-      )
-      // La propuesta trae la tabla aplanada a texto con pipes; acá se abre como
-      // grilla y se guarda estructurada, igual que cualquier otra.
-      const grilla = borrador.tipo === 'tabla' ? grillaDesdeTexto(borrador.contenidoTexto) : null
-      setColumnas(grilla?.columnas ?? [])
-      setFilas(grilla ? aFilasEditables(grilla.filas) : [])
-
-      // El tema viene por nombre: si ya existe se selecciona (sin duplicarlo), y
-      // si no, se precarga el flujo de "crear tema nuevo" con el nombre puesto.
-      // Es la misma resolución que hace el asistente al confirmar una acción,
-      // pero acá pasa por el form para que el usuario pueda cambiarlo.
-      const existente = borrador.temaNombre
-        ? temas.find((t) => t.nombre.toLowerCase() === borrador.temaNombre!.toLowerCase())
-        : undefined
-      if (existente) {
-        setTemaId(existente.id)
-        setNuevoTemaNombre('')
-      } else if (borrador.temaNombre) {
-        setTemaId('new')
-        setNuevoTemaNombre(borrador.temaNombre)
-        setNuevoTemaColor(siguienteColorTema(temas))
-      } else {
-        setTemaId('')
-        setNuevoTemaNombre('')
-      }
+      setNuevoTemaNombre('')
     } else {
       setTipo('nota')
       setTemaId('')
@@ -206,14 +213,12 @@ export function ItemForm({
       setLineas([])
       setColumnas([])
       setFilas([])
+      setNuevoTemaNombre('')
     }
-    // El nombre de tema nuevo lo fija la rama del borrador; en los otros dos
-    // casos se limpia.
-    if (!borrador || editingItem) setNuevoTemaNombre('')
     setError(null)
 
-    // Recordatorio: reseteamos primero y, si estamos editando, cargamos el que
-    // exista para prellenar el toggle y la fecha.
+    // Recordatorio: reseteamos primero, y después lo llena el que corresponda —
+    // el que trae el borrador, o el que ya tenga el item.
     setConRecordatorio(false)
     setRecordatorioFecha('')
     setRecordatorioHora('')
@@ -221,13 +226,32 @@ export function ItemForm({
     setRecordatorioDias([])
     setTeniaRecordatorio(false)
 
+    // Un borrador puede decir tres cosas distintas sobre el recordatorio:
+    //   objeto    → éste es el recordatorio propuesto, se prellena.
+    //   null      → la propuesta lo quita (o el item nuevo no lleva ninguno):
+    //               el toggle queda apagado a propósito.
+    //   undefined → la propuesta no lo toca; si hay item, vale el suyo.
+    const borradorFijaRecordatorio = Boolean(borrador) && borrador!.recordatorio !== undefined
+    if (borrador?.recordatorio) {
+      const { fechaLocal, recurrencia, dias } = borrador.recordatorio
+      setConRecordatorio(true)
+      setRecordatorioFecha(fechaLocal)
+      setRecordatorioHora(horaDeDatetimeLocal(fechaLocal))
+      setRecordatorioRecurrencia(recurrencia ?? '')
+      setRecordatorioDias(dias)
+    }
+
     if (editingItem) {
       let cancelled = false
       getRecordatorioForItem(editingItem.id)
         .then((rec) => {
           if (cancelled || !rec) return
-          setConRecordatorio(true)
+          // `teniaRecordatorio` se marca SIEMPRE que el item ya tenga uno,
+          // incluso si el borrador lo quita: es lo que hace que al guardar con
+          // el toggle apagado el recordatorio se borre de verdad.
           setTeniaRecordatorio(true)
+          if (borradorFijaRecordatorio) return
+          setConRecordatorio(true)
           const local = isoToDatetimeLocal(rec.fecha_hora)
           setRecordatorioFecha(local)
           // La hora se prellena siempre, no sólo cuando la recurrencia guardada
@@ -260,6 +284,26 @@ export function ItemForm({
     // cuando el borrador cambia, que es cuando esta resolución tiene que rehacerse.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingItem, borrador])
+
+  // El borrador trae el tema por NOMBRE, y resolverlo contra los que ya existen
+  // necesita la lista cargada. Cuando el sheet se monta recién al abrir la
+  // propuesta —que es lo que pasa con "Editar antes de confirmar": hasta ese
+  // momento el sheet ni existía— la lista todavía viene vacía, así que el efecto
+  // de arriba cae en "+ crear tema nuevo" con un nombre que en realidad YA
+  // existe, y guardar habría duplicado el tema.
+  //
+  // Esto lo reengancha en cuanto la lista llega, y sólo en ese caso exacto:
+  // seguimos en modo "tema nuevo" con el nombre tal cual lo propuso la IA. Si el
+  // usuario ya lo cambió, el nombre no coincide y acá no pasa nada — su elección
+  // manda.
+  useEffect(() => {
+    const propuesto = borrador?.temaNombre
+    if (!propuesto || temaId !== 'new' || nuevoTemaNombre !== propuesto) return
+    const existente = temas.find((t) => t.nombre.toLowerCase() === propuesto.toLowerCase())
+    if (!existente) return
+    setTemaId(existente.id)
+    setNuevoTemaNombre('')
+  }, [temas, borrador, temaId, nuevoTemaNombre])
 
   // Aseguramos al menos una línea en blanco cuando el tipo es "lista".
   useEffect(() => {
@@ -543,7 +587,7 @@ export function ItemForm({
         await deleteRecordatoriosForItem(saved.id)
       }
 
-      onSaved()
+      onSaved(saved)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error guardando el item')
     } finally {

@@ -206,3 +206,46 @@ Deno.test('fallbackTextForActions pluraliza según cantidad', () => {
   )
   assertEquals(fallbackTextForActions(tres), 'Preparé 3 acciones para que las confirmes.')
 })
+
+// --- Sugerir siempre tema y prioridad -------------------------------------
+//
+// El prompt y la tool declaration ahora le piden al modelo que mande tema Y
+// prioridad en CADA create (antes eran "opcionales" y casi nunca los ponía).
+// Eso cambia lo que llega, no cómo se mapea: estos tests fijan que el mapeo
+// aguanta el caso nuevo —el común de ahora— y que el viejo sigue andando, para
+// que un cliente con la PWA cacheada no dependa de ellos.
+
+Deno.test('un create con tema y prioridad sugeridos llega entero a la acción', () => {
+  const accion = mapProposedAction('proposeCreateItem', {
+    tipo: 'recordatorio',
+    tema: 'Salud',
+    prioridad: 'media',
+    contenido: 'Tomar la pastilla',
+  })
+  assertEquals(accion, {
+    tipo_accion: 'create',
+    tipo: 'recordatorio',
+    tema: 'Salud',
+    prioridad: 'media',
+    contenido: 'Tomar la pastilla',
+  })
+})
+
+Deno.test('las tres prioridades del enum pasan tal cual', () => {
+  for (const prioridad of ['alta', 'media', 'baja']) {
+    const accion = mapProposedAction('proposeCreateItem', {
+      tipo: 'nota',
+      contenido: 'x',
+      prioridad,
+    })
+    assertEquals((accion as { prioridad: string | null }).prioridad, prioridad)
+  }
+})
+
+Deno.test('sin tema ni prioridad la acción sigue siendo válida (null, no undefined)', () => {
+  // El prompt pide sugerirlos siempre, pero "siempre" es una instrucción, no una
+  // garantía: un modelo que igual los omita no puede romper la propuesta.
+  const accion = mapProposedAction('proposeCreateItem', { tipo: 'nota', contenido: 'x' })
+  assertEquals((accion as { tema: string | null }).tema, null)
+  assertEquals((accion as { prioridad: string | null }).prioridad, null)
+})

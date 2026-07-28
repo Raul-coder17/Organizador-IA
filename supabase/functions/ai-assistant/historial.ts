@@ -59,6 +59,13 @@ export interface AccionHistorial {
   // Id real del item afectado, cuando la acción se aplicó.
   item_id?: string
   error?: string
+  // El usuario no confirmó la propuesta tal cual: la abrió en el formulario
+  // real ("Editar antes de confirmar"), la ajustó y guardó desde ahí. La acción
+  // SÍ se aplicó, pero con otros valores que los de `args`.
+  ajustada?: boolean
+  // Cómo quedó el item finalmente, cuando `ajustada` es true. Es lo que vale
+  // para el modelo de acá en más: `args` es lo que propuso, esto es lo que hay.
+  datos_finales?: Record<string, unknown>
 }
 
 export interface MensajeHistorial {
@@ -84,6 +91,21 @@ export function respuestaDeAccion(accion: AccionHistorial): Record<string, unkno
   const estado = esEstado(accion.estado)
 
   if (estado === 'aplicada') {
+    // Aplicada, pero NO tal cual se propuso: el usuario abrió la propuesta en el
+    // formulario, cambió lo que quiso y guardó desde ahí. Decirle al modelo un
+    // "aplicada" pelado lo dejaría creyendo que sus `args` son lo que hay
+    // guardado, y a la vuelta siguiente hablaría de un item que no existe con
+    // esos datos. Por eso van los valores finales, y la nota dice cuáles mandan.
+    if (accion.ajustada) {
+      return {
+        resultado: 'aplicada_con_ajustes',
+        confirmada_por_usuario: true,
+        ajustada_por_usuario: true,
+        ...(accion.item_id ? { item_id: accion.item_id } : {}),
+        ...(accion.datos_finales ? { datos_finales: accion.datos_finales } : {}),
+        nota: 'El usuario abrió esta propuesta en el formulario, la AJUSTÓ a mano y la guardó. La acción se aplicó, pero con los valores de `datos_finales`, NO con los que vos propusiste. De acá en más el item es el de `datos_finales`. No vuelvas a proponer esta acción, y si el usuario cambió algo que vos habías puesto distinto, tomá su versión como la correcta.',
+      }
+    }
     return {
       resultado: 'aplicada',
       confirmada_por_usuario: true,

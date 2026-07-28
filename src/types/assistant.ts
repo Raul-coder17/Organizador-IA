@@ -96,6 +96,13 @@ export interface AccionEnHistorial {
   // crearlo; para update/delete ya venía en la propuesta.
   item_id?: string
   error?: string
+  // La acción se aplicó desde "Editar antes de confirmar": el usuario abrió la
+  // propuesta en el formulario real, la ajustó y guardó desde ahí. Sigue siendo
+  // 'aplicada', pero con otros valores que los de `call.args`.
+  ajustada?: boolean
+  // Cómo quedó el item finalmente en ese caso. Es lo que se le informa al modelo
+  // en el functionResponse, para que no siga hablando de lo que él propuso.
+  datos_finales?: Record<string, unknown>
 }
 
 export interface ChatMessage {

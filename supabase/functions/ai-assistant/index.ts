@@ -131,8 +131,17 @@ const FUNCTION_DECLARATIONS = [
       type: 'OBJECT',
       properties: {
         tipo: { type: 'STRING', enum: TIPO_ENUM, description: 'Tipo del item.' },
-        tema: { type: 'STRING', description: 'Nombre del tema (existente o nuevo). Opcional.' },
-        prioridad: { type: 'STRING', enum: PRIORIDAD_ENUM, description: 'Prioridad. Opcional.' },
+        tema: {
+          type: 'STRING',
+          description:
+            'Nombre del tema. Mandalo SIEMPRE: reusá el nombre EXACTO de uno de los temas que el usuario ya tiene (te los paso en las instrucciones) si alguno encaja, y si ninguno encaja proponé uno nuevo corto, de 1 o 2 palabras y en singular. Dejalo vacío sólo si el pedido es tan genérico que cualquier tema sería inventado.',
+        },
+        prioridad: {
+          type: 'STRING',
+          enum: PRIORIDAD_ENUM,
+          description:
+            'Prioridad. Mandala SIEMPRE, inferida del pedido: "alta" si hay urgencia (urgente, importante, cuanto antes, un plazo corto, salud o plata), "baja" si es opcional o suelto ("cuando pueda", una idea, una lista de compras), y "media" cuando no hay ninguna señal clara. "media" es el default explícito, no un vacío.',
+        },
         contenido: {
           type: 'STRING',
           description:
@@ -246,7 +255,22 @@ const FUNCTION_DECLARATIONS = [
   },
 ]
 
-function buildSystemInstruction(clientNow?: string): string {
+// Los temas que el usuario YA tiene van en la system instruction, no detrás de
+// un listItems. Es la misma decisión que ya tomó la captura por foto (ver
+// `buildPrompt` en extract-from-photo/extract.ts) y por el mismo motivo: para
+// elegir bien el tema de un item NUEVO hay que ver los existentes, y los
+// resultados de las tools de lectura NO sobreviven al turno (el historial que se
+// reinyecta sólo reconstruye las calls `propose*`). Sin esto, "sugerí siempre un
+// tema" obligaría a un listItems extra en CADA create — dos llamadas a Gemini por
+// pedido, con un RPD de 20. Una query chica acá lo resuelve gratis.
+function bloqueTemas(nombres: string[]): string {
+  if (nombres.length === 0) {
+    return '\n- El usuario todavía no tiene ningún tema. Cuando propongas crear un item, proponé un tema nuevo corto y en singular.'
+  }
+  return `\n- Temas que el usuario YA tiene: ${nombres.map((t) => `"${t}"`).join(', ')}. Si el item encaja en alguno, usá EXACTAMENTE ese nombre (no una variante ni un plural). Si no encaja en ninguno, proponé uno nuevo corto y en singular.`
+}
+
+function buildSystemInstruction(clientNow?: string, temas: string[] = []): string {
   const ahora = clientNow
     ? `\n- La fecha y hora LOCAL del usuario ahora es: ${clientNow} (formato "YYYY-MM-DDTHH:mm"). Usala para calcular fechas relativas como "mañana a las 9" o "en 2 horas".`
     : ''
@@ -255,6 +279,8 @@ function buildSystemInstruction(clientNow?: string): string {
 Reglas:
 - Antes de responder sobre qué tiene guardado, o antes de proponer cambios sobre un item existente, usá listItems (y listRecordatorios si el pedido involucra recordatorios) para ver datos reales. No inventes items ni ids.
 - Tipos válidos: nota, recordatorio, lista, tabla. Prioridades válidas: alta, media, baja (o sin prioridad).
+- SUGERÍ SIEMPRE tema Y prioridad en cada proposeCreateItem. No los dejes vacíos "por las dudas": la propuesta no se aplica sola — el usuario la ve antes, y además de Confirmar/Cancelar puede abrirla en el formulario real y ajustar cualquier campo antes de guardar. Una sugerencia que no le sirva la corrige en dos toques; una casilla vacía se la dejás a él. Arriesgá.${bloqueTemas(temas)}
+- Prioridad: inferila del pedido. "urgente", "importante", "cuanto antes", un plazo corto, algo de salud o de plata => "alta". Algo opcional, "cuando pueda", una idea suelta, una lista de compras => "baja". Si no hay ninguna señal, poné "media": es el default explícito, no un vacío.
 - El tipo "lista" tiene líneas marcables (checkboxes), NO texto libre. Para crear una lista usá el campo "lineas" (un array de strings), no "contenido". Para editar sus líneas usá lineas_agregar / lineas_quitar / lineas_marcar_hechas / lineas_desmarcar.
 - TODO create lleva SIEMPRE el QUÉ del item: "contenido" para nota, recordatorio y tabla, o "lineas" para lista. Nunca lo omitas. La fecha, la hora, la repetición y los días dicen CUÁNDO avisar, no QUÉ es el item: un create con recordatorio_fecha_hora/recordatorio_recurrencia pero sin "contenido" guarda un item vacío. Si los ejemplos de más abajo enumeran sólo los campos de recordatorio, es para no repetirse: "contenido" va igual, siempre.
 - Podés agregar un recordatorio a CUALQUIER item (no solo a los de tipo "recordatorio"): al crear, con "recordatorio_fecha_hora"; al editar, con "recordatorio_fecha_hora" (agregar/mover) o "quitar_recordatorio". La fecha/hora va en hora LOCAL del usuario, formato "YYYY-MM-DDTHH:mm".
@@ -703,7 +729,19 @@ Deno.serve(async (req) => {
   // Hora local del cliente (formato "YYYY-MM-DDTHH:mm") para resolver fechas
   // relativas ("mañana a las 9"). El server solo conoce UTC.
   const clientNow = typeof body.client_now === 'string' ? body.client_now : undefined
-  const systemInstruction = buildSystemInstruction(clientNow)
+
+  // Los temas del usuario, para que el modelo pueda reusar uno existente al
+  // sugerir el tema de un item nuevo sin gastar una llamada extra en listItems
+  // (ver `bloqueTemas`). Es una lectura chica y respeta RLS con su JWT; si
+  // falla, la instrucción cae al caso "todavía no tiene temas" y el asistente
+  // sigue funcionando.
+  const { data: temasRows } = await supabase.from('temas').select('nombre').eq('user_id', user.id)
+  const nombresTemas = (temasRows ?? [])
+    .map((t) => (typeof t.nombre === 'string' ? t.nombre.trim() : ''))
+    .filter((n) => n.length > 0)
+    .slice(0, 40)
+
+  const systemInstruction = buildSystemInstruction(clientNow, nombresTemas)
 
   // El historial NO es texto plano: los turnos en que el modelo propuso algo se
   // reconstruyen como el par functionCall/functionResponse real, para que Gemini
@@ -720,7 +758,7 @@ Deno.serve(async (req) => {
   // reconstrucción quedó bien: la secuencia de roles tiene que alternar
   // user/model y el conteo de calls tiene que coincidir con las propuestas.
   console.log(
-    `[ai-assistant][payload] inicio modelo=${GEMINI_MODEL} client_now=${clientNow ?? '<ausente>'} mensajes_chat=${messages.length}`,
+    `[ai-assistant][payload] inicio modelo=${GEMINI_MODEL} client_now=${clientNow ?? '<ausente>'} mensajes_chat=${messages.length} temas=${nombresTemas.length}`,
   )
   console.log(`[ai-assistant][payload] historial ${resumenContents(contents)}`)
 

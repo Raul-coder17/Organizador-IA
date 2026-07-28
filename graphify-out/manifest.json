@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/components/ItemForm.tsx": {
-    "mtime": 1785187844.8424094,
-    "ast_hash": "52edac95bbfabca6592c57963dfa1cf7",
+    "mtime": 1785203515.0360298,
+    "ast_hash": "30ffc54c161b860d8b3062f1bbd3346c",
     "semantic_hash": ""
   },
   "src/components/ItemList.tsx": {
@@ -190,8 +190,8 @@
     "semantic_hash": ""
   },
   "src/types/assistant.ts": {
-    "mtime": 1785067733.6346552,
-    "ast_hash": "96f2d54228737afd44bf2e60d9118e31",
+    "mtime": 1785203210.136742,
+    "ast_hash": "2e4908d7698c29d43180626ce2b9c608",
     "semantic_hash": ""
   },
   "src/types/database.ts": {
@@ -205,8 +205,8 @@
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/actions.test.ts": {
-    "mtime": 1785067733.6346552,
-    "ast_hash": "0b6a200cb20e216b33818d9059121fe3",
+    "mtime": 1785203344.9538372,
+    "ast_hash": "1698faee25bf6149ff9ed0a318763f15",
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/actions.ts": {
@@ -215,8 +215,8 @@
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/index.ts": {
-    "mtime": 1785067733.6366558,
-    "ast_hash": "2e8c1fb46a8515c07709c1defc4d0323",
+    "mtime": 1785203210.1387484,
+    "ast_hash": "c0052b950e80b3e1b818d4185032121c",
     "semantic_hash": ""
   },
   "supabase/functions/manage-ai-key/index.ts": {
@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1785202183.2148683,
-    "ast_hash": "d07b6127cddc1f48be35b6fc8b54d174",
+    "mtime": 1785204086.7217147,
+    "ast_hash": "6ef522b0846c0807e2ddc8748e60b368",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -465,8 +465,8 @@
     "semantic_hash": ""
   },
   "src/components/AppShell.tsx": {
-    "mtime": 1784886160.3177736,
-    "ast_hash": "4cc379cac743e3dee75fe10e1e32271b",
+    "mtime": 1785203210.1342297,
+    "ast_hash": "2c9566f78c6b0fa863acf8201ed05862",
     "semantic_hash": ""
   },
   "src/lib/useIsWide.ts": {
@@ -495,13 +495,13 @@
     "semantic_hash": ""
   },
   "src/components/AssistantDrawer.tsx": {
-    "mtime": 1785068974.7783775,
-    "ast_hash": "299701d02d8523aa5d4f4dbad2cf6ba4",
+    "mtime": 1785203661.0948992,
+    "ast_hash": "1de0ba50e0f7c870f6ee257c6d290dab",
     "semantic_hash": ""
   },
   "src/components/NuevoItemSheet.tsx": {
-    "mtime": 1784954530.5149238,
-    "ast_hash": "a86a5d2462944aa58d9c0a2b3e3b53e1",
+    "mtime": 1785203210.135736,
+    "ast_hash": "4011c1b70f94746886c861fddf24a0a3",
     "semantic_hash": ""
   },
   "src/lib/itemSheet.ts": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "src/components/ProposedActionCard.tsx": {
-    "mtime": 1785067733.6291447,
-    "ast_hash": "ac4d7d7957afc5226117779184ecbd61",
+    "mtime": 1785203814.557788,
+    "ast_hash": "ed1be96d9f004447aa56e2e6a88a22d6",
     "semantic_hash": ""
   },
   "src/components/UpdateBanner.tsx": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "src/lib/accionesPropuestas.ts": {
-    "mtime": 1785067733.6301477,
-    "ast_hash": "2427774d1ed480b809391f0f85d6f743",
+    "mtime": 1785203210.136742,
+    "ast_hash": "4f336b189b7ac07d60e51d64993d51c8",
     "semantic_hash": ""
   },
   "src/lib/fotoItem.ts": {
@@ -655,13 +655,13 @@
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/historial.test.ts": {
-    "mtime": 1785067733.6356602,
-    "ast_hash": "a25a860609a53d731947bf77a565786d",
+    "mtime": 1785203325.2021568,
+    "ast_hash": "57d2b598f4750a0683c8de6d83bb701a",
     "semantic_hash": ""
   },
   "supabase/functions/ai-assistant/historial.ts": {
-    "mtime": 1785067733.6356602,
-    "ast_hash": "463359b07ec99efa35e5f54d00d327ba",
+    "mtime": 1785203210.1377406,
+    "ast_hash": "4295077156588f9066c1b0955ba55ba9",
     "semantic_hash": ""
   },
   "src/components/ProposedActionCard.test.ts": {
@@ -752,6 +752,11 @@
   "src/lib/exportarDatos.test.ts": {
     "mtime": 1785201835.2219076,
     "ast_hash": "560be30185cba554bde2a1661f789c47",
+    "semantic_hash": ""
+  },
+  "src/lib/accionesPropuestas.test.ts": {
+    "mtime": 1785203294.92394,
+    "ast_hash": "d057b422e0f22de053f69c2582872131",
     "semantic_hash": ""
   }
 }

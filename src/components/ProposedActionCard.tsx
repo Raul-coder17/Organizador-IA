@@ -60,13 +60,37 @@ export interface PendingAction {
   accion: AccionPropuesta
   estado: EstadoAccion
   error?: string
+  /** Se aplicó desde "Editar antes de confirmar", así que lo guardado NO es
+   *  necesariamente lo que la tarjeta muestra. */
+  ajustada?: boolean
 }
 
 function contenidoTexto(item: Item): string {
   return typeof item.contenido?.texto === 'string' ? item.contenido.texto : JSON.stringify(item.contenido)
 }
 
-function EstadoBadge({ estado, errorMsg }: { estado: EstadoAccion; errorMsg?: string }) {
+function EstadoBadge({
+  estado,
+  errorMsg,
+  ajustada,
+}: {
+  estado: EstadoAccion
+  errorMsg?: string
+  ajustada?: boolean
+}) {
+  // Cuando se guardó desde el formulario, la tarjeta de arriba sigue mostrando
+  // lo que la IA PROPUSO, que puede no ser lo que se guardó. Un "✓ Aplicado"
+  // pelado encima de esos datos diría que se guardaron ésos. El badge tiene que
+  // decir que la versión buena es otra.
+  if (estado === 'done' && ajustada)
+    return (
+      <p className="text-sm text-moss mt-3 font-mono">
+        ✓ Guardado con tus ajustes
+        <span className="block text-xs text-ink-soft font-sans mt-0.5">
+          Lo de arriba es lo que había propuesto la IA; se guardó lo que dejaste en el formulario.
+        </span>
+      </p>
+    )
   if (estado === 'done') return <p className="text-sm text-moss mt-3 font-mono">✓ Aplicado</p>
   if (estado === 'cancelled') return <p className="text-sm text-slate mt-3 font-mono">Cancelado</p>
   if (estado === 'error')
@@ -147,14 +171,23 @@ export function ProposedActionCard({
   items,
   onConfirm,
   onCancel,
+  onEdit,
+  ajustada,
   confirmLabel = 'Confirmar',
 }: {
   accion: AccionPropuesta
   estado: EstadoAccion
   errorMsg?: string
+  /** Ver `PendingAction.ajustada`: cambia el badge final. */
+  ajustada?: boolean
   items: Item[]
   onConfirm: () => void
   onCancel: () => void
+  /** Abre la propuesta en el formulario real, ya cargada, para ajustarla antes
+   *  de que se aplique. Opcional: quien no lo pase se queda con
+   *  Confirmar/Cancelar. Sólo se dibuja para create y update — en un borrado no
+   *  hay nada que editar, la decisión es sí o no. */
+  onEdit?: () => void
   /** El chat dice "Confirmar"; la foto dice "Guardar item". Es la misma acción,
    *  pero en el sheet de foto no hay un mensaje del asistente arriba que le dé
    *  contexto al verbo. */
@@ -162,6 +195,7 @@ export function ProposedActionCard({
 }) {
   const target = 'item_id' in accion ? items.find((it) => it.id === accion.item_id) : undefined
   const resuelto = estado === 'done' || estado === 'cancelled'
+  const puedeEditar = Boolean(onEdit) && accion.tipo_accion !== 'delete'
 
   return (
     <div className="bg-card border border-line border-l-4 border-l-moss rounded-[2px] p-4 text-left">
@@ -292,16 +326,34 @@ export function ProposedActionCard({
       )}
 
       {resuelto || estado === 'error' ? (
-        <EstadoBadge estado={estado} errorMsg={errorMsg} />
+        <EstadoBadge estado={estado} errorMsg={errorMsg} ajustada={ajustada} />
       ) : (
-        <div className="flex items-center gap-4 mt-4">
-          <button onClick={onConfirm} disabled={estado === 'applying'} className="btn-moss">
-            {estado === 'applying' ? 'Aplicando…' : confirmLabel}
-          </button>
-          <button onClick={onCancel} disabled={estado === 'applying'} className="btn-ghost">
-            Cancelar
-          </button>
-        </div>
+        <>
+          <div className="flex items-center gap-4 mt-4">
+            <button onClick={onConfirm} disabled={estado === 'applying'} className="btn-moss">
+              {estado === 'applying' ? 'Aplicando…' : confirmLabel}
+            </button>
+            <button onClick={onCancel} disabled={estado === 'applying'} className="btn-ghost">
+              Cancelar
+            </button>
+          </div>
+          {/* "Editar" no es una tercera decisión al mismo nivel que
+              confirmar/cancelar: es el desvío para cuando la propuesta está bien
+              pero no del todo. Va como link y en su propio renglón —el mismo
+              tratamiento y el mismo lugar que "Editar antes de guardar" en la
+              foto—, así los dos botones de verdad quedan juntos y el renglón no
+              se parte en el ancho del drawer. */}
+          {puedeEditar && (
+            <button
+              type="button"
+              onClick={onEdit}
+              disabled={estado === 'applying'}
+              className="link-underline text-sm mt-3 disabled:opacity-60 disabled:cursor-not-allowed disabled:no-underline"
+            >
+              Editar antes de confirmar
+            </button>
+          )}
+        </>
       )}
     </div>
   )

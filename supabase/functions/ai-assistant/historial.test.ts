@@ -273,3 +273,97 @@ Deno.test('resumenContents describe la forma y el conteo de calls', () => {
     'turnos=4 roles=[user,model,user,user] functionCalls=1 functionResponses=1',
   )
 })
+
+// --- "Editar antes de confirmar" ------------------------------------------
+//
+// El usuario puede abrir una propuesta en el formulario real, ajustarla y
+// guardar desde ahí. La acción SÍ se aplicó, pero con otros valores que los
+// `args` que el modelo emitió. Si el historial dijera sólo "aplicada", en el
+// turno siguiente el modelo hablaría de un item que no existe con esos datos.
+
+const DATOS_FINALES = {
+  item_id: 'it-9',
+  tipo: 'recordatorio',
+  tema: 'Salud',
+  prioridad: 'alta',
+  contenido: 'Tomar la pastilla azul',
+  recordatorio: { fecha_hora: '2026-08-01T12:00:00.000Z', recurrencia: 'diario' },
+}
+
+Deno.test('una propuesta ajustada se informa aplicada, pero con los datos finales', () => {
+  const r = respuestaDeAccion({
+    tool: 'proposeCreateItem',
+    args: { tipo: 'nota', contenido: 'Tomar la pastilla' },
+    estado: 'aplicada',
+    item_id: 'it-9',
+    ajustada: true,
+    datos_finales: DATOS_FINALES,
+  })
+  assertEquals(r.resultado, 'aplicada_con_ajustes')
+  assertEquals(r.confirmada_por_usuario, true)
+  assertEquals(r.ajustada_por_usuario, true)
+  assertEquals(r.item_id, 'it-9')
+  assertEquals(r.datos_finales, DATOS_FINALES)
+  // La nota tiene que decirle cuál de las dos versiones manda: es texto que el
+  // modelo lee directo, y "aplicada" a secas lo dejaría con sus propios args.
+  assertEquals(typeof r.nota === 'string' && r.nota.includes('datos_finales'), true)
+})
+
+Deno.test('sin ajustes, el desenlace aplicado sigue siendo exactamente el de antes', () => {
+  // Regresión: el camino nuevo no puede cambiarle la respuesta a las
+  // confirmaciones normales, que son la enorme mayoría.
+  const r = respuestaDeAccion({ tool: 'proposeCreateItem', estado: 'aplicada', item_id: 'it-1' })
+  assertEquals(r, {
+    resultado: 'aplicada',
+    confirmada_por_usuario: true,
+    item_id: 'it-1',
+    nota: 'El usuario confirmó esta acción y ya se aplicó. No la vuelvas a proponer.',
+  })
+})
+
+Deno.test('ajustada sólo aplica a lo aplicado: cancelar es cancelar aunque venga la bandera', () => {
+  // Defensa contra un cliente que mandara la bandera de más: el desenlace lo
+  // decide el estado, no la bandera, y lo conservador es no informar aplicado.
+  const r = respuestaDeAccion({
+    tool: 'proposeUpdateItem',
+    estado: 'cancelada',
+    ajustada: true,
+    datos_finales: DATOS_FINALES,
+  })
+  assertEquals(r.resultado, 'cancelada')
+  assertEquals(r.confirmada_por_usuario, false)
+  assertEquals(r.datos_finales, undefined)
+})
+
+Deno.test('una propuesta ajustada mantiene la forma del historial (call + response)', () => {
+  const contents = buildContents([
+    { role: 'user', text: 'anotá que tome la pastilla' },
+    {
+      role: 'assistant',
+      text: 'Preparé la creación.',
+      acciones: [
+        {
+          tool: 'proposeCreateItem',
+          args: { tipo: 'nota', contenido: 'Tomar la pastilla' },
+          estado: 'aplicada',
+          item_id: 'it-9',
+          ajustada: true,
+          datos_finales: DATOS_FINALES,
+        },
+      ],
+    },
+    { role: 'assistant', text: 'Listo, lo guardé con tus ajustes.', solo_ui: true },
+    { role: 'user', text: '¿qué quedó?' },
+  ])
+  assertFormaValida(contents)
+  assertEquals(contents.length, 4)
+  // El turno del modelo sigue llevando la call TAL COMO la emitió: lo que
+  // cambia es la respuesta, no la jugada.
+  assertEquals(contents[1].parts?.[1]?.functionCall?.args, {
+    tipo: 'nota',
+    contenido: 'Tomar la pastilla',
+  })
+  const respuesta = contents[2].parts?.[0]?.functionResponse?.response
+  assertEquals(respuesta?.resultado, 'aplicada_con_ajustes')
+  assertEquals(respuesta?.datos_finales, DATOS_FINALES)
+})

@@ -16,6 +16,7 @@ import { useIsWide } from '../lib/useIsWide'
 import { setTheme, useTheme } from '../lib/theme'
 import { supabase } from '../lib/supabase'
 import { ItemSheetContext } from '../lib/itemSheet'
+import type { BorradorItem } from '../lib/accionesPropuestas'
 import type { Item } from '../types/database'
 import { SyncStatus } from './SyncStatus'
 import { AssistantDrawer } from './AssistantDrawer'
@@ -272,6 +273,21 @@ export function AppShell() {
   const [sheetEditando, setSheetEditando] = useState<Item | null>(null)
   const [sheetFormKey, setSheetFormKey] = useState(0)
 
+  // "Editar antes de confirmar" del asistente: la propuesta se abre en ESTE
+  // sheet, con el `ItemForm` de siempre precargado. El shell hace de puente
+  // porque el drawer y el sheet son hermanos —los dos cuelgan de acá— y ninguno
+  // puede abrir al otro por sí solo.
+  const [sheetBorrador, setSheetBorrador] = useState<BorradorItem | null>(null)
+  // A quién avisarle cuando se guarde (el drawer, para marcar la tarjeta como
+  // aplicada y contarle al modelo con qué datos terminó). En ref y no en estado:
+  // sólo se lee dentro de callbacks, y no tiene por qué provocar renders.
+  const onGuardadoBorradorRef = useRef<((item: Item) => void) | null>(null)
+  // El drawer y el sheet comparten z-index (31) y telón: abiertos a la vez se
+  // pisarían. Así que al editar una propuesta el drawer se CIERRA (sigue
+  // montado, o sea el chat entero se conserva) y se reabre cuando el sheet se
+  // resuelve — se haya guardado o cancelado.
+  const volverAlAsistenteRef = useRef(false)
+
   // Espejo en ref para poder decidir en `abrirNuevo` si veníamos de una edición
   // sin volver el callback dependiente del estado (así queda estable en el
   // contexto).
@@ -280,14 +296,25 @@ export function AppShell() {
     sheetEditandoRef.current = sheetEditando
   }, [sheetEditando])
 
+  // Espejo del borrador del asistente, por el mismo motivo que el de arriba:
+  // `abrirNuevo` tiene que poder descartarlo sin volverse dependiente del estado.
+  const sheetBorradorRef = useRef<BorradorItem | null>(null)
+  useEffect(() => {
+    sheetBorradorRef.current = sheetBorrador
+  }, [sheetBorrador])
+
   const abrirNuevo = useCallback(() => {
     setSheetMontado(true)
     setSheetAbierto(true)
-    // Si el sheet venía de una edición, "+ Nuevo" no puede resumir ese borrador:
-    // arranca limpio en el menú. Si venía de un borrador nuevo (o nada), lo
-    // resume tal cual — cerrar en suave no lo tiró.
-    if (sheetEditandoRef.current !== null) {
+    // Si el sheet venía de una edición o de una propuesta del asistente,
+    // "+ Nuevo" no puede resumir ese borrador: arranca limpio en el menú. Si
+    // venía de un borrador nuevo (o nada), lo resume tal cual — cerrar en suave
+    // no lo tiró.
+    if (sheetEditandoRef.current !== null || sheetBorradorRef.current !== null) {
       setSheetEditando(null)
+      setSheetBorrador(null)
+      onGuardadoBorradorRef.current = null
+      volverAlAsistenteRef.current = false
       setSheetVista('menu')
       setSheetFormKey((k) => k + 1)
     }
@@ -297,20 +324,67 @@ export function AppShell() {
     setSheetMontado(true)
     setSheetAbierto(true)
     setSheetEditando(item)
+    setSheetBorrador(null)
+    onGuardadoBorradorRef.current = null
+    volverAlAsistenteRef.current = false
     setSheetVista('form')
     setSheetFormKey((k) => k + 1) // form fresco cargado con este ítem
   }, [])
 
+  /**
+   * Abre una propuesta del asistente en el formulario real, precargada.
+   *
+   * @param item el item que la propuesta edita, o null si propone crear uno.
+   * @param onGuardado se llama con el item ya guardado (creado o actualizado);
+   *   es como el drawer se entera de que su tarjeta se resolvió, y con qué datos.
+   */
+  const abrirBorradorPropuesto = useCallback(
+    (borrador: BorradorItem, item: Item | null, onGuardado: (guardado: Item) => void) => {
+      onGuardadoBorradorRef.current = onGuardado
+      volverAlAsistenteRef.current = true
+      setAbierto(false) // el drawer se aparta; sigue montado, el chat no se pierde
+      setSheetMontado(true)
+      setSheetAbierto(true)
+      setSheetBorrador(borrador)
+      setSheetEditando(item)
+      setSheetVista('form')
+      setSheetFormKey((k) => k + 1)
+    },
+    [],
+  )
+
   const elegirEscribir = useCallback(() => setSheetVista('form'), [])
   const elegirFoto = useCallback(() => setSheetVista('foto'), [])
-  const cerrarSheetSuave = useCallback(() => setSheetAbierto(false), [])
+
+  // Si el sheet se cerró en suave mientras revisábamos una propuesta, el
+  // asistente vuelve: cerrar el form no es abandonar la conversación, y la
+  // tarjeta sigue ahí esperando confirmar o cancelar.
+  const volverSiCorresponde = useCallback(() => {
+    if (!volverAlAsistenteRef.current) return
+    volverAlAsistenteRef.current = false
+    setAbierto(true)
+  }, [])
+
+  const cerrarSheetSuave = useCallback(() => {
+    setSheetAbierto(false)
+    volverSiCorresponde()
+  }, [volverSiCorresponde])
 
   // Cancelar explícito o guardar/borrar con éxito: cerrar Y limpiar.
   const resolverSheet = useCallback(() => {
     setSheetAbierto(false)
     setSheetEditando(null)
+    setSheetBorrador(null)
+    onGuardadoBorradorRef.current = null
     setSheetVista('menu')
     setSheetFormKey((k) => k + 1)
+    volverSiCorresponde()
+  }, [volverSiCorresponde])
+
+  // El sheet acaba de guardar: se lo pasamos a quien abrió el borrador (el
+  // drawer) antes de que `onResuelto` limpie todo.
+  const avisarGuardado = useCallback((item: Item) => {
+    onGuardadoBorradorRef.current?.(item)
   }, [])
 
   const pedirIA = useCallback(() => {
@@ -500,7 +574,13 @@ export function AppShell() {
           desmonta, para que el chat sobreviva a cerrar/reabrir. Es
           `position: fixed`, así que da igual dónde cuelgue del árbol; va al
           final del shell para quedar por encima de todo. */}
-      {montado && <AssistantDrawer open={abierto} onClose={cerrarAsistente} />}
+      {montado && (
+        <AssistantDrawer
+          open={abierto}
+          onClose={cerrarAsistente}
+          onEditarPropuesta={abrirBorradorPropuesto}
+        />
+      )}
 
       {/* El sheet de "+ Nuevo ítem" (ítem 11). Mismo criterio de montaje que el
           drawer. También `position: fixed`. */}
@@ -509,6 +589,8 @@ export function AppShell() {
           open={sheetAbierto}
           vista={sheetVista}
           editingItem={sheetEditando}
+          borradorExterno={sheetBorrador}
+          onGuardado={avisarGuardado}
           formKey={sheetFormKey}
           onElegirEscribir={elegirEscribir}
           onElegirFoto={elegirFoto}

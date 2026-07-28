@@ -41,6 +41,14 @@ interface NuevoItemSheetProps {
   open: boolean
   vista: Vista
   editingItem: Item | null
+  /** Propuesta del ASISTENTE abierta con "Editar antes de confirmar" (viene del
+   *  shell, no de este sheet). Se usa igual que el borrador interno de la foto:
+   *  precarga el `ItemForm`. Con `editingItem` es una edición; sin él, una
+   *  creación. */
+  borradorExterno?: BorradorItem | null
+  /** El item que se acaba de guardar. Sólo lo escucha quien abrió el sheet con
+   *  un borrador externo (el asistente, para saber con qué datos terminó). */
+  onGuardado?: (item: Item) => void
   /** Cambia para forzar un `ItemForm` limpio (tras cancelar/guardar, o al
    *  cambiar de ítem a editar). */
   formKey: number
@@ -105,6 +113,8 @@ export function NuevoItemSheet({
   open,
   vista,
   editingItem,
+  borradorExterno = null,
+  onGuardado,
   formKey,
   onElegirEscribir,
   onElegirFoto,
@@ -219,8 +229,11 @@ export function NuevoItemSheet({
     emitLocalChange()
   }
 
-  function handleSaved() {
+  function handleSaved(item: Item) {
     emitLocalChange()
+    // Antes de resolver: `onResuelto` limpia el sheet en el shell (incluido el
+    // borrador externo), así que quien lo abrió tiene que enterarse primero.
+    onGuardado?.(item)
     onResuelto()
   }
 
@@ -397,13 +410,18 @@ export function NuevoItemSheet({
     setFase('elegir')
   }
 
-  const titulo = editingItem
-    ? 'Editar ítem'
-    : vista === 'foto'
-      ? fase === 'editando'
-        ? 'Revisar antes de guardar'
-        : 'Desde una foto'
-      : 'Nuevo ítem'
+  // Una propuesta del asistente abierta acá no es "un ítem nuevo" ni "editar un
+  // ítem": es una propuesta a revisar, y el título lo dice — es lo único que
+  // recuerda, ya dentro del form, que esto salió de la IA.
+  const titulo = borradorExterno
+    ? 'Revisar antes de guardar'
+    : editingItem
+      ? 'Editar ítem'
+      : vista === 'foto'
+        ? fase === 'editando'
+          ? 'Revisar antes de guardar'
+          : 'Desde una foto'
+        : 'Nuevo ítem'
 
   // La foto necesita red sí o sí (la lectura la hace Gemini) y la IA activada.
   // Mismo criterio que el asistente: se dice POR QUÉ no se puede, en vez de
@@ -690,7 +708,10 @@ export function NuevoItemSheet({
                 userId={user.id}
                 temas={temas}
                 editingItem={editingItem}
-                borrador={borrador}
+                // El borrador interno es el de la foto; el externo, el del
+                // asistente. Nunca conviven: la foto vive en `vista === 'foto'`
+                // y el del asistente abre el sheet directo en el form.
+                borrador={borrador ?? borradorExterno}
                 onSaved={handleSaved}
                 onCancel={onResuelto}
                 onTemaCreated={handleTemaCreated}
@@ -700,8 +721,13 @@ export function NuevoItemSheet({
 
               {/* Eliminar vive acá, en el modo edición, con la misma confirmación
                   que la ficha de la Biblioteca (task 3). Separado del bloque
-                  Guardar/Cancelar del form y en tono destructivo. */}
-              {editingItem && (
+                  Guardar/Cancelar del form y en tono destructivo.
+
+                  No se ofrece cuando lo que se está revisando es una propuesta
+                  del asistente: ahí la pregunta es "¿guardo esta edición?", y un
+                  botón de borrar el item entero al lado sería otra decisión, más
+                  grave, que nadie pidió. Para borrarlo está la Biblioteca. */}
+              {editingItem && !borradorExterno && (
                 <div className="sheet-eliminar">
                   {errorEliminar && <p className="text-sm text-rust mb-2">{errorEliminar}</p>}
                   <button

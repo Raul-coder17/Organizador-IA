@@ -2418,6 +2418,155 @@ comprobarlo porque el decode UTF-8 se lo come por spec).
 content setting por origen del perfil real. La verificación acá es
 estructural; la confirmación final es del usuario en producción.
 
+## El asistente sugiere tema y prioridad, y la propuesta se puede editar
+
+Dos cambios que se sostienen entre sí. Antes, la tool declaration decía que
+tema y prioridad eran "opcionales" y el modelo casi nunca los mandaba: toda
+propuesta llegaba con "sin tema / sin prioridad" y el usuario terminaba
+clasificando a mano lo que la IA podía haber inferido. Callarse era lo prudente
+porque la única salida era Confirmar o Cancelar: una sugerencia equivocada
+costaba cancelar y volver a pedir.
+
+Con "Editar antes de confirmar", equivocarse deja de ser caro — la propuesta se
+abre en el formulario real y se corrige en dos toques. Eso es lo que permite
+pedirle al modelo que arriesgue.
+
+### Los temas van en la system instruction, no detrás de un listItems
+
+Para reusar un tema existente hay que verlos. La ruta obvia —"llamá a listItems
+antes de proponer"— costaba una llamada extra a Gemini en CADA create, porque
+los resultados de las tools de lectura **no sobreviven al turno**:
+`buildContents` reconstruye el historial sólo con las calls `propose*`, así que
+el modelo tendría que volver a listar en cada mensaje. Con un RPD real de 20,
+duplicar el costo de cada creación no era una opción.
+
+La Edge Function hace la query ella misma (`select nombre from temas`, respeta
+RLS con el JWT del usuario) y mete los nombres en la system instruction. Es
+exactamente lo que ya hacía la captura por foto (`buildPrompt` en
+`extract-from-photo/extract.ts`), así que no es un patrón nuevo. Si la lectura
+falla, la instrucción cae al caso "todavía no tiene temas" y el asistente sigue
+andando.
+
+La regla de prioridad es explícita y con ejemplos: urgencia / plazo corto /
+salud o plata → `alta`; algo opcional o suelto → `baja`; **sin ninguna señal →
+`media`**, como default declarado y no como vacío. Verificado en vivo: "anotá
+que tengo que comprar filtros de agua" salió con tema `Compras` (reusado, sin
+listItems de por medio) y prioridad `baja`; "recordame regar las plantas todos
+los días a las 8" salió con tema `Salud` y prioridad `media`.
+
+### El borrador es "cómo va a quedar", no "qué cambia"
+
+`BorradorItem` (en `lib/accionesPropuestas.ts`) ya existía para el "Editar antes
+de guardar" de la foto. Se amplió en tres puntos:
+
+- **lleva el recordatorio** (`fechaLocal` + recurrencia + días en escala local).
+  Antes se perdía al abrir el form — la foto también se beneficia.
+- **las líneas van completas** (`LineaLista[]`, con su `hecho`), no sólo los
+  textos: en un update sobre una lista, mapear a `hecho: false` habría
+  desmarcado todo al abrir el formulario.
+- **`recordatorio` distingue tres estados**: un objeto (éste es el propuesto),
+  `null` (la propuesta lo quita, o no lleva) y `undefined` (no lo toca, el form
+  carga el del item). Sin esa tercera opción, "ponele prioridad baja" habría
+  borrado el recordatorio que el item ya tenía.
+
+Para un `update`, `borradorDeAccionEditar` devuelve el **item real con los
+cambios encima**, no un diff: el form abre en modo edición sobre ese mismo item
+(botón "Guardar cambios", no "Crear item") y muestra el resultado final. Cada
+campo sigue la MISMA regla que `applyAction` al confirmar sin editar, incluido
+el ida y vuelta de los días de UTC a la escala local y el completar-con-lo-
+actual que evita que "movelo a las 10" pierda el "todos los días". El cálculo de
+líneas se extrajo a `lineasConCambios()` y ahora lo usan las dos rutas: con dos
+copias, revisar la propuesta podía mostrar una lista distinta de la que se iba a
+escribir.
+
+### Al guardar se bypasea la ruta de "confirmar la propuesta"
+
+El form escribe directo con `createItem`/`updateItem`, igual que cualquier item
+hecho a mano. No pasa por `applyAction`: el usuario ya revisó y ajustó los
+campos, y no hace falta que nadie reinterprete los args del modelo.
+
+### El modelo tiene que enterarse de que lo aplicado NO es lo que propuso
+
+Es la parte que no se ve. Si el historial dijera `aplicada` a secas, en el turno
+siguiente el modelo hablaría de un item que no existe con esos datos ("¿el
+recordatorio de las 8?" cuando el usuario lo dejó a las 7:30).
+
+`AccionHistorial` ganó `ajustada` + `datos_finales`, y `respuestaDeAccion`
+devuelve `resultado: 'aplicada_con_ajustes'` con los valores finales y una nota
+que dice cuál de las dos versiones manda. La `functionCall` del turno del modelo
+sigue llevando sus args ORIGINALES: lo que cambia es la respuesta, no la jugada
+— eso es lo que la API define y es lo que le permite reconocerse.
+
+Los datos finales se releen del espejo local (el tema puede haberse creado
+recién dentro del form, y el recordatorio se guarda aparte del item) en vez de
+adivinarse desde el borrador.
+
+### Detalles de UI
+
+- El drawer y el sheet comparten `z-index: 31` y telón, así que abrirlos juntos
+  los pisaría. Al editar una propuesta el drawer **se cierra** —sigue montado,
+  o sea el chat entero se conserva— y **se reabre** cuando el sheet se resuelve,
+  se haya guardado o cancelado.
+- El título del sheet dice "Revisar antes de guardar": ya dentro del formulario
+  es lo único que recuerda que esto salió de la IA.
+- **No** se ofrece "Eliminar ítem" mientras se revisa una propuesta de edición:
+  la pregunta es "¿guardo esta edición?", y un borrado al lado sería otra
+  decisión, más grave, que nadie pidió.
+- Los `delete` se quedan con Confirmar/Cancelar: no hay nada que editar en un
+  borrado, es sí o no.
+- El link va **debajo** de Confirmar/Cancelar y no al lado, igual que "Editar
+  antes de guardar" en la foto: con tres controles en línea el renglón se parte
+  en el ancho del drawer.
+- Una vez guardado, el badge dice **"✓ Guardado con tus ajustes"** con una línea
+  aclaratoria, no "✓ Aplicado". La tarjeta de arriba sigue mostrando lo que la
+  IA propuso, y un "aplicado" pelado encima de esos datos diría que se guardaron
+  ésos.
+
+### Un bug que sólo aparece por esta puerta
+
+El borrador trae el tema por NOMBRE y resolverlo contra los existentes necesita
+la lista cargada. "Editar antes de confirmar" **monta el sheet por primera vez**
+(hasta ese momento ni existía), así que su `loadTemasFromCache()` todavía no
+resolvió y la lista viene vacía: el tema "Compras" —que ya existía— caía en
+"+ crear tema nuevo" y guardar lo habría duplicado. La foto nunca lo veía porque
+para entonces el sheet ya estaba montado.
+
+Se arregló en `ItemForm` con un efecto que reengancha la resolución en cuanto la
+lista llega, y sólo en el caso exacto "seguimos en modo tema nuevo con el nombre
+tal cual lo propuso la IA". Si el usuario ya lo cambió, el nombre no coincide y
+no pasa nada: su elección manda.
+
+### Verificación
+
+**292 tests** (27 nuevos), `tsc -b`, `vite build` y `eslint` limpios.
+
+- `src/lib/accionesPropuestas.test.ts` (20 nuevos) — la invariante central:
+  abrir la propuesta en el form muestra EXACTAMENTE lo que se habría guardado al
+  confirmarla sin tocarla. Fecha de "diario" comparada contra
+  `fechaLocalDeAccion` (la función real), conservación de la recurrencia al
+  mover la hora, días de UTC a local contra `diasUtcALocales`, `tema: null`
+  explícito vs. ausente, listas que preservan el marcado, y `datosFinalesDeItem`.
+- `historial.test.ts` (4 nuevos) — `aplicada_con_ajustes` con `datos_finales`,
+  que el camino sin ajustes quede **byte a byte** como antes, que la bandera no
+  pueda convertir un "cancelada" en aplicado, y que la forma del historial
+  (call + response, sin dos `model` seguidos) se mantenga.
+- `actions.test.ts` (3 nuevos) — que el mapeo aguante el caso nuevo (tema +
+  prioridad siempre presentes) y que el viejo siga andando: "sugerí siempre" es
+  una instrucción, no una garantía.
+
+**En vivo (Edge Function ya desplegada):** create y update, los dos con
+"Editar antes de confirmar". El prefill del create salió idéntico a la tarjeta,
+"Primera vez: mar, 28 jul, 08:00" incluido. En el update, lo que la propuesta no
+tocaba llegó del item real (tema, contenido, hora 07:30, recurrencia Diario) y
+lo propuesto llegó aplicado (prioridad baja). Ajustando antes de guardar, en
+IndexedDB quedaron los valores del usuario, no los de la IA. El body del mensaje
+siguiente se interceptó y llevaba `ajustada: true` + `datos_finales` con los
+valores finales, al lado de los `args` originales sin tocar.
+
+**Visual:** claro/oscuro × desktop/mobile. El link mide 7,09:1 de contraste en
+claro y 7,66:1 en oscuro (AA pide 4,5:1). Sin scroll horizontal en 375px. La
+tarjeta de `delete` no muestra el link.
+
 ## Deploy
 
 ### GitHub
@@ -2472,6 +2621,23 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-28 — **El asistente sugiere tema y prioridad, y la propuesta se
+  puede editar antes de confirmar** (ver sección propia). Los dos cambios se
+  sostienen entre sí: sugerir con confianza sólo es razonable si equivocarse
+  es barato. La tool declaration y el prompt ahora piden tema Y prioridad en
+  cada create (con `media` como default explícito cuando no hay señal), y los
+  temas existentes viajan en la system instruction —como ya hacía la foto— para
+  no gastar un `listItems` extra por creación. En la tarjeta apareció "Editar
+  antes de confirmar" para create y update (en delete no: es sí o no), que abre
+  la propuesta en el `ItemForm` de siempre, precargada; guardar desde ahí
+  escribe directo y la tarjeta se resuelve como aplicada. El historial informa
+  `aplicada_con_ajustes` con los datos finales, para que el modelo no siga
+  hablando de lo que propuso. De paso, `BorradorItem` pasó a llevar el
+  recordatorio y las líneas con su `hecho` (la foto también lo gana), y se
+  arregló un bug que sólo aparecía por esta puerta: con el sheet montándose
+  recién al abrir la propuesta, un tema EXISTENTE caía en "crear tema nuevo" y
+  se habría duplicado. 292 tests (27 nuevos); `tsc -b`, `vite build` y `eslint`
+  limpios.
 - 2026-07-28 — **Fix: Chrome pedía permiso para descargar el export en
   producción** (ver sección propia). Había un `await` (tres lecturas a
   IndexedDB) entre el click del botón y el `a.click()`, así que Chrome
