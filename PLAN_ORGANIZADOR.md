@@ -2300,7 +2300,8 @@ sin arrastrar `idb` ni `document`, que no existen bajo Deno):
   tablas (`armarDatosExport`), el volcado a texto (`contenidoLegible`) y el
   armado de los dos formatos (`construirJSON` / `construirCSV`).
 - `src/lib/descargarExport.ts` — la parte que toca el mundo: lee el espejo
-  local y dispara la descarga con un `<a download>` temporal.
+  local (async, al montar) y dispara la descarga con un `<a download>`
+  temporal (**sincrónico**, ver más abajo).
 - `src/components/ExportarDatos.tsx` — los dos botones y el estado/errores.
 
 Dos formatos, con objetivos distintos:
@@ -2369,6 +2370,54 @@ desktop/mobile (375px).
 Falta que el usuario abra los dos archivos y confirme que la tabla se ve
 completa en Excel/Sheets.
 
+### Fix (2026-07-28): Chrome pedía permiso para descargar en producción
+
+En producción la descarga quedaba marcada "Necesita permiso para descargarse"
+en vez de bajar directo; en local no pasaba.
+
+**Causa: había un `await` entre el gesto y el `a.click()`.** El handler del
+botón hacía `await recolectarDatosExport()` —tres lecturas a IndexedDB— y
+recién después armaba el blob y clickeaba el `<a>`. Chrome trata como descarga
+**automática** a toda descarga cuyo click no sale del MISMO turno del event
+loop que el gesto: la primera de la pestaña pasa igual, la siguiente va al
+gate de permiso. En localhost no se notaba porque ese origen ya tenía el
+permiso concedido de tanto probar.
+
+No era exclusivo del CSV: `exportarJSON` tenía la forma idéntica. O sea que el
+disparador dependía del orden/cantidad de descargas en la pestaña, no del
+formato — que es justo la firma del `DownloadRequestLimiter` de Chrome.
+
+**Fix:** la parte async se movió a la **precarga**. `ExportarDatos` llama a
+`recolectarDatosExport()` al montar y guarda el resultado en un `useRef`;
+`descargarJSON`/`descargarCSV` pasaron a ser **sincrónicas** (reciben los
+datos ya en memoria) y el handler del click llega hasta `a.click()` sin un
+solo `await`. Mientras se precarga, los botones están apagados con un
+"Preparando el respaldo…"; si la lectura falla hay un "Reintentar" en vez de
+un callejón sin salida. Para que el respaldo no salga viejo, la precarga se
+repite ante `subscribeLocalChange` y `subscribeSyncSettled`. El `generadoEn`
+del JSON se sella en el click, no en la precarga.
+
+De paso: `URL.revokeObjectURL` se llamaba en la línea siguiente al `click()`,
+que es una carrera conocida (si el revoke gana, la descarga sale vacía). Ahora
+se libera a los 30 s.
+
+**Verificado:** `tsc -b`, `vite build` y `eslint` limpios; 172 tests
+(2 nuevos que fijan que `construirCSV`/`construirJSON` devuelven un string ya
+armado y no una promesa — son las que corren en el tramo que no puede volverse
+async). En el harness se instrumentó `HTMLAnchorElement.prototype.click` para
+capturar el stack en el momento exacto de la descarga: en los **dos** formatos
+la cadena es sincrónica y sin cortes —
+`executeDispatch → onClick → exportar → descargar{CSV,JSON} → descargar →
+a.click()` — con un delta de 0,6-0,9 ms contra el evento del botón. El
+contenido no cambió (CSV con 6 campos por fila y la tabla de 17 líneas, JSON
+con las 16 filas crudas) y el BOM sigue en el archivo (`EF BB BF` verificado
+sobre los bytes crudos con `blob.arrayBuffer()`; `blob.text()` no sirve para
+comprobarlo porque el decode UTF-8 se lo come por spec).
+
+**No se pudo reproducir el prompt de Chrome desde el harness** — depende del
+content setting por origen del perfil real. La verificación acá es
+estructural; la confirmación final es del usuario en producción.
+
 ## Deploy
 
 ### GitHub
@@ -2423,6 +2472,20 @@ del servidor y no depende del dominio del frontend.
 
 ## Changelog
 
+- 2026-07-28 — **Fix: Chrome pedía permiso para descargar el export en
+  producción** (ver sección propia). Había un `await` (tres lecturas a
+  IndexedDB) entre el click del botón y el `a.click()`, así que Chrome
+  contaba la descarga como automática y la mandaba al gate de permiso. No era
+  exclusivo del CSV: el JSON tenía la forma idéntica, lo que confirmaba que
+  dependía del orden de descargas y no del formato. La parte async se movió a
+  una precarga al montar (`useRef` + refresco ante `subscribeLocalChange` /
+  `subscribeSyncSettled`) y `descargarJSON`/`descargarCSV` pasaron a ser
+  sincrónicas, con "Preparando el respaldo…" y "Reintentar" cubriendo la
+  espera y el error. También se corrigió la carrera del `revokeObjectURL`
+  inmediato. Verificado instrumentando `HTMLAnchorElement.prototype.click`:
+  en los dos formatos el stack es una cadena sincrónica sin cortes desde
+  `executeDispatch` hasta `a.click()`. 172 tests; `tsc -b`, `vite build` y
+  `eslint` limpios.
 - 2026-07-27 — **Fix: exportación CSV con contenido truncado y escapado
   incompleto** (ver sección propia). (a) La columna Contenido usaba
   `resumenContenido()` (el de las notificaciones), que de una tabla devuelve

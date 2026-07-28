@@ -248,6 +248,27 @@ Deno.test('el JSON conserva el contenido crudo de la tabla, sin recortar', () =>
   assertEquals(vuelta.temas[0].items[0].contenido, contenido)
 })
 
+// --- El armado tiene que ser SINCRÓNICO -----------------------------------
+//
+// Guarda del fix de la descarga bloqueada en Chrome: entre el click del botón
+// y el `a.click()` no puede haber ni un `await`, o el navegador cuenta la
+// descarga como automática y pide permiso. Estas dos son las que corren en
+// ese tramo, así que no pueden volverse async sin que algo acá se rompa.
+
+Deno.test('construirCSV devuelve un string ya armado, no una promesa', () => {
+  const datos = armarDatosExport([tema()], [item()], [], USUARIO, GENERADO)
+  const csv = construirCSV(datos)
+  assertEquals(typeof csv, 'string')
+  assertEquals(typeof (csv as unknown as { then?: unknown }).then, 'undefined')
+})
+
+Deno.test('construirJSON devuelve un string ya armado, no una promesa', () => {
+  const datos = armarDatosExport([tema()], [item()], [], USUARIO, GENERADO)
+  const json = construirJSON(datos)
+  assertEquals(typeof json, 'string')
+  assertEquals(typeof (json as unknown as { then?: unknown }).then, 'undefined')
+})
+
 Deno.test('un item sin tema cae en itemsSinTema', () => {
   const datos = armarDatosExport([tema()], [item({ tema_id: null })], [], USUARIO, GENERADO)
   assertEquals(datos.temas[0].items.length, 0)

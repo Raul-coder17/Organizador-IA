@@ -290,8 +290,8 @@
     "semantic_hash": "9d09ec9373c5dcda13c60dd7daa74b88"
   },
   "PLAN_ORGANIZADOR.md": {
-    "mtime": 1785199702.8946135,
-    "ast_hash": "fde22687644da9801e714ee1825e960e",
+    "mtime": 1785202183.2148683,
+    "ast_hash": "d07b6127cddc1f48be35b6fc8b54d174",
     "semantic_hash": ""
   },
   "dise\u00f1o/mockup-organizador.html": {
@@ -735,8 +735,8 @@
     "semantic_hash": ""
   },
   "src/components/ExportarDatos.tsx": {
-    "mtime": 1785199450.2741003,
-    "ast_hash": "55097756786674e09a5844e3d506395b",
+    "mtime": 1785201824.6179154,
+    "ast_hash": "c067d72ee0928d2283dd3f277a77a729",
     "semantic_hash": ""
   },
   "src/lib/exportarDatos.ts": {
@@ -745,13 +745,13 @@
     "semantic_hash": ""
   },
   "src/lib/descargarExport.ts": {
-    "mtime": 1785199444.2131631,
-    "ast_hash": "1ee7f036f95ab70e59866269389c7c23",
+    "mtime": 1785201805.4884627,
+    "ast_hash": "06141377b42bdc8cfe56eb3bc5d558c6",
     "semantic_hash": ""
   },
   "src/lib/exportarDatos.test.ts": {
-    "mtime": 1785199489.458423,
-    "ast_hash": "577f91eea8aca33dca96ce2b329c96e8",
+    "mtime": 1785201835.2219076,
+    "ast_hash": "560be30185cba554bde2a1661f789c47",
     "semantic_hash": ""
   }
 }
